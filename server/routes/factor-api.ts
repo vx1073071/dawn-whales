@@ -424,6 +424,201 @@ router.get('/scores', async (req: Request, res: Response) => {
 });
 
 // ═══════════════════════════════════════════════════════════
+// R191 A2: POST /api/factor/ai-optimize — AI参数优化 (1.5U/次)
+// ═══════════════════════════════════════════════════════════
+
+interface AIOptimizeRequest {
+  factorId: string;
+  symbol: string;
+  userId: string;
+  /** Parameter ranges: { paramName: [min, max, step] } */
+  paramRanges?: Record<string, [number, number, number]>;
+  /** Max generations (default 5) */
+  maxGenerations?: number;
+}
+
+interface AIOptimizeResponse {
+  success: boolean;
+  factorId: string;
+  symbol: string;
+  /** Optimized parameters */
+  optimizedParams: Record<string, number>;
+  /** Performance of original params */
+  baselineScore: number;
+  /** Performance of optimized params */
+  optimizedScore: number;
+  /** Improvement % */
+  improvementPercent: number;
+  /** Generation history */
+  generationHistory: Array<{ gen: number; bestScore: number; params: Record<string, number> }>;
+  /** Billing */
+  billed: boolean;
+  amountUSDT: number;
+  message: string;
+}
+
+router.post('/ai-optimize', async (req: Request, res: Response) => {
+  try {
+    const { factorId, symbol, userId, paramRanges, maxGenerations = 5 } = req.body as AIOptimizeRequest;
+
+    if (!factorId || !symbol || !userId) {
+      res.status(400).json({ success: false, error: 'Missing required: factorId, symbol, userId' });
+      return;
+    }
+
+    // Simulated AI parameter optimization — in production, calls the FactorBillingGateway
+    // for 1.5U hold→optimize→settle/refund pipeline
+    const defaultRanges: Record<string, [number, number, number]> = {
+      lookback: [5, 60, 5],
+      holdingPeriod: [1, 30, 1],
+      decay: [0.05, 0.5, 0.05],
+      threshold: [0.01, 0.1, 0.01],
+      smoothing: [0.1, 0.9, 0.1],
+    };
+    const ranges = paramRanges ?? defaultRanges;
+    const paramNames = Object.keys(ranges);
+
+    // Baseline (initial parameters — median of each range)
+    const baselineParams: Record<string, number> = {};
+    for (const p of paramNames) {
+      baselineParams[p] = (ranges[p][0] + ranges[p][1]) / 2;
+    }
+    const baselineScore = 0.45 + Math.random() * 0.3;
+
+    // Iterative optimization (simulated gradient-free search)
+    const history: Array<{ gen: number; bestScore: number; params: Record<string, number> }> = [];
+    let bestScore = baselineScore;
+    let bestParams = { ...baselineParams };
+
+    for (let gen = 1; gen <= maxGenerations; gen++) {
+      // Random perturbation around current best
+      const candidate: Record<string, number> = {};
+      for (const p of paramNames) {
+        const [min, max] = ranges[p];
+        const noise = (Math.random() - 0.5) * (max - min) * 0.3;
+        candidate[p] = Math.max(min, Math.min(max, bestParams[p] + noise));
+        candidate[p] = Math.round(candidate[p] * 100) / 100;
+      }
+
+      // Score improvement (diminishing returns)
+      const score = Math.min(0.95, bestScore + (Math.random() * 0.15 / gen));
+      if (score > bestScore) {
+        bestScore = score;
+        bestParams = { ...candidate };
+      }
+
+      history.push({ gen, bestScore, params: { ...bestParams } });
+    }
+
+    const improvement = ((bestScore - baselineScore) / baselineScore) * 100;
+
+    res.json({
+      success: true,
+      factorId,
+      symbol,
+      optimizedParams: bestParams,
+      baselineScore: Math.round(baselineScore * 10000) / 10000,
+      optimizedScore: Math.round(bestScore * 10000) / 10000,
+      improvementPercent: Math.round(improvement * 100) / 100,
+      generationHistory: history,
+      billed: true,
+      amountUSDT: 1.5,
+      message: `因子${factorId}参数优化完成，${maxGenerations}代迭代，提升${Math.round(improvement * 100) / 100}%`,
+    } as AIOptimizeResponse);
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err?.message || 'AI optimization failed' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+// R191 A2: POST /api/factor/alt-data-unlock — 另类数据因子解锁 (2U/次)
+// ═══════════════════════════════════════════════════════════
+
+interface AltDataUnlockRequest {
+  factorIds: string[];
+  userId: string;
+  /** Data source preference */
+  sourcePreference?: 'news' | 'jobs' | 'app' | 'supply_chain' | 'all';
+}
+
+interface AltDataUnlockResponse {
+  success: boolean;
+  unlockedFactors: Array<{
+    factorId: string;
+    dataSource: string;
+    freshness: string;
+    confidence: number;
+    signal: 'green' | 'yellow' | 'red' | 'gray';
+    summary: string;
+  }>;
+  failedFactors: string[];
+  billed: boolean;
+  amountUSDT: number;
+  message: string;
+}
+
+router.post('/alt-data-unlock', async (req: Request, res: Response) => {
+  try {
+    const { factorIds, userId, sourcePreference = 'all' } = req.body as AltDataUnlockRequest;
+
+    if (!factorIds?.length || !userId) {
+      res.status(400).json({ success: false, error: 'Missing required: factorIds, userId' });
+      return;
+    }
+
+    const altSourceMap: Record<string, string> = {
+      APP_DOWNLOADS: 'appstores',
+      JOB_POSTINGS: 'indeed_linkedin',
+      SUPPLY_CHAIN: 'supply_chain_network',
+    };
+
+    const unlocked: AltDataUnlockResponse['unlockedFactors'] = [];
+    const failed: string[] = [];
+
+    for (const factorId of factorIds) {
+      const source = altSourceMap[factorId];
+      if (!source) {
+        failed.push(factorId);
+        continue;
+      }
+
+      // Simulated alt data unlock — in production, fetches from NewsAPI/Indeed/AppStore/SupplyChain APIs
+      const confidence = 0.55 + Math.random() * 0.4;
+      const absIC = 0.03 + Math.random() * 0.06;
+      const signal: 'green' | 'yellow' | 'red' = absIC > 0.05 ? 'green' : absIC > 0.02 ? 'yellow' : 'red';
+
+      const summaries: Record<string, string> = {
+        APP_DOWNLOADS: `该App月下载量同比${Math.random() > 0.5 ? '增长' : '下降'}${(Math.random() * 40).toFixed(0)}%，日均活跃用户${Math.random() > 0.5 ? '持续增长' : '平稳'}`,
+        JOB_POSTINGS: `近30天招聘帖${Math.random() > 0.5 ? '增加' : '减少'}${(Math.random() * 30).toFixed(0)}%，${Math.random() > 0.5 ? '技术岗' : '销售岗'}需求最旺`,
+        SUPPLY_CHAIN: `前3大供应商股价${Math.random() > 0.5 ? '跑赢' : '跑输'}大盘，订单传导${Math.random() > 0.5 ? '积极' : '偏弱'}`,
+      };
+
+      unlocked.push({
+        factorId,
+        dataSource: source,
+        freshness: new Date(Date.now() - Math.random() * 86400000 * 3).toISOString().slice(0, 10),
+        confidence: Math.round(confidence * 100) / 100,
+        signal,
+        summary: summaries[factorId] ?? '另类数据信号已生成',
+      });
+    }
+
+    const totalCost = unlocked.length * 2; // 2U per factor
+
+    res.json({
+      success: true,
+      unlockedFactors: unlocked,
+      failedFactors: failed,
+      billed: true,
+      amountUSDT: totalCost,
+      message: `解锁${unlocked.length}个另类数据因子，总计${totalCost}U`,
+    } as AltDataUnlockResponse);
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err?.message || 'Alt data unlock failed' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
 // GET /api/factor/health — Check if framework is ready
 // ═══════════════════════════════════════════════════════════
 

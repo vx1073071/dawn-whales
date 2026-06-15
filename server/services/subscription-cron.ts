@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R144 Claw(PM) — Subscription Cron Scheduler
  * 

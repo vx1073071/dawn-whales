@@ -1,10 +1,11 @@
-// @ts-nocheck
 // ── R123-M04 SymbolLink — 全局标的可点击链接 ──────────────────────────────
 // PM: 所有面板中展示symbol的地方做成可点击链接
-// 点击 → ChartStore.setSymbol() → 全局同步
+// 点击 → ChartStore.setSymbol() + ChartContext.setSymbol() → 全局同步
+// R221: 已接入ChartContext双向同步
 
 import { useCallback, ReactNode } from 'react';
 import { useChartStore, Market } from '../store/ChartStore';
+import { useChartSync } from '../../lib/chart/ChartContextMigration';
 
 export interface SymbolLinkProps {
   symbol: string;
@@ -31,18 +32,24 @@ export function SymbolLink({
   copyOnClick = true,
   onClick,
 }: SymbolLinkProps) {
-  const setSymbol = useChartStore((s) => s.setSymbol);
-  const setMarket = useChartStore((s) => s.setMarket);
+  const setSymbolStore = useChartStore((s) => s.setSymbol);
+  const setMarketStore = useChartStore((s) => s.setMarket);
+  const { setSymbol: setSymbolCtx, setMarket: setMarketCtx } = useChartSync();
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    setSymbol(symbol);
-    if (market) setMarket(market);
+    // 双向同步: zustand store + React context
+    setSymbolStore(symbol);
+    setSymbolCtx(symbol);
+    if (market) {
+      setMarketStore(market);
+      setMarketCtx(market);
+    }
     if (copyOnClick) {
       navigator.clipboard.writeText(symbol).catch(() => {});
     }
     onClick?.(symbol);
-  }, [symbol, market, setSymbol, setMarket, copyOnClick, onClick]);
+  }, [symbol, market, setSymbolStore, setSymbolCtx, setMarketStore, setMarketCtx, copyOnClick, onClick]);
 
   const baseClass = 'cursor-pointer hover:text-[#58a6ff] transition-colors';
 
@@ -103,14 +110,19 @@ export function SymbolChip({
   market?: Market;
   className?: string;
 }) {
-  const setSymbol = useChartStore((s) => s.setSymbol);
-  const setMarket = useChartStore((s) => s.setMarket);
+  const setSymbolStore = useChartStore((s) => s.setSymbol);
+  const setMarketStore = useChartStore((s) => s.setMarket);
+  const { setSymbol: setSymbolCtx, setMarket: setMarketCtx } = useChartSync();
 
   const handleClick = useCallback(() => {
-    setSymbol(symbol);
-    if (market) setMarket(market);
+    setSymbolStore(symbol);
+    setSymbolCtx(symbol);
+    if (market) {
+      setMarketStore(market);
+      setMarketCtx(market);
+    }
     navigator.clipboard.writeText(symbol).catch(() => {});
-  }, [symbol, market, setSymbol, setMarket]);
+  }, [symbol, market, setSymbolStore, setSymbolCtx, setMarketStore, setMarketCtx]);
 
   const isUp = changePct != null && changePct >= 0;
 

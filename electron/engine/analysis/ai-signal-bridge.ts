@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R140 J03 — AI Signal Bridge
  * 

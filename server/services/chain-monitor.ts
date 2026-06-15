@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @deprecated v17.6 — Replaced by chain-monitor-v2.ts (exponential backoff, checkpoint resume, RPC failover).
  * This file is kept for reference only. Do NOT use in new code.

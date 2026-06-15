@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R137-M01 CopyTradeHub — 跟单统一入口 (Tab容器) ────────────────────────
 // PM: 统一路由+Sidebar入口, Tab切换12个子组件
 // Contains: 配置/状态/历史/通知/信号源/券商 6 tabs

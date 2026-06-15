@@ -1,8 +1,8 @@
-# TradingEasy Creator Guide v17.6
+# TradingEasy Creator Guide v17.9
 
-> **Round**: R144 | **Author**: QClaw | **Date**: 2026-06-13
-> **Status**: GUIDE — v17.6 Final
-> **Covers**: Listing, pricing, levels, revenue split, income, withdrawal
+> **Round**: R144+R210 | **Author**: QClaw/Claw | **Date**: 2026-06-15
+> **Status**: GUIDE — v17.9 Final
+> **Covers**: Listing, pricing, levels, revenue split, income, withdrawal, AI auto-review
 
 ---
 
@@ -120,16 +120,30 @@ POST /api/market/templates/create
 }
 ```
 
-### Step 3: Review
+### Step 3: AI Auto-Review
 
-Templates go through **automated review**:
-- Name: 3-50 characters
-- Description: 50-500 characters
-- Price ≥ 9.9 USDT
-- Backtest data present
-- Strategy file compiles without errors
+Templates go through **AI automated review** (1 USDT per review, non-refundable):
 
-Approval is **automatic** if all checks pass. Manual admin review only for flagged patterns.
+- **Cost**: 1 USDT per review, charged when you click "Submit for Review"
+- **Refund policy**: **No refund** — whether your strategy passes or not, the 1U is charged
+- **What you get**: 8-point checklist with **specific modification suggestions** for every failed item
+- **Re-review**: Each re-review costs 1 USDT, unlimited times
+- **Appeals**: **No appeals process** — fix the issues and re-submit
+
+**8-Point AI Review Checklist**:
+
+| # | Check | Standard | Feedback if Failed |
+|---|-------|----------|-------------------|
+| 1 | Plain-language description | Strategy name + description must be jargon-free | "Contains term XXX, suggest changing to YYY" |
+| 2 | Stop-loss rule | Must include stop-loss condition (%) | "Missing stop-loss, please add stop-loss % rule" |
+| 3 | Applicable markets | Must specify markets (🇭🇰🇺🇸🪙 etc.) | "No market specified, please choose specific markets" |
+| 4 | Invalidation check | Must include invalidation criteria | "Missing invalidation condition, add when to abandon" |
+| 5 | Factor validity | All factors must exist in 258-factor library, weights sum=100% | "Factor XXX not in library / weights sum to XX%" |
+| 6 | Parameter reasonability | Stop-loss > 0.5% / position < 100% / backtest period ≥ 1yr | "Stop-loss 0.3% too low, suggest ≥ 0.5%" |
+| 7 | Backtest robustness | Annual return > 0 / max drawdown < 50% / Sharpe > 0 | "Max drawdown XX% > 50%, strategy risk too high" |
+| 8 | No plagiarism | Cosine similarity < 90% vs existing strategies | "Similarity XX% with strategy YYY, please differentiate" |
+
+Approval is **automatic** if all 8 checks pass. If any fail, you receive specific suggestions for each failed item — fix and re-submit (1 USDT per attempt).
 
 ### Step 4: Go Live
 

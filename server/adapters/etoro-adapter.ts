@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R134 J02 — eToro Cloud Broker Adapter
  * 

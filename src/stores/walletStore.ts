@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R141-M02 WalletStore (Zustand) — 钱包状态管理 ────────────────────────
 // PM: balance/transactions/loading + IPC接口骨架
 import { create } from 'zustand';
@@ -147,7 +146,7 @@ export const useWalletStore = create<WalletStore>((set, get) => ({
         { id: 'tx5', type: 'tip_received', amount: 50, fee: 0, balanceBefore: 3991, balanceAfter: 4041, status: 'completed', description: '收到打赏 from @whale_tracker', counterparty: 'whale_tracker', createdAt: Date.now() - 1800000 },
         { id: 'tx6', type: 'withdraw', amount: -500, fee: 2, balanceBefore: 4041, balanceAfter: 3539, status: 'pending', description: '提现至 TRC-20', txHash: '0xdef456...', createdAt: Date.now() - 600000 },
       ]);
-      set({ transactions: data, loading: false });
+      set({ transactions: data as any, loading: false });
     } catch (err: any) {
       set({ error: err?.message || 'Failed to fetch transactions', loading: false });
     }

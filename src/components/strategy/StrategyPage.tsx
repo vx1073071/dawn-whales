@@ -15,7 +15,7 @@ import { ModeSelector } from './StrategyPage/ModeSelector';
 import { AICreator } from './StrategyPage/AICreator';
 import { BacktestPanel } from './StrategyPage/BacktestPanel';
 import { MetricCard } from './StrategyPage/MetricCard';
-import { EquityChart } from './StrategyPage/EquityChart';
+// import { EquityChart } // R224: not yet used from './StrategyPage/EquityChart';
 import { TemplateBrowser } from './StrategyPage/TemplateBrowser';
 import { FormCreator } from './StrategyPage/FormCreator';
 import { SliderInput } from './StrategyPage/SliderInput';

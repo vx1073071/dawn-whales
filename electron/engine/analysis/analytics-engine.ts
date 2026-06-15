@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── JVS-110: Advanced Analytics & Reporting System ──────────────────────────
 // Comprehensive analytics and reporting for portfolio performance
 

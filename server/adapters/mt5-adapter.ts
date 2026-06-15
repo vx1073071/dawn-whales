@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R134 J03 — MT5 (MetaTrader 5) Cloud Broker Adapter
  * 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R152 Claw(PM) — Symbol Quote Router
  * 

@@ -1,4 +1,4 @@
-﻿# DAWN WHALES - Dockerfile (Electron desktop app dev environment)
+# TradingEasy - Dockerfile (Electron desktop app dev environment)
 FROM node:22-slim
 
 WORKDIR /app

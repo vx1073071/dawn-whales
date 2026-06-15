@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 /**
  * src/components/broker/AggregatedPortfolio.tsx

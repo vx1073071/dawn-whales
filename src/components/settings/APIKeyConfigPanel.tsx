@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R129-M03 APIKeyConfig — API Key 配置UI ────────────────────────────────
 // @ts-nocheck — window.api contextBridge access
 // PM: 输入 + 加密传输 + 测试有效性

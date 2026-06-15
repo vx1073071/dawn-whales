@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Points Service — R108 S-34
  *
@@ -8,7 +7,7 @@
  * @module services/points-service
  */
 
-import bridge from '../lib/bridge-api';
+import * as bridgeApiRaw from '../lib/bridge-api'; const bridgeApi = bridgeApiRaw as any;
 
 export interface PointsBalance {
   available: number;
@@ -46,30 +45,30 @@ export interface FeeScheduleEntry {
 
 export const pointsService = {
   /** Get current USDT balance */
-  getBalance: () => bridge.invoke('points:balance', {}),
+  getBalance: () => (bridgeApi as any).invoke('points:balance', {}),
 
   /** Top up USDT points */
   topUp: (amount: number, txHash?: string) =>
-    bridge.invoke('points:topup', { amount, txHash }),
+    (bridgeApi as any).invoke('points:topup', { amount, txHash }),
 
   /** Withdraw USDT points */
   withdraw: (amount: number, address: string) =>
-    bridge.invoke('points:withdraw', { amount, address }),
+    (bridgeApi as any).invoke('points:withdraw', { amount, address }),
 
   /** Get transaction history */
   getHistory: (params?: { limit?: number; offset?: number }) =>
-    bridge.invoke('points:history', params || {}),
+    (bridgeApi as any).invoke('points:history', params || {}),
 
   /** Get current exchange rate (fiat → USDT) */
-  getExchangeRate: () => bridge.invoke('points:exchange-rate', {}),
+  getExchangeRate: () => (bridgeApi as any).invoke('points:exchange-rate', {}),
 
   /** Get fee schedule for all services */
-  getFeeSchedule: () => bridge.invoke('points:fee-schedule', {}),
+  getFeeSchedule: () => (bridgeApi as any).invoke('points:fee-schedule', {}),
 
   /** Calculate fee for a specific operation */
   calculateFee: (service: string, amount: number) =>
-    bridge.invoke('points:calculate-fee', { service, amount }),
+    (bridgeApi as any).invoke('points:calculate-fee', { service, amount }),
 
   /** Get settlement status */
-  getSettlementStatus: () => bridge.invoke('points:settlement', {}),
+  getSettlementStatus: () => (bridgeApi as any).invoke('points:settlement', {}),
 };

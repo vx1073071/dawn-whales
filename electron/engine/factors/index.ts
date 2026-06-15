@@ -14,6 +14,17 @@ export * from './factor-signal-pipeline';
 export * from './factor-trade-pipeline';
 export * from './factor-billing-gateway';
 
+// R186 A1: Factor→Signal→UI Pipeline Integration
+export * from './factor-signal-integration';
+// R186 A2: FactorDataProvider adapter for 🟢 entry factors
+export * from './factor-provider-adapter-r186';
+// R198 A2: Commodity family i18n (4 families × 8 languages)
+export * from './commodity-family-i18n';
+// R203 autoclaw: AI Portfolio Attribution Engine (Brinson + Factor + Residual)
+export * from './AttributionEngine';
+// R177 D3-D5 Convergence: End-to-end pipeline validation
+export * from './factor-pipeline-convergence';
+
 // ── R172 C6: Unified Factor Sorting ─────────────────────────────────────
 // Standard sort order for all factor lists/displays:
 //   1. IC value descending (higher IC = better predictive power)

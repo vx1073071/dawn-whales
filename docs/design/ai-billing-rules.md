@@ -1,8 +1,8 @@
-# TradingEasy AI Billing Rules v17.6
+# TradingEasy AI Billing Rules v17.9
 
-> **Round**: R145 | **Author**: QClaw | **Date**: 2026-06-13
-> **Status**: SPECIFICATION — v17.6 Final, Locked by Owner
-> **Covers**: Silent deduction, failure refund, 10+ AI pricing items, degradation chain, DeepSeek prompt templates
+> **Round**: R145+R184+R200 | **Author**: QClaw/Claw | **Date**: 2026-06-15
+> **Status**: SPECIFICATION — v17.9 Final, Locked by Owner
+> **Covers**: Silent deduction, failure refund, 21 AI pricing items, degradation chain, DeepSeek prompt templates, strategy execution fee (积分扣费), creator review (1U/no-refund)
 
 ---
 
@@ -36,12 +36,75 @@ All AI-powered features in TradingEasy follow a **unified pay-per-use model**: d
 | 8 | AI Strategy Backtest Review | **1 USDT** | `ai_backtest_review` | Backtest report | Future |
 | 9 | AI Risk Assessment | **1 USDT** | `ai_risk` | Portfolio data | Future |
 | 10 | AI Market Scanner | **1 USDT** | `ai_scanner` | Scanner parameters | Future |
+| 11 | Multi-Factor Backtest | **1 USDT** | `factor_multi_backtest` | Factor combo + turnover | R184 |
+| 12 | Factor Deep Diagnosis | **1 USDT** | `factor_deep_diagnosis` | IC decay + crowding | R184 |
+| 13 | AI Factor Param Optimize | **1.5 USDT** | `factor_param_optimize` | Auto-tune params | R184 |
+| 14 | Alt-Data Factor Unlock | **2 USDT** | `factor_alt_data_unlock` | On-chain/News/Satellite | R184 |
+| 15 | AI Strategy Match | **1 USDT** | `ai_strategy_match` | Portfolio + preferences | R200 |
+| 16 | AI Market State | **1 USDT** | `ai_market_state` | Bull/Bear/Range/Panic | R200 |
+| 17 | AI Daily Briefing | **1 USDT** | `ai_daily_briefing` | Top5 factors + anomaly | R201 |
+| 18 | AI Arbitrage Scan | **2 USDT** | `ai_arbitrage_scan` | AH/ADR/ETF premium | R207 |
+| 19 | AI Factor Signal Push | **0.5 USDT** | `ai_factor_signal_push` | Factor trigger + push | R201 |
+| 20 | AI Stress Test | **2 USDT** | `ai_stress_test` | Monte Carlo + scenarios | R207 |
+| 21 | AI Portfolio Attribution | **1.5 USDT** | `ai_portfolio_attribution` | Brinson + factor P&L | R207 |
+| 22 | AI Creator Strategy Review | **1 USDT** | `ai_creator_review` | 8-point auto-checklist | R210 |
 
 ### Notes
-- All prices **flat 1 USDT per use** across all features
+- All prices **flat per use** (1/1.5/2 USDT depending on feature)
 - No feature has a discount, free tier, or volume pricing
 - No bundle / package / monthly subscription for AI
-- Price locked by v17.6, requires owner approval to change
+- Factor deep services: factor itself is free (name/result/signal/IC), only deep services are paid
+- Price locked by v17.9, requires owner approval to change
+
+---
+
+## 1.5 Strategy Execution Fee (积分扣费)
+
+> **v17.8 新增**: 策略执行服务费 — 从USDT积分中扣除，非交易所真USDT
+
+交易在交易所执行（用户API Key委托），交易所收自己的手续费。我们另收"策略执行服务费"。
+
+| Asset | Execution Fee | Minimum (积分) |
+|-------|:---:|:---:|
+| Stock / ETF | 0.1% | 2 |
+| Futures (non-crypto) | 0.02% | 0.5 |
+| Options (non-crypto) | 0.04% | 1 |
+| Crypto Spot | 0.1% | 2 |
+| Crypto Futures | 0.02% | 0.5 |
+
+**Ledger category**: `execution_fee` / **Refund category**: `execution_fee_refund`
+
+```
+User triggers strategy execution → Check 积分 balance ≥ fee estimate → Freeze 积分
+  → Send order via API Key to exchange → Exchange executes
+  ├─ Filled → Deduct 积分 by actual amount → Unfreeze remainder
+  ├─ Cancelled → Unfreeze all 积分, no charge
+  ├─ Rejected → Unfreeze all 积分, no charge
+  └─ Timeout → Unfreeze all 积分, no charge
+```
+
+---
+
+## 1.6 Creator Strategy Review (1U/次, 不退费)
+
+> **v17.9 修正**: 创作者审核是特殊计费项，**不适用通用"失败退费"规则**
+
+| 规则 | 说明 |
+|------|------|
+| 价格 | **1 USDT/次** (v17.8原1.5U→v17.9降为1U) |
+| 扣费时机 | 创作者点击"提交审核"→ 立即扣1U |
+| 审核不通过 | **不退费**，给出8项逐条具体修改建议 |
+| 再次审核 | **每次1U**，不管多少次审核都是1U |
+| 申诉 | **不存在申诉**，无申诉通道 |
+| 失败退费 | 仅AI服务本身异常(超时/网络错误/模型无响应)才退费 |
+| Ledger category | `ai_creator_review` (不通过也settled, 不走refund) |
+
+```
+Creator submits strategy → Deduct 1U → AI auto-review (8-point checklist)
+  ├─ All 8 pass → Settled → Auto-list on marketplace
+  ├─ Some fail → Settled (NO refund) → Return 8-item feedback with specific fix suggestions
+  └─ AI service error (timeout/network) → Refund 1U → "审核服务异常，1U已退回"
+```
 
 ---
 
@@ -285,9 +348,23 @@ Ledger categories for AI:
   ai_backtest_review  — Backtest review
   ai_risk             — Risk assessment
   ai_scanner          — Market scanner
+  factor_multi_backtest   — Multi-factor backtest (v17.7)
+  factor_deep_diagnosis   — Factor deep diagnosis (v17.7)
+  factor_param_optimize   — AI factor param optimization (v17.7)
+  factor_alt_data_unlock  — Alt-data factor unlock (v17.7)
+  ai_strategy_match       — AI strategy match (v17.8)
+  ai_market_state         — AI market state recognition (v17.8)
+  ai_daily_briefing       — AI daily factor briefing (v17.8)
+  ai_arbitrage_scan       — AI cross-market arbitrage scan (v17.8)
+  ai_factor_signal_push   — AI factor signal push (v17.8)
+  ai_stress_test          — AI strategy stress test (v17.8)
+  ai_portfolio_attribution — AI portfolio attribution (v17.8)
+  ai_creator_review       — AI creator strategy review (v17.9, 1U/no-refund, give modification suggestions)
+  execution_fee           — Strategy execution service fee (v17.8, 积分扣费)
 
 Refund:
   ai_refund           — All AI refunds use this category
+  execution_fee_refund — Strategy execution fee refund (v17.8)
 ```
 
 ---

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R135-M02 OpenDOfflineAlert — OpenD离线提醒 (弹窗+托盘红点) ───────────
 // PM: 关闭时弹窗提醒 + 托盘红点累积未处理信号
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R153 Claw(PM) — Quote Cache + Latency Monitor
  * 

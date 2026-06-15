@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R140-M04 CopyTradeOnboarding — 首次引导教程 (4步) ────────────────────
 // PM: P2-4, 3h. 选信号源→配券商→设风控→启动跟单
 
@@ -9,7 +8,7 @@ import {
 import {
   UserOutlined, BankOutlined, SafetyCertificateOutlined,
   ThunderboltOutlined, CheckCircleOutlined, TeamOutlined,
-  SettingOutlined, PlayCircleOutlined,
+  SettingOutlined as _SettingOutlined, PlayCircleOutlined,
 } from '@ant-design/icons';
 
 // ═══════════ Steps ═══════════

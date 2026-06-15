@@ -129,7 +129,7 @@ function BrokerStatusDot({
   // Full card
   return (
     <div style={{
-      padding: '8px 10px',
+      padding: '8px 10px', borderLeft: broker.copyTradeActive ? '3px solid #d4a574' : '3px solid transparent',
       background: isOnline ? (isOpend ? '#2e2a1a' : '#1a2e1a') : isDegraded ? '#2e1a1a' : '#1a1d2e',
       border: `1px solid ${isOnline ? (isOpend ? '#f59e0b33' : '#22c55e33') : isDegraded ? '#f9731633' : '#2a2d3e'}`,
       borderRadius: 8,

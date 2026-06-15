@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R132 J02 — Fee Calculator + Stop-Loss/Take-Profit Engine
  * 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R146 J03 — AI Strategy Optimizer
  * 

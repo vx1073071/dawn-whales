@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 // ── R115 QTE-26 MarketScanner — 市场筛选器 UI ────────────────────────────
 // PM: 5预设+自定义条件面板, 1000+结果<2s, 排序/分页/导出

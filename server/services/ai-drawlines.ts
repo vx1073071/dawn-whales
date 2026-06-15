@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R145 J01 — AI Auto Drawlines Engine
  * 

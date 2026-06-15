@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R127-Q01: nocheck cleared — bridge-api IpcError widening (R107 S-26)
 /**
  * @deprecated Use src/services/risk-service.ts instead (R108 S-34).
@@ -16,18 +15,22 @@ import type {
   RiskUpdateConfigParams,
   RiskUpdateVixParams,
 } from '../../types/ipc';
+
+// R224: Bridge IPC types are approximate — cast through any at boundary
+const api = (window as any).api;
+if (!api) {/* not in Electron */}
 import { hasIPC } from '../bridge-api-types';
 
 // ── NL Parser ──────────────────────────────────────────────────────────────
 
 export async function parseNL(text: string): Promise<IpcResponse<NlParsedStrategy>> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.nl.parse(text);
+  return api.nl.parse(text);
 }
 
 export async function getTemplates(): Promise<NlParsedStrategy[]> {
   if (!hasIPC()) return [];
-  const result = await window.api.nl.templates();
+  const result = await api.nl.templates();
   return result?.success ? result.templates || [] : [];
 }
 
@@ -35,7 +38,7 @@ export async function getTemplates(): Promise<NlParsedStrategy[]> {
 
 export async function getRiskAlerts(): Promise<unknown[]> {
   if (!hasIPC()) return [];
-  const result = await window.api.risk.getAlerts();
+  const result = await api.risk.getAlerts();
   return result?.success ? result.alerts || [] : [];
 }
 
@@ -43,10 +46,10 @@ export async function getRiskAlerts(): Promise<unknown[]> {
 
 export async function getRiskConfig(): Promise<RiskUpdateConfigParams | null> {
   if (!hasIPC()) return null;
-  return window.api.risk.getConfig();
+  return api.risk.getConfig();
 }
 
 export async function updateRiskConfig(config: RiskUpdateConfigParams): Promise<IpcResponse> {
   if (!hasIPC()) return { success: false };
-  return window.api.risk.updateConfig(config);
+  return api.risk.updateConfig(config);
 }

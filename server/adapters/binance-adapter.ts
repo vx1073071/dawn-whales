@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R130 J01 — Binance Cloud Broker Adapter
  * 

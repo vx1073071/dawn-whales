@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { EngineError } from '../../electron/engine/core/engine-error';
 
@@ -103,15 +102,16 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
         if (result?.success && Array.isArray(result.quotes)) {
           setQuotes(prev => {
             const next = new Map(prev);
-            result.quotes.forEach((q: unknown) => {
-              next.set(String(q.code), {
-                code: q.code,
-                price: q.price ?? q.last,
-                bid: q.bid ?? 0,
-                ask: q.ask ?? 0,
-                change: q.change ?? 0,
-                changePct: q.changePct ?? 0,
-                volume: q.volume ?? 0,
+            result.quotes.forEach((q: Record<string, unknown>) => {
+              const r = q as any;
+              next.set(String(r.code), {
+                code: r.code,
+                price: r.price ?? r.last,
+                bid: r.bid ?? 0,
+                ask: r.ask ?? 0,
+                change: r.change ?? 0,
+                changePct: r.changePct ?? 0,
+                volume: r.volume ?? 0,
                 timestamp: Date.now(),
                 source: 'opend',
               });

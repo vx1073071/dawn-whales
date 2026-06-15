@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Risk Service — R108 S-34
  *
@@ -7,7 +6,7 @@
  * @module services/risk-service
  */
 
-import * as riskBridge from '../lib/bridge-api/risk';
+import * as riskBridgeRaw from '../lib/bridge-api/risk'; const riskBridge = riskBridgeRaw as any;
 
 export interface RiskConfig {
   maxPositionPct: number;

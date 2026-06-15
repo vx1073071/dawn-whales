@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Portfolio Optimizer - Mean-variance optimization and risk parity engine.
  * JVS-97

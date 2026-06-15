@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R137-M02 CopyTradeStore (Zustand) — 跟单统一数据层 ──────────────────
 // PM: 取代独立localStorage, 统一数据流
 import { create } from 'zustand';
@@ -255,6 +254,12 @@ interface CopyTradeStore {
   openDSignals: OpenDSignal[];
   setOpenDSignals: (signals: OpenDSignal[]) => void;
 
+  // Signal Blacklist
+  signalBlacklist: string[];
+  addToBlacklist: (providerId: string) => void;
+  removeFromBlacklist: (providerId: string) => void;
+  isBlacklisted: (providerId: string) => boolean;
+
   // Kill Switch
   killSwitch: boolean;
   setKillSwitch: (v: boolean) => void;
@@ -359,6 +364,20 @@ export const useCopyTradeStore = create<CopyTradeStore>()(
       openDSignals: [],
       setOpenDSignals: (signals) => set({ openDSignals: signals }),
 
+      // Signal Blacklist
+      signalBlacklist: [],
+      addToBlacklist: (id) =>
+        set((s) => ({
+          signalBlacklist: s.signalBlacklist.includes(id)
+            ? s.signalBlacklist
+            : [...s.signalBlacklist, id].slice(0, 50),
+        })),
+      removeFromBlacklist: (id) =>
+        set((s) => ({
+          signalBlacklist: s.signalBlacklist.filter((x) => x !== id),
+        })),
+      isBlacklisted: (id) => get().signalBlacklist.includes(id),
+
       // Kill switch
       killSwitch: false,
       setKillSwitch: (v) => set({ killSwitch: v }),
@@ -372,6 +391,7 @@ export const useCopyTradeStore = create<CopyTradeStore>()(
       partialize: (state) => ({
         config: state.config,
         following: state.following,
+        signalBlacklist: state.signalBlacklist,
         selectedBrokers: state.selectedBrokers,
         soundEnabled: state.soundEnabled,
         offlineConfig: state.offlineConfig,

@@ -1,12 +1,12 @@
-﻿version: '3.8'
+version: '3.8'
 
-# DAWN WHALES - Docker Compose Services
+# TradingEasy - Docker Compose Services
 # Used for backend microservices in Phase 3+
 
 services:
   app:
     build: .
-    container_name: dawn-whales-app
+    container_name: tradingeasy-app
     ports:
       - "3000:3000"   # Vite dev server
       - "11111:11111" # OpenD (host network)
@@ -25,7 +25,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: dawn-whales-redis
+    container_name: tradingeasy-redis
     ports:
       - "6379:6379"
     volumes:
@@ -39,7 +39,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: dawn-whales-prometheus
+    container_name: tradingeasy-prometheus
     ports:
       - "9090:9090"
     volumes:
@@ -53,14 +53,14 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: dawn-whales-grafana
+    container_name: tradingeasy-grafana
     ports:
       - "3001:3000"
     volumes:
       - grafana_data:/var/lib/grafana
       - ./deploy/grafana-dashboards:/etc/grafana/provisioning/dashboards
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=dawnwhales
+      - GF_SECURITY_ADMIN_PASSWORD=tradingeasy
       - GF_USERS_ALLOW_SIGN_UP=false
 
 volumes:

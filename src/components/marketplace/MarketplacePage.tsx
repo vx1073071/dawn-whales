@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';
@@ -54,7 +53,7 @@ export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showPublish, setShowPublish] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
-  const [myStrategies, setMyStrategies] = useState<unknown[]>([]);
+  const [myStrategies, setMyStrategies] = useState<Array<{id:string;name?:string}>>([]);
   const [marketStrategies, setMarketStrategies] = useState<MarketplaceStrategy[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -408,12 +407,12 @@ function MetricBox({ label, value, color = 'text-gray-200' }: {label: string;val
 
 // ── Publish Modal ──────────────────────────────────────────────────────────
 
-function PublishModal({ myStrategies, onClose }: {myStrategies: unknown[];onClose: () => void;}) {
+function PublishModal({ myStrategies, onClose }: {myStrategies: Array<{id:string;name?:string}>;onClose: () => void;}) {
   const [selectedId, setSelectedId] = useState<string>('');
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState('');
 
-  const selected = myStrategies.find((s) => s.id === selectedId);
+  const selected = myStrategies.find((s) => s.id === selectedId) as {id:string;name?:string} | undefined;
 
   function handlePublish() {
     if (!selected) {

@@ -1,8 +1,8 @@
-# TradingEasy Wallet Architecture v2.0
+# TradingEasy Wallet Architecture v2.1
 
-> **Round**: R141 | **Author**: QClaw | **Date**: 2026-06-13
-> **Status**: DESIGN DOCUMENT — Production Ready
-> **Covers**: 3-table design, ER diagram, indexing, 6-layer security, deposit/withdrawal flow
+> **Round**: R141→R200 | **Author**: QClaw + autoclaw | **Date**: 2026-06-16
+> **Status**: DESIGN DOCUMENT — v17.9 Production Ready
+> **Covers**: 3-table design, ER diagram, indexing, 6-layer security, deposit/withdrawal flow, ExecutionFeeEngine, CreatorReviewBilling, 23-touchpoint pipeline
 
 ---
 
@@ -15,7 +15,10 @@
 6. [Deposit/Withdrawal Flow](#6-depositwithdrawal-flow)
 7. [6-Layer Security Architecture](#7-6-layer-security-architecture)
 8. [Checksum Mechanism](#8-checksum-mechanism)
-9. [Migration Strategy](#9-migration-strategy)
+9. [ExecutionFeeEngine](#9-executionfeeengine-r200)
+10. [CreatorReviewBilling](#10-creatorreviewbilling-r200)
+11. [23-Touchpoint Billing Pipeline](#11-23-touchpoint-billing-pipeline-r200)
+12. [Migration Strategy](#12-migration-strategy)
 
 ---
 
@@ -151,7 +154,8 @@ CREATE TABLE IF NOT EXISTS ledger_entries (
   type            TEXT NOT NULL CHECK(type IN ('debit','credit')),
   category        TEXT NOT NULL CHECK(category IN (
     'deposit','withdrawal','transfer_send','transfer_receive',
-    'tip','trade_fee','ai_deduct','purchase_template','subscribe_signal',
+    'tip','trade_fee','ai_deduct','execution_fee','execution_fee_refund',
+    'ai_creator_review','purchase_template','subscribe_signal',
     'refund','platform_fee','creator_payout'
   )),
   amount_cents    INTEGER NOT NULL CHECK(amount_cents >= 0),
@@ -179,7 +183,10 @@ CREATE TABLE IF NOT EXISTS ledger_entries (
 | `transfer_receive` | credit | User→User transfer receiver |
 | `tip` | debit | Tip to creator (fee via creator tier) |
 | `trade_fee` | debit | Trading fee (5 asset classes) |
-| `ai_deduct` | debit | AI service charge (10 types) |
+| `ai_deduct` | debit | AI service charge (22 touchpoints) |
+| `execution_fee` | debit | Strategy execution service fee (5 asset classes, pre-trade) |
+| `execution_fee_refund` | credit | Execution fee refund (order cancelled/rejected/not filled) |
+| `ai_creator_review` | debit | AI creator strategy review (1U, non-refundable, gives feedback) |
 | `purchase_template` | debit | Buy strategy template |
 | `subscribe_signal` | debit | Subscribe to signal |
 | `refund` | credit | Fee refund (failed trade, failed AI) |
@@ -525,7 +532,116 @@ checksum = HMAC-SHA256(secret_key, wallet_id + "|" + user_id + "|" + balance_cen
 
 ---
 
-## 9. Migration Strategy
+## 9. ExecutionFeeEngine (R200)
+
+### Purpose
+Handles pre-trade fee deduction for 5 asset classes according to the v17.9 fee schedule.
+
+### Fee Table
+| Asset Class | Fee Rate | Min Fee (cents) | Example |
+|------------|----------|-----------------|---------|
+| Stock/ETF | 0.1% | 200 USDT cents | Buy $5,000 → 500 cents |
+| Futures | 0.02% | 50 USDT cents | Buy $10,000 → 200 cents |
+| Options | 0.04% | 100 USDT cents | Buy $5,000 → 200 cents |
+| Crypto Spot | 0.1% | 200 USDT cents | Buy $1,000 → 200 cents |
+| Crypto Perp | 0.02% | 50 USDT cents | Buy $10,000 → 200 cents |
+
+### Flow
+```
+User clicks "Execute Strategy"
+  → estimateFee(assetClass, orderValue) → compute fee = MAX(value * rate, minFee)
+  → checkBalance(userId, fee) → if insufficient: reject "余额不足"
+  → holdFee(userId, fee, idempotencyKey) → freeze USDT cents
+  → submitOrderToExchange(apiKey, order)
+  ┌─ filled → settleFee(userId, actualValue, idempotencyKey) → charge = actualValue * rate
+  ├─ cancelled → refundFee(userId, idempotencyKey, 'cancelled')
+  ├─ rejected → refundFee(userId, idempotencyKey, 'rejected')
+  └─ timeout → refundFee(userId, idempotencyKey, 'timeout')
+```
+
+### Key invariants
+- Fee is calculated from USDT cents (INTEGER), never float
+- Idempotency key = SHA256("execution_fee|" + orderId + "|" + userId)
+- Refund is always full (never partial) for cancelled/rejected/timeout
+- Settlement uses actual fill value (not estimated), capped at hold amount
+
+---
+
+## 10. CreatorReviewBilling (R200)
+
+### Purpose
+Handles AI creator strategy review billing with special non-refundable logic.
+
+### Rules (v17.9)
+| Rule | Value |
+|------|-------|
+| Fee per review | **1U** (100 USDT cents) |
+| Refund on fail | **No** — never refunded, even if AI fails |
+| Feedback provided | **Yes** — 8-item checklist feedback returned on every review |
+| Unlimited submissions | **Yes** — user can submit unlimited times at 1U each |
+| Appeal channel | **None** — no appeal mechanism exists |
+
+### Flow
+```
+Creator submits strategy for review
+  → deductAiCreatorReview(userId, 100_cents, idempotencyKey)
+  → RUN AI REVIEW (8 checks: 人话描述/止损/市场/失效/因子有效/参数/回测/抄袭)
+  → ALWAYS return 8-item feedback (pass or fail)
+  → If pass: auto-publish to marketplace
+  → If fail: return specific suggestions for each failed check
+  → NEVER refund — refundWindowHours=0 enforced at DB level
+```
+
+### Why non-refundable
+AI review uses compute resources regardless of pass/fail. The 1U covers the AI inference cost. 
+Giving detailed feedback for every failed check provides value even without approval.
+
+### Idempotency
+Key = SHA256("ai_creator_review|" + strategyId + "|" + userId)
+
+---
+
+## 11. 23-Touchpoint Billing Pipeline (R200)
+
+All 23 billing touchpoints flow through `factor-billing-gateway.ts`:
+
+| # | Touchpoint | Category | Cost (U) | Refund |
+|---|-----------|----------|----------|--------|
+| 1 | AI_CHART_PATTERN | ai_deduct | 1.0 | Yes |
+| 2 | AI_CONVERSATION | ai_deduct | 1.0 | Yes |
+| 3 | AI_PARAM_FILL | ai_deduct | 1.0 | Yes |
+| 4 | AI_STRATEGY_COMBO | ai_deduct | 2.0 | Yes |
+| 5 | AI_BACKTEST_READ | ai_deduct | 1.0 | Yes |
+| 6 | AI_STRATEGY_OPTIMIZE | ai_deduct | 1.5 | Yes |
+| 7 | AI_HEALTH_CHECK | ai_deduct | 1.0 | Yes |
+| 8 | AI_STRATEGY_MATCH | ai_deduct | 1.0 | Yes |
+| 9 | AI_MARKET_STATE | ai_deduct | 1.0 | Yes |
+| 10 | AI_DAILY_BRIEFING | ai_deduct | 1.0 | Yes |
+| 11 | AI_ARBITRAGE_SCAN | ai_deduct | 2.0 | Yes |
+| 12 | AI_SIGNAL_PUSH | ai_deduct | 0.5 | Yes |
+| 13 | AI_STRESS_TEST | ai_deduct | 2.0 | Yes |
+| 14 | AI_ATTRIBUTION | ai_deduct | 1.5 | Yes |
+| 15 | AI_CREATOR_REVIEW | ai_creator_review | 1.0 | **No** |
+| 16 | TA_STANDARD | ai_deduct | 1.0 | Yes |
+| 17 | TA_ADVANCED | ai_deduct | 1.5 | Yes |
+| 18 | TA_FLAGSHIP | ai_deduct | 2.0 | Yes |
+| 19 | FACTOR_MULTI_BACKTEST | ai_deduct | 1.0 | Yes |
+| 20 | FACTOR_DEEP_DIAGNOSIS | ai_deduct | 1.0 | Yes |
+| 21 | FACTOR_PARAM_OPTIMIZE | ai_deduct | 1.5 | Yes |
+| 22 | FACTOR_ALT_DATA_UNLOCK | ai_deduct | 2.0 | Yes |
+| 23 | STRATEGY_EXECUTION | execution_fee | variable | Yes* |
+
+*Execution fees refunded only on cancel/reject/timeout, never on filled orders.
+
+### Pipeline invariants
+1. hold → settle → (never hold without settlement)
+2. HOLD_TIMEOUT = 1h (auto-refund expired holds)
+3. All entries go through idempotency check before processing
+4. audit_billing_entries table records every attempt/settle/refund
+
+---
+
+## 12. Migration Strategy
 
 ### migration-v2.ts (R141)
 
@@ -563,7 +679,8 @@ export function runMigrationV2(): void {
         type TEXT NOT NULL CHECK(type IN ('debit','credit')),
         category TEXT NOT NULL CHECK(category IN (
           'deposit','withdrawal','transfer_send','transfer_receive',
-          'tip','trade_fee','ai_deduct','purchase_template','subscribe_signal',
+          'tip','trade_fee','ai_deduct','execution_fee','execution_fee_refund',
+          'ai_creator_review','purchase_template','subscribe_signal',
           'refund','platform_fee','creator_payout'
         )),
         amount_cents INTEGER NOT NULL CHECK(amount_cents >= 0),
@@ -617,3 +734,19 @@ Not supported. Wallet data is financial — never delete, never rollback.
 ---
 
 > **Next**: See `docs/api/billing-api.md` for API endpoint definitions.
+
+---
+
+## v17.9 Changelog (R200)
+
+| Change | Details |
+|--------|---------|
+| **3 new EntryType categories** | `execution_fee`, `execution_fee_refund`, `ai_creator_review` added to ledger_entries.category CHECK constraint |
+| **ExecutionFeeEngine** | Pre-trade fee deduction for 5 asset classes. Flow: estimate → hold → submit → settle/refund. Fee rates per fee-schedule.md v17.9 |
+| **CreatorReviewBilling** | 1U/次, non-refundable, 8-item checklist feedback on every review. refundWindowHours=0 enforced at DB level |
+| **23-Touchpoint pipeline** | All 23 billing touchpoints (#1-#23) documented in factor-billing-gateway.ts with full hold→settle→refund flow |
+| **audit_billing_entries** | Every billing attempt/settle/refund recorded to audit table for reconciliation |
+| **HOLD_TIMEOUT** | 1h auto-refund for expired holds (prevents fund lock-up) |
+| **SECRET_KEY hardening** | WALLET_CHECKSUM_SECRET moved to env variable (v17.6 hardcoded fallback removed) |
+
+> **Compliance**: All changes validated against `docs/reference/fee-schedule.md` v17.9. Any deviation is a bug.

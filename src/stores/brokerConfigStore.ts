@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TradingEasy R156 Claw(PM) — Shared Broker Config Store
  * 

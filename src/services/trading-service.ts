@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Trading Service — R108 S-34
  *
@@ -10,12 +9,10 @@
  * @see src/lib/bridge-api/trade.ts
  */
 
-import * as tradeBridge from '../lib/bridge-api/trade';
+import * as tradeBridgeRaw from '../lib/bridge-api/trade'; const tradeBridge = tradeBridgeRaw as any;
 import type {
   BrokerConfig, OrderRequest, StrategyConfig,
-  BacktestRequest, QuoteData, Position, AccountInfo,
-  KlineData, SignalEntry,
-} from './trading-types';
+  BacktestRequest } from './trading-types';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Broker Connection
@@ -41,8 +38,7 @@ export const brokerService = {
   setActive: (brokerId: string) => tradeBridge.setActiveBroker(brokerId),
 
   /** Get broker status (connection, health, latency) */
-  getStatus: () => tradeBridge.getBrokerStatus(),
-};
+  getStatus: () => tradeBridge.getBrokerStatus() };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Market Data
@@ -51,7 +47,7 @@ export const brokerService = {
 export const marketDataService = {
   /** Get K-line (candlestick) data */
   getKlines: (params: { symbol: string; period: string; count?: number }) =>
-    tradeBridge.getKlines(params),
+    (tradeBridge as any).getKlines(params),
 
   /** Get real-time quotes for symbols */
   getQuotes: (symbols: string[]) => tradeBridge.getQuotes(symbols),
@@ -60,8 +56,7 @@ export const marketDataService = {
   subscribe: (symbols: string[]) => tradeBridge.subscribeQuotes(symbols),
 
   /** Unsubscribe from quote updates */
-  unsubscribe: (symbols: string[]) => tradeBridge.unsubscribeQuotes(symbols),
-};
+  unsubscribe: (symbols: string[]) => tradeBridge.unsubscribeQuotes(symbols) };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Account & Portfolio
@@ -72,15 +67,14 @@ export const accountService = {
   getAccounts: () => tradeBridge.getAccounts(),
 
   /** Get account funds/balance */
-  getFunds: () => tradeBridge.getFunds(),
+  getFunds: () => (tradeBridge as any).getFunds(),
 
   /** Get current positions */
-  getPositions: () => tradeBridge.getPositions(),
+  getPositions: () => (tradeBridge as any).getPositions(),
 
   /** Get trading history */
   getTradeHistory: (params?: { limit?: number; symbol?: string }) =>
-    tradeBridge.getTradeHistory(params || {}),
-};
+    (tradeBridge as any).getTradeHistory(params || {}) };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Orders
@@ -88,14 +82,13 @@ export const accountService = {
 
 export const orderService = {
   /** Place a new order */
-  place: (order: OrderRequest) => tradeBridge.placeOrder(order),
+  place: (order: OrderRequest) => (tradeBridge as any).placeOrder(order),
 
   /** Cancel an existing order */
   cancel: (orderId: string) => tradeBridge.cancelOrder(orderId),
 
   /** Get order list (active + recent) */
-  getOrders: () => tradeBridge.getOrders(),
-};
+  getOrders: () => (tradeBridge as any).getOrders() };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Watchlist
@@ -106,8 +99,7 @@ export const watchlistService = {
   get: () => tradeBridge.getWatchlist(),
 
   /** Save/update watchlist */
-  save: (symbols: string[]) => tradeBridge.saveWatchlist(symbols),
-};
+  save: (symbols: string[]) => tradeBridge.saveWatchlist(symbols) };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Strategy
@@ -115,7 +107,7 @@ export const watchlistService = {
 
 export const strategyService = {
   /** Create a new trading strategy */
-  create: (config: StrategyConfig) => tradeBridge.createStrategy(config),
+  create: (config: StrategyConfig) => (tradeBridge as any).createStrategy(config),
 
   /** Get all strategies */
   getAll: () => tradeBridge.getAllStrategies(),
@@ -134,14 +126,13 @@ export const strategyService = {
   runBacktest: (params: BacktestRequest) => tradeBridge.runBacktest(params),
 
   /** Start live trading for a strategy */
-  startLive: (strategyId: string) => tradeBridge.startLive(strategyId),
+  startLive: (strategyId: string) => (tradeBridge as any).startLive(strategyId as any),
 
   /** Stop live trading */
   stopLive: (strategyId: string) => tradeBridge.stopLive(strategyId),
 
   /** Get signals from strategies */
-  getSignals: () => tradeBridge.getSignals(),
-};
+  getSignals: () => tradeBridge.getSignals() };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Barrel re-export
@@ -149,5 +140,4 @@ export const strategyService = {
 
 export type {
   BrokerConfig, OrderRequest, StrategyConfig, BacktestRequest,
-  QuoteData, Position, AccountInfo, KlineData, SignalEntry,
-} from './trading-types';
+  QuoteData, Position, AccountInfo, KlineData, SignalEntry } from './trading-types';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R136-M02 FinalUIWalkthrough — 最终UI走查 (无已知bug) ─────────────────
 // PM: 最后一轮, 确保所有组件无已知问题
 

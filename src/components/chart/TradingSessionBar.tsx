@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TradingEasy R125 J02 — Trading Session Indicator
  * 

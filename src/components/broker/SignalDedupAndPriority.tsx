@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R140-M02 SignalDedupPanel + R140-M03 SignalPriorityVisual ────────────
 // PM: P2-2(1h)跨券商去重 + P2-3(1h)优先级视觉
 

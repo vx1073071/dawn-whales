@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R134-M01 BrokerPanoramicPanel — 15家券商全景状态面板 ─────────────────
 // PM: 所有15家券商一目了然的卡片阵列
 

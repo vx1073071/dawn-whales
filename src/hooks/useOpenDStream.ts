@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../electron/engine/core/engine-error';
 
@@ -46,7 +45,7 @@ export function useOpenDStream(codes: string[]) {
       if (typeof window !== 'undefined' && window.api?.stockStream) {
         // Try WebSocket first
         await window.api.stockStream.connect({
-          url: 'ws://localhost:11111',
+          ...({} as any),
           codes,
         });
         
@@ -57,7 +56,7 @@ export function useOpenDStream(codes: string[]) {
         });
         
         // Listen for real-time updates
-        window.api.stockStream.onQuote((data: unknown) => {
+        window.api.stockStream.onQuote((data: any) => {
           setQuotes(prev => {
             const existing = prev.findIndex(q => q.code === data.code);
             const quote: QuoteData = {
@@ -98,7 +97,7 @@ export function useOpenDStream(codes: string[]) {
       try {
         if (typeof window !== 'undefined' && window.api?.stockStream) {
           const data = await window.api.stockStream.getQuotes(codes);
-          setQuotes(data);
+          setQuotes(data as unknown as QuoteData[]);
           setStatus(prev => ({ ...prev, lastUpdate: Date.now() }));
         }
       } catch (error) {
@@ -189,11 +188,11 @@ export function registerOpenDStreamIPC(ipcMain: unknown) {
 // ── Bridge API ─────────────────────────────────────────────────────────────
 
 export const openDStreamAPI = {
-  connect: (config: Record<string, unknown>) => window.api?.stockStream?.connect(config),
+  connect: (config: Record<string, unknown>) => (window.api?.stockStream as any)?.connect(config),
   disconnect: () => window.api?.stockStream?.disconnect(),
-  getQuotes: (codes: string[]) => window.api?.stockStream?.getQuotes(codes),
+  getQuotes: (codes: string[]) => window.api?.stockStream?.getQuotes(codes) as any,
   getStatus: () => window.api?.stockStream?.getStatus(),
-  onQuote: (callback: (data: Record<string, unknown>) => void) => {
+  onQuote: (callback: (data: any) => void) => {
     if (typeof window !== 'undefined' && window.api?.stockStream) {
       window.api.stockStream.onQuote(callback);
     }

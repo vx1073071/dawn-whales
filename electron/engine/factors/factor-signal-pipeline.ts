@@ -210,17 +210,51 @@ export class FactorSignalPipeline extends EventEmitter {
     return { ok: true };
   }
 
+  // ── R178 G27: Daily charge tracking ──────────────────────────────────
+
+  private dailyCharges: Map<string, { date: string; total: number }> = new Map();
+  private static readonly DAILY_CHARGE_CAP_USDT = 100;
+
+  /** Generate a short-lived billing token (5-min conceptual expiry). */
+  private generateBillingToken(userId: string): string {
+    return `bt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  }
+
+  /** Check and update daily charge cap. Returns false if cap exceeded. */
+  private checkDailyCap(userId: string, amount: number): boolean {
+    const today = new Date().toISOString().split('T')[0];
+    const record = this.dailyCharges.get(userId);
+    if (record) {
+      if (record.date !== today) { record.date = today; record.total = amount; return true; }
+      if (record.total + amount > FactorSignalPipeline.DAILY_CHARGE_CAP_USDT) {
+        log.warn(`[SignalPipeline] Daily cap: user total=${record.total}+${amount}>${FactorSignalPipeline.DAILY_CHARGE_CAP_USDT}`);
+        return false;
+      }
+      record.total += amount;
+      return true;
+    }
+    this.dailyCharges.set(userId, { date: today, total: amount });
+    return true;
+  }
+
   /**
-   * Charge for a signal.
+   * Charge for a signal. R178 G27: temp token + daily cap.
    */
   private async chargeSignal(signal: FactorSignal, userId: string): Promise<{ ok: boolean; charged?: number }> {
     const billing = SIGNAL_BILLING[signal.type];
     if (!billing.billable) return { ok: true };
 
+    // Daily cap check
+    if (!this.checkDailyCap(userId, billing.costUSDT)) {
+      signal.billingStatus = 'refunded';
+      return { ok: false };
+    }
+
     signal.billingStatus = 'held';
 
     if (this.chargeCallback) {
-      const result = await this.chargeCallback(userId, billing.costUSDT, `signal:${signal.signalId}`);
+      const billingToken = this.generateBillingToken(userId);
+      const result = await this.chargeCallback(billingToken, billing.costUSDT, `signal:${signal.signalId}`);
       if (result.ok) {
         signal.billingStatus = 'settled';
         this.emit(FactorSignalPipeline.EVENTS.SIGNAL_BILLED, { signal, txId: result.txId });
@@ -326,10 +360,21 @@ export class FactorSignalPipeline extends EventEmitter {
     return [...this.strategies.values()].sort((a, b) => b.generatedAt - a.generatedAt);
   }
 
+  /** Get daily charge summary for a user (R178 G27). */
+  getDailyChargeSummary(userId: string): { date: string; total: number; remaining: number } {
+    const today = new Date().toISOString().split('T')[0];
+    const record = this.dailyCharges.get(userId);
+    if (!record || record.date !== today) {
+      return { date: today, total: 0, remaining: FactorSignalPipeline.DAILY_CHARGE_CAP_USDT };
+    }
+    return { date: record.date, total: record.total, remaining: Math.max(0, FactorSignalPipeline.DAILY_CHARGE_CAP_USDT - record.total) };
+  }
+
   /** Reset pipeline state */
   reset(): void {
     this.signals.clear();
     this.strategies.clear();
+    this.dailyCharges.clear();
     this.removeAllListeners();
     log.info('[SignalPipeline] Reset');
   }

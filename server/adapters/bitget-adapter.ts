@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R131 J02 — Bitget Cloud Broker Adapter
  * 

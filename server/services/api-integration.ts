@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R148 J01 — Full Backend Integration
  * 

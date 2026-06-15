@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R127-Q01: nocheck cleared
 /**
  * TradingEasy R125 J02 — Price Localization Utilities
@@ -81,7 +80,7 @@ export function formatLocaleCompact(
   const suffixes = SUFFIX_MAP[locale] || null;
 
   if (suffixes) {
-    for (const { divisor, suffix } of suffixes) {
+    for (const { divisor, suffix } of (suffixes as any)) {
       if (Math.abs(value) >= divisor) {
         return (value / divisor).toFixed(decimals) + suffix;
       }

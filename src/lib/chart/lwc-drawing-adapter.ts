@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R127-Q01: nocheck cleared — R113 Part 2 (DrawingTools) will fix lwc 4.2.3 types
 // TradingEasy R113 - lightweight-charts Drawing Adapter
 // Bridges DrawingTools with lightweight-charts 4.2.3 ISeriesPrimitive API

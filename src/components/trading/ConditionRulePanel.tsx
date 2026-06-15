@@ -83,6 +83,11 @@ function RuleCard({ rule, onDelete, onToggle, onViewHistory
           <div className="text-gray-300 text-xs font-mono">{desc}</div>
           <div className="text-gray-500 text-xs mt-1">
             cooldown {rule.cooldownMs}ms · max {rule.maxTriggersPerDay}/day
+            {rule.expiryDate && (
+              <span className={`ml-2 ${new Date(rule.expiryDate) < new Date() ? 'text-red-400' : 'text-yellow-400'}`}>
+                · {i18n.t('ConditionRulePanel.k3')}: {new Date(rule.expiryDate).toLocaleDateString()} ({rule.expiryAction ?? 'disable'})
+              </span>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2 ml-3">
@@ -158,6 +163,8 @@ function CreateRuleForm({ onSubmit, onCancel
   const [reference, setReference] = useState<PriceCondition['reference']>('close');
   const [cooldownMs, setCooldownMs] = useState('5000');
   const [maxTriggers, setMaxTriggers] = useState('10');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [expiryAction, setExpiryAction] = useState<'disable' | 'delete' | 'alert'>('disable');
 
   const handleSubmit = () => {
     if (!symbol.trim() || !targetPrice) return;
@@ -167,7 +174,8 @@ function CreateRuleForm({ onSubmit, onCancel
       strategyId: '',
       cooldownMs: parseInt(cooldownMs) || 5000,
       maxTriggersPerDay: parseInt(maxTriggers) || 10,
-      enabled: true
+      enabled: true,
+      ...(expiryDate ? { expiryDate, expiryAction } : {}),
     });
   };
 
@@ -239,6 +247,29 @@ function CreateRuleForm({ onSubmit, onCancel
             type="number"
             className="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-[#C9A046] focus:outline-none" />
           
+        </div>
+      </div>
+
+      {/* R224 F6: Conditional order expiry */}
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k6')}</label>
+          <input
+            value={expiryDate}
+            onChange={(e) => setExpiryDate(e.target.value)}
+            type="date"
+            className="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-[#d4a574] focus:outline-none" />
+        </div>
+        <div>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k7')}</label>
+          <select
+            value={expiryAction}
+            onChange={(e) => setExpiryAction(e.target.value as 'disable' | 'delete' | 'alert')}
+            className="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-[#d4a574] focus:outline-none">
+            <option value="disable">{i18n.t('ConditionRulePanel.k8')}</option>
+            <option value="alert">{i18n.t('ConditionRulePanel.k9')}</option>
+            <option value="delete">{i18n.t('ConditionRulePanel.k10')}</option>
+          </select>
         </div>
       </div>
 

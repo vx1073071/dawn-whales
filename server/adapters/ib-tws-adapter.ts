@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R133 J01 — Interactive Brokers TWS Cloud Adapter
  * 

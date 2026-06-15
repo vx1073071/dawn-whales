@@ -88,3 +88,23 @@ export * from './unlock-calendar';
 export * from './websocket-performance-monitor';
 export * from './ws-market-data';
 export * from './ws-trade-bridge';
+
+// R208 autoclaw #3: Binance WebSocket real-time adapter
+export * from './BinanceRealtimeAdapter';
+
+// R209 autoclaw #3: Dragon-Tiger Ranking Pipeline (3-tier funnel)
+export * from './RankingPipeline';
+
+// R210 autoclaw #3+#4: FollowTrade + BlindBox pipelines
+export * from './FollowTradePipeline';
+export * from './BlindBoxToTradePipeline';
+
+// R211 autoclaw #4+#5: Creator review + Fee validation
+export * from './CreatorReviewPipeline';
+export * from './FeeValidationEngine';
+
+// R212 autoclaw #3: Full-chain integration validator
+export * from './FullChainValidator';
+
+// R213 autoclaw #3: Grayscale release manager
+export * from './GrayReleaseManager';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Market Service — R108 S-34
  *
@@ -8,7 +7,7 @@
  * @module services/market-service
  */
 
-import * as dataBridge from '../lib/bridge-api/data';
+import * as dataBridgeRaw from '../lib/bridge-api/data'; const dataBridge = dataBridgeRaw as any;
 
 export const marketService = {
   // ── Fundamental Analysis ─────────────────────────────────────────────

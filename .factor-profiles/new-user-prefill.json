@@ -1,0 +1,23 @@
+{
+  "userId": "new-user-prefill",
+  "createdAt": 1781456640701,
+  "updatedAt": 1781456640701,
+  "totalRecommendations": 0,
+  "totalSessions": 0,
+  "factorUsage": [],
+  "topFactors": [],
+  "preferredMarkets": [],
+  "stylePreference": {
+    "dominant": "balanced",
+    "secondary": "momentum",
+    "confidence": 0,
+    "momentumScore": 0,
+    "valueScore": 0,
+    "qualityScore": 0,
+    "growthScore": 0,
+    "defensiveScore": 0,
+    "cryptoScore": 0
+  },
+  "recentIntents": [],
+  "icWatchlist": []
+}

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R137-M03 localStorageMigration — dw:ct:统一前缀+版本号 ───────────────
 // PM: 迁移旧localStorage key到新dw:ct:{namespace}格式+版本管理
 

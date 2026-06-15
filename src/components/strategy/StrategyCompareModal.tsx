@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R126-Q01: nocheck cleared — cleared
 'use client';
 import { useState, useRef } from 'react';

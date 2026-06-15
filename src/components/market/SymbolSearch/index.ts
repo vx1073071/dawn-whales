@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TradingEasy R157 Claw(PM) — SymbolSearch Index
  * 

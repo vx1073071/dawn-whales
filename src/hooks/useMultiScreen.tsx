@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R126-M05 MultiScreen + Responsive — 多屏分离 + 响应式布局 ──────────
 // PM: P2-10 — detach模式下独立窗口, 平板/小屏适配
 

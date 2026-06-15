@@ -18,6 +18,7 @@ const SHORTCUTS: Record<string, { view?: string; action?: () => void; label: str
 export function useKeyboardShortcuts() {
   const setView = useAppStore((s) => s.setView);
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
+  const emergencyStop = useAppStore((s) => s.emergencyStop);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -25,6 +26,39 @@ export function useKeyboardShortcuts() {
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       if ((e.target as HTMLElement)?.isContentEditable) return;
+
+      // R224: ESC — close modals/popups, return to main view
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        // Close any open modal via body class
+        const modals = document.querySelectorAll('[role="dialog"], .modal-overlay');
+        if (modals.length > 0) {
+          // Dispatch global close event for any modal component to listen
+          window.dispatchEvent(new CustomEvent('dw:close-all-modals'));
+          return;
+        }
+        setView('market' as any);
+        return;
+      }
+
+      // R224: Space — toggle play/pause for live data / chart streaming
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('dw:toggle-playback'));
+        return;
+      }
+
+      // R224: ← → — step backward/forward in time (backtest / replay navigation)
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('dw:step-backward'));
+        return;
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('dw:step-forward'));
+        return;
+      }
 
       // Ctrl/Cmd shortcuts
       if (e.ctrlKey || e.metaKey) {
@@ -40,6 +74,10 @@ export function useKeyboardShortcuts() {
           case 'k':
             e.preventDefault();
             setView('market' as any);
+            break;
+          case 'e':
+            e.preventDefault();
+            emergencyStop();
             break;
         }
         return;
@@ -59,7 +97,7 @@ export function useKeyboardShortcuts() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setView, toggleSidebar]);
+  }, [setView, toggleSidebar, emergencyStop]);
 }
 
 // Export shortcut map for help dialog
@@ -67,6 +105,7 @@ export const SHORTCUT_MAP = {
   'Ctrl+B': i18n.t('useKeyboardShortcuts.k10'),
   'Ctrl+N': i18n.t('useKeyboardShortcuts.k11'),
   'Ctrl+K': i18n.t('useKeyboardShortcuts.k12'),
+  'Ctrl+E': i18n.t('useKeyboardShortcuts.k23'),
   '1': i18n.t('useKeyboardShortcuts.k13'),
   '2': i18n.t('useKeyboardShortcuts.k14'),
   '3': i18n.t('useKeyboardShortcuts.k15'),
@@ -77,4 +116,7 @@ export const SHORTCUT_MAP = {
   '8': i18n.t('useKeyboardShortcuts.k20'),
   '9': i18n.t('useKeyboardShortcuts.k21'),
   'Esc': i18n.t('useKeyboardShortcuts.k22'),
+  'Space': i18n.t('useKeyboardShortcuts.k24'),
+  '←': i18n.t('useKeyboardShortcuts.k25'),
+  '→': i18n.t('useKeyboardShortcuts.k26'),
 };

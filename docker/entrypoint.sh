@@ -1,11 +1,11 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════
-# DAWN WHALES v2.1.0 — Docker Entrypoint
+# TradingEasy v2.1.0 — Docker Entrypoint
 # ═══════════════════════════════════════════════════════════════════
 
 set -e
 
-echo "=== Dawn Whales v2.1.0 Starting ==="
+echo "=== TradingEasy v2.1.0 Starting ==="
 echo "NODE_ENV=${NODE_ENV:-production}"
 echo "PORT=${PORT:-4096}"
 echo ""
@@ -30,7 +30,7 @@ echo "[3/3] WebSocket push service ready via /ws endpoint"
 trap 'echo "Shutting down..."; kill $SERVER_PID $NGINX_PID 2>/dev/null; exit 0' SIGTERM SIGINT
 
 echo ""
-echo "=== Dawn Whales v2.1.0 Ready ==="
+echo "=== TradingEasy v2.1.0 Ready ==="
 echo "Frontend: http://localhost:3000"
 echo "API:      http://localhost:${PORT:-4096}/api"
 echo "Health:   http://localhost:${PORT:-4096}/api/health"

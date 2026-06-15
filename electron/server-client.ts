@@ -9,7 +9,7 @@ import { EventEmitter } from 'events';
 export type ServerStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 
 export interface ServerConfig {
-  url: string;          // e.g. 'https://api.dawnwhales.com'
+  url: string;          // e.g. 'https://api.tradingeasy.com'
   apiKey: string;       // AES-256-GCM encrypted on wire
   jwtToken?: string;    // JWT from server after auth
   refreshToken?: string;

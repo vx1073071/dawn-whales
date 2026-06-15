@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R143 Claw(PM) — Tip Engine (打赏等级抽成引擎)
  * 

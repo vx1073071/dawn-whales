@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── TradingEasy — EquityChart () ───────────────────────────────────
 // strategy/policy/ + 
 

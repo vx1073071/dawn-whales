@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R131 J04 — Signal Queue Engine
  * 

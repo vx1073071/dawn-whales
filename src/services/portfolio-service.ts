@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Portfolio Service — R108 S-34
  *
@@ -7,8 +6,8 @@
  * @module services/portfolio-service
  */
 
-import * as tradeBridge from '../lib/bridge-api/trade';
-import * as appBridge from '../lib/bridge-api/app';
+import * as tradeBridgeRaw from '../lib/bridge-api/trade'; const tradeBridge = tradeBridgeRaw as any;
+import * as appBridgeRaw from '../lib/bridge-api/app'; const appBridge = appBridgeRaw as any;
 import type { StrategyConfig, BacktestRequest } from './trading-types';
 
 // ═══════════════════════════════════════════════════════════════════════════

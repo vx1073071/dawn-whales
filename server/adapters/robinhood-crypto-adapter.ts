@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R131 J03 — Robinhood Crypto Adapter
  * 

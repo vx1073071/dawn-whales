@@ -1,10 +1,10 @@
 #!/bin/bash
 # Initialize 14 agent workspaces from main repository
-# Run this from the dawn-whales directory
+# Run this from the tradingeasy directory
 
 set -e
 
-MAIN_REPO="$HOME/.easyclaw/workspace/dawn-whales"
+MAIN_REPO="$HOME/.easyclaw/workspace/tradingeasy"
 WORKSPACE_ROOT="$HOME/.easyclaw/workspace"
 AGENTS=(
   agent-market agent-account agent-history

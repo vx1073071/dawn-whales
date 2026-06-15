@@ -13,7 +13,7 @@ import { EngineError } from '../../../electron/engine/core/engine-error';
 type MetricType = 'cpu' | 'memory' | 'latency' | 'qps';
 type AlertSeverity = 'critical' | 'warning' | 'info';
 type AlertType = 'threshold' | 'anomaly' | 'degradation' | 'recovery';
-type TimeRange = '1h' | '1d' | '7d';
+type TimeRange = '1h' | '1d' | '7d' | '30d' | 'custom';
 type TrendDirection = 'up' | 'down' | 'stable';
 
 interface MetricValue {
@@ -707,6 +707,9 @@ export default function PerformanceMonitorPanel({
   );
   const [alerts, setAlerts] = useState<PerformanceAlert[]>([]);
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('1h');
+  const [customStart, setCustomStart] = useState<number>(Date.now() - 3600000);
+  const [customEnd, setCustomEnd] = useState<number>(Date.now());
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
   const [selectedComparisonMetric, setSelectedComparisonMetric] =
     useState<MetricType>('cpu');
   const [alertFilterType, setAlertFilterType] = useState<AlertType | 'all'>(
@@ -916,8 +919,10 @@ export default function PerformanceMonitorPanel({
       '1h': 3600000,
       '1d': 86400000,
       '7d': 604800000,
+      '30d': 2592000000,
+      'custom': customEnd - customStart,
     };
-    const cutoff = now - rangeMs[selectedTimeRange];
+    const cutoff = selectedTimeRange === 'custom' ? customStart : now - rangeMs[selectedTimeRange];
     filtered = filtered.filter((a) => a.timestamp >= cutoff);
     return filtered.sort((a, b) => b.timestamp - a.timestamp);
   }, [alerts, alertFilterType, selectedTimeRange]);
@@ -927,8 +932,10 @@ export default function PerformanceMonitorPanel({
       '1h': 3600000,
       '1d': 86400000,
       '7d': 604800000,
+      '30d': 2592000000,
+      'custom': customEnd - customStart,
     };
-    const cutoff = Date.now() - rangeMs[selectedTimeRange];
+    const cutoff = selectedTimeRange === 'custom' ? customStart : Date.now() - rangeMs[selectedTimeRange];
     const result: Record<MetricType, TrendPoint[]> = { cpu: [], memory: [], latency: [], qps: [] };
     (Object.keys(metrics) as MetricType[]).forEach((key) => {
       result[key] = metrics[key]
@@ -984,20 +991,58 @@ export default function PerformanceMonitorPanel({
 
           {/* Time range selector */}
           <div className="flex bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-            {(['1h', '1d', '7d'] as TimeRange[]).map((range) => (
+            {(['1h', '1d', '7d', '30d', 'custom'] as TimeRange[]).map((range) => (
               <button
                 key={range}
-                onClick={() => setSelectedTimeRange(range)}
+                onClick={() => {
+                  setSelectedTimeRange(range);
+                  if (range === 'custom') setShowCustomPicker(true);
+                }}
                 className={`px-4 py-2 text-sm font-medium transition-all ${
                   selectedTimeRange === range
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
               >
-                {range}
+                {range === 'custom' ? '📅' : range}
               </button>
             ))}
           </div>
+
+          {/* Custom date range picker */}
+          {showCustomPicker && selectedTimeRange === 'custom' && (
+            <div className="ml-3 flex items-center gap-3 bg-gray-800 rounded-lg border border-gray-700 px-4 py-2">
+              <label className="text-xs text-gray-400">From</label>
+              <input
+                type="datetime-local"
+                value={new Date(customStart).toISOString().slice(0, 16)}
+                onChange={(e) => {
+                  const v = new Date(e.target.value).getTime();
+                  if (v < customEnd) setCustomStart(v);
+                }}
+                className="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs text-white"
+                max={new Date(customEnd).toISOString().slice(0, 16)}
+              />
+              <label className="text-xs text-gray-400">To</label>
+              <input
+                type="datetime-local"
+                value={new Date(customEnd).toISOString().slice(0, 16)}
+                onChange={(e) => {
+                  const v = new Date(e.target.value).getTime();
+                  if (v > customStart) setCustomEnd(v);
+                }}
+                className="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs text-white"
+                min={new Date(customStart).toISOString().slice(0, 16)}
+              />
+              <button
+                onClick={() => setShowCustomPicker(false)}
+                className="text-gray-400 hover:text-white text-xs px-2"
+                title="Close custom picker"
+              >
+                ✕
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

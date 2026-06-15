@@ -1,0 +1,2096 @@
+{
+  "_metadata": {
+    "generated": "2026-06-15T02:07:05.923Z",
+    "factorCount": 298,
+    "version": "v3.3.0",
+    "lang": "ko"
+  },
+  "factors": {
+    "MOM_12M": {
+      "name": "12月动量",
+      "level": "L1",
+      "category": "动量",
+      "region": "global",
+      "oneLine": "过去12个月涨幅越大，动量越强，趋势延续概率更高"
+    },
+    "MOM_1M": {
+      "name": "1月动量",
+      "level": "L1",
+      "category": "动量",
+      "region": "global",
+      "oneLine": "最近1个月涨幅，极端值可能预示短期反转"
+    },
+    "LIQ": {
+      "name": "流动性",
+      "level": "L1",
+      "category": "波动率",
+      "region": "global",
+      "oneLine": "日均换手率，流动性越高交易成本越低"
+    },
+    "VOL_60D": {
+      "name": "60日波动率",
+      "level": "L1",
+      "category": "波动率",
+      "region": "global",
+      "oneLine": "60天年化波动率，高波动=高风险=高收益潜力"
+    },
+    "GROWTH": {
+      "name": "成长性",
+      "level": "L2",
+      "category": "成长",
+      "region": "global",
+      "oneLine": "营收和盈利3年复合增长率，成长股的核心指标"
+    },
+    "QUAL": {
+      "name": "质量",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "高ROE、低负债、低应计项目的综合质量评分"
+    },
+    "SIZE": {
+      "name": "规模(SMB)",
+      "level": "L1",
+      "category": "规模",
+      "region": "global",
+      "oneLine": "市值对数，小盘股长期超额收益但波动更高"
+    },
+    "YIELD": {
+      "name": "股息率",
+      "level": "L1",
+      "category": "收益",
+      "region": "global",
+      "oneLine": "过去12个月每股股息/当前股价，高股息=价值锚"
+    },
+    "HML": {
+      "name": "价值(HML)",
+      "level": "L1",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "市净率倒数，低估值股票长期跑赢高估值"
+    },
+    "RMW": {
+      "name": "盈利能力(RMW)",
+      "level": "L2",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "营业利润/账面权益，利润率高=护城河宽"
+    },
+    "CMA": {
+      "name": "投资风格(CMA)",
+      "level": "L3",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "总资产变化率，低投资扩张=保守=长期溢价"
+    },
+    "MA_20_60": {
+      "name": "均线交叉(20/60)",
+      "level": "L1",
+      "category": "趋势",
+      "region": "global",
+      "oneLine": "MA20上穿MA60=金叉看涨；下穿=死叉看跌"
+    },
+    "EMA_12_26": {
+      "name": "MACD",
+      "level": "L1",
+      "category": "趋势",
+      "region": "global",
+      "oneLine": "MACD柱状图转正=动能增强，转负=动能减弱"
+    },
+    "RSI_14": {
+      "name": "RSI(14)",
+      "level": "L1",
+      "category": "动量",
+      "region": "global",
+      "oneLine": "RSI<30超卖(反弹机会)>，RSI>70超买(回调风险)"
+    },
+    "KDJ": {
+      "name": "KDJ随机指标",
+      "level": "L2",
+      "category": "动量",
+      "region": "global",
+      "oneLine": "K线上穿D线=金叉看涨；J值>100超买、<0超卖"
+    },
+    "BOLL": {
+      "name": "布林带%B",
+      "level": "L2",
+      "category": "波动率",
+      "region": "global",
+      "oneLine": "价格在布林带的位置：上轨附近=压力，下轨附近=支撑"
+    },
+    "ATR_14": {
+      "name": "ATR(14)",
+      "level": "L2",
+      "category": "波动率",
+      "region": "global",
+      "oneLine": "14日平均真实波幅，用于止损设置和仓位计算"
+    },
+    "ADX": {
+      "name": "ADX趋势强度",
+      "level": "L2",
+      "category": "趋势",
+      "region": "global",
+      "oneLine": "ADX>25=趋势市场(宜追涨)，ADX<20=震荡市场(宜高抛低吸)"
+    },
+    "OBV": {
+      "name": "能量潮(OBV)",
+      "level": "L2",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "价升量增=上涨真实，价升量缩=上涨乏力"
+    },
+    "CMF": {
+      "name": "蔡金资金流",
+      "level": "L2",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "21日资金流向：正值=资金净流入(看涨)，负值=净流出(看跌)"
+    },
+    "ICHIMOKU": {
+      "name": "一目均衡云",
+      "level": "L3",
+      "category": "趋势",
+      "region": "global",
+      "oneLine": "价格在云上方=牛市，云下方=熊市，云内=震荡"
+    },
+    "HKEX_SOUTHBOUND": {
+      "name": "南向资金",
+      "level": "L1",
+      "category": "情绪",
+      "region": "hk",
+      "oneLine": "内地资金通过港股通净买入港股的金额，越多越看涨"
+    },
+    "HKEX_CBCS_PREMIUM": {
+      "name": "牛熊证溢价",
+      "level": "L3",
+      "category": "价值",
+      "region": "hk",
+      "oneLine": "牛熊证价格与内在价值的偏离，溢价越高越贵"
+    },
+    "HKEX_WARRANT_IV": {
+      "name": "窝轮隐含波动率",
+      "level": "L3",
+      "category": "波动率",
+      "region": "hk",
+      "oneLine": "窝轮IV与历史波动率的差值，正=贵、负=便宜"
+    },
+    "HKEX_FUND_HOLD": {
+      "name": "基金持仓",
+      "level": "L2",
+      "category": "质量",
+      "region": "hk",
+      "oneLine": "前10大基金持仓重叠度，机构越多越受认可"
+    },
+    "US_VIX": {
+      "name": "VIX恐慌指数",
+      "level": "L1",
+      "category": "宏观",
+      "region": "us",
+      "oneLine": "VIX>30=极度恐慌(可能见底)，VIX<15=过度乐观(警惕回调)"
+    },
+    "US_SHORT_RATIO": {
+      "name": "空头持仓",
+      "level": "L2",
+      "category": "情绪",
+      "region": "us",
+      "oneLine": "空头持仓天数>5=可能轧空(逼空)，<2=看空情绪弱"
+    },
+    "US_INST_HOLD": {
+      "name": "机构持仓变化",
+      "level": "L2",
+      "category": "情绪",
+      "region": "us",
+      "oneLine": "13F报告机构持仓环比变化，增持=看涨信号"
+    },
+    "US_BUYBACK": {
+      "name": "回购收益率",
+      "level": "L2",
+      "category": "收益",
+      "region": "us",
+      "oneLine": "净回购/市值，回购越多股东回报越高"
+    },
+    "OPTION_PCR": {
+      "name": "看跌/看涨比率",
+      "level": "L2",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "Put/Call持仓比>1=市场看空(逆势看涨)，<0.7=过度看多(警惕)"
+    },
+    "SECTOR_ROTATION": {
+      "name": "行业轮动",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "行业3/6/12月动量排名，前3行业=市场主线"
+    },
+    "FX_EXPOSURE": {
+      "name": "汇率暴露",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "非本地货币收入占比×汇率变动，本币贬值利好出口型企业"
+    },
+    "CRYPTO_FUNDING": {
+      "name": "资金费率",
+      "level": "L1",
+      "category": "情绪",
+      "region": "crypto",
+      "oneLine": "永续合约资金费率，极端正=多头拥挤(看跌)，极端负=空头拥挤(看涨)"
+    },
+    "CRYPTO_OI_DELTA": {
+      "name": "持仓量变化",
+      "level": "L2",
+      "category": "情绪",
+      "region": "crypto",
+      "oneLine": "24h持仓变化：价格涨+OI涨=趋势确认；价格涨+OI跌=趋势减弱"
+    },
+    "CRYPTO_EXCHANGE_FLOW": {
+      "name": "交易所净流量",
+      "level": "L1",
+      "category": "情绪",
+      "region": "crypto",
+      "oneLine": "链上BTC/ETH流入交易所=抛压，流出交易所=囤币看涨"
+    },
+    "CRYPTO_ORDERBOOK_IMB": {
+      "name": "订单簿不平衡",
+      "level": "L3",
+      "category": "波动率",
+      "region": "crypto",
+      "oneLine": "买卖盘2%深度比，>0.55看涨、<0.45看跌"
+    },
+    "CRYPTO_VOL_RATIO": {
+      "name": "波动率比值",
+      "level": "L2",
+      "category": "波动率",
+      "region": "crypto",
+      "oneLine": "7日/30日波动率比，>1.5=变盘突破，<0.7=压缩蓄力"
+    },
+    "CRYPTO_VOLUME_PROFILE": {
+      "name": "成交量分布POC",
+      "level": "L2",
+      "category": "趋势",
+      "region": "crypto",
+      "oneLine": "价格与最大成交量节点(POC)的相对位置，突破POC=方向确认"
+    },
+    "CRYPTO_BTC_CORR": {
+      "name": "BTC相关性",
+      "level": "L2",
+      "category": "宏观",
+      "region": "crypto",
+      "oneLine": "30日滚动与BTC相关系数，>0.85=BTC影子，<0.3=独立行情"
+    },
+    "CRYPTO_NVT": {
+      "name": "NVT比率",
+      "level": "L2",
+      "category": "价值",
+      "region": "crypto",
+      "oneLine": "加密货币的\"市盈率\"：市值/链上交易量，高=高估泡沫"
+    },
+    "CRYPTO_ACTIVE_ADDR": {
+      "name": "活跃地址数",
+      "level": "L2",
+      "category": "成长",
+      "region": "crypto",
+      "oneLine": "日活地址30日均线/90日均线，增长=网络效应增强"
+    },
+    "CRYPTO_LIQUIDATIONS": {
+      "name": "爆仓热度",
+      "level": "L3",
+      "category": "波动率",
+      "region": "crypto",
+      "oneLine": "4h爆仓量/OI，极端爆仓=恐慌抛售底+后续反弹"
+    },
+    "EARNINGS_YIELD": {
+      "name": "盈利收益率",
+      "level": "L1",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "E/P市盈率倒数，越高越便宜，巴菲特选股第一关"
+    },
+    "BOOK_TO_PRICE": {
+      "name": "市净率倒数",
+      "level": "L1",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "B/P净资产/股价，越高越便宜，<1可考虑但需辨\"破净\"原因"
+    },
+    "DIVIDEND_YIELD": {
+      "name": "股息率",
+      "level": "L1",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "年分红/股价，收息族最爱，但需防\"假高息\"(股价崩盘导致的虚高)"
+    },
+    "ROA": {
+      "name": "总资产收益率",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "净利润/总资产，衡量\"每100元资产能赚多少\"，>5%=高效"
+    },
+    "GROSS_MARGIN": {
+      "name": "毛利率",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "(收入-成本)/收入，毛利率>40%=强定价权，<15%=价格战泥潭"
+    },
+    "DEBT_TO_EQUITY": {
+      "name": "负债权益比",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "总负债/净资产，<1=保守财务，>3=高杠杆高风险"
+    },
+    "BETA": {
+      "name": "市场贝塔",
+      "level": "L1",
+      "category": "低波动",
+      "region": "global",
+      "oneLine": "Beta<1=比大盘稳，Beta>1=放大盘波动，防御型选低Beta"
+    },
+    "MAX_DRAWDOWN_1Y": {
+      "name": "1年最大回撤",
+      "level": "L1",
+      "category": "低波动",
+      "region": "global",
+      "oneLine": "最近1年从最高点跌到最低点的最大跌幅，<15%=稳健"
+    },
+    "INSIDER_BUYING": {
+      "name": "内部人增持",
+      "level": "L1",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "高管/大股东自掏腰包买入，真金白银的看涨信号"
+    },
+    "FUND_FLOW": {
+      "name": "资金流量",
+      "level": "L1",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "大单资金净流入/流出，持续流入=机构在买"
+    },
+    "ETF_FLOW": {
+      "name": "ETF资金净流入",
+      "level": "L1",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "板块/风格ETF资金流，流入=看好该板块，流出=撤退信号"
+    },
+    "EARNINGS_SURPRISE": {
+      "name": "业绩超预期",
+      "level": "L1",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "实际EPS vs 分析师一致预期，(实际-预期)/预期，正=超预期"
+    },
+    "DIVIDEND_CHANGE": {
+      "name": "股息变化",
+      "level": "L1",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "最近股息调整方向，增加=管理层信心，削减=警示信号"
+    },
+    "SECTOR_STRENGTH": {
+      "name": "行业强度",
+      "level": "L1",
+      "category": "行业",
+      "region": "global",
+      "oneLine": "个股所在行业相对大盘的强弱，行业强=顺风，行业弱=逆风"
+    },
+    "IV_RANK": {
+      "name": "隐含波动率排名",
+      "level": "L1",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "当前IV在1年中的百分位，>70=IV偏高(适合卖期权)，<30=IV偏低(适合买期权)"
+    },
+    "CURRENCY_EFFECT": {
+      "name": "汇率效应",
+      "level": "L1",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "外币收入公司受汇率影响，本币贬值=利好出口，本币升值=利好进口"
+    },
+    "FREE_CASH_FLOW_YIELD": {
+      "name": "自由现金流收益率",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "FCF/市值，比PE更诚实(不易操纵)，>5%=现金牛"
+    },
+    "EQUITY_MULTIPLIER": {
+      "name": "权益乘数",
+      "level": "L1",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "总资产/净资产，杠杆的温度计，<2=保守，>5=高杠杆"
+    },
+    "DISPOSITION_EFFECT": {
+      "name": "处置效应",
+      "level": "L1",
+      "category": "行为金融",
+      "region": "global",
+      "oneLine": "浮盈卖出/浮亏持有比例，高处置效应=大量浮盈被锁，可能压制上涨"
+    },
+    "ANCHORING": {
+      "name": "锚定效应",
+      "level": "L1",
+      "category": "行为金融",
+      "region": "global",
+      "oneLine": "价格偏离52周高低点的\"锚\"，接近高点=关注回调，远离高点=可能反弹"
+    },
+    "HK_AH_PREMIUM": {
+      "name": "AH溢价",
+      "level": "L1",
+      "category": "价值",
+      "region": "hk",
+      "oneLine": "A股相对H股溢价率，>130=H股便宜，<110=A股便宜"
+    },
+    "AH_PREMIUM_CHANGE": {
+      "name": "AH溢价变动",
+      "level": "L1",
+      "category": "价值",
+      "region": "hk",
+      "oneLine": "AH溢价的20日变动，收窄=H股补涨可能，扩大=H股可能承压"
+    },
+    "SOUTHBOUND_FLOW": {
+      "name": "南向资金流",
+      "level": "L1",
+      "category": "情绪",
+      "region": "hk",
+      "oneLine": "港股通净买入金额，流入=内地资金看好港股"
+    },
+    "HSI_CONSTITUENT": {
+      "name": "恒指成分股",
+      "level": "L1",
+      "category": "质量",
+      "region": "hk",
+      "oneLine": "是否恒生指数成分股，成分股=流动性好+基本面优良"
+    },
+    "HK_REIT_YIELD": {
+      "name": "港股REIT收益率",
+      "level": "L1",
+      "category": "价值",
+      "region": "hk",
+      "oneLine": "REIT分派率/10年国债收益率，>1.5=高息吸引，港人收租最爱"
+    },
+    "US_EARNINGS_CALENDAR": {
+      "name": "美股财报日历",
+      "level": "L1",
+      "category": "事件",
+      "region": "us",
+      "oneLine": "距离下次财报天数+财报季节奏，财报前=波动加大，财报后=漂移期"
+    },
+    "US_SECTOR_ROTATION": {
+      "name": "美股板块轮动",
+      "level": "L1",
+      "category": "宏观",
+      "region": "us",
+      "oneLine": "标普11大板块动量排名，Top3板块=当前主线"
+    },
+    "US_SMALL_CAP_MOMENTUM": {
+      "name": "小盘股动能",
+      "level": "L1",
+      "category": "趋势",
+      "region": "us",
+      "oneLine": "罗素2000 vs 标普500相对强弱，跑赢=小盘风格占优"
+    },
+    "US_DIVIDEND_ARISTOCRATS": {
+      "name": "股息贵族",
+      "level": "L1",
+      "category": "价值",
+      "region": "us",
+      "oneLine": "连续25年+提高分红=股息贵族，稳定性的代名词"
+    },
+    "US_SP500_EQUAL_WEIGHT": {
+      "name": "标普等权vs加权",
+      "level": "L1",
+      "category": "趋势",
+      "region": "us",
+      "oneLine": "等权指数跑赢加权=市场广度好(健康)，跑输=巨头独舞(不健康)"
+    },
+    "CRYPTO_MVRV": {
+      "name": "MVRV比率",
+      "level": "L1",
+      "category": "价值",
+      "region": "crypto",
+      "oneLine": "市值/实现市值，>3.7=过热高估，<1=低估(矿工亏钱)"
+    },
+    "CRYPTO_S2F": {
+      "name": "Stock-to-Flow",
+      "level": "L1",
+      "category": "价值",
+      "region": "crypto",
+      "oneLine": "存量/年产量，BTC减半后S2F翻倍=稀缺性上升"
+    },
+    "CRYPTO_HASH_RATE": {
+      "name": "哈希率变化",
+      "level": "L1",
+      "category": "成长",
+      "region": "crypto",
+      "oneLine": "算力30日变化率，增长=网络安全增强+矿工信心足"
+    },
+    "XM_MKTCAP_EXPOSURE": {
+      "name": "市值因子暴露",
+      "level": "L1",
+      "category": "因子暴露",
+      "region": "global",
+      "oneLine": "大小盘风格暴露度，正=偏大盘，负=偏小盘"
+    },
+    "XM_LIQUIDITY": {
+      "name": "跨市场流动性",
+      "level": "L1",
+      "category": "流动性",
+      "region": "global",
+      "oneLine": "换手率+买卖价差综合评分，高=容易进出"
+    },
+    "XM_DIVIDEND_ARAMA": {
+      "name": "跨市场股息套利",
+      "level": "L1",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "跨市场上市分红净收益差异(考虑税率)，正=有套利空间"
+    },
+    "SALES_TO_PRICE": {
+      "name": "市销率",
+      "level": "L2",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "每1元市值背后有多少营收支撑——收入维度的便宜/贵判断"
+    },
+    "CASHFLOW_YIELD": {
+      "name": "现金流收益率",
+      "level": "L2",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "真金白银的收益率——经营现金流/市值，比PE更难造假"
+    },
+    "PEG_RATIO": {
+      "name": "PEG增长率",
+      "level": "L2",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "为成长付费是否合理——PE÷盈利增长率，PEG<1=不贵"
+    },
+    "ROIC": {
+      "name": "投入资本回报率",
+      "level": "L2",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "每投入1元资本能赚多少钱——ROIC>WACC才是真正创造价值"
+    },
+    "ASSET_TURNOVER": {
+      "name": "资产周转率",
+      "level": "L2",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "资产利用效率——同样的资产，谁能卖出更多货"
+    },
+    "PIOTROSKI_F": {
+      "name": "皮氏F评分",
+      "level": "L2",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "9道财务体检——Piotroski F-Score，0-9分全科体检"
+    },
+    "IDIO_VOL": {
+      "name": "特质波动率",
+      "level": "L2",
+      "category": "低波",
+      "region": "global",
+      "oneLine": "剥离大盘/行业影响后股票的自身波动——纯\"自身脾气\""
+    },
+    "DOWNSIDE_VOL": {
+      "name": "下行波动率",
+      "level": "L2",
+      "category": "低波",
+      "region": "global",
+      "oneLine": "只看亏钱时的波动——下跌日/月的标准差，失眠率指标"
+    },
+    "ANALYST_REVISION": {
+      "name": "分析师修正动量",
+      "level": "L2",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "分析师最近在调高还是调低预期——预期变化比预期绝对值更重要"
+    },
+    "SHORT_INTEREST": {
+      "name": "做空比例",
+      "level": "L2",
+      "category": "情绪",
+      "region": "us",
+      "oneLine": "被做空的流通股比例——极端值是反向信号"
+    },
+    "INFLATION_BETA": {
+      "name": "通胀敏感度",
+      "level": "L2",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "这家公司在通胀面前是涨价受益还是成本受害者"
+    },
+    "RATE_SENSITIVITY": {
+      "name": "利率敏感度",
+      "level": "L2",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "加息/降息对这只股票的影响有多大——久期思维"
+    },
+    "THEME_AI": {
+      "name": "AI主题相关度",
+      "level": "L2",
+      "category": "主题",
+      "region": "global",
+      "oneLine": "这家公司与AI浪潮有多相关——从卖铲子到用铲子的全景扫描"
+    },
+    "THEME_GREEN": {
+      "name": "绿色能源相关度",
+      "level": "L2",
+      "category": "主题",
+      "region": "global",
+      "oneLine": "与碳中和/清洁能源/ESG转型的相关程度"
+    },
+    "THEME_CONSUMPTION": {
+      "name": "消费升级相关度",
+      "level": "L2",
+      "category": "主题",
+      "region": "global",
+      "oneLine": "受益于消费升级/服务消费/品牌化的程度"
+    },
+    "IV_SKEW": {
+      "name": "波动率偏斜",
+      "level": "L2",
+      "category": "期权",
+      "region": "us",
+      "oneLine": "虚值Put比虚值Call贵多少——市场在给黑天鹅定价"
+    },
+    "IV_RANK_ADVANCED": {
+      "name": "进阶波动率百分位",
+      "level": "L2",
+      "category": "期权",
+      "region": "us",
+      "oneLine": "当前IV在过去2年的百分位——比IV绝对值和IV_Rank更精细"
+    },
+    "PUT_CALL_RATIO": {
+      "name": "进阶认沽/认购比",
+      "level": "L2",
+      "category": "期权",
+      "region": "us",
+      "oneLine": "进阶PCR分析——区分散户vs机构、方向vs对冲交易"
+    },
+    "EARNINGS_ESTIMATE": {
+      "name": "盈利预测趋势",
+      "level": "L2",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "分析师对未来盈利的共识方向——预测曲线是上翘还是下弯"
+    },
+    "PRE_EARNINGS_IV": {
+      "name": "财报前IV飙升",
+      "level": "L2",
+      "category": "事件",
+      "region": "us",
+      "oneLine": "财报发布前的隐含波动率飙升幅度——不确定性定价"
+    },
+    "FREE_CASH_FLOW": {
+      "name": "自由现金流",
+      "level": "L2",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "经营性现金流减去资本开支——公司真正\"落袋\"的钱"
+    },
+    "OPERATING_MARGIN": {
+      "name": "营业利润率",
+      "level": "L2",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "剥离利息/税费/非经常项目后——主业到底赚不赚钱"
+    },
+    "NET_MARGIN_STABILITY": {
+      "name": "净利率稳定性",
+      "level": "L2",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "净利率的波动是不是总在坐过山车——盈利可预测性"
+    },
+    "SALES_GROWTH_CONSISTENCY": {
+      "name": "营收增长一致性",
+      "level": "L2",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "营收是不是每个季度都在稳步增长——不要大年小年交替"
+    },
+    "INVENTORY_TURNOVER": {
+      "name": "存货周转率",
+      "level": "L2",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "货在仓库里待了多久——存货转得越快，钱回得越快"
+    },
+    "HK_CBBC_RATIO": {
+      "name": "牛熊证比例",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "牛证/熊证成交比——散户多空情绪的最直接指标"
+    },
+    "HK_WARRANT_TURNOVER": {
+      "name": "窝轮成交热度",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "窝轮(权证)市场活跃度——杠杆资金参与度的温度计"
+    },
+    "HK_CBBC_DISTANCE": {
+      "name": "牛熊证街货距离",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "最大牛证/熊证街货价与现价的距离——\"对手盘\"在哪里"
+    },
+    "HK_SHORT_SELL_RATIO": {
+      "name": "沽空比例",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "港交所每日披露的沽空成交占比——聪明钱在做空吗"
+    },
+    "HK_HSCEI_PREMIUM": {
+      "name": "H股指数溢价",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "国企指数期货的升贴水——\"聪明钱\"对中资股的定价"
+    },
+    "HK_ETF_FLOW": {
+      "name": "港股ETF资金流",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "追踪港股ETF(如2800盈富/2828国指ETF)的资金净流入"
+    },
+    "HK_DIV_TAX_ADV": {
+      "name": "港股股息税优势",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "通过港股通持有vs直接持有H股的股息税率差——\"税率套利\"空间"
+    },
+    "HK_BOARD_ROTATION": {
+      "name": "港股板块轮动",
+      "level": "L2",
+      "category": "港股",
+      "region": "hk",
+      "oneLine": "港股11大板块的相对强弱轮动——今天钱在哪个板块"
+    },
+    "US_EARNINGS_REVISION": {
+      "name": "美股盈利上修率",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "标普500成分股中被分析师上调盈利预测的比例——\"财报季\"先行指标"
+    },
+    "US_REVENUE_SURPRISE": {
+      "name": "美股营收超预期比",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "实际营收超出分析师预期的公司比例——\"真增长\"vs\"会计魔术\""
+    },
+    "US_OI_PUT_CALL": {
+      "name": "美股未平仓PCR",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "未平仓Put/Call比率——\"大资金\"的保险仓位"
+    },
+    "US_VOLUME_PCR": {
+      "name": "美股成交量PCR",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "当天Put/Call成交量比——\"散户恐慌/贪婪\"读数"
+    },
+    "US_IV_RANK_ADV": {
+      "name": "美股进阶IV百分位",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "标普500 VIX/个股IV在历史中处于什么位置"
+    },
+    "US_13F_FLOW": {
+      "name": "美股13F持仓变动",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "大型机构(管理>$1亿)的季度持仓变化——\"跟着聪明钱\""
+    },
+    "US_BUYBACK_YIELD": {
+      "name": "美股回购收益率",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "回购金额/市值——公司在用自己的真金白银说\"我们被低估了\""
+    },
+    "US_SHORT_FLOAT": {
+      "name": "美股做空流通比",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "做空股数/流通股数——轧空潜力量化"
+    },
+    "US_RETAIL_FLOW": {
+      "name": "美股散户资金流",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "Robinhood/Reddit散户的买卖方向——\"反向指标之王\""
+    },
+    "US_MEME_STOCK": {
+      "name": "Meme股热度",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "社交媒体(WallStreetBets等)讨论热度+做空比——\"群众运动\"量化"
+    },
+    "US_SECTOR_ETF_FLOW": {
+      "name": "美股行业ETF资金流",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "11大行业ETF(XLK/XLV/XLE等)的净流入——\"行业轮动的真金白银\""
+    },
+    "US_SEASONALITY": {
+      "name": "美股季节性",
+      "level": "L2",
+      "category": "美股",
+      "region": "us",
+      "oneLine": "当前月份的历史胜率——\"5月卖股走人\"是否成立"
+    },
+    "CRYPTO_SOPR": {
+      "name": "花费产出利润率",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "链上已花费UTXO的\"卖出价/买入价\"——持币者平均盈亏"
+    },
+    "CRYPTO_HASHRATE_CHANGE": {
+      "name": "算力变化率",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "比特币全网算力30日变化——矿工在用矿机投票"
+    },
+    "CRYPTO_L2_TVL": {
+      "name": "L2总锁仓量",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "以太坊L2(Arbitrum/Optimism/Base等)的总锁仓价值变化"
+    },
+    "CRYPTO_USDT_PREMIUM": {
+      "name": "USDT溢价率",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "USDT场外/OTC价格 vs 1美元的偏离——\"法币入金热度\""
+    },
+    "CRYPTO_SOCIAL_VOLUME": {
+      "name": "社交热度",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "Twitter/Discord/Telegram上该币种的讨论量变化——\"市场关注度\""
+    },
+    "CRYPTO_WHALE_MOVEMENT": {
+      "name": "巨鲸动向",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "持有>1000 BTC的地址数量变化——\"大玩家\"在增持还是减持"
+    },
+    "CRYPTO_PERP_PREMIUM": {
+      "name": "永续合约溢价",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "永续合约价格-现货价格的百分比——\"杠杆资金\"的集体方向"
+    },
+    "CRYPTO_OI_QUADRANT": {
+      "name": "持仓量四象限",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "价格涨跌×持仓量增减→四象限判方向——\"量价配合\"升级版"
+    },
+    "CRYPTO_GAS_TREND": {
+      "name": "Gas费趋势",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "以太坊链上Gas费的7日均值变化——\"链上活动\"的温度计"
+    },
+    "CRYPTO_BTC_DOM_CHANGE": {
+      "name": "山寨季指标",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "BTC市值占比的30日变化——\"山寨币季节\"是否来临"
+    },
+    "CRYPTO_PERP_BASIS": {
+      "name": "合约基差",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "季度交割合约与现货的价差——\"机构套利\"的利润空间"
+    },
+    "CRYPTO_TAKER_RATIO": {
+      "name": "Taker买卖比",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "主动买入成交量/主动卖出成交量——\"谁在主动吃单\""
+    },
+    "CRYPTO_DEV_ACTIVITY": {
+      "name": "开发者活跃度",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "GitHub代码提交/开发者数/Star数——\"这个项目还有人在做吗\""
+    },
+    "CRYPTO_INFLATION_RATE": {
+      "name": "加密货币通胀率",
+      "level": "L2",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "代币的年化增发率——\"你的份额在被稀释吗\""
+    },
+    "EBITDA_EV": {
+      "name": "EBITDA/EV",
+      "level": "L3",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "企业价值倍数——排除资本结构和折旧干扰的\"清洁版PE\""
+    },
+    "GRAHAM_NET": {
+      "name": "Graham净净值",
+      "level": "L3",
+      "category": "价值",
+      "region": "global",
+      "oneLine": "(流动资产-总负债)/市值，<1=市值低于清算价值——Graham的\"烟蒂股\"筛子"
+    },
+    "ACCRUALS": {
+      "name": "应计利润质量",
+      "level": "L3",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "(净利润-经营现金流)/总资产——利润中的\"水分\"探测器"
+    },
+    "DEBT_MATURITY": {
+      "name": "债务期限结构",
+      "level": "L3",
+      "category": "质量",
+      "region": "global",
+      "oneLine": "短期债/总债务——\"明年要还多少钱\"，高比例=再融资风险"
+    },
+    "BAB": {
+      "name": "低Beta套利",
+      "level": "L3",
+      "category": "低波",
+      "region": "global",
+      "oneLine": "Betting Against Beta——借低Beta加杠杆跑赢高Beta，Frazzini-Pedersen 2014"
+    },
+    "TAIL_RISK": {
+      "name": "尾部风险",
+      "level": "L3",
+      "category": "低波",
+      "region": "global",
+      "oneLine": "用Option-Implied和Historical双路径计算崩盘概率——\"黑天鹅\"量化器"
+    },
+    "SHORT_SQUEEZE": {
+      "name": "轧空风险概率",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "综合空头占比+借券成本+价格动量——\"下一个GME会是谁\""
+    },
+    "SHORT_CROWDING": {
+      "name": "空头拥挤度",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "空头在单票的\"拥挤指数\"——人多的地方不去(空头踩踏风险)"
+    },
+    "FACTOR_CROWDING": {
+      "name": "因子拥挤度",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "5/6维度测拥挤：做多集中度+估值偏离+相关性+资金流+波动+换手——\"这个策略是否到了人满为患的时刻\""
+    },
+    "GDP_BETA": {
+      "name": "GDP敏感度",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "个股收益对GDP增长的Beta——经济好就涨的\"顺周期\"vs经济差也稳的\"防御型\""
+    },
+    "VOLATILITY_REGIME": {
+      "name": "波动率区间",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "用HMM隐马尔可夫模型识别高波/低波区间——当前该用趋势策略还是反转策略"
+    },
+    "CROSS_ASSET_CORR": {
+      "name": "跨资产相关性",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "股/债/商品/汇率的交叉相关性——\"分散化还有效吗\""
+    },
+    "GAMMA_EXPOSURE": {
+      "name": "Gamma暴露",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "做市商Gamma对冲的\"弹簧效应\"——正Gamma稳定市场，负Gamma放大波动"
+    },
+    "IMPLIED_CORRELATION": {
+      "name": "隐含相关性",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "从指数期权vs成分股期权反推出的\"市场认为个股会一起动吗\""
+    },
+    "IV_TERM_STRUCT": {
+      "name": "波动率期限结构",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "短期IV vs 长期IV的斜率——前端恐慌溢价 vs 远期SPX\"风险面\""
+    },
+    "VRP": {
+      "name": "波动率风险溢价",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "(隐含波动率-实际波动率)——期权卖方长期赚的\"风险补偿\"有多少"
+    },
+    "OPTION_FLOW": {
+      "name": "期权资金流",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "异常大单期权成交——\"聪明钱在买Call还是Put\""
+    },
+    "PINCH_RISK": {
+      "name": "Pin风险",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "到期日股价接近最大OI行权价——\"Gamma炸弹\"警告"
+    },
+    "OPTION_SKEW": {
+      "name": "期权偏度",
+      "level": "L3",
+      "category": "期权",
+      "region": "global",
+      "oneLine": "25 Delta Put IV - 25 Delta Call IV——\"聪明钱给崩盘保险付了多少溢价\""
+    },
+    "INDEX_REBALANCE": {
+      "name": "指数再平衡效应",
+      "level": "L3",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "纳入/调出指数前的\"被动资金踩踏\"——提前布局指数调整"
+    },
+    "BOND_SPREAD": {
+      "name": "信用利差",
+      "level": "L3",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "公司债收益率-国债收益率——市场在给你\"打分\""
+    },
+    "BUYBACK_YIELD_ADV": {
+      "name": "进阶回购收益率",
+      "level": "L3",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "净回购收益率×(1-管理层减持比例)——\"回购是真回购还是掩护出货\""
+    },
+    "PAIRS_SPREAD": {
+      "name": "配对价差",
+      "level": "L3",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "两只高度相关股票的价差——\"统计套利的氧气\""
+    },
+    "CROSS_MARKET_DISCOUNT": {
+      "name": "跨市场折价",
+      "level": "L3",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "同一底层资产在不同市场的价差——AH/H+ADR/交叉挂牌的\"跨市场套利\""
+    },
+    "FIXED_INCOME_CARRY": {
+      "name": "固定收益套利",
+      "level": "L3",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "债券/利率的期限套利——借短投长的\"carry\"收益"
+    },
+    "CAPEX_INTENSITY": {
+      "name": "资本支出强度",
+      "level": "L3",
+      "category": "财务",
+      "region": "global",
+      "oneLine": "资本支出/折旧——\"公司在投资未来还是吃老本\""
+    },
+    "ALTMAN_Z": {
+      "name": "Altman Z-Score",
+      "level": "L3",
+      "category": "财务",
+      "region": "global",
+      "oneLine": "5因子破产预测模型——\"这家公司3年内会破产吗\""
+    },
+    "APP_DOWNLOADS": {
+      "name": "应用下载量",
+      "level": "L3",
+      "category": "另类数据",
+      "region": "global",
+      "oneLine": "App Store+Google Play下载量变化——\"财报前就能看到的增长信号\""
+    },
+    "JOB_POSTINGS": {
+      "name": "招聘热度",
+      "level": "L3",
+      "category": "另类数据",
+      "region": "global",
+      "oneLine": "Indeed/LinkedIn/Glassdoor招聘帖数——\"公司在扩招还是缩编\"，比财报快3-6个月"
+    },
+    "SUPPLY_CHAIN": {
+      "name": "供应链强度",
+      "level": "L3",
+      "category": "另类数据",
+      "region": "global",
+      "oneLine": "供应商/客户上市公司先行指标——\"别人先报喜，你要跟着涨\""
+    },
+    "HK_WARRANT_IV": {
+      "name": "窝轮隐含波动率",
+      "level": "L3",
+      "category": "港股窝轮",
+      "region": "hk",
+      "oneLine": "窝轮BSM倒推IV vs 正股历史波动率——轮商定价\"贵还是便宜\""
+    },
+    "HK_WARRANT_DELTA": {
+      "name": "窝轮Delta对冲",
+      "level": "L3",
+      "category": "港股窝轮",
+      "region": "hk",
+      "oneLine": "窝轮商Delta对冲方向——轮商是\"被迫买家\"还是\"被迫卖家\""
+    },
+    "HK_LEVERAGE_INVERSE": {
+      "name": "杠杆反向产品资金流",
+      "level": "L3",
+      "category": "港股窝轮",
+      "region": "hk",
+      "oneLine": "恒指/恒科杠杆ETF vs 反向ETF净资金流——\"散户情绪风向标\""
+    },
+    "HK_SOUTHBOUND_SMART": {
+      "name": "聪明南向资金",
+      "level": "L3",
+      "category": "港股资金",
+      "region": "hk",
+      "oneLine": "南向资金\"聪明度\"——判断南下是抄底还是接盘"
+    },
+    "HK_WARRANT_OVERHEAT": {
+      "name": "窝轮过热",
+      "level": "L3",
+      "category": "港股窝轮",
+      "region": "hk",
+      "oneLine": "窝轮成交额/正股成交额——\"赌窝轮的人是不是太多了\""
+    },
+    "HKD_PEG_PRESSURE": {
+      "name": "港汇联系汇率压力",
+      "level": "L3",
+      "category": "港股宏观",
+      "region": "hk",
+      "oneLine": "港汇距7.85弱方保证的\"压力值\"——越近7.85金管局干预风险越高"
+    },
+    "HIBOR_STEEPNESS": {
+      "name": "港息期限陡峭度",
+      "level": "L3",
+      "category": "港股宏观",
+      "region": "hk",
+      "oneLine": "3月HIBOR-隔夜HIBOR——银行间\"惜借\"还是\"宽裕\""
+    },
+    "HK_PRIVATIZATION": {
+      "name": "私有化概率",
+      "level": "L3",
+      "category": "港股事件",
+      "region": "hk",
+      "oneLine": "大股东持股+市值+折扣率——\"这家公司会被大股东买走退市吗\""
+    },
+    "HK_DERIV_POS_ANOMALY": {
+      "name": "衍生品持仓异动",
+      "level": "L3",
+      "category": "港股衍生品",
+      "region": "hk",
+      "oneLine": "恒指期货+期权+牛熊证的大单异动——\"大资金在布局什么\""
+    },
+    "HK_HSI_WEIGHT_CHANGE": {
+      "name": "恒指权重变动",
+      "level": "L3",
+      "category": "港股事件",
+      "region": "hk",
+      "oneLine": "下次恒指季调权重变动预测——被动基金\"被迫买入/卖出\"金额"
+    },
+    "HK_CBBC_DISTANCE_ADV": {
+      "name": "牛熊证进阶距离",
+      "level": "L3",
+      "category": "港股窝轮",
+      "region": "hk",
+      "oneLine": "牛熊证距收回价的\"安全距离\"+街货量加权——\"会被收回吗\""
+    },
+    "US_GUIDANCE_CHANGE": {
+      "name": "管理层指引变化",
+      "level": "L3",
+      "category": "美股事件",
+      "region": "us",
+      "oneLine": "公司上调/下调业绩指引——比财报更早的\"官宣\"信号"
+    },
+    "US_POST_EARNINGS_DRIFT": {
+      "name": "PEAD效应",
+      "level": "L3",
+      "category": "美股事件",
+      "region": "us",
+      "oneLine": "Post-Earnings Announcement Drift——超预期后\"漂移\"多远"
+    },
+    "US_GAMMA_EXPOSURE": {
+      "name": "美股Gamma暴露",
+      "level": "L3",
+      "category": "美股期权",
+      "region": "us",
+      "oneLine": "S&P500做市商净Gamma——正Gamma=稳定弹簧，负Gamma=波动放大器"
+    },
+    "US_MAX_PAIN": {
+      "name": "最大痛点",
+      "level": "L3",
+      "category": "美股期权",
+      "region": "us",
+      "oneLine": "期权到期日使最多买方亏损的价格——\"股价被吸向哪里\""
+    },
+    "US_SKEW_INDEX": {
+      "name": "Skew指数",
+      "level": "L3",
+      "category": "美股期权",
+      "region": "us",
+      "oneLine": "CBOE SKEW指数——\"市场给黑天鹅交了多少保费\""
+    },
+    "US_DEBT_CEILING": {
+      "name": "债务上限压力",
+      "level": "L3",
+      "category": "美股宏观",
+      "region": "us",
+      "oneLine": "美国债务上限逼近对市场的冲击概率——\"华盛顿这次会玩脱吗\""
+    },
+    "US_0DTE_RATIO": {
+      "name": "0DTE占比",
+      "level": "L3",
+      "category": "美股期权",
+      "region": "us",
+      "oneLine": "当日到期期权(0DTE)占SPX总期权成交比例——\"日内赌徒有多少\""
+    },
+    "US_SPLIT_EXPECT": {
+      "name": "拆股预期",
+      "level": "L3",
+      "category": "美股事件",
+      "region": "us",
+      "oneLine": "美股拆股概率——\"下一个NVDA/TSLA式的拆股行情\""
+    },
+    "US_BUYBACK_ACCEL": {
+      "name": "回购加速率",
+      "level": "L3",
+      "category": "美股事件",
+      "region": "us",
+      "oneLine": "回购加速度——\"在加速还是减速\"，加速度比速度更有信息量"
+    },
+    "US_SHORT_INTEREST_RATE": {
+      "name": "借券费率",
+      "level": "L3",
+      "category": "美股情绪",
+      "region": "us",
+      "oneLine": "股票借贷年化费率——\"做空这只票有多贵\""
+    },
+    "US_SPAC_PROGRESS": {
+      "name": "SPAC合并进度",
+      "level": "L3",
+      "category": "美股事件",
+      "region": "us",
+      "oneLine": "SPAC距De-SPAC完成进度+赎回率——\"套利还剩多少钱\""
+    },
+    "US_SHORT_SQUEEZE_SCORE": {
+      "name": "轧空得分",
+      "level": "L3",
+      "category": "美股情绪",
+      "region": "us",
+      "oneLine": "美股综合轧空概率——空头占比+借券成本+动量+市值"
+    },
+    "US_MAG7_MOMENTUM": {
+      "name": "七巨头动量",
+      "level": "L3",
+      "category": "美股宏观",
+      "region": "us",
+      "oneLine": "Mag7 vs S&P493动量差——\"巨头拖市还是散户普涨\""
+    },
+    "US_TICK_INDEX": {
+      "name": "Tick指数",
+      "level": "L3",
+      "category": "美股情绪",
+      "region": "us",
+      "oneLine": "NYSE Tick——涨跌股票数的\"心跳\"，极端正=追涨，极端负=割肉"
+    },
+    "CRYPTO_PUELL": {
+      "name": "Puell多重",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "矿工日收入(USD)/365日均值——\"矿工在赚钱还是亏钱\""
+    },
+    "CRYPTO_MVRV_Z": {
+      "name": "MVRV Z-Score",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "MVRV的Z-score——\"市值偏离链上价值多少个标准差\""
+    },
+    "CRYPTO_HODL_WAVE": {
+      "name": "持币周期波",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "1年+未移动BTC占比——\"多少人选择钻石手\""
+    },
+    "CRYPTO_FUNDING_EXTREME": {
+      "name": "资金费率极端",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "永续合约资金费率极端值——>0.1%+大OI=多头极度拥挤"
+    },
+    "CRYPTO_LIQUIDATION_MAP": {
+      "name": "爆仓热力图",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "各价格水平潜在爆仓堆积——\"哪些价格区间埋了地雷\""
+    },
+    "CRYPTO_NFT_VOLUME": {
+      "name": "NFT交易量",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "蓝筹NFT地板价+交易量——\"加密奢侈品的流动性\""
+    },
+    "CRYPTO_BRIDGE_FLOW": {
+      "name": "跨链桥流量",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "ETH/L2跨链桥TVL+净流量——\"资金在哪条链上\""
+    },
+    "CRYPTO_STABLECOIN_MINT": {
+      "name": "稳定币铸造量",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "USDT/USDC新铸造量——\"新鲜子弹在进场\""
+    },
+    "CRYPTO_MINER_FLOW": {
+      "name": "矿工抛压",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "矿工钱包→交易所的BTC转账量——\"矿工在卖吗\""
+    },
+    "CRYPTO_ONCHAIN_GDP": {
+      "name": "链上GDP",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "公链的\"GDP\"——日总交易费+MEV+质押收益的增速"
+    },
+    "CRYPTO_MINER_SELL_PRESS": {
+      "name": "矿工卖出压力指数",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "(矿工收入/矿工余额变化)——\"矿工的抛售压力有几个标准差\""
+    },
+    "CRYPTO_CROSSCHAIN_FLOW": {
+      "name": "跨链资金流",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "ETH→SOL→AVAX→BNB等链间资金净流向——\"热钱往哪涌\""
+    },
+    "CRYPTO_RESERVE_PROOF": {
+      "name": "交易所储备证明",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "CEX钱包BTC/ETH余额27日变化——\"交易所被挤兑了吗\""
+    },
+    "CRYPTO_WHALE_TX_COUNT": {
+      "name": "巨鲸交易笔数",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": ">$1M链上转账笔数30日变化——\"大户在行动吗\""
+    },
+    "CRYPTO_25DELTA_RR": {
+      "name": "25Delta风险逆转",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "25Delta Call IV-25Delta Put IV——\"加密期权市场的偏度\""
+    },
+    "CRYPTO_OPTION_TERM": {
+      "name": "加密期权期限结构",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "BTC期权近端IV vs 远端IV——\"短期vs长期恐慌\""
+    },
+    "CRYPTO_DEV_CENTRAL": {
+      "name": "开发者集中度",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "核心开发者集中度(前3贡献者/总)——\"这个项目是去中心化还是一个人在扛\""
+    },
+    "CRYPTO_TOKEN_UNLOCK": {
+      "name": "代币解锁压力",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "未来30天即将解锁的代币量/流通量——\"卖方洪水即将来临\""
+    },
+    "CRYPTO_PROTOCOL_REV": {
+      "name": "协议收入",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "DeFi协议年化收入/流通市值——\"加密版的市盈率\""
+    },
+    "CRYPTO_PF_RATIO": {
+      "name": "PF比率",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "价格/费用比率——\"每1元费用支撑多少市值\"，加密版P/S"
+    },
+    "CRYPTO_GOVERNANCE": {
+      "name": "治理活跃度",
+      "level": "L3",
+      "category": "加密",
+      "region": "crypto",
+      "oneLine": "DAO提案数+投票参与率——\"这个社区还活着吗\""
+    },
+    "XM_CO_SKEWNESS": {
+      "name": "协偏度",
+      "level": "L3",
+      "category": "跨市场",
+      "region": "global",
+      "oneLine": "个股对市场下行风险的\"共偏度\"——\"市场跌时你跌得比别人惨吗\""
+    },
+    "XM_IDIO_VOL": {
+      "name": "特质波动率",
+      "level": "L3",
+      "category": "跨市场",
+      "region": "global",
+      "oneLine": "去系统性风险后的\"纯个股\"波动——\"这只票自己能翻多大浪\""
+    },
+    "XM_MOMENTUM_CRASH": {
+      "name": "动量崩溃风险",
+      "level": "L3",
+      "category": "跨市场",
+      "region": "global",
+      "oneLine": "动量策略的\"脆弱性\"评分——\"现在追涨会不会突然崩\""
+    },
+    "XM_CURRENCY_HEDGE": {
+      "name": "货币对冲效率",
+      "level": "L3",
+      "category": "跨市场",
+      "region": "global",
+      "oneLine": "外币敞口可被对冲的比例——\"你的海外收益有多少可以被锁定\""
+    },
+    "XM_FACTOR_TIMING": {
+      "name": "因子择时",
+      "level": "L3",
+      "category": "跨市场",
+      "region": "global",
+      "oneLine": "宏观经济周期→因子轮动的推荐评分——\"现在该用哪个因子\""
+    },
+    "VOLATILITY_REGIME_ADV": {
+      "name": "进阶波动率区间",
+      "level": "L3",
+      "category": "宏观",
+      "region": "global",
+      "oneLine": "HMM波动率区间的进阶版——增加VIX期货期限结构+波动率风险溢价"
+    },
+    "EARNINGS_MOVE": {
+      "name": "财报波动预测",
+      "level": "L3",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "财报前后的预期波动幅度——\"财报那天股价会跳几个标准差\""
+    },
+    "CONVERTIBLE_ARB": {
+      "name": "可转债套利",
+      "level": "L3",
+      "category": "事件",
+      "region": "global",
+      "oneLine": "(可转债价格-理论价值)/理论价值——\"可转债定价错误\""
+    },
+    "STAT_ARB_RESIDUAL": {
+      "name": "统计套利残差",
+      "level": "L3",
+      "category": "基本面",
+      "region": "global",
+      "oneLine": "股价偏离\"公允因子收益\"的残差——\"市场有没有错误定价它\""
+    },
+    "ROE_TREND": {
+      "name": "ROE趋势",
+      "level": "L3",
+      "category": "财务",
+      "region": "global",
+      "oneLine": "ROE 4季度移动均值同比——\"盈利能力在改善还是恶化\""
+    },
+    "SHORT_TERM_REVERSAL": {
+      "name": "短期反转",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "过去5日收益的短期反转效应——\"跌了5天就该反弹\""
+    },
+    "GAP_FILL": {
+      "name": "缺口回补",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "价格缺口(跳空)的回补概率——\"跳空的缺口会补上吗\""
+    },
+    "RETAIL_SENTIMENT": {
+      "name": "散户情绪",
+      "level": "L3",
+      "category": "情绪",
+      "region": "global",
+      "oneLine": "Reddit/StockTwits帖子情感分析——\"散户在兴奋吗\""
+    },
+    "NEWS_NLP": {
+      "name": "新闻NLP情绪",
+      "level": "L3",
+      "category": "另类数据",
+      "region": "global",
+      "oneLine": "Bloomberg/Reuters头条NLP情绪——\"新闻在说好还是坏\""
+    },
+    "ESG_SCORE": {
+      "name": "ESG评分",
+      "level": "L3",
+      "category": "另类数据",
+      "region": "global",
+      "oneLine": "MSCI ESG评级+争议分数——\"绿色溢价还是漂绿陷阱\""
+    },
+    "JP_BOJ_ETF": {
+      "name": "日银ETF买入",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "日本央行(日银)ETF买入推定金额——\"全球最大的ETF买家今天在买吗\""
+    },
+    "JP_CROSS_HOLDING": {
+      "name": "交叉持股比例",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "企业间相互持股/总市值——\"日本特色的"
+    },
+    "JP_MARCH_EFFECT": {
+      "name": "3月效应",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "日本股市3月财政年度末特有的\"窗口装饰\"效应——\"机构在粉饰业绩吗\""
+    },
+    "JPY_CARRY_TRADE": {
+      "name": "日元套息交易",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "借日元买高息资产的套息交易活跃度——\"全球carry trade的风向标\""
+    },
+    "JPX_400_SELECTION": {
+      "name": "JPX400选入预期",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "JPX日经400指数纳入概率——\"日本版S&P500\"的被动买入潮"
+    },
+    "JP_TOPIX_SECTOR": {
+      "name": "TOPIX行业细分化",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "TOPIX 33行业的相对强弱——\"日本版GICS轮动\""
+    },
+    "JP_FOREIGN_FLOW": {
+      "name": "外国人买卖动向",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "外国投资者周净买入/卖出——\"老外在买日本吗\""
+    },
+    "JP_DIVIDEND_SEASON": {
+      "name": "分红季效应",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "距3月/9月集中分红日的日历效应——\"抢权行情\"的日本版"
+    },
+    "JP_SHAREHOLDER_BENEFIT": {
+      "name": "株主优待",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "株主优待(股东福利)收益率——\"持有一股能拿多少免费大米\""
+    },
+    "JP_BANK_LENDING": {
+      "name": "银行贷出态度",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "日银短观(BOJ Tankan)银行贷出态度DI——\"银行愿意借钱吗\""
+    },
+    "JP_VALUE_TRAP": {
+      "name": "价值陷阱检测",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "日本低PB股的\"陷阱概率\"——\"这个便宜货是真的便宜还是该便宜\""
+    },
+    "JPY_SENSITIVITY": {
+      "name": "日元敏感度",
+      "level": "L3",
+      "category": "日本",
+      "region": "jp",
+      "oneLine": "企业利润对日元波动的敏感度——\"日元涨1%你赚/亏多少\""
+    },
+    "TW_MARGIN_BALANCE": {
+      "name": "融资余额",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "台股融资(保证金)余额变化——\"台湾散户借钱炒股了吗\""
+    },
+    "TW_SHORT_RATIO": {
+      "name": "融券余额比",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "融券余额/融资余额——\"台股空头有多少\""
+    },
+    "TW_FOREIGN_FLOW": {
+      "name": "外资买卖超",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "外资在台股的净买超/卖超——\"老外在买台湾吗\""
+    },
+    "TW_TSMC_LINKAGE": {
+      "name": "台积电关联度",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "个股与台积电(2330)的收益相关性——\"台积电涨你会跟着涨吗\""
+    },
+    "TW_DIVIDEND_CHASE": {
+      "name": "除权息行情",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "除权息日前的\"抢权\"+除权后的\"填权\"效应——\"台湾特色的分红行情\""
+    },
+    "TW_FINANCING_OVERHEAT": {
+      "name": "融资过热",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "融资余额占市值比+融资增速——\"台版margin debt预警\""
+    },
+    "TW_NT_DOLLAR": {
+      "name": "台币汇率走势",
+      "level": "L3",
+      "category": "台湾",
+      "region": "tw",
+      "oneLine": "台币(新台币)升贬值趋势——\"热钱在流入还是流出台湾\""
+    },
+    "KR_CHAEBOL_DISCOUNT": {
+      "name": "财阀折扣",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "财阀集团(Chaebol)的\"韩国折价\"——\"三星/现代/LG/SK到底便宜了多少\""
+    },
+    "KR_FOREIGN_OWNERSHIP": {
+      "name": "外资持股比率",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "外资持股占总股本%的变化——\"老外在买韩国吗\""
+    },
+    "KR_SAMSUNG_LINKAGE": {
+      "name": "三星关联度",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "个股与三星电子(005930)的收益相关性——\"三星涨了你跟着涨吗\""
+    },
+    "KR_OPTION_EXPIRY": {
+      "name": "期权到期效应",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "KOSPI200期权/期货同日到期(每月第二个周四)——\"韩国版Triple Witching\""
+    },
+    "KR_KRW_SENSITIVITY": {
+      "name": "韩元敏感度",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "企业利润对韩元(₩)波动的敏感度——\"韩元贬值1%你赚/亏多少\""
+    },
+    "KR_DIVIDEND_YIELD": {
+      "name": "韩股股息特色",
+      "level": "L3",
+      "category": "韩国",
+      "region": "kr",
+      "oneLine": "韩国独特的\"低股息+低派息率\"文化的股息评分——\"这家公司终于开始分钱了\""
+    },
+    "SG_REIT_SPREAD": {
+      "name": "REIT息差",
+      "level": "L3",
+      "category": "新加坡",
+      "region": "sg",
+      "oneLine": "S-REIT预期收益率-10年SGS收益率——\"REIT比国债多给多少\""
+    },
+    "SG_STI_WEIGHT": {
+      "name": "STI权重变动",
+      "level": "L3",
+      "category": "新加坡",
+      "region": "sg",
+      "oneLine": "海峡时报指数(STI)季度权重调整预期——\"30只蓝筹谁升谁降\""
+    },
+    "SG_SGD_LINKAGE": {
+      "name": "新元关联",
+      "level": "L3",
+      "category": "新加坡",
+      "region": "sg",
+      "oneLine": "个股与新元汇率(USD/SGD)的关联——\"新元强弱对你的影响\""
+    },
+    "SG_DIVIDEND_CULTURE": {
+      "name": "分红文化",
+      "level": "L3",
+      "category": "新加坡",
+      "region": "sg",
+      "oneLine": "新加坡\"强制分红\"文化的股息评分——\"这家公司今年会分多少\""
+    },
+    "SG_US_LISTED": {
+      "name": "美股ADR关联",
+      "level": "L3",
+      "category": "新加坡",
+      "region": "sg",
+      "oneLine": "SGX股票vs其美股ADR的价差和Beta——\"双重上市的套利机会\""
+    },
+    "AU_COMMODITY_LINK": {
+      "name": "大宗商品关联",
+      "level": "L3",
+      "category": "澳洲",
+      "region": "au",
+      "oneLine": "个股与铁矿石/铜/金/煤/天然气价格的Beta——\"澳洲股的"
+    },
+    "AU_FRANKING_CREDIT": {
+      "name": "Franking Credit",
+      "level": "L3",
+      "category": "澳洲",
+      "region": "au",
+      "oneLine": "股息已缴税抵免(Franking Credit)比率——\"澳洲分红最甜蜜的\\"
+    },
+    "AU_DIVIDEND_SEASON": {
+      "name": "分红季效应",
+      "level": "L3",
+      "category": "澳洲",
+      "region": "au",
+      "oneLine": "澳洲2月/8月集中分红季的\"抢权+除权\"日历效应"
+    },
+    "AU_BANK_DIVIDEND": {
+      "name": "银行高息",
+      "level": "L3",
+      "category": "澳洲",
+      "region": "au",
+      "oneLine": "澳洲四大银行(CBA/NAB/WBC/ANZ)的股息吸引力——\"澳洲人的\\"
+    },
+    "AU_AUD_SENSITIVITY": {
+      "name": "澳元敏感度",
+      "level": "L3",
+      "category": "澳洲",
+      "region": "au",
+      "oneLine": "企业利润对澳元(AUD)波动的敏感度——\"澳元涨1%你赚/亏多少\""
+    },
+    "IN_FII_DII_FLOW": {
+      "name": "FII/DII资金流",
+      "level": "L3",
+      "category": "印度",
+      "region": "in",
+      "oneLine": "外资(FII)vs本地机构(DII)的净买超额差值——\"老外和本地人谁在买印度\""
+    },
+    "IN_MONSOON_EFFECT": {
+      "name": "雨季效应",
+      "level": "L3",
+      "category": "印度",
+      "region": "in",
+      "oneLine": "印度季风(Monsoon)降雨量偏离对农业/消费/通胀的季节性影响——\"老天爷心情=印度GDP\""
+    },
+    "IN_MODI_POLICY": {
+      "name": "莫迪政策",
+      "level": "L3",
+      "category": "印度",
+      "region": "in",
+      "oneLine": "莫迪政府改革政策(税改/基建/私有化/数字印度)的\"改革热度\"指数——\"改革在加速还是停滞\""
+    },
+    "IN_RUPEE_HEDGE": {
+      "name": "卢比对冲效率",
+      "level": "L3",
+      "category": "印度",
+      "region": "in",
+      "oneLine": "外国投资者对冲印度卢比(INR)的成本和可行性——\"你的印度收益有多少能拿回美元\""
+    },
+    "IN_PLEDGED_SHARES": {
+      "name": "质押股份风险",
+      "level": "L3",
+      "category": "印度",
+      "region": "in",
+      "oneLine": "大股东将股份质押(pledge)的比例——\"印度企业家把股票当ATM了吗\""
+    },
+    "EU_STOXX_SECTOR": {
+      "name": "欧洲行业细分化",
+      "level": "L3",
+      "category": "欧洲",
+      "region": "eu",
+      "oneLine": "STOXX 600 20行业相对强弱——\"泛欧行业轮动地图\""
+    },
+    "EU_EUR_SENSITIVITY": {
+      "name": "欧元敏感度",
+      "level": "L3",
+      "category": "欧洲",
+      "region": "eu",
+      "oneLine": "企业利润对欧元(EUR)波动的敏感度——\"欧元跌1%你的欧洲出口股涨多少\""
+    },
+    "EU_ESG_PREMIUM": {
+      "name": "ESG溢价",
+      "level": "L3",
+      "category": "欧洲",
+      "region": "eu",
+      "oneLine": "欧洲高ESG评分股票vs低ESG的估值溢价——\"绿色是欧洲的\\"
+    },
+    "EU_BREXIT_SHADOW": {
+      "name": "脱欧阴影",
+      "level": "L3",
+      "category": "欧洲",
+      "region": "eu",
+      "oneLine": "英国脱欧后英欧经济分化——\"英国和欧盟在越走越远吗\""
+    },
+    "CMD_ROLL_YIELD": {
+      "name": "展期收益",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "商品期货近月vs次近月的年化展期收益率——\"持有这个商品是赚钱还是亏钱\""
+    },
+    "CMD_TERM_STRUCTURE": {
+      "name": "期限结构斜率",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "期货曲线从近月到远月的整体斜率——\"供给紧缺还是过剩\""
+    },
+    "CMD_BASIS": {
+      "name": "基差",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "现货价格-近月期货价格的偏离——\"现货市场比期货市场更聪明吗\""
+    },
+    "CMD_MOMENTUM_12M": {
+      "name": "12月动量",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "过去12个月(扣除最近1个月)的累积收益——\"这个商品在走趋势吗\""
+    },
+    "CMD_MOMENTUM_1M": {
+      "name": "1月反转",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "过去1个月的极端收益的反转概率——\"涨太快就该回调\""
+    },
+    "CMD_VOLATILITY": {
+      "name": "波幅率",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "商品60日年化波动率的Z-score——\"这个商品最近安静还是暴躁\""
+    },
+    "CMD_SKEWNESS": {
+      "name": "偏度",
+      "level": "L1",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "商品收益分布的不对称性——\"这个商品更喜欢暴涨还是暴跌\""
+    },
+    "CMD_EIA_CRUDE": {
+      "name": "EIA原油库存",
+      "level": "L2",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "EIA周度原油库存变化vs市场预期——\"原油圈的非农数据\""
+    },
+    "CMD_NATGAS_STORAGE": {
+      "name": "天然气库存",
+      "level": "L2",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "EIA天然气周度库存vs5年均值——\"这个冬天够不够烧\""
+    },
+    "CMD_LME_INVENTORY": {
+      "name": "LME铜库存",
+      "level": "L2",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "LME注册仓单+注销仓单的库存信号——\"铜博士的脉搏\""
+    },
+    "CMD_GOLD_ETF": {
+      "name": "黄金ETF持仓",
+      "level": "L2",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "GLD+IAU黄金ETF的持仓量变化——\"散户和机构在买金吗\""
+    },
+    "CMD_BALANCE_SHEET": {
+      "name": "供需平衡表",
+      "level": "L2",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "USDA/EIA/IEA月度供需平衡(产量-消费)的\"缺口\"——\"这个世界缺不缺这个商品\""
+    },
+    "CMD_SEASONALITY": {
+      "name": "商品季节性",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "当前月份商品的历史涨跌概率——\"天然气冬天涨、汽油夏天涨\""
+    },
+    "CMD_GOLD_SUMMER": {
+      "name": "黄金夏季效应",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "黄金6-8月\"夏季低迷\"→9月\"秋季觉醒\"——\"黄金最准的日历\""
+    },
+    "CMD_COT_COMMERCIAL": {
+      "name": "商业净持仓",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "CFTC COT报告中商业对冲者的净多头寸——\"生产者/消费者在用什么价格锁货\""
+    },
+    "CMD_COT_SPECULATOR": {
+      "name": "投机净持仓",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "CFTC COT中Managed Money的净多——\"对冲基金在赌什么方向\""
+    },
+    "CMD_COT_EXTREME": {
+      "name": "COT拥挤度",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "商业vs投机持仓偏离历史均值的极端程度——\"两拨人在打架吗\""
+    },
+    "CMD_COT_CHANGE": {
+      "name": "COT持仓变动",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "CFTC投机净多周度变动——\"对冲基金这周在买还是卖\""
+    },
+    "CMD_OPEN_INTEREST": {
+      "name": "总持仓变化",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "期货总持仓(Open Interest)的周度变化——\"钱在进场还是离场\""
+    },
+    "CMD_DXY_LINKAGE": {
+      "name": "美元关联",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "各商品对美元指数(DXY)的敏感度——\"美元涨1%这个商品跌多少\""
+    },
+    "CMD_REAL_RATE": {
+      "name": "实际利率",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "10年期TIPS(通胀保护国债)收益率——\"黄金的真正对手\""
+    },
+    "CMD_INFLATION_BE": {
+      "name": "通胀预期",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "5年/10年盈亏平衡通胀率(BEIR)——\"市场赌未来通胀有多高\""
+    },
+    "CMD_GEOPOL_RISK": {
+      "name": "地缘风险",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "GPR(地缘政治风险指数)——\"世界哪个角落又出事了\""
+    },
+    "CMD_GOLD_SILVER_RATIO": {
+      "name": "金银比",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "金价/银价的Z-score——\"白银是黄金的"
+    },
+    "CMD_GOLD_OIL_RATIO": {
+      "name": "金油比",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "(金价/盎司)/(WTI/桶)的Z-score——\"世界是在避险还是在消费\""
+    },
+    "CMD_CRACK_SPREAD": {
+      "name": "裂解价差",
+      "level": "L3",
+      "category": "大宗商品",
+      "region": "global",
+      "oneLine": "(汽油+馏分油-3×WTI)/3的Z-score——\"炼油厂赚多少\""
+    }
+  }
+}

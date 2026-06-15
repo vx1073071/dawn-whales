@@ -1,11 +1,10 @@
-// @ts-nocheck
 // ── R123-M03 GlobalSearch — 全局搜索框 (Ctrl+K) ──────────────────────────
 // PM: 输入代码 → 自动补全 → 回车 → 所有面板同步切换标的
 // 支持: 币安/US/HK/CN 多市场代码补全
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Input, Modal } from 'antd';
-import { SearchOutlined, RiseOutlined, FallOutlined, StarOutlined, SwapOutlined } from '@ant-design/icons';
+import { SearchOutlined, RiseOutlined, FallOutlined, StarOutlined, SwapOutlined as _SwapOutlined } from '@ant-design/icons';
 import { useChartStore } from '../../store/ChartStore';
 
 // ═══════════ Types ═══════════
@@ -51,7 +50,54 @@ const MARKET_ICONS: Record<string, string> = {
   crypto: '₿', us: '$', hk: 'HK$', forex: '💱',
 };
 
-// ═══════════ Component ═══════════
+// ═══════════ Pinyin support (R224 F8) ═══════════
+// Lightweight pinyin lookup for Chinese stock names in global search
+
+const PINYIN_MAP: Record<string, string> = {
+  // HK stocks
+  '腾讯控股': 'tengxun teng xun konggu kong gu tx',
+  '阿里巴巴-SW': 'alibaba ali bababa ababa baba sw',
+  '携程集团-S': 'xiecheng xie cheng jituan ji tuan ctrip xc',
+  '美团-W': 'meituan mei tuan mt w',
+  '京东集团-SW': 'jingdong jing dong jituan jd sw',
+  '网易-S': 'wangyi wang yi wy s netease',
+  '快手-W': 'kuaishou kuai shou ks w',
+  '小米集团-W': 'xiaomi xiao mi xm w',
+  '百度集团-SW': 'baidu bai du bd sw',
+  '比亚迪股份': 'biyadi byd bi yadi bi ya di',
+  '药明生物': 'yaoming yaoming shengwu yao ming ywm sw',
+  '招商银行': 'zhaoshang zhao shang yinhang yin hang zsyh cmb',
+  '中国平安': 'zhongguo pingan ping an zgpa pa',
+  '港交所': 'gangjiaosuo gang jiao suo hkex gjs',
+  '贵州茅台': 'guizhou gui zhou maotai mao tai gzmt mt',
+  // US Chinese ADRs
+  'Apple Inc.': 'apple app aapl',
+  'NVIDIA Corp.': 'nvidia nvda yingweida ying wei da',
+  'Tesla Inc.': 'tesla tsla tesila te si la',
+  'Microsoft Corp.': 'microsoft msft weiruan wei ruan',
+};
+
+function getPinyinTerms(name: string): string {
+  // Check exact map first
+  if (PINYIN_MAP[name]) return PINYIN_MAP[name];
+  // For names not in map, return empty (fallback to name includes)
+  return '';
+}
+
+function matchPinyin(query: string, name: string): boolean {
+  if (!query || query.length < 2) return false;
+  const q = query.toLowerCase();
+  const pinyin = getPinyinTerms(name);
+  if (pinyin) return pinyin.includes(q);
+  // Fallback: check if query could be pinyin initials of Chinese name
+  // Only if name contains Chinese chars
+  if (/[\u4e00-\u9fff]/.test(name)) {
+    // Generate pinyin initials from Chinese chars (simple heuristic)
+    const initials = name.replace(/[^\u4e00-\u9fff]/g, '').slice(0, 5);
+    return initials.length >= q.length && q === initials.slice(0, q.length).toLowerCase();
+  }
+  return false;
+}
 
 export default function GlobalSearch() {
   const [open, setOpen] = useState(false);
@@ -83,7 +129,8 @@ export default function GlobalSearch() {
     const q = query.toLowerCase().trim();
     return POPULAR_SYMBOLS.filter(s =>
       s.symbol.toLowerCase().includes(q) ||
-      s.name.toLowerCase().includes(q)
+      s.name.toLowerCase().includes(q) ||
+      matchPinyin(q, s.name)  // R224 F8: pinyin search
     );
   }, [query]);
 

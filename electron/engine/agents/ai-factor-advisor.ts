@@ -33,6 +33,10 @@ import { checkRateLimit } from './rate-limiter';
 import { hallucinationCheck, tagOutputProvenance, type HallucinationReport } from '../security/ai-hallucination-check';
 // R182 P0-10: Unified AI security gateway
 import { getAISecurityGateway } from '../security/ai-security-gateway';
+// R183 P2-04: Behavior anomaly monitor
+import { getAIBehaviorMonitor } from '../security/ai-behavior-monitor';
+// R183 P2-05: Audit trail for dispute resolution
+import { getAIRecommendationAuditTrail } from '../security/ai-recommendation-audit-trail';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -487,6 +491,21 @@ export class AIFactorAdvisor {
       };
     }
 
+    // ── R183 P2-04: Check behavior block before proceeding ──
+    const behaviorMonitor = getAIBehaviorMonitor();
+    if (behaviorMonitor.isBlocked(request.userId)) {
+      return {
+        success: false,
+        sessionId, intent: 'unknown', intentLabel: '',
+        explanation: '检测到异常使用模式，AI服务已暂停24小时。如需帮助请联系客服。',
+        factors: [], suggestedFactorCount: 0, warnings: [],
+        backtest: this.emptyBacktest(),
+        billing: { charged: false, amountUSDT: 0, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: 'BEHAVIOR_BLOCKED' },
+      };
+    }
+
+    const startTime = Date.now();
+
     // ── R182 P0-12: Rate limit check ──────────────────────────────────
     const rateCheck = checkRateLimit(request.userId, 'ai.recommend');
     if (!rateCheck.allowed) {
@@ -700,6 +719,58 @@ export class AIFactorAdvisor {
 
     // R181 P0-08: Multi-turn dialog tracking
     this.multiTurnDialog(request.userId, request.query);
+
+    // R183 P2-04: Record interaction for behavior anomaly detection
+    behaviorMonitor.recordInteraction(request.userId, {
+      intent: result.intent,
+      query: request.query,
+      blocked: outputCheck.level === ('BLOCKED' as any),
+      billingFailed: !billingCheck.ok,
+      hadBacktest: backtestResult !== null,
+    });
+
+    // R183 P2-04: Check if user is blocked by behavior monitor
+    if (behaviorMonitor.isBlocked(request.userId)) {
+      return {
+        ...result,
+        success: false,
+        explanation: '检测到异常使用模式，AI服务已暂停24小时。如需帮助请联系客服。',
+        factors: [],
+        billing: { charged: false, amountUSDT: 0, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: 'BEHAVIOR_BLOCKED' },
+      };
+    }
+
+    // R183 P2-05: Record full audit trail for dispute resolution
+    const auditTrail = getAIRecommendationAuditTrail();
+    auditTrail.buildTrail({
+      userId: request.userId,
+      sessionId,
+      rawInput: request.query,
+      sanitizedInput: cleanedQuery,
+      intent: result.intent,
+      intentConfidence: intentResult.confidence,
+      market: request.market,
+      factorWeights: Object.fromEntries(result.factors.map(f => [f.factorId, f.recommendedWeight])),
+      icEstimates: Object.fromEntries(result.factors.map(f => [f.factorId, f.typicalIC])),
+      backtestResult: backtestResult ? {
+        expectedReturn: backtestResult.annualReturn || backtestResult.expectedReturn || 0,
+        expectedSharpe: backtestResult.sharpeRatio || backtestResult.expectedSharpe || 0,
+        expectedMaxDrawdown: backtestResult.maxDrawdown || backtestResult.expectedMaxDrawdown || 0,
+        expectedWinRate: backtestResult.winRate || backtestResult.expectedWinRate || 0,
+      } : { expectedReturn: 0, expectedSharpe: 0, expectedMaxDrawdown: 0, expectedWinRate: 0 },
+      rawAIOutput: result.explanation,
+      guardPassed: (outputCheck.level as string) !== 'BLOCKED',
+      guardScore: outputCheck.guardResult.totalScore,
+      guardViolations: outputCheck.guardResult.violations.length,
+      finalOutput: (outputCheck.level as string) === 'BLOCKED' ? outputCheck.allowedOutput : result.explanation,
+      securityLevel: outputCheck.level,
+      blockReason: outputCheck.blockExplanation,
+      billingCharged: billingCheck.charged,
+      billingAmount: billingCheck.amountCharged,
+      dataSourcesHealthy: dsGuard.isSafeForAI(),
+      latencyMs: Date.now() - startTime,
+      factors: result.factors.map(f => f.factorId),
+    });
 
     return result;
   }

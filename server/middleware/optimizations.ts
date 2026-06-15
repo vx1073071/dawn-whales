@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R148 J02 — Performance Optimizations
  * 

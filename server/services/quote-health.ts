@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R154 Claw(PM) — Quote Health Monitor + Broker Priority Config
  *

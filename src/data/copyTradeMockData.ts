@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R137-M04 copyTradeMockData.ts — 统一Mock数据 (全组件共用) ────────────
 // PM: sp1-sp5统一ID/字段, 所有组件引用同一数据源
 import type { SignalProvider, CopyTradeBroker, CopyTradeRecord, TradeRecord, CopyTradeNotification, OpenDSignal, USBrokerConfig, BrokerCopyStatus } from '@/stores/copyTradeStore';

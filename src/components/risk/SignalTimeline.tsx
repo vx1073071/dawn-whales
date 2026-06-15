@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── TradingEasy — SignalTimeline (strategy/policy) ──────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';
@@ -35,6 +34,10 @@ export default function SignalTimeline({
   const [, setStrategies] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'BUY' | 'SELL'>('all');
+  // R224 F7: signal history — date range + status filter + CSV export
+  const [dateStart, setDateStart] = useState('');
+  const [dateEnd, setDateEnd] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'executed' | 'cancelled' | 'rejected'>('all');
 
   const loadData = useCallback(async () => {
     try {
@@ -74,7 +77,30 @@ export default function SignalTimeline({
     return () => clearInterval(interval);
   }, [loadData, autoRefresh]);
 
-  const filtered = signals.filter((s) => filter === 'all' || s.side === filter);
+  const filtered = signals.filter((s) => {
+    if (filter !== 'all' && s.side !== filter) return false;
+    if (statusFilter !== 'all' && s.status !== statusFilter) return false;
+    if (dateStart && s.timestamp < new Date(dateStart).getTime()) return false;
+    if (dateEnd && s.timestamp > new Date(dateEnd + 'T23:59:59').getTime()) return false;
+    return true;
+  });
+
+  // CSV export
+  const exportCSV = () => {
+    const header = 'Time,Symbol,Side,Price,Qty,Total,Strategy,Status,Reason';
+    const rows = filtered.map((s: any) => {
+      const t = new Date(s.timestamp).toISOString();
+      return `${t},${s.symbol},${s.side},${s.price},${s.qty},${(s.price * s.qty).toFixed(2)},${s.strategyName},${s.status},${s.reason}`;
+    });
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `signals-export-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (loading) {
     return (
@@ -108,6 +134,40 @@ export default function SignalTimeline({
             </button>
           )}
         </div>
+      </div>
+
+      {/* R224 F7: Date range + status filter + CSV export */}
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <input
+          type="date"
+          value={dateStart}
+          onChange={(e) => setDateStart(e.target.value)}
+          className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-white text-[10px] focus:border-[#d4a574] focus:outline-none"
+          title={i18n.t('SignalTimeline.k8')}
+        />
+        <span className="text-gray-500 text-[10px]">-</span>
+        <input
+          type="date"
+          value={dateEnd}
+          onChange={(e) => setDateEnd(e.target.value)}
+          className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-white text-[10px] focus:border-[#d4a574] focus:outline-none"
+          title={i18n.t('SignalTimeline.k9')}
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as any)}
+          className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-gray-300 text-[10px] focus:border-[#d4a574] focus:outline-none">
+          <option value="all">{i18n.t('SignalTimeline.k10')}</option>
+          <option value="pending">{i18n.t('SignalTimeline.k11')}</option>
+          <option value="executed">{i18n.t('SignalTimeline.k12')}</option>
+          <option value="cancelled">{i18n.t('SignalTimeline.k13')}</option>
+          <option value="rejected">{i18n.t('SignalTimeline.k14')}</option>
+        </select>
+        <button
+          onClick={exportCSV}
+          className="ml-auto text-[10px] px-2 py-1 bg-[#d4a574]/10 text-[#d4a574] rounded hover:bg-[#d4a574]/20 transition-colors">
+          ⬇ CSV
+        </button>
       </div>
 
       {filtered.length === 0 ?

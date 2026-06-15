@@ -370,16 +370,32 @@ export class UnifiedMarketplaceEngine extends EventEmitter {
   /**
    * Subscribe/purchase a product.
    * Routes through FactorBillingGateway for payment processing.
+   * R179 G29: Price cross-validation + block AI auto-subscription.
    */
-  async subscribe(userId: string, productId: string): Promise<{
+  async subscribe(userId: string, productId: string, opts?: {
+    caller?: 'HUMAN' | 'AI' | 'SCHEDULER';
+    humanConfirmCode?: string;
+  }): Promise<{
     success: boolean;
     subscription?: Subscription;
     error?: string;
     charged?: number;
   }> {
+    // R179 G29: Block AI auto-subscription
+    if (opts?.caller === 'AI') {
+      log.warn(`[Marketplace] AI subscription attempt blocked: user=${userId.slice(0,8)} product=${productId}`);
+      return { success: false, error: 'AI-GATED: 自动订阅已禁用。请通过交易界面手动确认订阅。' };
+    }
+
     const product = this.products.get(productId);
     if (!product) return { success: false, error: '产品不存在' };
     if (product.status !== 'listed') return { success: false, error: '产品已下架' };
+
+    // R179 G29: Price cross-validation — ensure charged amount matches product price
+    const expectedPrice = product.pricing.priceUSDT;
+    if (expectedPrice < 0) {
+      return { success: false, error: '产品价格异常' };
+    }
 
     // Check for existing active subscription
     const userSubs = this.userSubscriptions.get(userId);
@@ -404,6 +420,12 @@ export class UnifiedMarketplaceEngine extends EventEmitter {
 
     if (!billingResult.ok) {
       return { success: false, error: billingResult.message };
+    }
+
+    // R179 G29: Price cross-validation — charged amount must match product price
+    if (billingResult.charged && billingResult.amountCharged !== expectedPrice) {
+      log.error(`[Marketplace] Price mismatch: charged=${billingResult.amountCharged} expected=${expectedPrice}`);
+      return { success: false, error: `价格验证失败: 扣费${billingResult.amountCharged}U ≠ 定价${expectedPrice}U` };
     }
 
     // Create subscription

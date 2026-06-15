@@ -13,6 +13,9 @@ export interface ConditionRule {
   createdAt: Date;
   lastTriggeredAt?: number; // unix ms
   triggerCount: number;
+  // R224 F6: conditional order expiry
+  expiryDate?: string; // ISO date string, after which the rule auto-disables
+  expiryAction?: 'disable' | 'delete' | 'alert'; // what to do on expiry
 }
 
 export type Condition = PriceCondition | IndicatorCondition | VolatilityCondition | MarketRegimeCondition;

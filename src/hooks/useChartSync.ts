@@ -1,10 +1,9 @@
-// @ts-nocheck
 // ── R122-M01 useChartSync — 统一接入 ChartStore 的 hook ──────────────────
 // PM: 所有 chart/broker 组件通过此 hook 读取全局状态
 // 优先级: prop > store (props override store for isolated usage)
 
-import { useCallback, useRef, useEffect } from 'react';
-import { useChartStore, ChartState, Market } from '../store/ChartStore';
+import { useCallback, useRef } from 'react';
+import { useChartStore, Market } from '../store/ChartStore';
 import type { Timeframe } from '../lib/chart/types';
 
 export interface ChartSyncOptions {
@@ -91,8 +90,8 @@ export function useChartSync(opts: ChartSyncOptions = {}): ChartSyncResult {
 
 export function makeSymbolClickable(
   text: string,
-  setSymbol: (s: string) => void,
-  className = 'cursor-pointer hover:text-[#58a6ff] transition-colors'
+  _setSymbol: (s: string) => void,
+  _className = 'cursor-pointer hover:text-[#58a6ff] transition-colors'
 ): string {
   // Returns the symbol text — caller should wrap in onClick
   // This is a marker function; actual rendering is in the component
