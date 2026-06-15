@@ -40,7 +40,7 @@ export interface PositionSnapshot {
   volatility?: number;
 }
 
-export type MarketCode = 'US' | 'HK' | 'CN' | 'CRYPTO' | 'JP' | 'TW' | 'KR' | 'SG' | 'AU';
+export type MarketCode = 'US' | 'HK' | 'CN' | 'CRYPTO' | 'JP' | 'TW' | 'KR' | 'SG' | 'AU' | 'EU' | 'IN';
 export type AssetClass = 'STOCK' | 'ETF' | 'FUTURES' | 'OPTIONS' | 'CRYPTO' | 'FOREX';
 
 export interface FactorProfile {
@@ -110,6 +110,21 @@ export interface StrategyMatchRequest {
     investmentHorizon?: 'SHORT' | 'MEDIUM' | 'LONG';
     excludeTemplates?: string[];
   };
+}
+
+// ── R215 D3: 3-Question Onboarding Input (ML U6 3问引导) ─────────────────
+
+export interface QuestionnaireInput {
+  /** Q1: 可用资金 (USDT) */
+  availableCapital: number;
+  /** Q2: 投资市场偏好 */
+  preferredMarkets: MarketCode[];
+  /** Q3: 风险偏好 */
+  riskTolerance: 'LOW' | 'MEDIUM' | 'HIGH';
+  /** Optional: 投资周期 */
+  investmentHorizon?: 'SHORT' | 'MEDIUM' | 'LONG';
+  /** Optional: 是否新手 (affects commentary tone) */
+  isNewbie?: boolean;
 }
 
 export interface StrategyMatchResult {
@@ -202,6 +217,38 @@ const SAMPLE_TEMPLATES: TemplateDef[] = [
     targetFactors: { 'CMD_GOLD_ETF': 1.0, 'CMD_REAL_RATE': -0.8, 'CMD_DXY_LINKAGE': -0.5 },
     riskLevel: 'LOW', expectedReturn: 9, maxDrawdown: 8,
     aiTriggers: ['回测解读1U', '压力测试2U'] },
+  // ── R215 D1: EU + IN templates ──────────────────────────────────────
+  { id: 'TPL_EU_STOXX_DIVIDEND', name: 'STOXX Dividend Aristocrats', nameCN: '欧股红利贵族',
+    category: '收入型', markets: ['EU'], assetClasses: ['STOCK', 'ETF'],
+    targetFactors: { 'DIV_YIELD': 1.0, 'QUAL_ROE': 0.8, 'LOW_VOL': 0.6, 'DIV_GROWTH': 0.5 },
+    riskLevel: 'LOW', expectedReturn: 8, maxDrawdown: 9,
+    aiTriggers: ['回测解读1U', '深度诊断1U', '优化1.5U'] },
+  { id: 'TPL_EU_GREEN_ENERGY', name: 'EU Green Energy Transition', nameCN: '欧洲绿色能源',
+    category: '主题投资', markets: ['EU'], assetClasses: ['STOCK', 'ETF'],
+    targetFactors: { 'MOM_60': 0.7, 'TREND_STRENGTH': 0.5, 'ESG_SCORE': 0.8, 'LOW_VOL': 0.3 },
+    riskLevel: 'MEDIUM', expectedReturn: 15, maxDrawdown: 18,
+    aiTriggers: ['回测解读1U', '信号推送0.5U', '压力测试2U'] },
+  { id: 'TPL_IN_NIFTY_MOMENTUM', name: 'Nifty 50 Momentum', nameCN: '印度Nifty动量',
+    category: '动量追逐', markets: ['IN'], assetClasses: ['STOCK', 'ETF'],
+    targetFactors: { 'MOM_20': 0.9, 'MOM_60': 0.7, 'SIZE_LARGE': 0.8, 'TURNOVER': 0.4 },
+    riskLevel: 'MEDIUM', expectedReturn: 18, maxDrawdown: 16,
+    aiTriggers: ['回测解读1U', '参数填充1U', '信号推送0.5U'] },
+  { id: 'TPL_IN_MIDCAP_GROWTH', name: 'Indian Mid-Cap Growth', nameCN: '印度中盘成长',
+    category: '成长型', markets: ['IN'], assetClasses: ['STOCK'],
+    targetFactors: { 'SIZE_MID': 0.9, 'MOM_20': 0.7, 'QUAL_ROE': 0.6, 'TREND_STRENGTH': 0.4 },
+    riskLevel: 'HIGH', expectedReturn: 25, maxDrawdown: 28,
+    aiTriggers: ['回测解读1U', '优化1.5U', '压力测试2U'] },
+  // ── R215 D1: SG + AU enhancements ──────────────────────────────────
+  { id: 'TPL_SG_REIT_YIELD', name: 'Singapore REIT Yield', nameCN: '新加坡REIT收息',
+    category: '收入型', markets: ['SG'], assetClasses: ['STOCK', 'ETF'],
+    targetFactors: { 'DIV_YIELD': 1.2, 'LOW_VOL': 0.7, 'REIT_YIELD': 0.9, 'QUAL_ROE': 0.3 },
+    riskLevel: 'LOW', expectedReturn: 7, maxDrawdown: 6,
+    aiTriggers: ['回测解读1U', '深度诊断1U'] },
+  { id: 'TPL_AU_RESOURCES', name: 'Australian Resources', nameCN: '澳洲资源股',
+    category: '商品策略', markets: ['AU'], assetClasses: ['STOCK', 'ETF'],
+    targetFactors: { 'CMD_GOLD_ETF': 0.6, 'CMD_IRON_ORE': 0.7, 'DIV_YIELD': 0.8, 'AUD_USD': -0.4 },
+    riskLevel: 'MEDIUM', expectedReturn: 14, maxDrawdown: 15,
+    aiTriggers: ['回测解读1U', '套利扫描2U', '优化1.5U'] },
 ];
 
 // ── StrategyMatchEngine ──────────────────────────────────────────────────
@@ -377,6 +424,80 @@ export class StrategyMatchEngine extends EventEmitter {
   }
   getTemplatesByCategory(category: string): TemplateDef[] {
     return SAMPLE_TEMPLATES.filter(t => t.category === category);
+  }
+
+  // ── R215 D3: Questionnaire → FactorProfile → Match ─────────────────
+
+  /**
+   * Convert 3-question onboarding input into a synthetic StrategyMatchRequest
+   * and return Top-3 template matches. No positions required.
+   *
+   * ML U6: 3问引导 → 3-5模板推荐
+   *
+   * Mapping:
+   *   Q1 资金 → position allocation weights
+   *   Q2 市场 → preferredMarkets filter + market-based factor bootstrap
+   *   Q3 风险 → maxRisk filter
+   */
+  matchFromQuestionnaire(input: QuestionnaireInput, userId: string, walletId: string): StrategyMatchResult {
+    const t0 = Date.now();
+    const requestId = `qn_match_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+    // Convert questionnaire to synthetic preference object
+    const preferences: StrategyMatchRequest['preferences'] = {
+      maxRisk: input.riskTolerance,
+      preferredMarkets: input.preferredMarkets,
+      investmentHorizon: input.investmentHorizon || 'MEDIUM',
+    };
+
+    // Build synthetic FactorProfile from questionnaire
+    // Higher capital → larger size exposure; higher risk → trend/momentum bias
+    const capScale = Math.min(1, input.availableCapital / 100000);
+    const riskBias = input.riskTolerance === 'HIGH' ? 0.8 : input.riskTolerance === 'MEDIUM' ? 0.5 : 0.2;
+
+    const factorProfile: FactorProfile = {
+      dominantFactors: [
+        { factorId: 'SIZE_LARGE', factorName: 'Size Large', exposure: -0.2 + capScale, contribution: 15 * capScale, direction: capScale > 0.5 ? 'LONG' : 'NEUTRAL' },
+        { factorId: 'MOM_20', factorName: 'Momentum 20', exposure: riskBias, contribution: 25 * riskBias, direction: riskBias > 0.3 ? 'LONG' : 'NEUTRAL' },
+        { factorId: 'TREND_STRENGTH', factorName: 'Trend Strength', exposure: riskBias + 0.1, contribution: 20 * riskBias, direction: riskBias > 0.3 ? 'LONG' : 'NEUTRAL' },
+        { factorId: 'DIV_YIELD', factorName: 'Dividend Yield', exposure: 1 - riskBias, contribution: 30 * (1 - riskBias), direction: riskBias < 0.5 ? 'LONG' : 'NEUTRAL' },
+        { factorId: 'LOW_VOL', factorName: 'Low Vol', exposure: 1.2 - riskBias, contribution: 35 * (1 - riskBias), direction: riskBias < 0.5 ? 'LONG' : 'NEUTRAL' },
+        { factorId: 'QUAL_ROE', factorName: 'Quality ROE', exposure: 0.8 - riskBias * 0.4, contribution: 18, direction: 'LONG' },
+        { factorId: 'VAL_BP', factorName: 'Value BP', exposure: 0.2 + (1 - riskBias) * 0.4, contribution: 15, direction: 'LONG' },
+        { factorId: 'TURNOVER', factorName: 'Turnover', exposure: riskBias * 0.7, contribution: 10 * riskBias, direction: riskBias > 0.3 ? 'LONG' : 'NEUTRAL' },
+      ],
+      portfolioStats: {
+        totalValue: input.availableCapital,
+        positionCount: input.riskTolerance === 'HIGH' ? 3 : input.riskTolerance === 'MEDIUM' ? 5 : 8,
+        marketCount: input.preferredMarkets.length,
+        sectorCount: input.riskTolerance === 'HIGH' ? 2 : 4,
+        concentrationHHI: input.riskTolerance === 'HIGH' ? 2500 : input.riskTolerance === 'MEDIUM' ? 1500 : 1000,
+        avgBeta: input.riskTolerance === 'HIGH' ? 1.5 : input.riskTolerance === 'MEDIUM' ? 1.1 : 0.7,
+        avgVolatility: input.riskTolerance === 'HIGH' ? 0.35 : input.riskTolerance === 'MEDIUM' ? 0.22 : 0.12,
+        diversificationScore: input.riskTolerance === 'HIGH' ? 40 : input.riskTolerance === 'MEDIUM' ? 65 : 85,
+      },
+      riskConcentration: {
+        topSectorPct: input.riskTolerance === 'HIGH' ? 60 : 40,
+        topMarketPct: input.riskTolerance === 'HIGH' ? 80 : 50,
+        topPositionPct: input.riskTolerance === 'HIGH' ? 35 : 20,
+        tailRisk: input.riskTolerance === 'HIGH' ? 0.08 : input.riskTolerance === 'MEDIUM' ? 0.04 : 0.02,
+      },
+    };
+
+    // Score templates against synthetic profile + preferences
+    const scored = this.scoreTemplates(factorProfile, preferences);
+    const top3 = scored.slice(0, 3);
+    const matches = top3.map(s => this.buildMatchResult(s, factorProfile));
+    const newbieSuffix = input.isNewbie ? ' 作为新手，建议从低风险模板开始熟悉策略后逐步升级。' : '';
+    const commentary = this.generateCommentary(matches, factorProfile) + newbieSuffix;
+    const ms = Date.now() - t0;
+
+    log.info(`[StrategyMatch] Questionnaire match for user ${userId}: ${matches.length} templates, cap=${input.availableCapital}, risk=${input.riskTolerance}`);
+
+    return {
+      success: true, requestId, factorProfile, matches, commentary,
+      charged: true, chargeUSDT: this.chargeUSDT, modelUsed: 'deepseek-v4-pro', processingTimeMs: ms,
+    };
   }
 }
 
