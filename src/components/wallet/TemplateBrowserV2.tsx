@@ -20,6 +20,7 @@ export interface TemplateItem {
   category: string; marketTags: string[]; factors: FactorCombo[];
   ironLaws: IronLaws; chargePoints: ChargePoint[];
   assetClass: string; timeframe: string; difficulty: string;
+  riskLevel?: 'conservative' | 'balanced' | 'aggressive';  // R214 ML#3
 }
 
 interface Props {
@@ -44,7 +45,14 @@ const IK: Record<string, Record<string, string>> = {
 
 const T = (k: string, l: string): string => (IK[l]||IK.en)[k]||k;
 const DC: Record<string,string> = {beginner:'#52c41a',intermediate:'#d4a853',advanced:'#ff4d4f'};
-const CATS = ['全部','美股','港股','加密','跨市场'];
+// R214: 9 markets (added JP/KR/TW/SG/AU/IN/EU/COMMODITY) + 3 risk dimensions
+const CATS = ['全部','美股','港股','日股','韩股','台股','新加坡','澳洲','印度','欧洲','加密','跨市场','大宗'];
+const RISK_LEVELS: Array<{key: 'all'|'conservative'|'balanced'|'aggressive'; label: {zhCN:string; en:string}; emoji: string; color: string}> = [
+  { key: 'all',          label: {zhCN:'全部',  en:'All'},           emoji: '◎', color: '#94a3b8' },
+  { key: 'conservative', label: {zhCN:'保守',  en:'Conservative'},  emoji: '🛡️', color: '#22c55e' },
+  { key: 'balanced',     label: {zhCN:'平衡',  en:'Balanced'},      emoji: '⚖️', color: '#3b82f6' },
+  { key: 'aggressive',   label: {zhCN:'激进',  en:'Aggressive'},    emoji: '⚡', color: '#ef4444' },
+];
 
 const ICONS: Record<string,React.ReactNode> = {
   backtest:<ClockCircleOutlined/>,fill:<RobotOutlined/>,optimize:<FireOutlined/>,diagnose:<ThunderboltOutlined/>,
@@ -123,7 +131,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced",
   },
   {
     "id": "us_mag7",
@@ -197,7 +206,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "us_val",
@@ -271,7 +281,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "us_low",
@@ -345,7 +356,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "conservative"
   },
   {
     "id": "us_13f",
@@ -419,7 +431,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "aggressive"
   },
   {
     "id": "us_pead",
@@ -493,7 +506,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "us_vix",
@@ -567,7 +581,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "hk_ah",
@@ -641,7 +656,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced",
   },
   {
     "id": "hk_tb",
@@ -715,7 +731,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "aggressive"
   },
   {
     "id": "hk_div",
@@ -789,7 +806,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "conservative",
   },
   {
     "id": "hk_sb",
@@ -863,7 +881,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "hk_rc",
@@ -937,7 +956,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "STOCK",
     "timeframe": "日线",
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "riskLevel": "balanced"
   },
   {
     "id": "cr_btc",
@@ -1012,7 +1032,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_eth",
@@ -1087,7 +1108,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_fr",
@@ -1162,7 +1184,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_lq",
@@ -1237,7 +1260,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_3l",
@@ -1312,7 +1336,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_fb",
@@ -1387,7 +1412,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "cr_dca",
@@ -1462,7 +1488,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "cr_wh",
@@ -1537,7 +1564,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "CRYPTO",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "aggressive"
   },
   {
     "id": "xm_gr",
@@ -1611,7 +1639,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_ct",
@@ -1685,7 +1714,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_va",
@@ -1759,7 +1789,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_gl",
@@ -1833,7 +1864,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_is",
@@ -1907,7 +1939,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_ce",
@@ -1981,7 +2014,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_em",
@@ -2055,7 +2089,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   },
   {
     "id": "xm_rs",
@@ -2129,7 +2164,8 @@ const TEMPLATES: TemplateItem[] = [
     ],
     "assetClass": "MULTI",
     "timeframe": "日线",
-    "difficulty": "advanced"
+    "difficulty": "advanced",
+    "riskLevel": "balanced"
   }
 ];
 
@@ -2143,6 +2179,7 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
   const l = pl === 'zh-CN' ? 'zhCN' : 'en';
   const [mode,setMode] = useState<CreateMode>('template');
   const [mf,setMf] = useState('全部');
+  const [rf,setRf] = useState<'all'|'conservative'|'balanced'|'aggressive'>('all');  // R214 ML#3
   const [q,setQ] = useState('');
   const [sel,setSel] = useState<TemplateItem|null>(null);
   const [exp,setExp] = useState<string|null>(null);
@@ -2150,9 +2187,10 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
   const list = useMemo(() => {
     let a = TEMPLATES;
     if (mf !== '全部') a = a.filter(t=>t.category===mf);
+    if (rf !== 'all') a = a.filter(t => t.riskLevel === rf);
     if (q.trim()) { const w = q.toLowerCase(); a = a.filter(t=>t.name.toLowerCase().includes(w)||t.nameCN.includes(w)||t.oneLiner.includes(w)||t.factors.some(f=>f.factorName.includes(w))); }
     return a;
-  }, [mf, q]);
+  }, [mf, rf, q]);
 
   return (
     <div style={{background:'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',borderRadius:12,padding:24,border:'1px solid rgba(74,144,217,0.15)',minHeight:560}}>
@@ -2187,11 +2225,31 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
               <Tag key={cat} color={mf===cat?(cat==='全部'?'blue':cat==='美股'?'geekblue':cat==='港股'?'red':cat==='加密'?'orange':'purple'):'default'}
                 style={{cursor:'pointer',margin:0,fontWeight:mf===cat?600:400,background:mf===cat?undefined:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.1)',color:mf===cat?undefined:'#909090'}}
                 onClick={()=>setMf(cat)}>
-                {cat==='全部'?T('all',l):cat==='美股'?T('us',l):cat==='港股'?T('hk',l):cat==='加密'?T('crypto',l):T('cross',l)}
+                {cat}
               </Tag>
             ))}
           </div>
         </div>
+
+        {/* R214 ML#3: 风险偏好过滤条 (3 维度) */}
+        <div style={{display:'flex',gap:8,marginBottom:16,alignItems:'center',flexWrap:'wrap'}}>
+          <span style={{color:'#909090',fontSize:12,marginRight:4}}>🛡️ {l==='zhCN'?'风险偏好':'Risk'}:</span>
+          {RISK_LEVELS.map(r=>(
+            <button key={r.key}
+              onClick={()=>setRf(r.key)}
+              style={{
+                background: rf===r.key ? `${r.color}25` : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${rf===r.key ? r.color : 'rgba(255,255,255,0.1)'}`,
+                borderRadius:16, padding:'4px 12px', fontSize:12,
+                color: rf===r.key ? r.color : '#909090',
+                cursor:'pointer', fontWeight: rf===r.key ? 700 : 400,
+                transition: 'all 0.2s',
+              }}>
+              {r.emoji} {l==='zhCN'?r.label.zhCN:r.label.en}
+            </button>
+          ))}
+        </div>
+
         <div style={{color:'#909090',fontSize:12,marginBottom:16}}>{list.length}{T('res',l)}</div>
       </>)}
 
@@ -2201,7 +2259,7 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))',gap:14}}>
             {list.map((tmpl: TemplateItem)=>{
               const isExp = exp===tmpl.id;
-              const cc: Record<string,string> = {美股:'#4a90d9',港股:'#d73027',加密:'#f7931a',跨市场:'#9b59b6'};
+              const cc: Record<string,string> = {美股:'#4a90d9',港股:'#d73027',加密:'#f7931a',跨市场:'#9b59b6',日股:'#ff6b6b',韩股:'#3b82f6',台股:'#10b981',新加坡:'#a78bfa',澳洲:'#fb923c',印度:'#f43f5e',欧洲:'#06b6d4',大宗:'#eab308'};
               return (
                 <Card key={tmpl.id} size="small" onClick={()=>setExp(isExp?null:tmpl.id)}
                   style={{background:'rgba(255,255,255,0.03)',border:sel?.id===tmpl.id?'2px solid rgba(74,144,217,0.5)':'1px solid rgba(255,255,255,0.08)',borderRadius:10,cursor:'pointer'}}>
@@ -2213,7 +2271,14 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
                       </div>
                       <div style={{color:'#909090',fontSize:11,marginTop:2}}>{tmpl.marketTags.join(' ')} · {tmpl.assetClass}</div>
                     </div>
-                    <Tag color={DC[tmpl.difficulty]} style={{fontSize:9,margin:0}}>{T(tmpl.difficulty==='beginner'?'beg':tmpl.difficulty==='intermediate'?'mid':'adv',l)}</Tag>
+                    <div style={{display:'flex',flexDirection:'column',gap:4,alignItems:'flex-end'}}>
+                      <Tag color={DC[tmpl.difficulty]} style={{fontSize:9,margin:0}}>{T(tmpl.difficulty==='beginner'?'beg':tmpl.difficulty==='intermediate'?'mid':'adv',l)}</Tag>
+                      {tmpl.riskLevel && (
+                        <Tag color={tmpl.riskLevel==='conservative'?'green':tmpl.riskLevel==='aggressive'?'red':'blue'} style={{fontSize:9,margin:0,lineHeight:1.4}}>
+                          {tmpl.riskLevel==='conservative'?'🛡️':tmpl.riskLevel==='aggressive'?'⚡':'⚖️'}{l==='zhCN'?(tmpl.riskLevel==='conservative'?'保守':tmpl.riskLevel==='aggressive'?'激进':'平衡'):(tmpl.riskLevel==='conservative'?'Conservative':tmpl.riskLevel==='aggressive'?'Aggressive':'Balanced')}
+                        </Tag>
+                      )}
+                    </div>
                   </div>
 
                   {/* Iron Law 1 */}
