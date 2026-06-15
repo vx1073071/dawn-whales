@@ -6128,5 +6128,44 @@
     "reason7": "전략명이 너무 모호합니다. \"내 전략\" 대신 \"HK AH 프리미엄 차익거래\"처럼 구체적으로 작성하세요.",
     "reason8": "AI 트리거 포인트가 없거나 잘못되었습니다. 전략이 사용하는 AI 서비스를 3-5개 추가하고 올바른 가격을 표시하세요.",
     "resubmit": "수정 후 재제출"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "팩터 가중치",
+    "dragHint": "조각을 드래그하여 가중치 조정. 합계는 항상 100.",
+    "autoNormalize": "자동 정규화",
+    "ironRuleCheck": "철칙 검증",
+    "weightSumOk": "가중치 합계 = 100 ✓",
+    "weightSumError": "가중치 합계 = {sum}. 100이어야 합니다.",
+    "factorTooLowWarning": "{factor}: 가중치가 너무 낮습니다(<5%). 이 팩터 제거를 고려하세요.",
+    "factorTooHighWarning": "{factor}: 가중치가 너무 높습니다(>50%). 단일 팩터 과의존은 위험을 증가시킵니다.",
+    "factorLocked": "{factor}은(는) 전략 철칙에 의해 잠겨 있습니다",
+    "resetWeights": "기본값으로 초기화"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "매개변수 민감도 분석",
+    "heatmapTitle": "민감도 히트맵",
+    "heatmapXLabel": "매개변수 값",
+    "heatmapYLabel": "성과 지표",
+    "colorScale": "🟢 안정  →  🟡 민감  →  🔴 과적합",
+    "overfitZone": "🔴 과적합 영역: 작은 매개변수 변경→큰 성과 변동. 이 매개변수를 단순화하세요.",
+    "stableZone": "🟢 안정 영역: 매개변수 변경이 결과에 큰 영향을 미치지 않음. 좋은 신호.",
+    "gridInfo": "그리드: {xSteps} × {ySteps} = {total} 시나리오 테스트 완료"
+  },
+  "modeSelector": {
+    "sectionTitle": "레벨 선택",
+    "beginner": "초보자",
+    "beginnerDesc": "선별된 3-5개 템플릿. 간단하고 안전하게 원클릭 시작.",
+    "experienced": "경험자",
+    "experiencedDesc": "20개 템플릿. 더 많은 전략, 더 많은 통제.",
+    "professional": "전문가",
+    "professionalDesc": "44개 전체 템플릿. 완전한 무기고, 최대 유연성.",
+    "lockedByLevel": "상위 레벨에서 잠금 해제",
+    "difficultyLabel": "난이도",
+    "star1": "매우 쉬움",
+    "star2": "쉬움",
+    "star3": "보통",
+    "star4": "어려움",
+    "star5": "전문가급",
+    "upgradeHint": "5건 더 거래하면 잠금 해제"
   }
 }

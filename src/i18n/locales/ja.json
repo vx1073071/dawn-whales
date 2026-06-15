@@ -6131,5 +6131,44 @@
     "reason7": "戦略名が曖昧です。「HK AHプレミアムアービトラージ」のように具体的な名前にしてください。「私の戦略」は不可。",
     "reason8": "AIトリガーポイントがないか誤っています。この戦略が使用するAIサービスを3〜5個追加し、正しい価格を記載してください。",
     "resubmit": "修正して再提出"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "ファクターウェイト",
+    "dragHint": "スライスをドラッグして重みを調整。合計は常に100。",
+    "autoNormalize": "自動正規化",
+    "ironRuleCheck": "鉄則チェック",
+    "weightSumOk": "重み合計 = 100 ✓",
+    "weightSumError": "重み合計 = {sum}。100にする必要があります。",
+    "factorTooLowWarning": "{factor}：重みが低すぎます（<5%）。このファクターの削除を検討してください。",
+    "factorTooHighWarning": "{factor}：重みが高すぎます（>50%）。単一ファクターへの過度な依存はリスクを高めます。",
+    "factorLocked": "{factor}は戦略の鉄則によりロックされています",
+    "resetWeights": "デフォルトにリセット"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "パラメータ感度分析",
+    "heatmapTitle": "感度ヒートマップ",
+    "heatmapXLabel": "パラメータ値",
+    "heatmapYLabel": "パフォーマンス指標",
+    "colorScale": "🟢 安定  →  🟡 感度あり  →  🔴 過学習",
+    "overfitZone": "🔴 過学習領域：小さなパラメータ変更で結果が大きく変動。このパラメータを簡素化してください。",
+    "stableZone": "🟢 安定領域：パラメータ変更が結果に大きな影響を与えません。良い兆候です。",
+    "gridInfo": "グリッド：{xSteps} × {ySteps} = {total}シナリオをテスト済み"
+  },
+  "modeSelector": {
+    "sectionTitle": "レベルを選択",
+    "beginner": "ビギナー",
+    "beginnerDesc": "厳選された3〜5のテンプレート。シンプルで安全、ワンクリックで始められます。",
+    "experienced": "経験者",
+    "experiencedDesc": "20のテンプレート。より多くの戦略、より多くのコントロール。",
+    "professional": "プロフェッショナル",
+    "professionalDesc": "44の全テンプレート。完全な武器庫、最大の柔軟性。",
+    "lockedByLevel": "上位レベルで解除",
+    "difficultyLabel": "難易度",
+    "star1": "とても簡単",
+    "star2": "簡単",
+    "star3": "普通",
+    "star4": "難しい",
+    "star5": "エキスパート",
+    "upgradeHint": "あと5取引で解除"
   }
 }

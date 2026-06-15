@@ -6128,5 +6128,44 @@
     "reason7": "Nom de stratégie trop vague. Utilisez un nom descriptif : « Arbitrage HK AH Premium », pas « Ma stratégie ».",
     "reason8": "Points de déclenchement IA manquants ou incorrects. Ajoutez 3-5 services IA avec le bon prix.",
     "resubmit": "Réviser et re-soumettre"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "Poids des facteurs",
+    "dragHint": "Faites glisser les segments. Total toujours 100.",
+    "autoNormalize": "Auto-normalisé",
+    "ironRuleCheck": "Vérification des règles",
+    "weightSumOk": "Somme des poids = 100 ✓",
+    "weightSumError": "Somme = {sum}. Doit être 100.",
+    "factorTooLowWarning": "{factor} : poids trop bas (<5%). Envisagez de le supprimer.",
+    "factorTooHighWarning": "{factor} : trop dominant (>50%). Dépendance excessive augmente le risque.",
+    "factorLocked": "{factor} est verrouillé par les règles",
+    "resetWeights": "Réinitialiser"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "Sensibilité des paramètres",
+    "heatmapTitle": "Carte de sensibilité",
+    "heatmapXLabel": "Valeur du paramètre",
+    "heatmapYLabel": "Métrique de performance",
+    "colorScale": "🟢 Stable  →  🟡 Sensible  →  🔴 Surajusté",
+    "overfitZone": "🔴 Zone surajustée : petit changement → grande variation. Simplifiez ce paramètre.",
+    "stableZone": "🟢 Zone stable : le changement n'affecte pas beaucoup les résultats. Bon signe.",
+    "gridInfo": "Grille : {xSteps} × {ySteps} = {total} scénarios testés"
+  },
+  "modeSelector": {
+    "sectionTitle": "Choisissez votre niveau",
+    "beginner": "Débutant",
+    "beginnerDesc": "3-5 modèles sélectionnés. Simple, sûr, un clic.",
+    "experienced": "Expérimenté",
+    "experiencedDesc": "20 modèles. Plus de stratégies, plus de contrôle.",
+    "professional": "Professionnel",
+    "professionalDesc": "Les 44 modèles. Arsenal complet, flexibilité maximale.",
+    "lockedByLevel": "Débloquez au niveau supérieur",
+    "difficultyLabel": "Difficulté",
+    "star1": "Très facile",
+    "star2": "Facile",
+    "star3": "Modéré",
+    "star4": "Difficile",
+    "star5": "Expert",
+    "upgradeHint": "Encore 5 transactions pour débloquer"
   }
 }

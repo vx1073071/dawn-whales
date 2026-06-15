@@ -6166,5 +6166,44 @@
     "reason7": "策略名稱太模糊。用描述性名稱如「港股AH溢價套利」，不是「我的策略」。",
     "reason8": "AI觸發點缺失或錯誤。添加3-5個策略使用的AI服務並標注正確價格。",
     "resubmit": "修改並重新提交"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "因子權重",
+    "dragHint": "拖拽扇形調整權重。總和始終保持100。",
+    "autoNormalize": "自動歸一化",
+    "ironRuleCheck": "鐵律校驗",
+    "weightSumOk": "權重合計 = 100 ✓",
+    "weightSumError": "權重合計 = {sum}，必須等於100。",
+    "factorTooLowWarning": "{factor}：權重過低（<5%）。建議移除此因子。",
+    "factorTooHighWarning": "{factor}：權重過重（>50%）。過度依賴單一因子增加風險。",
+    "factorLocked": "{factor} 已被策略鐵律鎖定",
+    "resetWeights": "恢復默認權重"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "參數敏感性分析",
+    "heatmapTitle": "敏感性熱力圖",
+    "heatmapXLabel": "參數取值",
+    "heatmapYLabel": "表現指標",
+    "colorScale": "🟢 穩定  →  🟡 敏感  →  🔴 過擬合",
+    "overfitZone": "🔴 過擬合區：參數微調→結果劇變。建議簡化此參數。",
+    "stableZone": "🟢 穩定區：參數變化對結果影響不大。策略穩健。",
+    "gridInfo": "網格：{xSteps} × {ySteps} = {total} 種場景已測試"
+  },
+  "modeSelector": {
+    "sectionTitle": "選擇你的水平",
+    "beginner": "新手入門",
+    "beginnerDesc": "精選3-5個模板。簡單、安全、一鍵上手。",
+    "experienced": "有經驗者",
+    "experiencedDesc": "20個模板。更多策略，更多掌控。",
+    "professional": "專業交易者",
+    "professionalDesc": "全部44個模板。完整武器庫，最大靈活度。",
+    "lockedByLevel": "升級後解鎖",
+    "difficultyLabel": "難度",
+    "star1": "非常簡單",
+    "star2": "簡單",
+    "star3": "中等",
+    "star4": "較難",
+    "star5": "專家",
+    "upgradeHint": "再完成5筆交易即可解鎖"
   }
 }

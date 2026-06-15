@@ -6138,5 +6138,44 @@
     "reason7": "Nombre de estrategia muy vago. Usa nombre descriptivo: \"Arbitraje HK AH Premium\", no \"Mi estrategia\".",
     "reason8": "Puntos de activación IA faltantes o incorrectos. Añade 3-5 servicios IA con precio correcto.",
     "resubmit": "Revisar y reenviar"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "Pesos de factores",
+    "dragHint": "Arrastra porciones para ajustar. Total siempre 100.",
+    "autoNormalize": "Auto-normalizado",
+    "ironRuleCheck": "Verificación de reglas",
+    "weightSumOk": "Suma de pesos = 100 ✓",
+    "weightSumError": "Suma = {sum}. Debe ser 100.",
+    "factorTooLowWarning": "{factor}: peso muy bajo (<5%). Considera eliminarlo.",
+    "factorTooHighWarning": "{factor}: demasiado dominante (>50%). Dependencia excesiva aumenta riesgo.",
+    "factorLocked": "{factor} está bloqueado por reglas",
+    "resetWeights": "Restablecer"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "Sensibilidad de parámetros",
+    "heatmapTitle": "Mapa de sensibilidad",
+    "heatmapXLabel": "Valor del parámetro",
+    "heatmapYLabel": "Métrica de rendimiento",
+    "colorScale": "🟢 Estable  →  🟡 Sensible  →  🔴 Sobreajuste",
+    "overfitZone": "🔴 Zona sobreajuste: pequeño cambio → gran variación. Simplifica este parámetro.",
+    "stableZone": "🟢 Zona estable: el cambio de parámetro no afecta mucho. Buena señal.",
+    "gridInfo": "Cuadrícula: {xSteps} × {ySteps} = {total} escenarios probados"
+  },
+  "modeSelector": {
+    "sectionTitle": "Elige tu nivel",
+    "beginner": "Principiante",
+    "beginnerDesc": "3-5 plantillas curadas. Simple, seguro, un clic.",
+    "experienced": "Experimentado",
+    "experiencedDesc": "20 plantillas. Más estrategias, más control.",
+    "professional": "Profesional",
+    "professionalDesc": "Las 44 plantillas. Arsenal completo, máxima flexibilidad.",
+    "lockedByLevel": "Desbloquea en nivel superior",
+    "difficultyLabel": "Dificultad",
+    "star1": "Muy fácil",
+    "star2": "Fácil",
+    "star3": "Moderado",
+    "star4": "Difícil",
+    "star5": "Experto",
+    "upgradeHint": "5 operaciones más para desbloquear"
   }
 }

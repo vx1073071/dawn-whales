@@ -6185,5 +6185,44 @@
     "reason7": "Strategy name too vague. Use descriptive name: \"HK AH Premium Arbitrage\" not \"My Strategy\"",
     "reason8": "AI trigger points missing or incorrect. Add 3-5 AI services this strategy uses with correct pricing.",
     "resubmit": "Revise & Re-submit"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "Factor Weights",
+    "dragHint": "Drag slices to adjust weights. Total always 100.",
+    "autoNormalize": "Auto-normalized",
+    "ironRuleCheck": "Iron Rule Check",
+    "weightSumOk": "Weight sum = 100 ✓",
+    "weightSumError": "Weight sum = {sum}. Must equal 100.",
+    "factorTooLowWarning": "{factor}: weight too low (<5%). Consider removing this factor.",
+    "factorTooHighWarning": "{factor}: too dominant (>50%). Over-reliance on single factor increases risk.",
+    "factorLocked": "{factor} is locked by strategy iron rules",
+    "resetWeights": "Reset to Default"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "Parameter Sensitivity",
+    "heatmapTitle": "Sensitivity Heatmap",
+    "heatmapXLabel": "Parameter Value",
+    "heatmapYLabel": "Performance Metric",
+    "colorScale": "🟢 Stable  →  🟡 Sensitive  →  🔴 Overfit",
+    "overfitZone": "🔴 Overfit zone: small parameter change → large performance swing. Simplify this parameter.",
+    "stableZone": "🟢 Stable zone: parameter change doesn't dramatically affect results. Good sign.",
+    "gridInfo": "Grid: {xSteps} × {ySteps} = {total} scenarios tested"
+  },
+  "modeSelector": {
+    "sectionTitle": "Select Your Level",
+    "beginner": "Beginner",
+    "beginnerDesc": "3-5 curated templates. Simple, safe, one-click.",
+    "experienced": "Experienced",
+    "experiencedDesc": "20 templates. More strategies, more control.",
+    "professional": "Professional",
+    "professionalDesc": "All 44 templates. Full arsenal, maximum flexibility.",
+    "lockedByLevel": "Unlock at higher level",
+    "difficultyLabel": "Difficulty",
+    "star1": "Very Easy",
+    "star2": "Easy",
+    "star3": "Moderate",
+    "star4": "Hard",
+    "star5": "Expert",
+    "upgradeHint": "Complete 5 more trades to unlock"
   }
 }

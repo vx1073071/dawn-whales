@@ -6128,5 +6128,44 @@
     "reason7": "Strategiename zu vage. Beschreibenden Namen wie \"HK AH Premium Arbitrage\" verwenden, nicht \"Meine Strategie\".",
     "reason8": "KI-Triggerpunkte fehlen oder falsch. 3-5 KI-Dienste mit korrekter Preisangabe hinzufügen.",
     "resubmit": "Überarbeiten & Erneut einreichen"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "Faktorgewichte",
+    "dragHint": "Segmente ziehen zum Anpassen. Summe immer 100.",
+    "autoNormalize": "Auto-normalisiert",
+    "ironRuleCheck": "Eiserne-Regel-Prüfung",
+    "weightSumOk": "Gewichtssumme = 100 ✓",
+    "weightSumError": "Gewichtssumme = {sum}. Muss 100 sein.",
+    "factorTooLowWarning": "{factor}: Gewicht zu niedrig (<5%). Entfernung erwägen.",
+    "factorTooHighWarning": "{factor}: Zu dominant (>50%). Übermäßige Abhängigkeit erhöht Risiko.",
+    "factorLocked": "{factor} ist durch eiserne Regeln gesperrt",
+    "resetWeights": "Auf Standard zurücksetzen"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "Parameter-Sensitivität",
+    "heatmapTitle": "Sensitivitäts-Heatmap",
+    "heatmapXLabel": "Parameterwert",
+    "heatmapYLabel": "Leistungsmetrik",
+    "colorScale": "🟢 Stabil  →  🟡 Sensitiv  →  🔴 Overfit",
+    "overfitZone": "🔴 Overfit-Zone: Kleine Änderung → große Schwankung. Parameter vereinfachen.",
+    "stableZone": "🟢 Stabile Zone: Parameteränderung beeinflusst Ergebnisse kaum. Gutes Zeichen.",
+    "gridInfo": "Raster: {xSteps} × {ySteps} = {total} Szenarien getestet"
+  },
+  "modeSelector": {
+    "sectionTitle": "Wähle dein Level",
+    "beginner": "Anfänger",
+    "beginnerDesc": "3-5 kuratierte Vorlagen. Einfach, sicher, One-Click.",
+    "experienced": "Erfahren",
+    "experiencedDesc": "20 Vorlagen. Mehr Strategien, mehr Kontrolle.",
+    "professional": "Profi",
+    "professionalDesc": "Alle 44 Vorlagen. Volles Arsenal, maximale Flexibilität.",
+    "lockedByLevel": "Auf höherem Level freischalten",
+    "difficultyLabel": "Schwierigkeit",
+    "star1": "Sehr leicht",
+    "star2": "Leicht",
+    "star3": "Mittel",
+    "star4": "Schwer",
+    "star5": "Experte",
+    "upgradeHint": "Noch 5 Trades zum Freischalten"
   }
 }
