@@ -113,6 +113,18 @@ export interface OnChainSnapshot {
   whaleTransactionCount?: number;
   /** Supply held on exchanges */
   supplyOnExchanges?: number;
+  /** Spent Output Profit Ratio (SOPR) */
+  sopr?: number;
+  /** Puell Multiple (mining revenue ratio) */
+  puellMultiple?: number;
+  /** Exchange inflow (transfer volume to exchanges) */
+  exchangeInflow?: number;
+  /** Exchange outflow (transfer volume from exchanges) */
+  exchangeOutflow?: number;
+  /** Network hash rate (hashes/sec, alias) */
+  networkHashRate?: number;
+  /** Timestamp of data snapshot */
+  timestamp?: number;
 }
 
 export interface MacroSnapshot {
