@@ -5,6 +5,11 @@
 */
 
 import { useState, useMemo, useCallback } from 'react';
+import { Button, Steps, Card, Tag, Space } from 'antd';
+import { ArrowRightOutlined, ArrowLeftOutlined, RocketOutlined, BulbOutlined, PlusOutlined, CheckCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import i18n from '../../i18n';
+
+const I18N = (k: string) => i18n.t(`factorDiscovery.${k}`);
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -36,6 +41,8 @@ interface FactorDiscoveryWizardProps {
   /** Callback for "add to portfolio" action */
   onAddToPortfolio?: (factorIds: string[]) => void;
   className?: string;
+  /** R219 ML#4: Enable 3-step guided wizard (default true) */
+  enableWizard?: boolean;
 }
 
 // ── Mock data ───────────────────────────────────────────────────────────
@@ -254,6 +261,7 @@ export default function FactorDiscoveryWizard({
   onSelectFactor,
   onAddToPortfolio,
   className = '',
+  enableWizard = true,
 }: FactorDiscoveryWizardProps) {
   const factors = propFactors.length > 0 ? propFactors : MOCK_DISCOVERABLE;
 
@@ -261,6 +269,16 @@ export default function FactorDiscoveryWizard({
   const [showOnlyCompatible, setShowOnlyCompatible] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+
+  // R219 ML#4: 3-step wizard state
+  const [step, setStep] = useState<0 | 1 | 2>(enableWizard ? 0 : 2);
+  const [market, setMarket] = useState<string>('hk');
+  const [recommendedCombos] = useState<Array<{ name: string; factors: string[]; score: number; description: string }>>([
+    { name: '稳健增长组合', factors: ['value_ep', 'quality_roe', 'low_vol'], score: 88, description: '价值+质量+低波动, 适合震荡市' },
+    { name: '动量趋势组合', factors: ['momentum_12m', 'momentum_6m', 'low_vol'], score: 82, description: '双动量+低波动, 适合单边趋势' },
+    { name: '高弹性进取', factors: ['high_beta', 'momentum_12m', 'quality_roe'], score: 78, description: '高Beta+动量+质量, 适合牛市' },
+  ]);
+  const [chosenCombo, setChosenCombo] = useState<typeof recommendedCombos[0] | null>(null);
 
   // Categories from data
   const categories = useMemo(() => {
@@ -344,6 +362,108 @@ export default function FactorDiscoveryWizard({
 
   return (
     <div className={`bg-[#0D0D14] flex flex-col ${className}`}>
+      {/* R219 ML#4: 3-step wizard header */}
+      {enableWizard && (
+        <div style={{ padding: '16px 16px 0' }}>
+          <Steps
+            current={step}
+            size="small"
+            items={[
+              { title: I18N('step1'), icon: <RocketOutlined /> },
+              { title: I18N('step2'), icon: <BulbOutlined /> },
+              { title: I18N('step3'), icon: <PlusOutlined /> },
+            ]}
+          />
+        </div>
+      )}
+
+      {/* Step 0: Choose market */}
+      {enableWizard && step === 0 && (
+        <div style={{ padding: 24 }}>
+          <Card size="small" styles={{ body: { padding: 16 } }} style={{ background: '#1a1a25', border: '1px solid #2a2d3e', marginBottom: 16 }}>
+            <h4 style={{ color: '#e0e0e0', marginBottom: 12 }}>{I18N('chooseMarket')}</h4>
+            <Space wrap>
+              {[
+                { key: 'hk', label: '🇭🇰 港股', desc: '高股息+南向资金' },
+                { key: 'us', label: '🇺🇸 美股', desc: '科技股+流动性强' },
+                { key: 'cn', label: '🇨🇳 A股', desc: '政策驱动+波动大' },
+                { key: 'crypto', label: '🪙 加密', desc: '24h交易+高波动' },
+              ].map(m => (
+                <Card
+                  key={m.key}
+                  size="small"
+                  hoverable
+                  onClick={() => setMarket(m.key)}
+                  styles={{ body: { padding: 10 } }}
+                  style={{
+                    background: market === m.key ? '#D4A85320' : '#1a1a25',
+                    border: market === m.key ? '1px solid #D4A853' : '1px solid #2a2d3e',
+                    minWidth: 140,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div style={{ color: '#e0e0e0', fontWeight: 600, fontSize: 14 }}>{m.label}</div>
+                  <div style={{ color: '#6b7280', fontSize: 11, marginTop: 4 }}>{m.desc}</div>
+                </Card>
+              ))}
+            </Space>
+          </Card>
+          <div style={{ textAlign: 'right' }}>
+            <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => setStep(1)} style={{ background: '#C9A046', borderColor: '#C9A046' }}>
+              {I18N('next')} → {I18N('step2')}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 1: AI recommended combos */}
+      {enableWizard && step === 1 && (
+        <div style={{ padding: 24 }}>
+          <h4 style={{ color: '#e0e0e0', marginBottom: 12 }}><ThunderboltOutlined style={{ color: '#D4A853' }} /> {I18N('aiRecommend')}</h4>
+          <Space direction="vertical" style={{ width: '100%' }} size={12}>
+            {recommendedCombos.map(c => (
+              <Card
+                key={c.name}
+                size="small"
+                hoverable
+                onClick={() => { setChosenCombo(c); setStep(2); }}
+                styles={{ body: { padding: 12 } }}
+                style={{
+                  background: chosenCombo?.name === c.name ? '#D4A85320' : '#1a1a25',
+                  border: chosenCombo?.name === c.name ? '1px solid #D4A853' : '1px solid #2a2d3e',
+                  cursor: 'pointer',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ color: '#e0e0e0', fontWeight: 600 }}>{c.name}</div>
+                    <div style={{ color: '#9ca3af', fontSize: 12, marginTop: 4 }}>{c.description}</div>
+                    <div style={{ marginTop: 6 }}>
+                      {c.factors.map(fid => (
+                        <Tag key={fid} color="blue" style={{ marginRight: 4 }}>
+                          {factors.find(f => f.id === fid)?.nameZh || fid}
+                        </Tag>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ color: '#6b7280', fontSize: 10 }}>{I18N('score')}</div>
+                    <div style={{ color: '#22c55e', fontSize: 24, fontWeight: 700 }}>{c.score}</div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </Space>
+          <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between' }}>
+            <Button icon={<ArrowLeftOutlined />} onClick={() => setStep(0)}>{I18N('back')}</Button>
+            <Button onClick={() => { setChosenCombo(null); setStep(2); }} type="default">{I18N('manualPick')}</Button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 2: Preview + one-click add (renders existing UI) */}
+      {(!enableWizard || step === 2) && (
+      <>
       {/* Header */}
       <div className="p-4 border-b border-white/5">
         <h3 className="text-lg font-semibold text-white mb-3">🧭 智能因子筛选</h3>
@@ -445,13 +565,24 @@ export default function FactorDiscoveryWizard({
             <span className="text-[#D4A853] font-semibold">{selected.size}</span>{' '}
             个因子
           </span>
+          {enableWizard && (
+            <Button
+              size="small"
+              onClick={() => setStep(0)}
+              style={{ marginRight: 8 }}
+            >
+              {I18N('backToWizard')}
+            </Button>
+          )}
           <button
             onClick={() => onAddToPortfolio?.(Array.from(selected))}
             className="px-4 py-2 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors"
           >
-            添加到组合 →
+            <CheckCircleOutlined /> {I18N('oneClickAdd')} →
           </button>
         </div>
+      )}
+      </>
       )}
     </div>
   );
