@@ -24,11 +24,11 @@ export type AIServiceType =
   | 'DRAW_LINES' | 'HEALTH_CHECK' | 'DEEPSEARCH'
   | 'TA_STANDARD' | 'TA_PREMIUM' | 'TA_FLAGSHIP'
   | 'SIGNAL_PUSH' | 'DAILY_BRIEFING' | 'BLIND_BOX_UNLOCK'
-  | 'MATCH_ENGINE' | 'INSURANCE_PURCHASE'
+  | 'MATCH_ENGINE'
   | 'CREATOR_REVIEW' | 'MARKET_STATE'
   | 'STRATEGY_MATCH' | 'COPY_TRADE_FEE';
 
-export type AIChargeStatus = 'SUCCESS' | 'FAILED' | 'REFUNDED' | 'PENDING_REFUND';
+export type AIChargeStatus = 'SUCCESS' | 'FAILED';
 
 export interface AIConsumptionRecord {
   recordId: string;
@@ -43,10 +43,10 @@ export interface AIConsumptionRecord {
   status: AIChargeStatus;
   modelUsed: string;
   createdAt: number; // unix ms
-  refundedAt?: number;
-  refundReason?: string;
   transactionId: string;
   requestId: string;
+  /** Owner铁令: 无退款机制。此字段仅用于AI故障自动回退的<a href=";如果"">退款</a>（非用户发起） */
+  faultRecoveryEventId?: string;
 }
 
 export interface ConsumptionQuery {
@@ -75,8 +75,6 @@ export interface ConsumptionQueryResult {
 export interface ConsumptionSummary {
   totalSpentUSDT: number;
   totalTransactions: number;
-  totalRefundedUSDT: number;
-  totalRefundedCount: number;
   byServiceType: Record<string, { count: number; totalUSDT: number }>;
   byTemplate: Record<string, { count: number; totalUSDT: number }>;
   byDay: Record<string, number>; // YYYY-MM-DD → USDT
@@ -84,7 +82,10 @@ export interface ConsumptionSummary {
   firstTransactionAt: number;
   lastTransactionAt: number;
   averagePerTransaction: number;
-  refundRate: number;
+  failedCount: number;
+  failedUSDT: number;
+  disclaimerCN: string;
+  disclaimerEN: string;
 }
 
 export interface CSVExportOptions {
@@ -113,7 +114,6 @@ const SERVICE_NAMES: Record<AIServiceType, { cn: string; en: string }> = {
   DAILY_BRIEFING:     { cn: '每日简报', en: 'Daily Briefing' },
   BLIND_BOX_UNLOCK:   { cn: '盲盒解锁', en: 'Blind Box Unlock' },
   MATCH_ENGINE:       { cn: '策略匹配', en: 'Strategy Match' },
-  INSURANCE_PURCHASE: { cn: '保险购买', en: 'Insurance Purchase' },
   CREATOR_REVIEW:     { cn: '创作者审核', en: 'Creator Review' },
   MARKET_STATE:       { cn: '市场状态', en: 'Market State' },
   STRATEGY_MATCH:     { cn: 'AI策略匹配', en: 'AI Strategy Match' },
@@ -178,9 +178,9 @@ export class ConsumptionHistoryEngine {
     if (endDate) records = records.filter(r => r.createdAt <= endDate);
 
     const successRecords = records.filter(r => r.status === 'SUCCESS');
-    const refundedRecords = records.filter(r => r.status === 'REFUNDED');
+    const failedRecords = records.filter(r => r.status === 'FAILED');
     const totalSpent = successRecords.reduce((s, r) => s + r.chargeUSDT, 0);
-    const totalRefunded = refundedRecords.reduce((s, r) => s + r.chargeUSDT, 0);
+    const totalFailed = failedRecords.reduce((s, r) => s + r.chargeUSDT, 0);
 
     // By service type
     const byServiceType: Record<string, { count: number; totalUSDT: number }> = {};
@@ -220,13 +220,14 @@ export class ConsumptionHistoryEngine {
     return {
       totalSpentUSDT: Math.round(totalSpent * 100) / 100,
       totalTransactions: successRecords.length,
-      totalRefundedUSDT: Math.round(totalRefunded * 100) / 100,
-      totalRefundedCount: refundedRecords.length,
       byServiceType, byTemplate, byDay, byMonth,
       firstTransactionAt: sorted[0]?.createdAt || 0,
       lastTransactionAt: sorted[sorted.length - 1]?.createdAt || 0,
       averagePerTransaction: successRecords.length > 0 ? Math.round((totalSpent / successRecords.length) * 100) / 100 : 0,
-      refundRate: records.length > 0 ? Math.round((refundedRecords.length / records.length) * 10000) / 100 : 0,
+      failedCount: failedRecords.length,
+      failedUSDT: Math.round(totalFailed * 100) / 100,
+      disclaimerCN: '服务一经消费，非AI故障不退款',
+      disclaimerEN: 'No refunds for consumed services except AI execution failure.',
     };
   }
 
@@ -298,7 +299,7 @@ export class ConsumptionHistoryEngine {
     for (let i = 0; i < count; i++) {
       const serviceType = types[i % types.length];
       const chargeUSDT = [0.5, 1, 1.5, 2][Math.floor(Math.random() * 4)];
-      const statuses: AIChargeStatus[] = ['SUCCESS', 'SUCCESS', 'SUCCESS', 'SUCCESS', 'FAILED', 'REFUNDED'];
+      const statuses: AIChargeStatus[] = ['SUCCESS', 'SUCCESS', 'SUCCESS', 'SUCCESS', 'FAILED', 'SUCCESS'];
       const status = statuses[Math.floor(Math.random() * statuses.length)];
       this.record({
         userId, walletId: `wallet_${userId}`,
@@ -309,7 +310,6 @@ export class ConsumptionHistoryEngine {
         transactionId: `txn_${i}_${now}`,
         requestId: `req_${i}_${now}`,
         createdAt: now - (count - i) * 3600000 * 2,
-        ...(status === 'REFUNDED' ? { refundedAt: now - (count - i) * 3600000 * 2 + 600000, refundReason: 'AI分析超时无结果' } : {}),
       });
     }
   }
