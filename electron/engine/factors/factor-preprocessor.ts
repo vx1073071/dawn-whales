@@ -684,6 +684,174 @@ export class FactorPreprocessor {
   }
 }
 
+// ── R218 JVS#1: 增强3步管线 (MAD + 行业中性化 + Z-score) + 质量报告 ─────
+
+export type QualityGrade = 'A' | 'B' | 'C' | 'D' | 'F';
+
+export interface FactorQualityReport {
+  timestamp: number;
+  factorName: string;
+  market: string;
+  rawCount: number;
+  validCount: number;
+  outlierCount: number;
+  outlierPct: number;
+  industryBiasBefore: number;   // max industry avg deviation (raw)
+  industryBiasAfter: number;    // after neutralization
+  coverageScore: number;        // 0-1 valid/raw
+  outlierScore: number;         // 0-1 inverted
+  neutralityScore: number;      // 0-1 inverted
+  normalizationScore: number;   // 0-1 (distribution closeness to normal)
+  compositeQualityScore: number; // 0-100
+  grade: QualityGrade;
+  warnings: string[];
+  recommendation: string;
+}
+
+export interface EnhancedPreprocessResult extends PreprocessResult {
+  qualityReport: FactorQualityReport;
+}
+
+/**
+ * R218 upgrade: runs the enhanced 3-step pipeline:
+ *   1. MAD outlier detection & capping
+ *   2. Industry neutralization (cross-sectional)
+ *   3. Z-score normalization
+ * Plus quality report with A-F grading.
+ */
+export function preprocessEnhanced(
+  rawValues: number[],
+  industryCodes: number[],
+  factorName: string,
+  market: string,
+  config?: Partial<PreprocessConfig>,
+): EnhancedPreprocessResult {
+  const preprocessor = config ? new FactorPreprocessor(config) : getPreprocessor();
+
+  const stages: PreprocessStage[] = ['mad_outlier', 'industry_neutralize', 'zscore'];
+
+  // Run the 3-stage pipeline
+  const baseResult = preprocessor.process(rawValues, {
+    stages,
+    industryCodes,
+  });
+
+  // ── Build quality report ─────────────────────────────────────────────
+  const validValues = baseResult.values.filter(v => !isNaN(v) && isFinite(v));
+  const rawCount = rawValues.length;
+  const validCount = validValues.length;
+  const outlierCount = baseResult.trace.find(t => t.stage === 'mad_outlier')?.valuesChanged || 0;
+  const outlierPct = rawCount > 0 ? outlierCount / rawCount : 0;
+
+  // Industry bias: max deviation of industry means from grand mean
+  const allMean = validValues.reduce((s, v) => s + v, 0) / Math.max(1, validValues.length);
+  const industryGroups = new Map<number, number[]>();
+  for (let i = 0; i < rawValues.length; i++) {
+    if (!isNaN(rawValues[i]) && isFinite(rawValues[i])) {
+      const ic = industryCodes[i] ?? 0;
+      const group = industryGroups.get(ic) || [];
+      group.push(rawValues[i]);
+      industryGroups.set(ic, group);
+    }
+  }
+  let maxBiasBefore = 0;
+  for (const [_, vals] of industryGroups) {
+    const im = vals.reduce((s, v) => s + v, 0) / vals.length;
+    maxBiasBefore = Math.max(maxBiasBefore, Math.abs(im - allMean));
+  }
+
+  // After neutralization, compute bias again on processed values
+  const procIndustryGroups = new Map<number, number[]>();
+  for (let i = 0; i < baseResult.values.length; i++) {
+    if (!isNaN(baseResult.values[i]) && isFinite(baseResult.values[i])) {
+      const ic = i < industryCodes.length ? (industryCodes[i] ?? 0) : 0;
+      const group = procIndustryGroups.get(ic) || [];
+      group.push(baseResult.values[i]);
+      procIndustryGroups.set(ic, group);
+    }
+  }
+  const procAllMean = validCount > 0
+    ? baseResult.values.filter(v => !isNaN(v) && isFinite(v)).reduce((s, v) => s + v, 0) / validCount
+    : 0;
+  let maxBiasAfter = 0;
+  for (const [_, vals] of procIndustryGroups) {
+    const im = vals.reduce((s, v) => s + v, 0) / vals.length;
+    maxBiasAfter = Math.max(maxBiasAfter, Math.abs(im - procAllMean));
+  }
+
+  // Coverage score
+  const coverageScore = rawCount > 0 ? validCount / rawCount : 0;
+
+  // Outlier score (inverted: fewer outliers = higher)
+  const outlierScore = Math.max(0, 1 - outlierPct * 5); // 20%+ outliers = 0
+
+  // Neutrality score (maxBiasAfter / allMean, inverted)
+  const neutralityScore = allMean !== 0
+    ? Math.max(0, 1 - Math.min(1, Math.abs(maxBiasAfter / Math.max(0.001, Math.abs(allMean)))))
+    : 1;
+
+  // Z-score distribution closeness to normal (skewness check)
+  const n = validCount;
+  const mean = n > 0 ? validValues.reduce((s, v) => s + v, 0) / n : 0;
+  const variance = n > 1 ? validValues.reduce((s, v) => s + (v - mean) ** 2, 0) / (n - 1) : 0;
+  const std = Math.sqrt(variance);
+  let skewness = 0;
+  if (std > 0 && n > 2) {
+    skewness = validValues.reduce((s, v) => s + ((v - mean) / std) ** 3, 0) / n;
+  }
+  const normalizationScore = Math.max(0, 1 - Math.min(1, Math.abs(skewness) / 2)); // skew>2 = 0
+
+  // Composite quality score (0-100)
+  const compositeQualityScore = Math.round(
+    (coverageScore * 30 + outlierScore * 25 + neutralityScore * 25 + normalizationScore * 20)
+  );
+
+  // Grading
+  let grade: QualityGrade;
+  if (compositeQualityScore >= 90) grade = 'A';
+  else if (compositeQualityScore >= 75) grade = 'B';
+  else if (compositeQualityScore >= 60) grade = 'C';
+  else if (compositeQualityScore >= 40) grade = 'D';
+  else grade = 'F';
+
+  // Warnings
+  const warnings: string[] = [];
+  if (outlierPct > 0.1) warnings.push(`MAD检出${(outlierPct * 100).toFixed(1)}%离群值, 已截尾处理。`);
+  if (coverageScore < 0.5) warnings.push(`因子覆盖率仅${(coverageScore * 100).toFixed(0)}%, 大量缺失数据。`);
+  if (maxBiasAfter > Math.abs(allMean) * 0.2) warnings.push('行业中性化后偏差仍较大, 可能有未建模行业因子。');
+  if (Math.abs(skewness) > 1.5) warnings.push(`偏度${skewness.toFixed(2)}, 分布严重非正态。`);
+  if (grade === 'F') warnings.push('⚠️ 因子质量极差, 不建议用于实盘策略。');
+
+  const qualityReport: FactorQualityReport = {
+    timestamp: Date.now(),
+    factorName,
+    market,
+    rawCount,
+    validCount,
+    outlierCount,
+    outlierPct: Math.round(outlierPct * 10000) / 10000,
+    industryBiasBefore: Math.round(maxBiasBefore * 10000) / 10000,
+    industryBiasAfter: Math.round(maxBiasAfter * 10000) / 10000,
+    coverageScore: Math.round(coverageScore * 1000) / 1000,
+    outlierScore: Math.round(outlierScore * 1000) / 1000,
+    neutralityScore: Math.round(neutralityScore * 1000) / 1000,
+    normalizationScore: Math.round(normalizationScore * 1000) / 1000,
+    compositeQualityScore,
+    grade,
+    warnings,
+    recommendation: grade === 'A' || grade === 'B'
+      ? '因子预处理质量良好, 可直接用于多因子模型。'
+      : grade === 'C'
+        ? '因子质量一般, 建议检查数据源或考虑权重折扣。'
+        : '因子质量不足, 强烈建议追溯原始数据问题。',
+  };
+
+  return {
+    ...baseResult,
+    qualityReport,
+  };
+}
+
 // ── Factory ─────────────────────────────────────────────────────────────────
 
 let _defaultPreprocessor: FactorPreprocessor | null = null;

@@ -200,14 +200,48 @@ export class TemplateEngine {
     return types.map(t => ({ ...AI_TRIGGERS[t], targetParams }));
   }
 
-  /** Rank templates by composite score (popularity * 0.3 + winRate * 0.4 + sharpe * 0.3) */
+  /**
+   * Rank templates by composite score with dimension normalization (R218 JVS#2).
+   *
+   * Problem: winRate (0-1) ×40 + sharpe (0-3+) ×30 + popularity (0-100) ×0.3
+   *   → sharpe dominates because max magnitude > winRate max magnitude
+   *   → dimensions not comparable → ranking biased toward high-sharpe templates
+   *
+   * Fix: normalize each dimension to 0-1 range within the cohort,
+   *   then apply weights. All dimensions contribute equally by weight.
+   */
   rankTemplates(templates: StrategyTemplate[], limit?: number): StrategyTemplate[] {
-    const scored = [...templates].sort((a, b) => {
-      const scoreA = (a.popularityScore || 0) * 0.3 + (a.winRate || 0) * 40 + (a.sharpe || 0) * 30;
-      const scoreB = (b.popularityScore || 0) * 0.3 + (b.winRate || 0) * 40 + (b.sharpe || 0) * 30;
-      return scoreB - scoreA;
-    });
-    return limit ? scored.slice(0, limit) : scored;
+    if (templates.length === 0) return [];
+    if (templates.length === 1) return templates;
+
+    // Extract raw dimensions
+    const popularity = templates.map(t => t.popularityScore || 0);
+    const winRates = templates.map(t => t.winRate || 0);
+    const sharpes = templates.map(t => t.sharpe || 0);
+
+    // Normalize each to 0-1
+    const normPop = this.normalize0to1(popularity);
+    const normWR = this.normalize0to1(winRates);
+    const normSharpe = this.normalize0to1(sharpes);
+
+    // Scored with weights (must sum to 1.0)
+    const scored = templates.map((t, i) => ({
+      template: t,
+      score: normPop[i] * 0.3 + normWR[i] * 0.4 + normSharpe[i] * 0.3,
+    }));
+
+    scored.sort((a, b) => b.score - a.score);
+
+    return (limit ? scored.slice(0, limit) : scored).map(s => s.template);
+  }
+
+  /** Normalize array to 0-1 range. Returns all 0.5 if all values identical. */
+  private normalize0to1(values: number[]): number[] {
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min;
+    if (range < 1e-10) return values.map(() => 0.5); // all identical → neutral
+    return values.map(v => (v - min) / range);
   }
 
   /** Get all distinct market tags used by a template set */
