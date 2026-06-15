@@ -5987,5 +5987,82 @@
       "description": "Risque élevé, horizon court terme. Positions à effet de levier ou concentrées visant un rendement maximal. Pour traders expérimentés et convaincus.",
       "recommendedFor": "Idéal pour : Traders expérimentés, tolérance au risque élevée, spéculation court terme"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "Aperçu des frais",
+    "serviceTitle": "Service : {service}",
+    "priceLabel": "Prix",
+    "yourBalance": "Votre solde",
+    "balanceAfter": "Après paiement",
+    "freeRemaining": "{count} utilisation(s) gratuite(s) restante(s)",
+    "freeUsedUp": "Quota gratuit épuisé",
+    "confirmPay": "Payer {price} USDT",
+    "useFree": "Utiliser gratuitement",
+    "cancel": "Annuler",
+    "notEnoughBalance": "Solde insuffisant",
+    "needMore": "Encore {shortfall} USDT nécessaires",
+    "rechargeAction": "Recharger",
+    "feeTransparent": "Tous les frais affichés. Aucun coût caché.",
+    "perUse": "/utilisation"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "Trouvez votre stratégie",
+    "sectionSubtitle": "Répondez à 3 questions, obtenez des recommandations personnalisées",
+    "step1": "Montant d'investissement",
+    "step2": "Marchés préférés",
+    "step3": "Tolérance au risque",
+    "q1_tiny": "Moins de 1 000 $",
+    "q1_small": "1 000 - 10 000 $",
+    "q1_medium": "10 000 - 100 000 $",
+    "q1_large": "Plus de 100 000 $",
+    "q2_us": "Actions US",
+    "q2_hk": "Actions HK",
+    "q2_crypto": "Crypto",
+    "q2_global": "Global (Tout)",
+    "q3_conservative": "Conservateur — Dormez tranquille",
+    "q3_balanced": "Équilibré — Croissance avec protection",
+    "q3_aggressive": "Agressif — Maximiser les rendements",
+    "resultTitle": "Vos correspondances",
+    "resultMatches": "{count} modèles de stratégie correspondent à votre profil",
+    "resultNoMatch": "Aucune correspondance exacte. Ajustez vos préférences ou parcourez tous les modèles.",
+    "resultRetry": "Réessayer",
+    "resultExploreAll": "Parcourir les {count} modèles"
+  },
+  "bundlePricing": {
+    "sectionTitle": "Forfaits de services IA",
+    "sectionSubtitle": "Économisez jusqu'à 55% avec les forfaits",
+    "basic": {
+      "name": "Basique",
+      "price": "Paiement à l'usage",
+      "desc": "Service unique, paiement à l'usage. Sans engagement."
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "4 USDT / 5 utilisations",
+      "desc": "20% d'économie vs usage unique. Pour utilisateurs réguliers.",
+      "mostPopular": "Le plus populaire"
+    },
+    "elite": {
+      "name": "Élite",
+      "price": "6,5 USDT / 10 utilisations",
+      "desc": "35% d'économie vs usage unique. Pour utilisateurs intensifs.",
+      "bestValue": "Meilleur rapport qualité-prix"
+    },
+    "ultimate": {
+      "name": "Ultime",
+      "price": "10 USDT / mois illimité",
+      "desc": "Tous les services IA illimités. 55%+ d'économie à 20+ utilisations/mois."
+    },
+    "savePercent": "{percent}% d'économie",
+    "perAnalysis": "{price} USDT / analyse",
+    "includesAll": "Les 7 services IA inclus : Match stratégique, État du marché, Briefing quotidien, Scan d'arbitrage, Push de signaux, Stress test, Attribution",
+    "comparePlans": "Comparer les forfaits"
+  },
+  "refundPolicy": {
+    "sectionTitle": "Politique de remboursement",
+    "ironLaw": "Pas de remboursement",
+    "ironLawDetail": "Tous les services IA ne sont pas remboursables. Veuillez vérifier l'aperçu des frais avant de payer.",
+    "aiFaultException": "Exception : Si le service IA échoue (erreur technique uniquement), les frais sont automatiquement remboursés.",
+    "acknowledge": "Je comprends et j'accepte"
   }
 }

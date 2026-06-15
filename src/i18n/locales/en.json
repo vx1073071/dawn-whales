@@ -6044,5 +6044,82 @@
       "description": "High risk, short-term horizon. Leveraged or concentrated positions pursuing maximum returns. Suitable for experienced, high-conviction traders.",
       "recommendedFor": "Best for: Experienced traders, high risk tolerance, short-term speculation"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "Fee Preview",
+    "serviceTitle": "Service: {service}",
+    "priceLabel": "Price",
+    "yourBalance": "Your Balance",
+    "balanceAfter": "After payment",
+    "freeRemaining": "{count} free use(s) remaining",
+    "freeUsedUp": "Free quota used up",
+    "confirmPay": "Pay {price} USDT",
+    "useFree": "Use Free",
+    "cancel": "Cancel",
+    "notEnoughBalance": "Not enough balance",
+    "needMore": "Need {shortfall} USDT more",
+    "rechargeAction": "Recharge",
+    "feeTransparent": "All fees shown upfront. No hidden charges.",
+    "perUse": "/use"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "Find Your Strategy",
+    "sectionSubtitle": "Answer 3 questions, get personalized recommendations",
+    "step1": "Investment Amount",
+    "step2": "Preferred Markets",
+    "step3": "Risk Tolerance",
+    "q1_tiny": "Under $1,000",
+    "q1_small": "$1,000 - $10,000",
+    "q1_medium": "$10,000 - $100,000",
+    "q1_large": "Over $100,000",
+    "q2_us": "US Stocks",
+    "q2_hk": "HK Stocks",
+    "q2_crypto": "Crypto",
+    "q2_global": "Global (All)",
+    "q3_conservative": "Conservative — Sleep well at night",
+    "q3_balanced": "Balanced — Growth with protection",
+    "q3_aggressive": "Aggressive — Maximize returns",
+    "resultTitle": "Your Matches",
+    "resultMatches": "{count} strategy templates matched your profile",
+    "resultNoMatch": "No exact match. Try adjusting your preferences or browse all templates.",
+    "resultRetry": "Retry",
+    "resultExploreAll": "Browse All {count} Templates"
+  },
+  "bundlePricing": {
+    "sectionTitle": "AI Service Bundles",
+    "sectionSubtitle": "Save up to 55% with bundles vs pay-per-use",
+    "basic": {
+      "name": "Basic",
+      "price": "Pay as you go",
+      "desc": "Single service, pay per use. No commitment."
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "4 USDT / 5 uses",
+      "desc": "Save 20% vs pay-per-use. Best for regular users.",
+      "mostPopular": "Most Popular"
+    },
+    "elite": {
+      "name": "Elite",
+      "price": "6.5 USDT / 10 uses",
+      "desc": "Save 35% vs pay-per-use. For power users.",
+      "bestValue": "Best Value"
+    },
+    "ultimate": {
+      "name": "Ultimate",
+      "price": "10 USDT / month unlimited",
+      "desc": "All AI services unlimited. Save 55%+ at 20+ uses/month."
+    },
+    "savePercent": "Save {percent}%",
+    "perAnalysis": "{price} USDT / analysis",
+    "includesAll": "Includes all 7 AI services: Strategy Match, Market State, Daily Briefing, Arbitrage Scan, Signal Push, Stress Test, Attribution",
+    "comparePlans": "Compare Plans"
+  },
+  "refundPolicy": {
+    "sectionTitle": "Refund Policy",
+    "ironLaw": "No Refunds",
+    "ironLawDetail": "All AI services are non-refundable. Please review the fee preview carefully before confirming payment.",
+    "aiFaultException": "Exception: If the AI service fails to execute (technical error only), the fee is automatically refunded.",
+    "acknowledge": "I understand and agree"
   }
 }

@@ -5990,5 +5990,82 @@
       "description": "高リスク・短期保有。レバレッジや集中ポジションで最大リターンを追求。経験豊富で確信のあるトレーダー向け。",
       "recommendedFor": "最適：経験豊富なトレーダー、高リスク許容、短期投機"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "料金プレビュー",
+    "serviceTitle": "サービス：{service}",
+    "priceLabel": "価格",
+    "yourBalance": "残高",
+    "balanceAfter": "支払後残高",
+    "freeRemaining": "残り{count}回無料",
+    "freeUsedUp": "無料枠を使い切りました",
+    "confirmPay": "{price} USDTを支払う",
+    "useFree": "無料で使う",
+    "cancel": "キャンセル",
+    "notEnoughBalance": "残高不足",
+    "needMore": "あと{shortfall} USDT必要",
+    "rechargeAction": "チャージする",
+    "feeTransparent": "料金はすべて事前表示。隠れた費用はありません。",
+    "perUse": "/回"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "あなたに合った戦略を見つける",
+    "sectionSubtitle": "3つの質問に答えて、あなたに合った戦略を",
+    "step1": "投資金額",
+    "step2": "希望する市場",
+    "step3": "リスク許容度",
+    "q1_tiny": "1,000ドル未満",
+    "q1_small": "1,000〜10,000ドル",
+    "q1_medium": "10,000〜100,000ドル",
+    "q1_large": "100,000ドル以上",
+    "q2_us": "米国株",
+    "q2_hk": "香港株",
+    "q2_crypto": "暗号資産",
+    "q2_global": "グローバル（すべて）",
+    "q3_conservative": "保守的——夜も安心",
+    "q3_balanced": "バランス——成長と保護の両立",
+    "q3_aggressive": "アグレッシブ——リターン最大化",
+    "resultTitle": "あなたへのおすすめ",
+    "resultMatches": "あなたのプロファイルに{count}件の戦略テンプレートがマッチしました",
+    "resultNoMatch": "完全一致なし。条件を調整するか、全テンプレートを閲覧してください。",
+    "resultRetry": "やり直す",
+    "resultExploreAll": "{count}件のテンプレートをすべて見る"
+  },
+  "bundlePricing": {
+    "sectionTitle": "AIサービスパック",
+    "sectionSubtitle": "都度払いより最大55%お得",
+    "basic": {
+      "name": "ベーシック",
+      "price": "都度払い",
+      "desc": "単発サービス、都度払い。契約不要。"
+    },
+    "pro": {
+      "name": "プロ",
+      "price": "4 USDT / 5回",
+      "desc": "都度払いより20%お得。定期的に使う方に。",
+      "mostPopular": "一番人気"
+    },
+    "elite": {
+      "name": "エリート",
+      "price": "6.5 USDT / 10回",
+      "desc": "都度払いより35%お得。ヘビーユーザー向け。",
+      "bestValue": "コスパ最強"
+    },
+    "ultimate": {
+      "name": "アルティメット",
+      "price": "10 USDT / 月 無制限",
+      "desc": "全AIサービス無制限。月20回以上で55%+お得。"
+    },
+    "savePercent": "{percent}%お得",
+    "perAnalysis": "{price} USDT / 回",
+    "includesAll": "全7AIサービスを含む：戦略マッチ、市場状態、日次ブリーフィング、アービトラージスキャン、シグナルプッシュ、ストレステスト、要因分析",
+    "comparePlans": "プランを比較"
+  },
+  "refundPolicy": {
+    "sectionTitle": "返金ポリシー",
+    "ironLaw": "返金不可",
+    "ironLawDetail": "すべてのAIサービスは返金不可です。支払い前に料金プレビューをよくご確認ください。",
+    "aiFaultException": "唯一の例外：AIサービスの実行に失敗した場合（技術的エラーのみ）、料金は自動的に返金されます。",
+    "acknowledge": "理解し同意します"
   }
 }

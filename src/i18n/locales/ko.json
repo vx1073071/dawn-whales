@@ -5987,5 +5987,82 @@
       "description": "고위험, 단기 투자. 레버리지 또는 집중 포지션으로 최대 수익 추구. 경험 많고 확신 있는 트레이더에게 적합.",
       "recommendedFor": "적합: 숙련된 트레이더, 높은 위험 감내, 단기 투기"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "비용 미리보기",
+    "serviceTitle": "서비스：{service}",
+    "priceLabel": "가격",
+    "yourBalance": "잔액",
+    "balanceAfter": "결제 후 잔액",
+    "freeRemaining": "무료 {count}회 남음",
+    "freeUsedUp": "무료 횟수 소진",
+    "confirmPay": "{price} USDT 결제",
+    "useFree": "무료 사용",
+    "cancel": "취소",
+    "notEnoughBalance": "잔액 부족",
+    "needMore": "{shortfall} USDT 더 필요",
+    "rechargeAction": "충전하기",
+    "feeTransparent": "모든 비용 사전 공개. 숨은 비용 없음.",
+    "perUse": "/회"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "당신의 전략 찾기",
+    "sectionSubtitle": "3가지 질문에 답하면 맞춤 추천",
+    "step1": "투자 금액",
+    "step2": "선호 시장",
+    "step3": "위험 감내도",
+    "q1_tiny": "1천 달러 미만",
+    "q1_small": "1천~1만 달러",
+    "q1_medium": "1만~10만 달러",
+    "q1_large": "10만 달러 이상",
+    "q2_us": "미국 주식",
+    "q2_hk": "홍콩 주식",
+    "q2_crypto": "암호화폐",
+    "q2_global": "글로벌 (전체)",
+    "q3_conservative": "보수적——밤에 편히 잠들기",
+    "q3_balanced": "균형——성장과 보호의 조화",
+    "q3_aggressive": "공격적——수익 극대화",
+    "resultTitle": "맞춤 추천",
+    "resultMatches": "프로필에 맞는 {count}개의 전략 템플릿",
+    "resultNoMatch": "완전 일치 없음. 조건을 조정하거나 전체 템플릿을 둘러보세요.",
+    "resultRetry": "다시 선택",
+    "resultExploreAll": "{count}개 템플릿 전체 보기"
+  },
+  "bundlePricing": {
+    "sectionTitle": "AI 서비스 패키지",
+    "sectionSubtitle": "건당 결제 대비 최대 55% 절약",
+    "basic": {
+      "name": "베이직",
+      "price": "건당 결제",
+      "desc": "단건 서비스, 건당 결제. 약정 없음."
+    },
+    "pro": {
+      "name": "프로",
+      "price": "4 USDT / 5회",
+      "desc": "건당 결제 대비 20% 절약. 정기 사용자에게 적합.",
+      "mostPopular": "가장 인기"
+    },
+    "elite": {
+      "name": "엘리트",
+      "price": "6.5 USDT / 10회",
+      "desc": "건당 결제 대비 35% 절약. 파워 유저에게 적합.",
+      "bestValue": "가성비 최고"
+    },
+    "ultimate": {
+      "name": "얼티밋",
+      "price": "10 USDT / 월 무제한",
+      "desc": "모든 AI 서비스 무제한. 월 20회 이상 시 55%+ 절약."
+    },
+    "savePercent": "{percent}% 절약",
+    "perAnalysis": "{price} USDT / 회",
+    "includesAll": "7개 AI 서비스 전체 포함: 전략 매칭, 시장 상태, 일일 브리핑, 차익 스캔, 신호 푸시, 스트레스 테스트, 성과 분석",
+    "comparePlans": "플랜 비교"
+  },
+  "refundPolicy": {
+    "sectionTitle": "환불 정책",
+    "ironLaw": "환불 불가",
+    "ironLawDetail": "모든 AI 서비스는 환불이 불가합니다. 결제 전 비용 미리보기를 꼭 확인하세요.",
+    "aiFaultException": "유일한 예외: AI 서비스 실행 실패(기술적 오류만 해당) 시 비용이 자동 환불됩니다.",
+    "acknowledge": "이해하고 동의합니다"
   }
 }

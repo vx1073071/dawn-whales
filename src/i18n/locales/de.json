@@ -5987,5 +5987,82 @@
       "description": "Hohes Risiko, kurzfristiger Horizont. Gehebelte oder konzentrierte Positionen für maximale Rendite. Für erfahrene, überzeugte Trader.",
       "recommendedFor": "Am besten für: Erfahrene Trader, hohe Risikotoleranz, kurzfristige Spekulation"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "Kostenvorschau",
+    "serviceTitle": "Dienst: {service}",
+    "priceLabel": "Preis",
+    "yourBalance": "Ihr Guthaben",
+    "balanceAfter": "Nach Zahlung",
+    "freeRemaining": "{count} kostenlose Nutzung(en) übrig",
+    "freeUsedUp": "Kostenloses Kontingent aufgebraucht",
+    "confirmPay": "{price} USDT bezahlen",
+    "useFree": "Kostenlos nutzen",
+    "cancel": "Abbrechen",
+    "notEnoughBalance": "Guthaben nicht ausreichend",
+    "needMore": "{shortfall} USDT mehr benötigt",
+    "rechargeAction": "Aufladen",
+    "feeTransparent": "Alle Gebühren im Voraus. Keine versteckten Kosten.",
+    "perUse": "/Nutzung"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "Finde deine Strategie",
+    "sectionSubtitle": "3 Fragen beantworten, personalisierte Empfehlungen erhalten",
+    "step1": "Anlagebetrag",
+    "step2": "Bevorzugte Märkte",
+    "step3": "Risikotoleranz",
+    "q1_tiny": "Unter 1.000 $",
+    "q1_small": "1.000 - 10.000 $",
+    "q1_medium": "10.000 - 100.000 $",
+    "q1_large": "Über 100.000 $",
+    "q2_us": "US-Aktien",
+    "q2_hk": "HK-Aktien",
+    "q2_crypto": "Krypto",
+    "q2_global": "Global (Alle)",
+    "q3_conservative": "Konservativ — Nachts ruhig schlafen",
+    "q3_balanced": "Ausgewogen — Wachstum mit Schutz",
+    "q3_aggressive": "Aggressiv — Rendite maximieren",
+    "resultTitle": "Deine Ergebnisse",
+    "resultMatches": "{count} Strategievorlagen passen zu deinem Profil",
+    "resultNoMatch": "Keine genaue Übereinstimmung. Passe deine Einstellungen an oder durchsuche alle Vorlagen.",
+    "resultRetry": "Neu versuchen",
+    "resultExploreAll": "Alle {count} Vorlagen durchsuchen"
+  },
+  "bundlePricing": {
+    "sectionTitle": "KI-Servicepakete",
+    "sectionSubtitle": "Bis zu 55% sparen mit Paketen vs Einzelnutzung",
+    "basic": {
+      "name": "Basic",
+      "price": "Pay-per-Use",
+      "desc": "Einzeldienst, Pay-per-Use. Keine Bindung."
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "4 USDT / 5 Nutzungen",
+      "desc": "20% günstiger als Einzelnutzung. Für regelmäßige Nutzer.",
+      "mostPopular": "Am beliebtesten"
+    },
+    "elite": {
+      "name": "Elite",
+      "price": "6,5 USDT / 10 Nutzungen",
+      "desc": "35% günstiger als Einzelnutzung. Für Power-User.",
+      "bestValue": "Bestes Preis-Leistungs-Verhältnis"
+    },
+    "ultimate": {
+      "name": "Ultimate",
+      "price": "10 USDT / Monat unbegrenzt",
+      "desc": "Alle KI-Dienste unbegrenzt. 55%+ Ersparnis bei 20+ Nutzungen/Monat."
+    },
+    "savePercent": "{percent}% sparen",
+    "perAnalysis": "{price} USDT / Analyse",
+    "includesAll": "Alle 7 KI-Dienste: Strategie-Match, Marktstatus, Tägliches Briefing, Arbitrage-Scan, Signal-Push, Stresstest, Attribution",
+    "comparePlans": "Pläne vergleichen"
+  },
+  "refundPolicy": {
+    "sectionTitle": "Rückerstattungsrichtlinie",
+    "ironLaw": "Keine Rückerstattung",
+    "ironLawDetail": "Alle KI-Dienste sind nicht erstattungsfähig. Bitte prüfen Sie die Kostenvorschau vor der Zahlung.",
+    "aiFaultException": "Ausnahme: Schlägt der KI-Dienst fehl (nur technischer Fehler), wird die Gebühr automatisch erstattet.",
+    "acknowledge": "Ich verstehe und stimme zu"
   }
 }

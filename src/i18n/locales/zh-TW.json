@@ -5987,5 +5987,82 @@
       "description": "高風險、短周期，使用槓桿或集中持倉追求最大收益。適合經驗豐富、信念堅定的交易者。",
       "recommendedFor": "適合：資深交易者、高風險承受力、短線投機"
     }
+  },
+  "costPreview": {
+    "sectionTitle": "費用預覽",
+    "serviceTitle": "服務：{service}",
+    "priceLabel": "價格",
+    "yourBalance": "你的餘額",
+    "balanceAfter": "支付後餘額",
+    "freeRemaining": "剩餘{count}次免費",
+    "freeUsedUp": "免費額度已用完",
+    "confirmPay": "支付 {price} USDT",
+    "useFree": "免費使用",
+    "cancel": "取消",
+    "notEnoughBalance": "餘額不足",
+    "needMore": "還需 {shortfall} USDT",
+    "rechargeAction": "去充值",
+    "feeTransparent": "費用完全透明，無隱藏收費",
+    "perUse": "/次"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "找到你的策略",
+    "sectionSubtitle": "回答3個問題，獲得個性化推薦",
+    "step1": "投資金額",
+    "step2": "偏好市場",
+    "step3": "風險承受",
+    "q1_tiny": "1千美元以下",
+    "q1_small": "1千-1萬美元",
+    "q1_medium": "1萬-10萬美元",
+    "q1_large": "10萬美元以上",
+    "q2_us": "美股",
+    "q2_hk": "港股",
+    "q2_crypto": "加密貨幣",
+    "q2_global": "全球（全部）",
+    "q3_conservative": "保守型——晚上睡得安穩",
+    "q3_balanced": "平衡型——增長兼顧保護",
+    "q3_aggressive": "激進型——追求最大收益",
+    "resultTitle": "為你匹配",
+    "resultMatches": "已為你匹配 {count} 個策略模板",
+    "resultNoMatch": "暫無完全匹配，調整偏好或瀏覽全部模板",
+    "resultRetry": "重新選擇",
+    "resultExploreAll": "瀏覽全部{count}個模板"
+  },
+  "bundlePricing": {
+    "sectionTitle": "AI服務套餐",
+    "sectionSubtitle": "套餐比單買省高達55%",
+    "basic": {
+      "name": "基礎版",
+      "price": "按次付費",
+      "desc": "單次服務，按次付費，無需承諾"
+    },
+    "pro": {
+      "name": "進階版",
+      "price": "4 USDT / 5次",
+      "desc": "比單買省20%。適合經常使用的用戶。",
+      "mostPopular": "最受歡迎"
+    },
+    "elite": {
+      "name": "精英版",
+      "price": "6.5 USDT / 10次",
+      "desc": "比單買省35%。適合重度用戶。",
+      "bestValue": "超值之選"
+    },
+    "ultimate": {
+      "name": "旗艦版",
+      "price": "10 USDT / 月 無限次",
+      "desc": "全部AI服務無限次使用。月用20次省55%+。"
+    },
+    "savePercent": "省{percent}%",
+    "perAnalysis": "{price} USDT / 次",
+    "includesAll": "包含全部7項AI服務：策略匹配、市場狀態、每日簡報、套利掃描、信號推送、壓力測試、歸因分析",
+    "comparePlans": "對比套餐"
+  },
+  "refundPolicy": {
+    "sectionTitle": "退款政策",
+    "ironLaw": "不支持退款",
+    "ironLawDetail": "所有AI服務不支持退款。請在支付前仔細查看費用預覽。",
+    "aiFaultException": "唯一例外：AI服務執行失敗（僅限技術故障）時，費用將自動退還。",
+    "acknowledge": "我已知曉並同意"
   }
 }
