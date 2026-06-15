@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R143 J03 — Transfer Service
  * 

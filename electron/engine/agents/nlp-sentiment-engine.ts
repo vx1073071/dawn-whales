@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /**
  * JVS-95: NLP Sentiment Analysis Engine
  * Analyzes financial text sentiment with built-in Chinese and English lexicons.

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * usdt-points-manager.ts — R103 J-01 USDT Points Manager
  *
@@ -9,7 +8,6 @@
  * Ledger table: id / userId / amount / type / reason / tradeId / balanceAfter / timestamp
  */
 
-import type { FiatCurrency } from './exchange-rate-engine';
 
 // ─── Types ───
 

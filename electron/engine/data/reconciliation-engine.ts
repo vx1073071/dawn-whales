@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * reconciliation-engine.ts — R104 J-01 Reconciliation Engine
  *
@@ -12,7 +11,7 @@
  * All precision: 6 decimal places.
  */
 
-import { USDTPointsManager, LedgerEntry, TxType } from './usdt-points-manager';
+import { USDTPointsManager } from './usdt-points-manager';
 import type { FiatCurrency } from './exchange-rate-engine';
 
 // ─── Types ───
