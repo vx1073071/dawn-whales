@@ -43,6 +43,10 @@ export interface PriceSnapshot {
   prevClose?: number;
   /** Adjusted close (for dividend/split handling) */
   adjClose?: number;
+  /** Unix timestamp of this snapshot */
+  timestamp?: number;
+  /** ISO date string */
+  date?: string;
 }
 
 export interface FundamentalSnapshot {
