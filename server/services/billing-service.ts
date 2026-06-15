@@ -31,13 +31,14 @@ import crypto from 'crypto';
 
 // ═══════════════ Constants ════════════════════════════════════════════════
 
-const SECRET_KEY = process.env.CHECKSUM_SECRET || 'dw-billing-secret-v17.6';
+const SECRET_KEY = process.env.CHECKSUM_SECRET || (() => { throw new Error('CHECKSUM_SECRET env required for production'); })();
 
 export type EntryType =
   | 'DEPOSIT' | 'WITHDRAWAL' | 'TRADE_FEE' | 'COPYTRADE_FEE'
   | 'SUBSCRIPTION_PAY' | 'SUBSCRIPTION_EARN' | 'TEMPLATE_PAY' | 'TEMPLATE_EARN'
   | 'TIP_SEND' | 'TIP_RECEIVE' | 'TRANSFER_SEND' | 'TRANSFER_RECEIVE'
-  | 'REFUND' | 'PLATFORM_FEE' | 'AI_FEE' | 'AI_REFUND' | 'ADJUSTMENT';
+  | 'REFUND' | 'PLATFORM_FEE' | 'AI_FEE' | 'AI_REFUND' | 'ADJUSTMENT'
+  | 'EXECUTION_FEE' | 'EXECUTION_REFUND' | 'AI_CREATOR_REVIEW';
 
 export interface BillRequest {
   userId: string;
