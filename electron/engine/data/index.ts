@@ -81,3 +81,38 @@ export type {
   DedupResult,
   NewsFetcher,
 } from './news-types';
+
+// R244 P0-05: WatchlistSmartNews data pipeline
+export { WatchlistSmartNews, watchlistSmartNews, resetWatchlistSmartNews } from './watchlist-smart-news';
+export type {
+  WatchlistSymbol,
+  WatchlistNewsItem,
+  WatchlistNewsConfig,
+  WatchlistSource,
+  WatchlistStats,
+  MatchType,
+} from './watchlist-smart-news';
+
+// R244 P1-22: Social source degradation engine
+export { SocialSourceDegradation, socialSourceDegradation, resetSocialSourceDegradation } from './social-source-degradation';
+export type {
+  SocialSourceConfig,
+  SocialEndpoint,
+  SourceTier,
+  DegradedFetchResult,
+  SourceHealth,
+  DegradedPost,
+} from './social-source-degradation';
+
+// R244 P0-10: One-click backtest→deploy bridge
+export { BacktestDeployBridge, backtestDeployBridge, resetBacktestDeployBridge } from './backtest-deploy-bridge';
+export type {
+  DeployableTemplate,
+  TemplateParameterInput,
+  ResolvedParams,
+  BacktestResult,
+  DeployRequest,
+  DeployResult,
+  RiskSummary,
+  DeploymentStats,
+} from './backtest-deploy-bridge';

@@ -18,6 +18,7 @@ const navItems: NavItem[] = [
   { id: 'market', icon: '📈', label: 'components.marketQuotes', section: 'components.trade' },
   { id: 'strategy', icon: '🧠', label: i18n.t('Sidebar.k0') },
   { id: 'ai', icon: '🐋', label: 'components.aiAssistant' },
+  { id: 'ai-hub', icon: '🤖', label: 'components.aiHub', section: 'AI Services' },
   { id: 'marketplace', icon: '🏪', label: i18n.t('Sidebar.k1') },
   { id: 'creator', icon: '⭐', label: 'components.creatorCenter' },
   { id: 'signals', icon: '📡', label: 'components.signalAnalysis' },

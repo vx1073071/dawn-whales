@@ -25,6 +25,7 @@ const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage
 const AlertCenterPage = lazy(() => import('@/components/risk/AlertCenterPage'));
 const TradeDashboardPage = lazy(() => import('@/components/trading/TradeDashboardPage'));
 const AIAssistantPage = lazy(() => import('@/components/ai/AIAssistantPanel'));
+const AIHubPage = lazy(() => import('@/components/ai/AIHubPage'));
 const RiskVisualizerPage = lazy(() => import('@/components/risk/RiskVisualizer'));
 const CreatorLeaderboardPage = lazy(() => import('@/components/billing/community/CreatorLeaderboard'));
 const SignalPerformancePage = lazy(() => import('@/components/billing/community/SignalPerformancePanel'));
@@ -45,6 +46,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   alert: AlertCenterPage,
   trade: TradeDashboardPage,
   ai: AIAssistantPage,
+  'ai-hub': AIHubPage,
   riskviz: RiskVisualizerPage,
   creator: CreatorLeaderboardPage,
   signals: SignalPerformancePage,

@@ -508,7 +508,7 @@ export default function AIAdvisorPage() {
               }`}
             >
               解锁全部
-              <AIPriceBadge config={AI_PRICES.aiUnlockAll} userBalance={balance} inline />
+              <AIPriceBadge config={AI_PRICES.aiRecommend} userBalance={balance} inline />
             </button>
           )}
         </div>

@@ -32,46 +32,75 @@ interface AIPriceBadgeProps {
 // ── Default price configs for all AI features ───────────────────────────
 
 export const AI_PRICES: Record<string, AIPriceConfig> = {
+  // ── 图表AI (1U/次) ──
+  aiDraw: {
+    label: 'AI自动画线+形态识别',
+    price: 1.0,
+    tooltip: '自动检测趋势线、支撑阻力、68种K线形态',
+  },
+  aiChat: {
+    label: 'AI对话',
+    price: 1.0,
+    tooltip: 'AI实时对话，回答策略、市场、风险等任何问题',
+  },
+  aiParamFill: {
+    label: 'AI智能参数填充',
+    price: 1.0,
+    tooltip: 'AI根据当前市场环境智能填充策略参数，不生成代码',
+  },
+
+  // ── 策略AI (1-2U/次) ──
+  aiPortfolio: {
+    label: 'AI策略组合生成',
+    price: 2.0,
+    tooltip: 'AI生成多策略组合，自动优化权重配置，回测预览',
+  },
+  aiBacktest: {
+    label: 'AI回测解读',
+    price: 1.0,
+    tooltip: '深度解读回测结果 + 可操作改进建议',
+  },
+  aiOptimize: {
+    label: 'AI策略优化',
+    price: 1.5,
+    tooltip: '遍历5000+权重组合寻找最优配置',
+  },
+  aiHealth: {
+    label: 'AI健康检查',
+    price: 1.0,
+    tooltip: '策略衰减检测 + 30天连续亏损/90天未更新警报',
+  },
+
+  // ── 因子AI (1-2U/次) ──
   aiRecommend: {
     label: 'AI因子推荐',
     price: 1.0,
     tooltip: '基于实时IC/IR动态计算最优因子组合',
   },
-  aiAnalyze: {
-    label: 'AI因子分析',
-    price: 1.0,
-    tooltip: '完整因子解读 + 回测验证',
-  },
-  aiOptimize: {
-    label: 'AI权重优化',
-    price: 1.5,
-    tooltip: '遍历5000+权重组合寻找最优配置',
-  },
-  aiBacktest: {
-    label: 'AI回测解读',
-    price: 1.0,
-    tooltip: '深度解读回测结果 + 改进建议',
-  },
-  aiSignal: {
-    label: 'AI信号订阅',
-    price: 0.5,
-    tooltip: '实时因子信号推送(每次)',
-  },
   aiDiagnosis: {
-    label: 'AI组合诊断',
-    price: 3.0,
-    tooltip: '全组合健康检查 + 风险分析',
-  },
-  aiCompare: {
-    label: 'AI策略对比',
-    price: 2.0,
-    tooltip: '两策略深度对比分析',
-  },
-  aiHealth: {
-    label: 'AI健康检查',
+    label: 'AI因子深度诊断',
     price: 1.0,
-    tooltip: '策略衰减检测 + 优化建议',
+    tooltip: '5维雷达+8指标健康检查，IC衰减+拥挤度+相关性',
   },
+  aiFactorOptimize: {
+    label: 'AI因子参数优化',
+    price: 1.5,
+    tooltip: 'VIF+相关性约束，自动排除高共线因子',
+  },
+  aiAltFactor: {
+    label: 'AI替代数据因子',
+    price: 2.0,
+    tooltip: '解锁卫星/供应链/社交情绪等另类因子',
+  },
+
+  // ── 事件AI (1.5U/次) ──
+  aiEventStrategy: {
+    label: 'AI事件策略生成',
+    price: 1.5,
+    tooltip: '公司事件→AI策略参数调整(财报/加息/CPI/并购)',
+  },
+
+  // ── 免费操作 ──
   aiFreePreview: {
     label: '免费预览',
     price: 0,
@@ -83,11 +112,6 @@ export const AI_PRICES: Record<string, AIPriceConfig> = {
     price: 0,
     freeLabel: '免费',
     tooltip: '重新获取最新因子推荐',
-  },
-  aiUnlockAll: {
-    label: '解锁全部',
-    price: 1.0,
-    tooltip: '解锁全部8个因子的深度分析',
   },
 };
 

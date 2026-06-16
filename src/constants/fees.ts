@@ -74,6 +74,11 @@ export const AI_PRICE_TABLE = {
   AI_BACKTEST_READ: { priceUSDT: 1.0, label: 'AI 回测解读' },
   AI_OPTIMIZE:      { priceUSDT: 1.5, label: 'AI 策略优化建议' },
   AI_HEALTH_CHECK:  { priceUSDT: 1.0, label: 'AI 策略健康检查' },
+  AI_FACTOR_ADVISOR:{ priceUSDT: 1.0, label: 'AI 因子推荐' },
+  AI_EVENT_STRATEGY:{ priceUSDT: 1.5, label: 'AI 事件策略生成' },
+  AI_FACTOR_DIAGNOSIS:{ priceUSDT: 1.0, label: 'AI 因子深度诊断' },
+  AI_FACTOR_OPTIMIZE:{ priceUSDT: 1.5, label: 'AI 因子参数优化' },
+  AI_ALT_FACTOR:    { priceUSDT: 2.0, label: 'AI 替代数据因子解锁' },
 } as const;
 
 export const TA_PRICE_TABLE = {
