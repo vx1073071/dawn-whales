@@ -14,6 +14,10 @@ export { SocialFeedsFetcher, getSocialFeedsFetcher, resetSocialFeedsFetcher } fr
 export { RegionalFeedsFetcher, getRegionalFeedsFetcher, resetRegionalFeedsFetcher } from './regional-feeds';
 export { StockScreenerV2, getStockScreenerV2, resetStockScreenerV2 } from './stock-screener-v2';
 export type { V2ScreenerResult } from './stock-screener-v2';
+export { NewsBacktestDataPrep, getBacktestDataPrep, resetBacktestDataPrep } from './news-backtest-data-prep';
+export type { AlignedEvent, BacktestReturns, BacktestSummary, PriceSnapshot } from './news-backtest-data-prep';
+export { DailyDigestV2Engine, getDailyDigestV2Engine, resetDailyDigestV2Engine } from './daily-digest-v2';
+export type { DailyDigestV2, AttributionItem, RiskAssessment, StrategySuggestion, MarketOverview } from './daily-digest-v2';
 export type {
   NewsSource,
   NewsCategory,
