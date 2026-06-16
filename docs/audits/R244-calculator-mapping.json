@@ -1,0 +1,1492 @@
+{
+  "generatedAt": "2026-06-16T07:12:19.817Z",
+  "totalFactors": 240,
+  "matchedCount": 53,
+  "missingCount": 187,
+  "matchRate": "22.1%",
+  "matched": [
+    "MKT",
+    "SIZE",
+    "HML",
+    "EP_RATIO",
+    "YIELD",
+    "ACCRUALS",
+    "ASSET_TURNOVER",
+    "CASH_FLOW_YIELD",
+    "EARNINGS_SURPRISE",
+    "INVENTORY_TURNOVER",
+    "FREE_CASH_FLOW",
+    "MA_20_60",
+    "RSI_14",
+    "KDJ",
+    "ATR_14",
+    "MAX_DRAWDOWN",
+    "INFLATION_BETA",
+    "VOLATILITY_REGIME",
+    "HK_SOUTHBOUND_FLOW",
+    "HK_AH_PREMIUM",
+    "CRYPTO_EXCHANGE_FLOW",
+    "CRYPTO_NVT",
+    "CRYPTO_ACTIVE_ADDR",
+    "CRYPTO_MVRV",
+    "CROSS_ASSET_CORR",
+    "INDEX_REBALANCE",
+    "ROA",
+    "GROSS_MARGIN",
+    "DEBT_TO_EQUITY",
+    "INSIDER_BUYING",
+    "FUND_FLOW",
+    "ETF_FLOW",
+    "DIVIDEND_CHANGE",
+    "SECTOR_STRENGTH",
+    "IV_RANK",
+    "CURRENCY_EFFECT",
+    "FREE_CASH_FLOW_YIELD",
+    "EQUITY_MULTIPLIER",
+    "DISPOSITION_EFFECT",
+    "ANCHORING",
+    "AH_PREMIUM_CHANGE",
+    "HSI_CONSTITUENT",
+    "HK_REIT_YIELD",
+    "US_EARNINGS_CALENDAR",
+    "US_SECTOR_ROTATION",
+    "US_SMALL_CAP_MOMENTUM",
+    "US_DIVIDEND_ARISTOCRATS",
+    "US_SP500_EQUAL_WEIGHT",
+    "CRYPTO_S2F",
+    "CRYPTO_HASH_RATE",
+    "XM_MKTCAP_EXPOSURE",
+    "XM_LIQUIDITY",
+    "XM_DIVIDEND_ARAMA"
+  ],
+  "missing": [
+    {
+      "id": "CFP_RATIO",
+      "nameEn": "CashFlowPrice",
+      "nameCn": "现金收益率",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_VALUE"
+    },
+    {
+      "id": "MOM_12M",
+      "nameEn": "Momentum12M",
+      "nameCn": "12月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "MOM_6M",
+      "nameEn": "Momentum6M",
+      "nameCn": "6月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "MOM_1M",
+      "nameEn": "Momentum1M",
+      "nameCn": "1月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "MOM_6_1",
+      "nameEn": "Momentum6Minus1",
+      "nameCn": "6-1月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "RMW",
+      "nameEn": "RobustMinusWeak",
+      "nameCn": "盈利能力",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY"
+    },
+    {
+      "id": "CMA",
+      "nameEn": "ConservativeMinusAggressive",
+      "nameCn": "投资风格",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY"
+    },
+    {
+      "id": "QUAL",
+      "nameEn": "Quality",
+      "nameCn": "质量综合",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY"
+    },
+    {
+      "id": "GROWTH",
+      "nameEn": "Growth",
+      "nameCn": "成长性",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_GROWTH"
+    },
+    {
+      "id": "DIV_YIELD_12M",
+      "nameEn": "DividendYield12M",
+      "nameCn": "12月股息率",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_YIELD"
+    },
+    {
+      "id": "EARNINGS_VARIABILITY",
+      "nameEn": "EarningsVariability",
+      "nameCn": "盈利波动率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY"
+    },
+    {
+      "id": "GROSS_PROFITABILITY",
+      "nameEn": "GrossProfitability",
+      "nameCn": "毛利润率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY"
+    },
+    {
+      "id": "NET_PAYOUT",
+      "nameEn": "NetPayout",
+      "nameCn": "净派息率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_YIELD_QUALITY"
+    },
+    {
+      "id": "OPERATING_LEVERAGE",
+      "nameEn": "OperatingLeverage",
+      "nameCn": "经营杠杆",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE"
+    },
+    {
+      "id": "DEBT_COVERAGE",
+      "nameEn": "DebtCoverage",
+      "nameCn": "利息覆盖倍数",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE"
+    },
+    {
+      "id": "EARN_QUALITY",
+      "nameEn": "EarningsQuality",
+      "nameCn": "盈利质量",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY"
+    },
+    {
+      "id": "GROSS_MARGIN_TREND",
+      "nameEn": "GrossMarginTrend",
+      "nameCn": "毛利率趋势",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY"
+    },
+    {
+      "id": "F_SCORE",
+      "nameEn": "PiotroskiFScore",
+      "nameCn": "F分数财务健康",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_HEALTH"
+    },
+    {
+      "id": "ROE_STABILITY",
+      "nameEn": "RoeStability",
+      "nameCn": "ROE稳定性",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY"
+    },
+    {
+      "id": "RECEIVABLE_TURNOVER",
+      "nameEn": "ReceivableTurnover",
+      "nameCn": "应收账款周转",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY"
+    },
+    {
+      "id": "CURRENT_RATIO",
+      "nameEn": "CurrentRatio",
+      "nameCn": "流动比率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE"
+    },
+    {
+      "id": "INTEREST_COVERAGE",
+      "nameEn": "InterestCoverage",
+      "nameCn": "利息覆盖",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE"
+    },
+    {
+      "id": "ANALYST_MOMENTUM",
+      "nameEn": "AnalystMomentum",
+      "nameCn": "分析师动量",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING"
+    },
+    {
+      "id": "EARNINGS_REVISION",
+      "nameEn": "EarningsRevision",
+      "nameCn": "盈利修正",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST"
+    },
+    {
+      "id": "TARGET_PRICE_IMPLIED",
+      "nameEn": "TargetPriceImplied",
+      "nameCn": "目标价隐含空间",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST"
+    },
+    {
+      "id": "ANALYST_DISPERSION",
+      "nameEn": "AnalystDispersion",
+      "nameCn": "分析师分歧度",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST"
+    },
+    {
+      "id": "RECOMMENDATION_CHANGE",
+      "nameEn": "RecommendationChange",
+      "nameCn": "评级变化方向",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING"
+    },
+    {
+      "id": "REVISION_RATIO",
+      "nameEn": "RevisionRatio",
+      "nameCn": "上调下调比",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING"
+    },
+    {
+      "id": "FEAR_GREED_INDEX",
+      "nameEn": "FearGreedIndex",
+      "nameCn": "恐惧贪婪指数",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD"
+    },
+    {
+      "id": "PUT_CALL_SKEW",
+      "nameEn": "PutCallSkew",
+      "nameCn": "期权偏度",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_OPTIONS"
+    },
+    {
+      "id": "HIGH_LOW_RATIO",
+      "nameEn": "HighLowRatio",
+      "nameCn": "新高新低比",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD"
+    },
+    {
+      "id": "ADVANCE_DECLINE",
+      "nameEn": "AdvanceDecline",
+      "nameCn": "涨跌比",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD"
+    },
+    {
+      "id": "OPTION_PCR",
+      "nameEn": "OptionPCR",
+      "nameCn": "Put/Call比率",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_OPTIONS"
+    },
+    {
+      "id": "SOCIAL_SENTIMENT",
+      "nameEn": "SocialSentiment",
+      "nameCn": "社交情绪",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "MEDIA_ATTENTION",
+      "nameEn": "MediaAttention",
+      "nameCn": "媒体关注度",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "INSIDER_TRADING",
+      "nameEn": "InsiderTrading",
+      "nameCn": "内部交易信号",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "SHORT_COVERING",
+      "nameEn": "ShortCovering",
+      "nameCn": "逼空压力",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "NEWS_SENTIMENT",
+      "nameEn": "NewsSentiment",
+      "nameCn": "新闻情绪",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "INSTITUTIONAL_FLOW",
+      "nameEn": "InstitutionalFlow",
+      "nameCn": "机构资金流",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "EMA_12_26",
+      "nameEn": "EMA1226",
+      "nameCn": "MACD",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND"
+    },
+    {
+      "id": "BOLL",
+      "nameEn": "Bollinger",
+      "nameCn": "布林带",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "ADX",
+      "nameEn": "ADX",
+      "nameCn": "趋向指标",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND"
+    },
+    {
+      "id": "OBV",
+      "nameEn": "OBV",
+      "nameCn": "能量潮",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME"
+    },
+    {
+      "id": "CMF",
+      "nameEn": "CMF",
+      "nameCn": "资金流量",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME"
+    },
+    {
+      "id": "ICHIMOKU",
+      "nameEn": "Ichimoku",
+      "nameCn": "一目均衡",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND"
+    },
+    {
+      "id": "VWAP",
+      "nameEn": "VWAP",
+      "nameCn": "成交量加权均价",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME"
+    },
+    {
+      "id": "VOL_60D",
+      "nameEn": "Volatility60D",
+      "nameCn": "60日波动率",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "LIQ",
+      "nameEn": "Liquidity",
+      "nameCn": "流动性",
+      "level1": "L1_RISK",
+      "level2": "L2_LIQUIDITY"
+    },
+    {
+      "id": "VAR_95",
+      "nameEn": "VaR95",
+      "nameCn": "95%风险价值",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE"
+    },
+    {
+      "id": "CVAR_95",
+      "nameEn": "CVaR95",
+      "nameCn": "条件风险价值",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE"
+    },
+    {
+      "id": "DOWNSIDE_DEVIATION",
+      "nameEn": "DownsideDeviation",
+      "nameCn": "下行偏差",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE"
+    },
+    {
+      "id": "SORTINO_RATIO",
+      "nameEn": "SortinoRatio",
+      "nameCn": "索提诺比率",
+      "level1": "L1_RISK",
+      "level2": "L2_RISK_ADJUSTED"
+    },
+    {
+      "id": "OMEGA_RATIO",
+      "nameEn": "OmegaRatio",
+      "nameCn": "Omega比率",
+      "level1": "L1_RISK",
+      "level2": "L2_RISK_ADJUSTED"
+    },
+    {
+      "id": "TAIL_DEPENDENCE",
+      "nameEn": "TailDependence",
+      "nameCn": "尾部相关",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE"
+    },
+    {
+      "id": "CROWDING",
+      "nameEn": "Crowding",
+      "nameCn": "拥挤度",
+      "level1": "L1_RISK",
+      "level2": "L2_STRUCTURAL"
+    },
+    {
+      "id": "MOM_CRASH",
+      "nameEn": "MomentumCrash",
+      "nameCn": "动量崩盘预警",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE"
+    },
+    {
+      "id": "BETA_STABILITY",
+      "nameEn": "BetaStability",
+      "nameCn": "Beta稳定性",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "SKEWNESS",
+      "nameEn": "Skewness",
+      "nameCn": "偏度",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "KURTOSIS",
+      "nameEn": "Kurtosis",
+      "nameCn": "峰度",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "ALPHA_DECAY",
+      "nameEn": "AlphaDecay",
+      "nameCn": "Alpha衰减监测",
+      "level1": "L1_RISK",
+      "level2": "L2_STRUCTURAL"
+    },
+    {
+      "id": "SECTOR_ROTATION",
+      "nameEn": "SectorRotation",
+      "nameCn": "板块轮动",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "FX_EXPOSURE",
+      "nameEn": "FXExposure",
+      "nameCn": "外汇敞口",
+      "level1": "L1_MACRO",
+      "level2": "L2_CURRENCY"
+    },
+    {
+      "id": "RATE_BETA",
+      "nameEn": "RateBeta",
+      "nameCn": "利率敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY"
+    },
+    {
+      "id": "USD_BETA",
+      "nameEn": "USDBeta",
+      "nameCn": "美元敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY"
+    },
+    {
+      "id": "OIL_BETA",
+      "nameEn": "OilBeta",
+      "nameCn": "原油敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY"
+    },
+    {
+      "id": "CREDIT_SPREAD_BETA",
+      "nameEn": "CreditSpreadBeta",
+      "nameCn": "信用利差敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY"
+    },
+    {
+      "id": "ECONOMIC_SURPRISE",
+      "nameEn": "EconomicSurprise",
+      "nameCn": "经济意外指数",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "MARKET_REGIME",
+      "nameEn": "MarketRegime",
+      "nameCn": "市场状态",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "VOLUME_REGIME",
+      "nameEn": "VolumeRegime",
+      "nameCn": "量能状态",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "YIELD_CURVE_SLOPE",
+      "nameEn": "YieldCurveSlope",
+      "nameCn": "收益率曲线斜率",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "REAL_RATE",
+      "nameEn": "RealRate",
+      "nameCn": "实际利率",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY"
+    },
+    {
+      "id": "PMI_INDEX",
+      "nameEn": "PMIIndex",
+      "nameCn": "PMI指数",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "FACTOR_LEAD_LAG",
+      "nameEn": "FactorLeadLag",
+      "nameCn": "因子领先滞后",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE"
+    },
+    {
+      "id": "STR_5D",
+      "nameEn": "ShortTermReversal5D",
+      "nameCn": "5日短期反转",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SHORT_TERM"
+    },
+    {
+      "id": "LTR_60M",
+      "nameEn": "LongTermReversal60M",
+      "nameCn": "60月长期反转",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_LONG_TERM"
+    },
+    {
+      "id": "SEASONAL_1M",
+      "nameEn": "Seasonal1M",
+      "nameCn": "月度效应",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SEASONAL"
+    },
+    {
+      "id": "GAP_REVERSION",
+      "nameEn": "GapReversion",
+      "nameCn": "缺口回补",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SHORT_TERM"
+    },
+    {
+      "id": "MEAN_REVERSION_SPEED",
+      "nameEn": "MeanReversionSpeed",
+      "nameCn": "均值回归速度",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_STATISTICAL"
+    },
+    {
+      "id": "US_VIX",
+      "nameEn": "VIX",
+      "nameCn": "恐慌指数",
+      "level1": "L1_US",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "US_SHORT_RATIO",
+      "nameEn": "ShortRatio",
+      "nameCn": "空头比率",
+      "level1": "L1_US",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "US_INST_HOLD",
+      "nameEn": "InstitutionalHolding",
+      "nameCn": "机构持仓",
+      "level1": "L1_US",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "US_BUYBACK",
+      "nameEn": "Buyback",
+      "nameCn": "回购活动",
+      "level1": "L1_US",
+      "level2": "L2_CORPORATE"
+    },
+    {
+      "id": "US_EARN_SURPRISE",
+      "nameEn": "USEarningsSurprise",
+      "nameCn": "财报超预期",
+      "level1": "L1_US",
+      "level2": "L2_EVENT"
+    },
+    {
+      "id": "US_INSIDER_BUY",
+      "nameEn": "InsiderBuy",
+      "nameCn": "内部人买入",
+      "level1": "L1_US",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "US_SHORT_SQUEEZE",
+      "nameEn": "ShortSqueeze",
+      "nameCn": "逼空风险",
+      "level1": "L1_US",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "US_MEME_INDEX",
+      "nameEn": "MemeIndex",
+      "nameCn": "Meme股热度",
+      "level1": "L1_US",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "US_MARGIN_DEBT",
+      "nameEn": "MarginDebt",
+      "nameCn": "保证金债务",
+      "level1": "L1_US",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "US_RESIDUAL_MOM",
+      "nameEn": "ResidualMomentum",
+      "nameCn": "残差动量",
+      "level1": "L1_US",
+      "level2": "L2_STATS"
+    },
+    {
+      "id": "US_EP_RATIO",
+      "nameEn": "USEarningsPrice",
+      "nameCn": "美股PE倒数",
+      "level1": "L1_US",
+      "level2": "L2_VALUE"
+    },
+    {
+      "id": "US_BP_RATIO",
+      "nameEn": "USBookPrice",
+      "nameCn": "美股PB倒数",
+      "level1": "L1_US",
+      "level2": "L2_VALUE"
+    },
+    {
+      "id": "US_DPS_STABILITY",
+      "nameEn": "DPSStability",
+      "nameCn": "分红稳定性",
+      "level1": "L1_US",
+      "level2": "L2_YIELD"
+    },
+    {
+      "id": "HKEX_SOUTHBOUND",
+      "nameEn": "Southbound",
+      "nameCn": "南向资金",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "HKEX_CBCS_PREMIUM",
+      "nameEn": "CBCSPremium",
+      "nameCn": "AH溢价",
+      "level1": "L1_HK",
+      "level2": "L2_PRICING"
+    },
+    {
+      "id": "HKEX_WARRANT_IV",
+      "nameEn": "WarrantIV",
+      "nameCn": "涡轮引伸波幅",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "HKEX_DLHB",
+      "nameEn": "DLHB",
+      "nameCn": "大轮候补",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "HKEX_FUND_HOLD",
+      "nameEn": "FundHolding",
+      "nameCn": "基金持仓",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "HK_SOUTHBOUND_TOP10",
+      "nameEn": "SouthboundTop10",
+      "nameCn": "南向TOP10集中",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "HK_SOUTHBOUND_MOM",
+      "nameEn": "SouthboundMomentum",
+      "nameCn": "南向动量",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "HK_CONTROLLING_SH",
+      "nameEn": "ControllingShareholder",
+      "nameCn": "大股东质押率",
+      "level1": "L1_HK",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "HK_DIV_CUT_RISK",
+      "nameEn": "DividendCutRisk",
+      "nameCn": "减分红风险",
+      "level1": "L1_HK",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "HK_WARRANT_GEX",
+      "nameEn": "WarrantGEX",
+      "nameCn": "涡轮Gamma暴露",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "HK_CBBC_STREET",
+      "nameEn": "CBBCStreetRatio",
+      "nameCn": "街货比",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "HK_WARRANT_OI",
+      "nameEn": "WarrantOIChange",
+      "nameCn": "涡轮持仓变化",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "HK_SHORT_SELL",
+      "nameEn": "ShortSellRatio",
+      "nameCn": "沽空比率",
+      "level1": "L1_HK",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "HK_ACC_RECEIVABLE",
+      "nameEn": "AccReceivable",
+      "nameCn": "应收异常",
+      "level1": "L1_HK",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "CRYPTO_FUNDING",
+      "nameEn": "FundingRate",
+      "nameCn": "资金费率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "CRYPTO_OI_DELTA",
+      "nameEn": "OpenInterestDelta",
+      "nameCn": "持仓量变化",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "CRYPTO_ORDERBOOK_IMB",
+      "nameEn": "OrderbookImbalance",
+      "nameCn": "订单簿失衡",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MICROSTRUCTURE"
+    },
+    {
+      "id": "CRYPTO_VOL_RATIO",
+      "nameEn": "VolumeRatio",
+      "nameCn": "量比",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VOLUME"
+    },
+    {
+      "id": "CRYPTO_VOLUME_PROFILE",
+      "nameEn": "VolumeProfile",
+      "nameCn": "量价分布",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VOLUME"
+    },
+    {
+      "id": "CRYPTO_BTC_CORR",
+      "nameEn": "BTCCorrelation",
+      "nameCn": "BTC相关性",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_CORRELATION"
+    },
+    {
+      "id": "CRYPTO_LIQUIDATIONS",
+      "nameEn": "Liquidations",
+      "nameCn": "清算量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES"
+    },
+    {
+      "id": "CRYPTO_SOCIAL_SENTIMENT",
+      "nameEn": "SocialSentimentCrypto",
+      "nameCn": "社交情绪",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "CRYPTO_WHALE_ACCUM",
+      "nameEn": "WhaleAccumulation",
+      "nameCn": "大户累积",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CRYPTO_WHALE_DISTRIB",
+      "nameEn": "WhaleDistribution",
+      "nameCn": "大户出货",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CRYPTO_FEAR_GREED",
+      "nameEn": "CryptoFearGreed",
+      "nameCn": "加密恐惧贪婪",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "CRYPTO_MOM_7D",
+      "nameEn": "Momentum7D",
+      "nameCn": "7日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "CRYPTO_MOM_30D",
+      "nameEn": "Momentum30D",
+      "nameCn": "30日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "CRYPTO_MOM_90D",
+      "nameEn": "Momentum90D",
+      "nameCn": "90日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "CRYPTO_ALPHA_VS_BTC",
+      "nameEn": "AlphaVsBTC",
+      "nameCn": "相对BTC Alpha",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_PERFORMANCE"
+    },
+    {
+      "id": "CRYPTO_ALT_SEASON",
+      "nameEn": "AltSeasonIndex",
+      "nameCn": "Alt-Season指数",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "CRYPTO_NVT_SIGNAL",
+      "nameEn": "NVTSignal",
+      "nameCn": "NVT信号",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VALUATION"
+    },
+    {
+      "id": "CRYPTO_STAKING_YIELD",
+      "nameEn": "StakingYield",
+      "nameCn": "质押收益率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_YIELD"
+    },
+    {
+      "id": "CRYPTO_FEE_REVENUE",
+      "nameEn": "FeeRevenue",
+      "nameCn": "协议费用收入",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL"
+    },
+    {
+      "id": "CRYPTO_TVL_GROWTH",
+      "nameEn": "TVLGrowth",
+      "nameCn": "TVL增长率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL"
+    },
+    {
+      "id": "CRYPTO_MAX_DRAWDOWN_30D",
+      "nameEn": "MaxDrawdown30D",
+      "nameCn": "30日最大回撤",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "CRYPTO_PRICE_CORRECTION",
+      "nameEn": "PriceCorrection",
+      "nameCn": "回调幅度",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "CRYPTO_LIQUIDATION_RISK",
+      "nameEn": "LiquidationRisk",
+      "nameCn": "清算风险",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK"
+    },
+    {
+      "id": "CRYPTO_EXCHANGE_RESERVE",
+      "nameEn": "ExchangeReserve",
+      "nameCn": "交易所余额",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CRYPTO_BRIDGE_FLOW",
+      "nameEn": "BridgeFlow",
+      "nameCn": "跨链桥流量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CRYPTO_ECOSYSTEM_CORR",
+      "nameEn": "EcosystemCorrelation",
+      "nameCn": "生态联动",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_CORRELATION"
+    },
+    {
+      "id": "CRYPTO_VC_UNLOCK",
+      "nameEn": "VCUnlock",
+      "nameCn": "VC解锁压力",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_EVENT"
+    },
+    {
+      "id": "CRYPTO_DEVELOPER_ACTIVITY",
+      "nameEn": "DeveloperActivity",
+      "nameCn": "开发者活跃度",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL"
+    },
+    {
+      "id": "CRYPTO_SMART_MONEY",
+      "nameEn": "SmartMoney",
+      "nameCn": "聪明钱流向",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CRYPTO_STABLECOIN_RATIO",
+      "nameEn": "StablecoinRatio",
+      "nameCn": "稳定币占比",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT"
+    },
+    {
+      "id": "CARRY_EQUITY",
+      "nameEn": "EquityCarry",
+      "nameCn": "股票利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY"
+    },
+    {
+      "id": "CARRY_CRYPTO",
+      "nameEn": "CryptoCarry",
+      "nameCn": "加密资金费率利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY"
+    },
+    {
+      "id": "CARRY_CURRENCY",
+      "nameEn": "CurrencyCarry",
+      "nameCn": "货币利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY"
+    },
+    {
+      "id": "BOND_CARRY",
+      "nameEn": "BondCarry",
+      "nameCn": "债券利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY"
+    },
+    {
+      "id": "CURRENCY_MOMENTUM",
+      "nameEn": "CurrencyMomentum",
+      "nameCn": "货币动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "GOLD_MOMENTUM",
+      "nameEn": "GoldMomentum",
+      "nameCn": "黄金动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "COMMODITY_SPREAD",
+      "nameEn": "CommoditySpread",
+      "nameCn": "商品期现结构",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_PRICING"
+    },
+    {
+      "id": "CORR_REGIME",
+      "nameEn": "CorrelationRegime",
+      "nameCn": "相关性体制",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CORRELATION"
+    },
+    {
+      "id": "COMMODITY_MOMENTUM",
+      "nameEn": "CommodityMomentum",
+      "nameCn": "商品动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "BOND_MOMENTUM",
+      "nameEn": "BondMomentum",
+      "nameCn": "债券动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "FX_CARRY",
+      "nameEn": "FXCarry",
+      "nameCn": "外汇利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY"
+    },
+    {
+      "id": "PRE_EARNINGS_DRIFT",
+      "nameEn": "PreEarningsDrift",
+      "nameCn": "盈利前漂移",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS"
+    },
+    {
+      "id": "POST_EARNINGS_DRIFT",
+      "nameEn": "PostEarningsDrift",
+      "nameCn": "盈利后漂移",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS"
+    },
+    {
+      "id": "DIVIDEND_CAPTURE",
+      "nameEn": "DividendCapture",
+      "nameCn": "分红捕获",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE"
+    },
+    {
+      "id": "IPO_LOCKUP_EXPIRY",
+      "nameEn": "IPOLockupExpiry",
+      "nameCn": "解禁事件",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE"
+    },
+    {
+      "id": "BUYBACK_ANNOUNCE",
+      "nameEn": "BuybackAnnouncement",
+      "nameCn": "回购公告效应",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE"
+    },
+    {
+      "id": "DIV_ANNOUNCEMENT",
+      "nameEn": "DividendAnnouncement",
+      "nameCn": "分红公告日",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE"
+    },
+    {
+      "id": "EARN_ANNOUNCEMENT",
+      "nameEn": "EarningsAnnouncement",
+      "nameCn": "财报发布日",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS"
+    },
+    {
+      "id": "ESG_SCORE",
+      "nameEn": "ESGScore",
+      "nameCn": "ESG综合评分",
+      "level1": "L1_ESG",
+      "level2": "L2_OVERALL"
+    },
+    {
+      "id": "CARBON_INTENSITY",
+      "nameEn": "CarbonIntensity",
+      "nameCn": "碳强度",
+      "level1": "L1_ESG",
+      "level2": "L2_ENVIRONMENT"
+    },
+    {
+      "id": "GOVERNANCE_SCORE",
+      "nameEn": "GovernanceScore",
+      "nameCn": "治理评分",
+      "level1": "L1_ESG",
+      "level2": "L2_GOVERNANCE"
+    },
+    {
+      "id": "GREEN_REVENUE",
+      "nameEn": "GreenRevenue",
+      "nameCn": "绿色收入占比",
+      "level1": "L1_ESG",
+      "level2": "L2_ENVIRONMENT"
+    },
+    {
+      "id": "SOCIAL_SCORE",
+      "nameEn": "SocialScore",
+      "nameCn": "社会责任评分",
+      "level1": "L1_ESG",
+      "level2": "L2_SOCIAL"
+    },
+    {
+      "id": "ESG_MOMENTUM",
+      "nameEn": "ESGMomentum",
+      "nameCn": "ESG进步速度",
+      "level1": "L1_ESG",
+      "level2": "L2_OVERALL"
+    },
+    {
+      "id": "SMB",
+      "nameEn": "SMB_Deprecated",
+      "nameCn": "SMB(已废弃)",
+      "level1": "L1_LEGACY",
+      "level2": "L2_DEPRECATED"
+    },
+    {
+      "id": "QUALITY",
+      "nameEn": "Quality_Deprecated",
+      "nameCn": "Quality(已废弃)",
+      "level1": "L1_LEGACY",
+      "level2": "L2_DEPRECATED"
+    },
+    {
+      "id": "CMD_ROLL_YIELD",
+      "nameEn": "RollYield",
+      "nameCn": "换月成本(展期收益)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE"
+    },
+    {
+      "id": "CMD_TERM_STRUCTURE",
+      "nameEn": "TermStructure",
+      "nameCn": "期限结构斜率",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE"
+    },
+    {
+      "id": "CMD_BASIS",
+      "nameEn": "Basis",
+      "nameCn": "基差(现货vs期货)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE"
+    },
+    {
+      "id": "CMD_MOMENTUM_12M",
+      "nameEn": "CommodityMomentum12M",
+      "nameCn": "12月商品动量",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "CMD_MOMENTUM_1M",
+      "nameEn": "CommodityMomentum1M",
+      "nameCn": "1月商品反转",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MOMENTUM"
+    },
+    {
+      "id": "CMD_VOLATILITY",
+      "nameEn": "CommodityVolatility",
+      "nameCn": "商品波动率",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "CMD_SKEWNESS",
+      "nameEn": "CommoditySkewness",
+      "nameCn": "收益偏度",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_VOLATILITY"
+    },
+    {
+      "id": "CMD_EIA_CRUDE",
+      "nameEn": "EIACrudeInventory",
+      "nameCn": "EIA原油库存",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY"
+    },
+    {
+      "id": "CMD_NATGAS_STORAGE",
+      "nameEn": "NatGasStorage",
+      "nameCn": "天然气储气量",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY"
+    },
+    {
+      "id": "CMD_LME_INVENTORY",
+      "nameEn": "LMEInventory",
+      "nameCn": "LME金属库存",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY"
+    },
+    {
+      "id": "CMD_GOLD_ETF",
+      "nameEn": "GoldETFHoldings",
+      "nameCn": "黄金ETF持仓",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_FLOW"
+    },
+    {
+      "id": "CMD_BALANCE_SHEET",
+      "nameEn": "BalanceSheet",
+      "nameCn": "供需平衡表",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_FUNDAMENTAL"
+    },
+    {
+      "id": "CMD_SEASONALITY",
+      "nameEn": "CommoditySeasonality",
+      "nameCn": "商品季节性",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_SEASONAL"
+    },
+    {
+      "id": "CMD_GOLD_SUMMER",
+      "nameEn": "GoldSummerEffect",
+      "nameCn": "黄金夏季效应",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_SEASONAL"
+    },
+    {
+      "id": "CMD_COT_COMMERCIAL",
+      "nameEn": "COTCommercial",
+      "nameCn": "商业持仓(产业套保)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT"
+    },
+    {
+      "id": "CMD_COT_SPECULATOR",
+      "nameEn": "COTSpeculator",
+      "nameCn": "投机持仓(聪明钱)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT"
+    },
+    {
+      "id": "CMD_COT_EXTREME",
+      "nameEn": "COTExtreme",
+      "nameCn": "极端持仓(拥挤信号)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT"
+    },
+    {
+      "id": "CMD_COT_CHANGE",
+      "nameEn": "COTPositionChange",
+      "nameCn": "仓位变化方向(大佬加减仓)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT"
+    },
+    {
+      "id": "CMD_OPEN_INTEREST",
+      "nameEn": "OpenInterest",
+      "nameCn": "总持仓量趋势(市场参与度)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT"
+    },
+    {
+      "id": "CMD_DXY_LINKAGE",
+      "nameEn": "DXYLinkage",
+      "nameCn": "美元联动(强美元=商品压力)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO"
+    },
+    {
+      "id": "CMD_REAL_RATE",
+      "nameEn": "RealRate",
+      "nameCn": "实际利率(黄金的天敌)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO"
+    },
+    {
+      "id": "CMD_INFLATION_BE",
+      "nameEn": "InflationBE",
+      "nameCn": "通胀预期(通胀升=黄金升)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO"
+    },
+    {
+      "id": "CMD_GEOPOL_RISK",
+      "nameEn": "GeopoliticalRisk",
+      "nameCn": "地缘风险溢价",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO"
+    },
+    {
+      "id": "CMD_GOLD_SILVER_RATIO",
+      "nameEn": "GoldSilverRatio",
+      "nameCn": "金银比(避险vs风险偏好)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO"
+    },
+    {
+      "id": "CMD_GOLD_OIL_RATIO",
+      "nameEn": "GoldOilRatio",
+      "nameCn": "金油比(衰退指针)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO"
+    },
+    {
+      "id": "CMD_CRACK_SPREAD",
+      "nameEn": "CrackSpread",
+      "nameCn": "裂解价差(炼油利润)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO"
+    }
+  ],
+  "l1Stats": {
+    "L1_CLASSIC": {
+      "total": 15,
+      "matched": 5,
+      "missing": 10
+    },
+    "L1_FUNDAMENTAL": {
+      "total": 24,
+      "matched": 12,
+      "missing": 12
+    },
+    "L1_ANALYST": {
+      "total": 6,
+      "matched": 0,
+      "missing": 6
+    },
+    "L1_SENTIMENT": {
+      "total": 17,
+      "matched": 6,
+      "missing": 11
+    },
+    "L1_TECHNICAL": {
+      "total": 11,
+      "matched": 4,
+      "missing": 7
+    },
+    "L1_RISK": {
+      "total": 15,
+      "matched": 1,
+      "missing": 14
+    },
+    "L1_MACRO": {
+      "total": 17,
+      "matched": 4,
+      "missing": 13
+    },
+    "L1_REVERSAL": {
+      "total": 5,
+      "matched": 0,
+      "missing": 5
+    },
+    "L1_US": {
+      "total": 18,
+      "matched": 5,
+      "missing": 13
+    },
+    "L1_HK": {
+      "total": 19,
+      "matched": 5,
+      "missing": 14
+    },
+    "L1_CRYPTO": {
+      "total": 36,
+      "matched": 6,
+      "missing": 30
+    },
+    "L1_CROSS_ASSET": {
+      "total": 15,
+      "matched": 4,
+      "missing": 11
+    },
+    "L1_EVENT": {
+      "total": 8,
+      "matched": 1,
+      "missing": 7
+    },
+    "L1_ESG": {
+      "total": 6,
+      "matched": 0,
+      "missing": 6
+    },
+    "L1_LEGACY": {
+      "total": 2,
+      "matched": 0,
+      "missing": 2
+    },
+    "L1_COMMODITY": {
+      "total": 26,
+      "matched": 0,
+      "missing": 26
+    }
+  },
+  "calcFiles": [
+    {
+      "file": "green-factor-calculators.ts",
+      "uniqueIds": 72,
+      "lineCount": 99
+    },
+    {
+      "file": "yellow-factor-calculators.ts",
+      "uniqueIds": 58,
+      "lineCount": 63
+    },
+    {
+      "file": "market-yellow-calculators.ts",
+      "uniqueIds": 51,
+      "lineCount": 56
+    },
+    {
+      "file": "pro-factor-calculators.ts",
+      "uniqueIds": 47,
+      "lineCount": 313
+    },
+    {
+      "file": "factor-calculator-stubs.ts",
+      "uniqueIds": 0,
+      "lineCount": 22
+    },
+    {
+      "file": "WasmFactorCalculator.ts",
+      "uniqueIds": 22,
+      "lineCount": 612
+    },
+    {
+      "file": "factor-calculator.ts",
+      "uniqueIds": 8,
+      "lineCount": 796
+    }
+  ]
+}
