@@ -237,15 +237,16 @@ describe('R233-JVS#2: BacktestBenchmarkSuite', () => {
     });
 
     it('p95 is at 95th percentile', () => {
+      // Array [1..100], index = floor(100*0.95) = floor(95) = 95, value = 96
       const sorted = Array.from({ length: 100 }, (_, i) => i + 1);
       const p95 = sorted[Math.floor(100 * 0.95)];
-      expect(p95).toBe(95);
+      expect(p95).toBe(96); // 95th percentile of 1-100
     });
 
     it('p99 is at 99th percentile', () => {
       const sorted = Array.from({ length: 100 }, (_, i) => i + 1);
       const p99 = sorted[Math.floor(100 * 0.99)];
-      expect(p99).toBe(99);
+      expect(p99).toBe(100); // 99th percentile of 1-100
     });
   });
 
