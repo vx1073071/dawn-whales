@@ -360,7 +360,7 @@ export class FactorVisualizationCompletion {
     const ids = factorIds ?? Array.from(this.factorRegistry.keys());
     const rows = ids.map((fid, idx) => {
       const meta = this.factorRegistry.get(fid)!;
-      const seed = this._hash(fid + Date.now().toDateString());
+      const seed = this._hash(fid + new Date().toDateString());
       return {
         factorId: fid,
         name: meta.name,

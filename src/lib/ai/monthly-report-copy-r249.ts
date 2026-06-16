@@ -60,7 +60,7 @@ export function generateOpeningLetter(userName: string, month: string, netPnl: s
   const openings: Record<string, string[]> = {
     great: [
       `嘿${userName}，${month}月你太猛了！🐋\n\n这个月净收益${netPnl}——不只是数字好看，更重要的是我看到你的决策质量在提高。不是市场好你才好，是你那几个关键操作真的很漂亮。我们来复盘一下，看看这个月精彩在哪。`,
-      `${userName}，这个月有点意思。净${netPnl}——你的账户在以一种\"稳中带狠\"的方式赚钱。我特别注意到你这个月有一个变化：${signalChange}。我们来细看。`,
+      `${userName}，这个月有点意思。净${netPnl}——你的账户在以一种"稳中带狠"的方式赚钱。我特别注意到你这个月有几个操作时机的把握非常到位。我们来细看。`,
     ],
     good: [
       `${userName}，${month}月的成绩单还不错！🐋\n\n净收益${netPnl}——虽然不是人生巅峰，但稳健本身就很了不起。市场这个月{marketSummary}，你能在这种环境下保持正收益，说明你的策略基础是扎实的。我们来看看这个月做对了什么。`,

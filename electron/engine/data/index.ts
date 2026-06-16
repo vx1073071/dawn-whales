@@ -177,37 +177,36 @@ export type {
   SceneBundle,
 } from './factor-scene-bridge';
 
-// R250 P2-06: Strategy combo bridge (combine N strategies → portfolio with contribution analysis)
-export { StrategyComboBridge, strategyComboBridge, resetStrategyComboBridge } from './strategy-combo-bridge';
+// R251 P2-26: Factor visualization completion (multi-compare + drill-down + insights + watchlist)
+export { FactorVisualizationCompletion, factorVisualizationCompletion, resetFactorVisualizationCompletion } from './factor-viz-completion';
 export type {
-  StrategySlice,
-  StrategySliceMetrics,
-  PortfolioCombo,
-  PortfolioMetrics,
-  StrategyContribution,
-  RebalancePlan,
-  ComboAnalysis,
-  ComboStats,
-} from './strategy-combo-bridge';
+  MultiFactorComparison,
+  DrillDownNode,
+  FactorInsight,
+  FactorWatchlistItem,
+  FactorAlert,
+  FactorSnapshot,
+} from './factor-viz-completion';
 
-// R250 P2-18: Portfolio optimization bridge (6 optimization methods + efficient frontier)
-export { PortfolioOptimizationBridge, portfolioOptimizationBridge, resetPortfolioOptimizationBridge } from './portfolio-optimization-bridge';
+// R251 P2-27: Template PK completion (matchups + batch + league + trends + purchase PK)
+export { TemplatePKCompletion, templatePKCompletion, resetTemplatePKCompletion } from './template-pk-completion';
 export type {
-  OptimizationInput,
-  OptimizationConstraints,
-  OptimizationMethod,
-  OptimizationResult,
-  EfficientFrontier,
-  CompareResults,
-} from './portfolio-optimization-bridge';
+  PredefinedMatchup,
+  BatchPKResult,
+  PKLeagueEntry,
+  PKTrendData,
+  PurchaseDecisionPK,
+} from './template-pk-completion';
 
-// R250 P2-11: Source health bar (25+ news source health monitoring)
-export { SourceHealthBar, sourceHealthBar, resetSourceHealthBar } from './source-health-bar';
+// R251 P2-28: AI verifiable evidence (external verification + scoring + contradictions + audit)
+export { AIVerifiableEvidence, aiVerifiableEvidence, resetAIVerifiableEvidence } from './ai-verifiable-evidence';
 export type {
-  HealthStatus,
-  SourceCategory,
-  SourceHealthSnapshot,
-  SourceHealth,
-  HealthDashboard,
-  HealthCheckResult,
-} from './source-health-bar';
+  VerificationLevel,
+  EvidenceDomain,
+  VerifiableClaim,
+  VerifiedEvidence,
+  Contradiction,
+  AuditTrail,
+  EvidenceScore,
+  EvidenceReport,
+} from './ai-verifiable-evidence';
