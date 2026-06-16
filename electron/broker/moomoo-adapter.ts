@@ -1,4 +1,4 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
+— R119 QClaw: structural type errors pending resolution by JVS/PM
 /**
  * Moomoo OpenD Adapter — Extends OpenDBaseAdapter
  *
@@ -133,7 +133,7 @@ export class MoomooAdapter extends OpenDBaseAdapter {
   }
 
   getClientId(): string {
-    return 'DawnWhales-Moomoo';
+    return 'QuantMoo-Moomoo';
   }
 
   getContractMapping(): Record<string, ContractInfo> {

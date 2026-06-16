@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R134 J01 — E*TRADE Cloud Broker Adapter
+ * QUANT MOO R134 J01 — E*TRADE Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for E*TRADE.
  * Uses E*TRADE Developer API — OAuth1.0a + REST.

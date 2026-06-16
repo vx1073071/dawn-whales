@@ -256,7 +256,7 @@ export class NewsAPIFetcher implements NewsFetcher {
         const resp = await fetch(`${NEWSAPI_BASE}${path}`, {
           headers: {
             'X-Api-Key': keyInfo.key,
-            'User-Agent': 'DawnWhales/2.7.0',
+            'User-Agent': 'QuantMoo/2.7.0',
           },
           signal: AbortSignal.timeout(REQUEST_TIMEOUT),
         });

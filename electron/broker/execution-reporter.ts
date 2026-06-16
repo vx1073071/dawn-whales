@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R135 J03 — Execution Result Reporter (桌面端→服务器)
+ * QUANT MOO R135 J03 — Execution Result Reporter (桌面端→服务器)
  * 
  * 将 OpenD 下单结果回传到服务器。
  * 

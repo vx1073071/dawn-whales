@@ -1,4 +1,4 @@
-# TradingEasy FactorLab · UX交互规范
+# quant-moo FactorLab · UX交互规范
 
 > 制定: QClaw(设计虾) | 版本: v1.0 | 日期: 2026-06-14
 > 任务: R173 C1辅助 | 工时: 3h | 配合: ML C1/C2/C3/C4前端实现

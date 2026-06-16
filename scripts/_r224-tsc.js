@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 let out;
 try {
   out = execSync('npx tsc --noEmit 2>&1', {
-    cwd: 'c:/Users/vx107/.easyclaw/workspace/dawn-whales',
+    cwd: 'c:/Users/vx107/.easyclaw/workspace/quant-moo',
     maxBuffer: 10*1024*1024,
     timeout: 90000
   }).toString();

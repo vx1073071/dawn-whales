@@ -130,7 +130,7 @@ export const CSP_POLICY = [
   "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
   "img-src 'self' data: https: blob:",
   "font-src 'self' https://cdn.jsdelivr.net",
-  "connect-src 'self' https://api.dawnwhales.com wss://opend.dawn-whales.cloud",
+  "connect-src 'self' https://api.QuantMoo.com wss://opend.quant-moo.cloud",
   "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",

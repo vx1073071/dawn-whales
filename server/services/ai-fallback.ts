@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R145 Claw(PM) — AI Fallback Chain
+ * QUANT MOO R145 Claw(PM) — AI Fallback Chain
  * 
  * Graceful degradation when DeepSeek V4 Pro fails.
  * 

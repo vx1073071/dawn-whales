@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R162 P0-H2 — Backtest Snapshot + Comparison
+ * QUANT MOO R162 P0-H2 — Backtest Snapshot + Comparison
  *
  * - Saves every backtest run as an immutable snapshot
  * - GET /api/backtest/snapshots?strategyId=X lists all snapshots for a strategy

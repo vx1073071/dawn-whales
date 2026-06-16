@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Main Process i18n (R105 S-16) ─────────────────
+// ── QUANT MOO — Main Process i18n (R105 S-16) ─────────────────
 // Independent i18next instance for Electron main process.
 // Decouples 94 files from importing renderer's src/i18n (dependency inversion).
 //

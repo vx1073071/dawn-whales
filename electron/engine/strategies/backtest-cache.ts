@@ -57,7 +57,7 @@ export class BacktestCache {
   private misses = 0;
   private readonly TTL_MS = 24 * 3600 * 1000; // 24 hours
   private readonly MAX_ENTRIES = 500;
-  private readonly persistenceKey = 'dawn-whales_backtest-cache_v2';
+  private readonly persistenceKey = 'quant-moo_backtest-cache_v2';
 
   // ── Core Operations ────────────────────────────────────────────────
 

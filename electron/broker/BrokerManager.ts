@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Broker Manager (Multi-Broker) ──────────────────────────────
+// ── QUANT MOO — Broker Manager (Multi-Broker) ──────────────────────────────
 // Sprint 1: 
 
 import log from 'electron-log';

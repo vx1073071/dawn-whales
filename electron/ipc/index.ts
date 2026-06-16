@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC — Unified Registration ─────────────────────────
+// ── QUANT MOO IPC — Unified Registration ─────────────────────────
 // Auto-generated. Imports all 22 IPC modules.
 //
 // Usage in main.ts:
@@ -27,6 +27,7 @@ import { registerStockStreamIPC } from './stock-stream-ipc';
 import { registerStrategyIPC } from './strategy-ipc';
 import { registerSystemIPC } from './system-ipc';
 import { registerVersionIPC } from './version-ipc';
+import { registerCockpitIPC } from './cockpit-ipc';
 import { registerWsIPC } from './ws-ipc';
 import { registerWsMarketIpcHandlers } from './ws-market-ipc';
 
@@ -89,4 +90,5 @@ export function registerAllIPC(services: {
   registerVersionIPC(services._services);
   registerWsIPC(services.mainWindow);
   registerWsMarketIpcHandlers();
+  registerCockpitIPC(services.mainWindow);
 }

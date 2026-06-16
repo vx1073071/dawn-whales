@@ -10,7 +10,7 @@ purpose: (auto-generated, needs review)
 
 ## Overview
 
-TradingEasy supports multiple broker integrations through a unified adapter interface. This document describes the architecture for multi-broker support, enabling users to connect to different trading platforms while maintaining a consistent API.
+quant-moo supports multiple broker integrations through a unified adapter interface. This document describes the architecture for multi-broker support, enabling users to connect to different trading platforms while maintaining a consistent API.
 
 ## Architecture
 

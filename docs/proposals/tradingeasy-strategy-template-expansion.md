@@ -1,4 +1,4 @@
-# TradingEasy 策略模板深度扩充建议书
+# quant-moo 策略模板深度扩充建议书
 
 > youdao | 2026-06-15 10:10 HKT | 致 PM
 > 基于: 258因子 × 11市场 × 人类交易习惯 × 行业对标
@@ -256,4 +256,4 @@ JVS 实现模板引擎 + ML 实现模板卡片+筛选器 + autoclaw i18n + QClaw
 
 ---
 
-*建议完成: 2026-06-15 10:10 HKT | youdao | TradingEasy 策略模板 22→88*
+*建议完成: 2026-06-15 10:10 HKT | youdao | quant-moo 策略模板 22→88*

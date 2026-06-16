@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 安全审计记录 — R91
+# quant-moo 安全审计记录 — R91
 
 > **审计日期**: 2026-06-11 | **审计版本**: v1.10.0-alpha.2 | **审计人**: QClaw (文档虾)
 

@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: portfolio (extended) ────────────────────────────────
+// ── QUANT MOO IPC: portfolio (extended) ────────────────────────────────
 // R18 P0-2: Portfolio full-link IPC — getPositions / getAllocation / getPerformance / getRiskMetrics
 //
 // PM: position/holding、config、IP

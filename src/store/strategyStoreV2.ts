@@ -36,7 +36,7 @@ interface StoreV2State {
   lastSaved: string | null;
 }
 
-const STORAGE_KEY = 'TradingEasy-strategy-store-v2';
+const STORAGE_KEY = 'quant-moo-strategy-store-v2';
 const SNAPSHOT_PREFIX = 'dw-strategy-snapshot-';
 
 // ── Helpers ─────────────────────────────────────────────────────────────

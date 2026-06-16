@@ -1,13 +1,13 @@
-# 🐋 TradingEasy
+# 🐋 quant-moo
 
 **全球首个四 Agent AI 协作量化交易平台**
 
-[![Version](https://img.shields.io/badge/version-1.12.0-blue)](https://github.com/vx1073071/tradingeasy/releases)
+[![Version](https://img.shields.io/badge/version-1.12.0-blue)](https://github.com/vx1073071/quant-moo/releases)
 [![Tests](https://img.shields.io/badge/tests-6500%2B%20%7C%200%20fail-brightgreen)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/license-Proprietary-red)]()
 
-🌐 **官网**: [tradingeasy.com](https://tradingeasy.com) · 📥 **下载**: [最新版本](https://github.com/vx1073071/tradingeasy/releases)
+🌐 **官网**: [quant-moo.com](https://quant-moo.com) · 📥 **下载**: [最新版本](https://github.com/vx1073071/quant-moo/releases)
 
 > 选市场 → 套模板 → 一键回测 → AI 保驾护航。你的策略，你的收益。
 
@@ -80,7 +80,7 @@
 ## 快速开始
 
 ### 用户
-1. 下载桌面端: [tradingeasy.com/download](https://tradingeasy.com/download) (Win/Mac/Linux)
+1. 下载桌面端: [quant-moo.com/download](https://quant-moo.com/download) (Win/Mac/Linux)
 2. 注册 → 连接券商 (Futu OpenD 或 IBKR)
 3. 选市场 → 套模板 → 回测 → 发布
 4. 新用户赠送 3 次免费 AI 分析
@@ -91,7 +91,7 @@
 
 ```bash
 git clone <repo>
-cd tradingeasy
+cd quant-moo
 npm ci
 npm run dev          # 启动开发模式
 npm run build        # 构建
@@ -116,7 +116,7 @@ npm run start:server    # /api :3001, /admin :3002
 ## 项目结构
 
 ```
-tradingeasy/
+quant-moo/
 ├── src/                    # 前端 (React)
 │   ├── components/         # UI 组件 (30+ 目录)
 │   ├── i18n/               # 国际化 (11 语言)
@@ -179,4 +179,4 @@ tradingeasy/
 
 ## 许可证
 
-Proprietary. Copyright © 2026 TradingEasy.
+Proprietary. Copyright © 2026 quant-moo.

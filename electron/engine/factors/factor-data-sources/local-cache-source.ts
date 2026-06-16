@@ -41,7 +41,7 @@ export interface LocalCacheConfig {
 const DEFAULT_CONFIG: LocalCacheConfig = {
   cacheDir: path.join(
     process.env.APPDATA || process.env.HOME || '/tmp',
-    'dawn-whales',
+    'quant-moo',
     'factor-cache'
   ),
   maxAgeMs: 24 * 60 * 60 * 1000, // 24 hours

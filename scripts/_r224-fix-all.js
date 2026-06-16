@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/bridge-api/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/bridge-api/';
 
 // Fix data.ts — all IPC error fallbacks have extra properties
 let p=base+'data.ts';
@@ -35,7 +35,7 @@ fs.writeFileSync(p,c);
 console.log('risk.ts: fixed');
 
 // Fix lwc-drawing-adapter.ts — Time is still unused after import
-p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/chart/lwc-drawing-adapter.ts';
+p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/chart/lwc-drawing-adapter.ts';
 c=fs.readFileSync(p,'utf-8');
 
 // Fix import — remove Time entirely
@@ -51,7 +51,7 @@ fs.writeFileSync(p,c);
 console.log('lwc-drawing-adapter.ts: fixed');
 
 // Fix bridge-depth-adapter.ts — the @ts-expect-error didn't apply to TS1117
-p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/chart/bridge-depth-adapter.ts';
+p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/chart/bridge-depth-adapter.ts';
 c=fs.readFileSync(p,'utf-8');
 
 // TS1117 happens before ts-expect-error is processed. Use @ts-ignore instead

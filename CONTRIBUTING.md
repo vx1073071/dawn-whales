@@ -1,6 +1,6 @@
 # 贡献指南
 
-**DAWN WHALES** 欢迎贡献！请阅读以下规范。
+**QUANT MOO** 欢迎贡献！请阅读以下规范。
 
 ---
 
@@ -8,7 +8,7 @@
 
 ```bash
 git clone <repo-url>
-cd dawn-whales
+cd quant-moo
 npm ci
 npm run dev          # 启动开发
 npm test             # 运行测试
@@ -119,7 +119,7 @@ npm run coverage      # 覆盖率报告
 ## 目录结构
 
 ```
-dawn-whales/
+quant-moo/
 ├── src/components/    # 前端 React 组件
 ├── electron/engine/   # 320+ 交易引擎
 ├── server/api/        # REST API
@@ -138,4 +138,4 @@ dawn-whales/
 
 - 查看 [文档索引](docs/INDEX.md)
 - 阅读 [代码规范 + 无障碍说明](docs/guides/code-standard-a11y-guide.md)
-- 提交 Issue: [GitHub Issues](https://github.com/vx1073071/dawn-whales/issues)
+- 提交 Issue: [GitHub Issues](https://github.com/vx1073071/quant-moo/issues)

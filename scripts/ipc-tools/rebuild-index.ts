@@ -28,7 +28,7 @@ for (const file of files) {
 
 // 生成 index.ts
 const lines = [];
-lines.push(`// ── DAWN WHALES IPC — Unified Registration ─────────────────────────`);
+lines.push(`// ── QUANT MOO IPC — Unified Registration ─────────────────────────`);
 lines.push(`// Auto-generated. Imports all 22 IPC modules.`);
 lines.push(`//`);
 lines.push(`// Usage in main.ts:`);

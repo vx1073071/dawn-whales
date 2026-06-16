@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/i18n/locales/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/i18n/locales/';
 
 // Core 9 languages
 const langs=['zh-CN','zh-TW','zh-HK','en','ja','ko','fr','it','de'];

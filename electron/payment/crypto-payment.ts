@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Crypto Payment (Sprint 3: P2) ────────────────────────────
+// ── QUANT MOO — Crypto Payment (Sprint 3: P2) ────────────────────────────
 // USDT Payment via TRC20 + ERC20 (NOWPayments API → self-hosted)
 // No KYC, no real-name requirements
 

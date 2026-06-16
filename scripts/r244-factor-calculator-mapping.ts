@@ -18,7 +18,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const ENGINE_DIR = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine';
+const ENGINE_DIR = 'C:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine';
 const FACTORS_DIR = path.join(ENGINE_DIR, 'factors');
 const REGISTRY_FILE = path.join(FACTORS_DIR, 'factor-id-registry.ts');
 
@@ -238,7 +238,7 @@ function generateReport(results: MappingResult[], stats: Record<string, number>)
   const wasmOnly = stats.wasm_only || 0;
   const missing = stats.missing || 0;
 
-  let report = `# DAWN WHALES Factor Calculator 映射分析报告
+  let report = `# QUANT MOO Factor Calculator 映射分析报告
 
 > R244 P0-11 | LOBEHUB | 引擎层分析
 > ${new Date().toISOString().split('T')[0]}
@@ -388,7 +388,7 @@ function analyzeAll(): CalcFileAnalysis[] {
 // ── Main ──────────────────────────────────────────────────────────
 
 function main() {
-  console.log('=== DAWN WHALES Factor Calculator Mapping Analyzer ===');
+  console.log('=== QUANT MOO Factor Calculator Mapping Analyzer ===');
   console.log('R244 P0-11 | LOBEHUB\n');
 
   // 读取注册表
@@ -426,12 +426,12 @@ function main() {
 
   // 生成报告
   const report = generateReport(results, stats);
-  const reportPath = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales/docs/audits/R244-factor-calculator-mapping-report.md';
+  const reportPath = 'C:/Users/vx107/.easyclaw/workspace/quant-moo/docs/audits/R244-factor-calculator-mapping-report.md';
   fs.writeFileSync(reportPath, report, 'utf-8');
   console.log(`\nReport written: ${reportPath}`);
 
   // 生成机器可读JSON
-  const jsonPath = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales/docs/audits/R244-factor-calculator-mapping.json';
+  const jsonPath = 'C:/Users/vx107/.easyclaw/workspace/quant-moo/docs/audits/R244-factor-calculator-mapping.json';
   fs.writeFileSync(jsonPath, JSON.stringify({
     generatedAt: new Date().toISOString(),
     totalFactors: factors.length,

@@ -1,5 +1,5 @@
 // ── R182 P0-10: Unified AI Security Gateway ──────────────────────────────────
-// Single entry point for all 9 AI security modules in TradingEasy.
+// Single entry point for all 9 AI security modules in quant-moo.
 // Every AI-facing code path calls: gateway.guard(input) → gateway.guard(output).
 //
 // Modules gated:

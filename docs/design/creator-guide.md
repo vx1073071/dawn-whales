@@ -1,4 +1,4 @@
-# TradingEasy Creator Guide v17.9
+# quant-moo Creator Guide v17.9
 
 > **Round**: R144+R210 | **Author**: QClaw/Claw | **Date**: 2026-06-15
 > **Status**: GUIDE — v17.9 Final
@@ -8,7 +8,7 @@
 
 ## Welcome, Creator!
 
-This guide explains everything you need to create, sell, and earn on the TradingEasy Creator Marketplace.
+This guide explains everything you need to create, sell, and earn on the quant-moo Creator Marketplace.
 
 ---
 

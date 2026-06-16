@@ -200,7 +200,7 @@ const FactorOnboardingWizard: React.FC<FactorOnboardingWizardProps> = ({
               <div style={styles.welcomeHero}>🧬</div>
               <h2 style={styles.welcomeTitle}>Welcome to Factor Universe</h2>
               <p style={styles.welcomeDesc}>
-                Dawn Whales now offers <b>188 professional factors</b> across 3 markets.
+                QUANT MOO now offers <b>188 professional factors</b> across 3 markets.
                 Let's find the ones that match your trading style.
               </p>
               <div style={styles.statGrid}>

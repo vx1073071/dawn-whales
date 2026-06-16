@@ -1,4 +1,4 @@
-// DAWN WHALES — Performance Benchmark (R88 J-03)
+// QUANT MOO — Performance Benchmark (R88 J-03)
 // Engine + core operations benchmark for CI performance monitoring.
 // Run: node scripts/benchmark.js                    → human-readable
 //      node scripts/benchmark.js --json             → CI machine-readable
@@ -166,7 +166,7 @@ if (USE_JSON) {
   }
 } else {
   // ── Human-readable table ──
-  console.log(`\n┌─ DAWN WHALES Benchmark — R88 J-03 ────────────────────────────────┐`);
+  console.log(`\n┌─ QUANT MOO Benchmark — R88 J-03 ────────────────────────────────┐`);
   console.log(`│ Node: ${process.version.padEnd(18)} Platform: ${process.platform}/${process.arch}`.padEnd(67) + '│');
   console.log(`│ Total: ${String(totalMs + 'ms').padEnd(18)} Avg: ${String(avgOps.toLocaleString()).padEnd(12)} ops/s`.padEnd(67) + '│');
   if (passed) {

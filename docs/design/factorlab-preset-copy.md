@@ -1,4 +1,4 @@
-# TradingEasy FactorLab · 预设方案文案库
+# quant-moo FactorLab · 预设方案文案库
 
 > 制定: QClaw(设计虾) | 版本: v1.0 | 日期: 2026-06-14
 > 任务: R173 C3辅助 | 工时: 2h | 配合: ML C3 权重视觉化配置器预设切换

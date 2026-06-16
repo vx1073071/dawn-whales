@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.12.0 独立项目审计报告
+# quant-moo v1.12.0 独立项目审计报告
 
 > **审计者**: QClaw (独立检查, 非本轮参与方)
 > **日期**: 2026-06-12
@@ -43,7 +43,7 @@ purpose: (auto-generated, needs review)
 ### 1.2 目录结构
 
 ```
-dawn-whales/
+quant-moo/
 ├── electron/         # 主进程 (含 engine/ 9 子目录)
 │   ├── engine/       # 9 子目录: agents/analysis/backtest/core/data/factors/portfolio/risk/utils
 │   ├── ipc/          # 300+ IPC handler
@@ -379,4 +379,4 @@ R109+ (可观测性 + 长期)
 
 ---
 
-**审计结论**: TradingEasy v1.12.0 已达到**生产级质量** (TSC 0, 6844/0 fail, 完整文档), 处于从"功能完整"到"工业化打磨"的关键阶段。建议**未来 5 轮集中于引擎测试补全 + 类型安全强化 + 性能优化**, 可将项目质量从 7.7/10 提升至 8.5/10。
+**审计结论**: quant-moo v1.12.0 已达到**生产级质量** (TSC 0, 6844/0 fail, 完整文档), 处于从"功能完整"到"工业化打磨"的关键阶段。建议**未来 5 轮集中于引擎测试补全 + 类型安全强化 + 性能优化**, 可将项目质量从 7.7/10 提升至 8.5/10。

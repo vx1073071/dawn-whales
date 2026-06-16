@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: monitor — Alert monitoring & management ──────────
+// ── QUANT MOO IPC: monitor — Alert monitoring & management ──────────
 // R20: Missing handlers detected by QClaw — preload exposes monitor:*
 //      but no monitor-ipc.ts existed. This module provides all monitor:*
 //      handlers using in-memory alert state + RiskEngine integration.

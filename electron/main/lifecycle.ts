@@ -1,4 +1,4 @@
-// ── DAWN WHALES — App Lifecycle (R108 S-33 Lazy Engine Loading) ───────
+// ── QUANT MOO — App Lifecycle (R108 S-33 Lazy Engine Loading) ───────
 // Eager-loaded: core (CronScheduler/ConditionWatcher), data (DatabaseManager/DataProvider), risk (RiskEngine)
 // Lazy-loaded: analysis (StrategyEngine), backtest (BacktestEngine)
 // Startup timing target: -300ms (eager-only core + data + risk)
@@ -293,7 +293,7 @@ function setupSchedulers(strategyRunner: StrategyRunnerInterface) {
 }
 
 export async function onAppReady() {
-  log.info('[App] DAWN WHALES starting...');
+  log.info('[App] QUANT MOO starting...');
   const t0 = Date.now();
 
   // Phase 1: Eager init (core modules only — database, risk, broker)
@@ -338,7 +338,7 @@ export async function onAppReady() {
     },
   };
   setupSchedulers(strategyRunner);
-  log.info(`[App] DAWN WHALES ready (total: ${Date.now() - t0}ms)`);
+  log.info(`[App] QUANT MOO ready (total: ${Date.now() - t0}ms)`);
 }
 
 export function onWindowAllClosed() {

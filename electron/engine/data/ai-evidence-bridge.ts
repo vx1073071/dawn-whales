@@ -493,7 +493,7 @@ export class AIEvidenceBridge {
         level: 3, category: 'sentiment',
         claim: `AI model analysis for ${ticker}`,
         claimCn: `${ticker} AI模型分析`,
-        source: { name: 'DAWN WHALES AI', type: 'analysis', publishedAt: now, freshness: 'live' },
+        source: { name: 'QUANT MOO AI', type: 'analysis', publishedAt: now, freshness: 'live' },
         strength: 'weak',
         direction: 'neutral',
         verifiable: false,

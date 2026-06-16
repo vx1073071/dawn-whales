@@ -10,7 +10,7 @@ test.describe('Dark Mode', () => {
     const html = page.locator('html');
     const cls = await html.getAttribute('class');
     console.log('[E2E-17] HTML class:', cls);
-    // Dark mode is the default for Dawn Whales (zh-CN renders dark)
+    // Dark mode is the default for QUANT MOO (zh-CN renders dark)
     expect(cls).toBeTruthy();
   });
 

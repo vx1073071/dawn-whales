@@ -288,7 +288,7 @@
 ## 📎 参考文件
 
 - Master Plan: `docs/proposals/factor-expansion-R184-R193-master-plan.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`
 - 费率体系: `docs/reference/fee-schedule.md`
 - R141扣费管道: `electron/engine/factors/factor-billing-gateway.ts` (15 touchpoints)
 - AI扣费规则: `docs/design/ai-billing-rules.md`

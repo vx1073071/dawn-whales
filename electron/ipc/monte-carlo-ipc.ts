@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: monte-carlo ───────────────────────────────────────────
+// ── QUANT MOO IPC: monte-carlo ───────────────────────────────────────────
 // R18: MonteCarlo simulation IPC — connects MonteCarloPage to JVS-100 engine
 
 import { ipcMain } from 'electron';

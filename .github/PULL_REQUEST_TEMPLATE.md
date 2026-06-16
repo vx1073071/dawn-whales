@@ -97,4 +97,4 @@ assignees: ''
 
 ---
 
-**感谢您在 DAWN WHALES 项目上的工作！🎉**
+**感谢您在 QUANT MOO 项目上的工作！🎉**

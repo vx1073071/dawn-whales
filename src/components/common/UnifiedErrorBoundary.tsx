@@ -162,7 +162,7 @@ export class UnifiedErrorBoundary extends Component<UnifiedErrorBoundaryProps, S
             {showDetails ? `▲ ${t.collapse}` : `▼ ${t.details}`}
           </button>
           <button
-            onClick={() => window.open(`https://github.com/vx1073071/dawn-whales/issues/new?title=Bug: ${encodeURIComponent(name)}&body=${encodeURIComponent(error?.message || '')}`, '_blank')}
+            onClick={() => window.open(`https://github.com/vx1073071/quant-moo/issues/new?title=Bug: ${encodeURIComponent(name)}&body=${encodeURIComponent(error?.message || '')}`, '_blank')}
             className="px-3 py-1.5 text-xs bg-[#30363d]/50 hover:bg-[#30363d] text-[#58a6ff] border border-[#30363d] rounded-lg transition-colors"
             aria-label={t.report}
           >

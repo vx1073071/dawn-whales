@@ -1,4 +1,4 @@
-# R129-Q01: TradingEasy Server API 接口文档 (OpenAPI 3.0)
+# R129-Q01: quant-moo Server API 接口文档 (OpenAPI 3.0)
 
 > **Author**: QClaw · **Task**: R129-Q01 · **Hours**: 3h
 > **Version**: v2.0.0 | **Base URL**: `http://localhost:3001/api`
@@ -7,7 +7,7 @@
 
 ## 概述
 
-TradingEasy Server 提供 RESTful HTTP API，用于双模跟单架构的服务器端组件。所有写操作端点需 JWT Bearer Token 认证，健康检查端点公开访问。
+quant-moo Server 提供 RESTful HTTP API，用于双模跟单架构的服务器端组件。所有写操作端点需 JWT Bearer Token 认证，健康检查端点公开访问。
 
 - **协议**: HTTP/1.1
 - **数据格式**: JSON
@@ -689,7 +689,7 @@ JWT_SECRET=your-256-bit-secret-change-in-production
 JWT_EXPIRES_IN=24h
 JWT_REFRESH_EXPIRES_IN=7d
 ENCRYPTION_MASTER_KEY=your-32-char-encryption-key-here
-DB_PATH=./data/dawn-whales.db
+DB_PATH=./data/quant-moo.db
 KEYS_DB_PATH=./data/api-keys.db
 CORS_ORIGIN=*
 RATE_LIMIT_WINDOW_MS=60000

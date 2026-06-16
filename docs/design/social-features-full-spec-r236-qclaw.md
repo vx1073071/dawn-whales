@@ -1,5 +1,5 @@
 # R236-QClaw#1: Social Features — Full Implementation Specification
-## Dawn Whales v2.6.0 QUANTUM · R236 · 16h
+## QUANT MOO v2.6.0 QUANTUM · R236 · 16h
 
 > **Context**: R234-QClaw#2 delivered the conceptual design (3 features, 12KB). R236 delivers the full implementation-ready spec with all states, i18n, data models, and integration details.
 
@@ -277,7 +277,7 @@ FollowFeed (in Dashboard or as standalone page)
 | 5 | **Whale** | 🐋 | Any single strategy earned ≥1000 USDT | Auto | Shown on that strategy + profile |
 | 6 | **Fast Responder** | ⚡ | Average reply time <24h, ≥5 replies | Auto | Checked weekly |
 | 7 | **Top Seller** | 🏆 | Top 10% of creators by revenue in their primary market | Auto | Updated weekly |
-| 8 | **Editor's Pick** | 💎 | Manually awarded by Dawn Whales team | Manual | Permanent unless revoked |
+| 8 | **Editor's Pick** | 💎 | Manually awarded by QUANT MOO team | Manual | Permanent unless revoked |
 
 ### 5.2 Badge Computation Schedule
 ```
@@ -540,7 +540,7 @@ CREATE TABLE creator_badges (
 | Key | EN | Description |
 |-----|-----|-------------|
 | `badge_verified_backtest` | "Verified Backtest" | Badge name |
-| `badge_verified_backtest_desc` | "Backtest results verified by Dawn Whales" | Badge tooltip |
+| `badge_verified_backtest_desc` | "Backtest results verified by QUANT MOO" | Badge tooltip |
 | `badge_low_refund` | "Low Refund Rate" | Badge name |
 | `badge_low_refund_desc` | "Refund rate under 5%" | Badge tooltip |
 | `badge_high_rating` | "High Rating" | Badge name |
@@ -554,7 +554,7 @@ CREATE TABLE creator_badges (
 | `badge_top_seller` | "Top Seller" | Badge name |
 | `badge_top_seller_desc` | "Top 10% by revenue in market" | Badge tooltip |
 | `badge_editors_pick` | "Editor's Pick" | Badge name |
-| `badge_editors_pick_desc` | "Curated by Dawn Whales team" | Badge tooltip |
+| `badge_editors_pick_desc` | "Curated by QUANT MOO team" | Badge tooltip |
 | `badge_empty_slot` | "Earn this badge by: {requirement}" | Empty slot tooltip |
 | `badge_earned_date` | "Earned {date}" | Badge detail |
 | `trust_score_new` | "New" | Trust tier 0-25 |

@@ -110,7 +110,7 @@ export default function DailyDashboard() {
       {/* Top Status Bar */}
       <div className="flex items-center justify-between px-4 py-2 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span>Dawn Whales v2.7</span>
+          <span>QUANT MOO v2.7</span>
           <span className="text-gray-300">|</span>
           <span>📡 5/5数据源在线</span>
           <span className="flex items-center gap-0.5 ml-1">{pulseDots}</span>

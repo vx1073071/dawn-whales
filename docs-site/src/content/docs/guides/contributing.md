@@ -1,11 +1,11 @@
 ---
 title: 贡献指南
-description: 如何为 DAWN WHALES 项目做出贡献 — 代码贡献、文档翻译、插件开发、问题反馈
+description: 如何为 QUANT MOO 项目做出贡献 — 代码贡献、文档翻译、插件开发、问题反馈
 ---
 
 # 🤝 贡献指南
 
-感谢你考虑为 DAWN WHALES 做出贡献！本文档将帮助你了解如何参与项目。
+感谢你考虑为 QUANT MOO 做出贡献！本文档将帮助你了解如何参与项目。
 
 ## 目录
 
@@ -68,8 +68,8 @@ description: 如何为 DAWN WHALES 项目做出贡献 — 代码贡献、文档�
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/dawn-whales/dawn-whales.git
-cd dawn-whales
+git clone https://github.com/quant-moo/quant-moo.git
+cd quant-moo
 
 # 2. 安装依赖
 pnpm install
@@ -87,7 +87,7 @@ pnpm tsc --noEmit
 ### 项目结构
 
 ```
-dawn-whales/
+quant-moo/
 ├── electron/          # Electron 主进程
 │   ├── engine/        # 策略引擎
 │   │   ├── factors/   # 因子计算
@@ -244,7 +244,7 @@ pnpm dev
 
 ## 翻译贡献
 
-DAWN WHALES 支持 9 种语言。翻译文件位于：
+QUANT MOO 支持 9 种语言。翻译文件位于：
 
 - **前端 UI**: `src/i18n/locales/{locale}.json`
 - **文档站**: 在 Markdown 文件中使用 Starlight 的 i18n 路由
@@ -280,7 +280,7 @@ DAWN WHALES 支持 9 种语言。翻译文件位于：
 
 ## 插件开发
 
-DAWN WHALES 提供完整的插件系统，支持：
+QUANT MOO 提供完整的插件系统，支持：
 
 - 自定义因子计算
 - 自定义数据源接入
@@ -290,8 +290,8 @@ DAWN WHALES 提供完整的插件系统，支持：
 ### 快速开始
 
 参考示例插件：
-- [自定义因子插件](https://github.com/dawn-whales/plugin-custom-factor) — 添加技术指标因子
-- [自定义数据源插件](https://github.com/dawn-whales/plugin-custom-data-source) — 接入外部数据
+- [自定义因子插件](https://github.com/quant-moo/plugin-custom-factor) — 添加技术指标因子
+- [自定义数据源插件](https://github.com/quant-moo/plugin-custom-data-source) — 接入外部数据
 
 ### 插件结构
 
@@ -310,9 +310,9 @@ my-plugin/
 
 ### Bug 报告
 
-在 [GitHub Issues](https://github.com/dawn-whales/dawn-whales/issues) 提交，请包含：
+在 [GitHub Issues](https://github.com/quant-moo/quant-moo/issues) 提交，请包含：
 
-- **版本号**：DAWN WHALES 版本
+- **版本号**：QUANT MOO 版本
 - **环境**：操作系统 + Electron 版本
 - **复现步骤**：清晰的操作步骤
 - **预期行为**：期望发生什么
@@ -321,7 +321,7 @@ my-plugin/
 
 ### 功能建议
 
-在 [GitHub Discussions](https://github.com/dawn-whales/dawn-whales/discussions) 提出，请说明：
+在 [GitHub Discussions](https://github.com/quant-moo/quant-moo/discussions) 提出，请说明：
 
 - 功能的使用场景
 - 期望的行为
@@ -333,10 +333,10 @@ my-plugin/
 
 | 渠道 | 链接 |
 |------|------|
-| GitHub Issues | https://github.com/dawn-whales/dawn-whales/issues |
-| GitHub Discussions | https://github.com/dawn-whales/dawn-whales/discussions |
-| 邮件 | dev@dawnwhales.app |
+| GitHub Issues | https://github.com/quant-moo/quant-moo/issues |
+| GitHub Discussions | https://github.com/quant-moo/quant-moo/discussions |
+| 邮件 | dev@QuantMoo.app |
 
 ---
 
-*感谢每一位贡献者！你的参与让 DAWN WHALES 变得更好。* 🦞
+*感谢每一位贡献者！你的参与让 QUANT MOO 变得更好。* 🦞

@@ -68,7 +68,7 @@ export interface CategoryMapping {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// Category Mappings (Investing.com → DawnWhales)
+// Category Mappings (Investing.com → QuantMoo)
 // ═════════════════════════════════════════════════════════════════════════════
 
 export const CATEGORY_MAPPINGS: CategoryMapping[] = [

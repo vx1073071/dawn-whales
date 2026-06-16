@@ -6,7 +6,7 @@ const { execSync } = require('child_process');
 // Find all tsx files with console statements
 const result = execSync(
   'npx grep -rn "console\\." src/components/ --include="*.tsx" -l',
-  { encoding: 'utf8', cwd: 'C:/Users/vx107/.easyclaw/workspace/dawn-whales' }
+  { encoding: 'utf8', cwd: 'C:/Users/vx107/.easyclaw/workspace/quant-moo' }
 );
 
 const files = result.trim().split('\n').filter(f => f);
@@ -16,7 +16,7 @@ let totalReplacements = 0;
 
 for (const file of files) {
   if (!file) continue;
-  const fp = path.resolve('C:/Users/vx107/.easyclaw/workspace/dawn-whales', file);
+  const fp = path.resolve('C:/Users/vx107/.easyclaw/workspace/quant-moo', file);
   let content = fs.readFileSync(fp, 'utf8');
   const original = content;
   

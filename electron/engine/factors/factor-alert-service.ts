@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R168 P2-10 — Factor Alert Service
+ * QUANT MOO R168 P2-10 — Factor Alert Service
  *
  * Monitors factor health and triggers alerts for:
  *   - IC mutation (IC drops below threshold vs historical avg)

@@ -41,7 +41,7 @@ export default function FinalPolish() {
       {/* Hero */}
       <div className="px-4 py-6 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white text-center">
         <span className="text-5xl mb-3 inline-block">🐋</span>
-        <h1 className="text-2xl font-bold mb-1">Dawn Whales v2.7.0</h1>
+        <h1 className="text-2xl font-bold mb-1">QUANT MOO v2.7.0</h1>
         <p className="text-sm text-white/80">R224 → R252 · 29轮 · {polishItems.length}项抛光检查</p>
         <div className="flex items-center justify-center gap-4 mt-3">
           <div className="text-center bg-white/10 rounded-xl px-4 py-2">

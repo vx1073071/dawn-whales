@@ -128,7 +128,7 @@ export default function StrategyShareCard({ data, defaultSize = 'card', locale }
   }, [generatedImage, locale]);
 
   // ── 社交分享 URL ──
-  const shareUrl = `https://dawnwhales.com/share/strategy/${data.userId}/${data.strategyName.replace(/\s+/g, '-')}`;
+  const shareUrl = `https://QuantMoo.com/share/strategy/${data.userId}/${data.strategyName.replace(/\s+/g, '-')}`;
   const shareText = `${data.strategyName} | Sharpe ${data.sharpeRatio.toFixed(2)} | 年化 ${data.annualizedReturn.toFixed(1)}% | @TradingEasy`;
 
   // ── Render the share card (offscreen but rendered) ──
@@ -250,7 +250,7 @@ export default function StrategyShareCard({ data, defaultSize = 'card', locale }
                   }}>
                     <div>
                       <div style={{ color: '#6b7280', fontSize: 10 }}>扫码体验 TradingEasy</div>
-                      <div style={{ color: '#D4A853', fontSize: 14, fontWeight: 600, marginTop: 2 }}>dawnwhales.com</div>
+                      <div style={{ color: '#D4A853', fontSize: 14, fontWeight: 600, marginTop: 2 }}>QuantMoo.com</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ color: '#6b7280', fontSize: 10 }}>交易笔数: {data.trades} | 持仓: {data.holdingDays}d</div>

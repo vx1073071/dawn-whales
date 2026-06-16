@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R144 J01+J02 — Marketplace Transaction Engine
+ * QUANT MOO R144 J01+J02 — Marketplace Transaction Engine
  * 
  * Marketplace engine for creator products:
  *   1. Strategy Templates — one-time purchase

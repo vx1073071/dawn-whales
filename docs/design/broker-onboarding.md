@@ -1,4 +1,4 @@
-# TradingEasy 券商接入手册 — 从 API Key 到实时行情
+# quant-moo 券商接入手册 — 从 API Key 到实时行情
 
 > **版本**: v1.0 | **日期**: 2026-06-14 | **作者**: QClaw (文档虾)
 > **覆盖**: 8 券商 API Key 申请 + 行情数据格式 + WebSocket 协议
@@ -34,7 +34,7 @@
 ⚠ 模拟盘默认开启, 实盘需 GUI 手动解锁交易密码
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 // 环境变量 (可选, 覆盖默认值)
 FUTU_OPEND_HOST=127.0.0.1
@@ -78,7 +78,7 @@ SubTypes:  QUOTE / KLINE / TICKER / ORDER_BOOK / BROKER / CAPITAL_FLOW
 ⚠ 订阅行情需要单独购买 (IB 市场数据订阅)
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const ib = new IBTWSAdapter({
   host: '127.0.0.1',
@@ -118,7 +118,7 @@ Note:      Market data is throttled (约 50 req/sec)
    - API 域名: https://openapi.itiger.com (正式) / https://sandbox.itiger.com (沙盒)
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const tiger = new TigerAdapter({
   tigerId: 'YOUR_TIGER_ID',
@@ -149,7 +149,7 @@ Subscribe: ⚠️ (REST 轮询, 非原生 WS)
 1. 注册币安账户: https://www.binance.com
 2. 进入 API 管理: https://www.binance.com/en/my/settings/api-management
 3. 创建 API Key:
-   - 标签: "TradingEasy"
+   - 标签: "quant-moo"
    - 权限: ☑ 读取 (Enable Reading) / ☐ 交易 / ☐ 提现
    - IP 白名单: 可选 (推荐设置你的 IP)
 4. 保存 Key 和 Secret (Secret 仅显示一次!)
@@ -159,7 +159,7 @@ Subscribe: ⚠️ (REST 轮询, 非原生 WS)
 ⚠ 合约测试网: https://testnet.binancefuture.com
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const binance = new BinanceAdapter({
   apiKey: 'YOUR_API_KEY',
@@ -197,7 +197,7 @@ Subscribe: ✅ (原生 WebSocket, 多路复用)
 ⚠ Passphrase 是创建 Key 时自己设置的, 不是登录密码
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const okx = new OKXAdapter({
   apiKey: 'YOUR_API_KEY',
@@ -242,7 +242,7 @@ Subscribe: ✅ (原生 WebSocket 频道订阅)
 ⚠ API 限制: 2 req/sec (免费) / 4 req/sec (付费)
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const etrade = new ETRADEAdapter({
   consumerKey: 'YOUR_CONSUMER_KEY',
@@ -286,7 +286,7 @@ Subscribe: ❌ (无原生 WS, 需 REST 轮询)
 ⚠ Access Token 1小时过期，需 Refresh Token 自动续期
 ```
 
-**TradingEasy 配置**:
+**quant-moo 配置**:
 ```typescript
 const webull = new WebullAdapter({
   clientId: 'YOUR_APP_KEY',
@@ -449,7 +449,7 @@ interface TickRecord {
 
 ## 3. WebSocket 推送协议
 
-### 3.1 TradingEasy 统一 WS 格式
+### 3.1 quant-moo 统一 WS 格式
 
 所有券商适配器输出统一的 WebSocket 消息格式，由 `ws-push-service.ts` 转发。
 
@@ -549,7 +549,7 @@ URL: wss://ws.okx.com:8443/ws/v5/public
 #### Futu (OpenD)
 ```
 Futu OpenD 原生协议 (Protobuf), 通过本地 TCP 连接。
-TradingEasy 的 futu-adapter.ts 负责 Protobuf ↔ JSON 转换。
+quant-moo 的 futu-adapter.ts 负责 Protobuf ↔ JSON 转换。
 
 订阅: Qot_Sub(subType=QUOTE, codeList=["HK.00700"])
 推送: Qot_UpdateTicker 回调
@@ -558,7 +558,7 @@ TradingEasy 的 futu-adapter.ts 负责 Protobuf ↔ JSON 转换。
 #### IBKR (TWS)
 ```
 IB 无原生 WebSocket。通过 TWS socket 协议 (TCP 4001/7497)。
-TradingEasy 的 ib-tws-adapter.ts 将 IB 私有协议转为 JSON WS。
+quant-moo 的 ib-tws-adapter.ts 将 IB 私有协议转为 JSON WS。
 
 请求: reqMktData(contractId, genericTickList)
 推送: tickPrice / tickSize 回调

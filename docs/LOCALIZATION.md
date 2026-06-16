@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# LOCALIZATION.md — TradingEasy 本地化贡献指南
+# LOCALIZATION.md — quant-moo 本地化贡献指南
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
@@ -17,7 +17,7 @@ purpose: (auto-generated, needs review)
 
 ## 一、 新增语言 Checklist
 
-遵循以下 5 步流程为 TradingEasy 新增一种语言。
+遵循以下 5 步流程为 quant-moo 新增一种语言。
 
 ### Step 1: 创建 Locale JSON 文件
 
@@ -242,7 +242,7 @@ t('result.count', { count: 0 });   // → "0 results" (en, uses _plural)
 
 ## 三、 格式化 API 参考
 
-TradingEasy 提供完整的格式化工具，基于 `Intl` API。
+quant-moo 提供完整的格式化工具，基于 `Intl` API。
 
 ### 3.1 数字格式化 (utils/formatNumber.ts)
 

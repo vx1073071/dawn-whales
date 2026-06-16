@@ -63,7 +63,7 @@ export interface SnapshotListEntry {
 
 const DEFAULT_STORE_DIR = path.join(
   process.env.APPDATA || process.env.HOME || '/tmp',
-  'tradingeasy',
+  'quant-moo',
   'factor-snapshots',
 );
 

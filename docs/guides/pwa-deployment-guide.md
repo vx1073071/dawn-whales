@@ -40,7 +40,7 @@ PWA (Progressive Web App) 是一种现代化的 Web 应用技术方案，提供�
 - **全屏运行**: 可以全屏运行，隐藏浏览器地址栏
 - **快速加载**: 通过缓存实现快速加载
 
-### TradingEasy PWA 特性
+### quant-moo PWA 特性
 
 | 特性 | 说明 | 状态 |
 |-----|------|------|
@@ -58,8 +58,8 @@ PWA (Progressive Web App) 是一种现代化的 Web 应用技术方案，提供�
 
 ```json
 {
-  "name": "TradingEasy - 智能量化交易平台",
-  "short_name": "TradingEasy",
+  "name": "quant-moo - 智能量化交易平台",
+  "short_name": "quant-moo",
   "description": "AI 策略生成 + 自动回测优化 + 实时性能监控 + 多账户管理",
   "start_url": "/",
   "display": "standalone",
@@ -190,7 +190,7 @@ npx pwa-asset-generator logo.png ./public/icons \
 ```typescript
 // public/sw.js
 
-const CACHE_NAME = 'dawn-whales-v0.11.0';
+const CACHE_NAME = 'quant-moo-v0.11.0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -373,7 +373,7 @@ function showUpdateNotification() {
 | Network First | 优先使用网络 | API 请求、HTML 页面 | 数据新鲜 | 网络慢时延迟高 |
 | Stale While Revalidate | 先返回缓存，后台更新 | 不常变化的数据 | 快速 + 新鲜 | 实现复杂 |
 
-### TradingEasy 策略选择
+### quant-moo 策略选择
 
 ```
 静态资源 (JS/CSS/图片):
@@ -402,7 +402,7 @@ HTML 页面:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>离线 - TradingEasy</title>
+  <title>离线 - quant-moo</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -502,12 +502,12 @@ npm run build
 # Nginx 示例：
 server {
   listen 443 ssl http2;
-  server_name dawn-whales.ai;
+  server_name quant-moo.ai;
   
   ssl_certificate /path/to/cert.pem;
   ssl_certificate_key /path/to/key.pem;
   
-  root /var/www/dawn-whales;
+  root /var/www/quant-moo;
   index index.html;
   
   # Service Worker 缓存控制
@@ -570,7 +570,7 @@ test.describe('PWA', () => {
     const response = await page.goto('/manifest.json');
     expect(response?.status()).toBe(200);
     const manifest = await response?.json();
-    expect(manifest.name).toContain('TradingEasy');
+    expect(manifest.name).toContain('quant-moo');
   });
 
   test('离线页面可访问', async ({ page }) => {

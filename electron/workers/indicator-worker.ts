@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Indicator Worker ────────────────────────────────────────
+// ── QUANT MOO — Indicator Worker ────────────────────────────────────────
 // Technical indicator calculations in worker thread
 
 import { computeIndicators } from '../engine/analysis/technical-indicators';

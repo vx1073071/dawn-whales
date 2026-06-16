@@ -18,7 +18,7 @@ purpose: (auto-generated, needs review)
 > **请勿在新增代码中引用本文档描述的旧接口。**
 >
 
-# TradingEasy USDT 积分 API 文档
+# quant-moo USDT 积分 API 文档
 
 > 版本: v1.11.0 | 发布日期: 2026-06-12 | 维护: QClaw (文档虾)
 > 基于项目实际源文件: `electron/engine/data/usdt-points-manager.ts`, `electron/engine/data/trade-fee-hook.ts`, `electron/engine/data/exchange-rate-engine.ts`, `electron/engine/data/fee-calculator.ts`, `electron/engine/core/engine-error.ts`
@@ -27,7 +27,7 @@ purpose: (auto-generated, needs review)
 
 ## 一、概述
 
-TradingEasy USDT 积分系统提供原子化的积分余额管理、自动交易扣费钩子和实时汇率查询。积分作为平台内部计费单位，不涉及用户券商资金。
+quant-moo USDT 积分系统提供原子化的积分余额管理、自动交易扣费钩子和实时汇率查询。积分作为平台内部计费单位，不涉及用户券商资金。
 
 ### 核心组件
 

@@ -1,5 +1,5 @@
 const {execSync}=require('child_process');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo';
 
 // Find ALL @ts-nocheck files across the project
 const findstr='findstr /s /m @ts-nocheck *.ts *.tsx 2>nul';

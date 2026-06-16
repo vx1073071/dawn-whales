@@ -21,7 +21,7 @@
   "community_follow": "フォロー",
   "community_unfollow": "フォロー解除",
   "community_report": "報告",
-  "onboarding_welcome": "TradingEasyへようこそ！",
+  "onboarding_welcome": "quant-mooへようこそ！",
   "onboarding_step1": "ブローカーを接続",
   "onboarding_step2": "最初の戦略を作成",
   "onboarding_step3": "バックテスト実行",
@@ -65,7 +65,7 @@
   "LandingPageV18.v111_7": "11 Languages",
   "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase.",
   "upgrade": {
-    "welcome": "🎉 Dawn Whales v2.3.0 CRYSTAL",
+    "welcome": "🎉 QUANT MOO v2.3.0 CRYSTAL",
     "subtitle": "The Crystal Ship — 12 rounds of craftsmanship, 75+ enhancements",
     "stepHighlights": "What's New",
     "stepWalkthrough": "Walkthrough",

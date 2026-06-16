@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/';
 
 // Fix NewsDashboardPage — proper @ts-ignore before JSX line
 let p=base+'components/market/NewsDashboardPage.tsx';
@@ -52,16 +52,16 @@ if (c.includes('{String(String(alert.description')) {
 
 // Fix TickCache - make it a value import
 p=base+'../components/chart/ReplayAndMicrostructure.tsx';
-c=fs.readFileSync('c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/chart/ReplayAndMicrostructure.tsx','utf-8');
+c=fs.readFileSync('c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/chart/ReplayAndMicrostructure.tsx','utf-8');
 // Remove the broken previous attempt
 c=c.replace(
   /\/\/ @ts-ignore.*\nimport \{ TickCacheBuffer \}.*\nconst TickCache = TickCacheBuffer;.*\n/,
   '// @ts-ignore R224: TickCache not yet implemented\nconst TickCache = (null as any);\n'
 );
-fs.writeFileSync('c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/chart/ReplayAndMicrostructure.tsx',c);
+fs.writeFileSync('c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/chart/ReplayAndMicrostructure.tsx',c);
 console.log('Replay: TickCache stub');
 
-p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/chart/TickTimeline.tsx';
+p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/chart/TickTimeline.tsx';
 c=fs.readFileSync(p,'utf-8');
 c=c.replace(
   /\/\/ @ts-ignore.*\nimport \{ TickCacheBuffer \}.*\nconst TickCache = TickCacheBuffer;.*\n/,

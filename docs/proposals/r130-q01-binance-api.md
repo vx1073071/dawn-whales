@@ -7,7 +7,7 @@
 
 ## 一、Binance 接入概览
 
-### TradingEasy 中的 Binance 架构
+### quant-moo 中的 Binance 架构
 
 ```
 桌面端/server → BinanceAdapter (server/adapters/binance-adapter.ts)
@@ -56,7 +56,7 @@ GET /api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT"]
 权重: 40 (≤2 symbols) / 2×N (≥3 symbols)
 ```
 
-**TradingEasy 调用**: `getQuotes(symbols: string[]) → CloudQuoteInfo[]`
+**quant-moo 调用**: `getQuotes(symbols: string[]) → CloudQuoteInfo[]`
 
 返回字段映射:
 
@@ -78,7 +78,7 @@ GET /api/v3/depth?symbol=BTCUSDT&limit=20
 权重: 100 (1000 for limit=1000)
 ```
 
-**TradingEasy 调用**: `getDepth(symbol, limit?) → CloudDepthSnapshot`
+**quant-moo 调用**: `getDepth(symbol, limit?) → CloudDepthSnapshot`
 
 返回格式: `{ bids: [[price, qty], ...], asks: [[price, qty], ...] }`
 
@@ -91,7 +91,7 @@ GET /api/v3/account (SIGNED)
 需要 API Key 签名
 ```
 
-**TradingEasy 调用**: `getAccount() → CloudAccountInfo`
+**quant-moo 调用**: `getAccount() → CloudAccountInfo`
 
 计算逻辑: 遍历 balances 数组，sum(b.free × USDT价格) = totalEquity
 
@@ -106,7 +106,7 @@ POST /api/v3/order (SIGNED)
 权重: 1
 ```
 
-**TradingEasy 调用**: `placeOrder(req) → CloudOrderInfo`
+**quant-moo 调用**: `placeOrder(req) → CloudOrderInfo`
 
 订单类型映射:
 
@@ -135,7 +135,7 @@ DELETE /api/v3/order (SIGNED)
 参数: symbol, orderId
 ```
 
-**TradingEasy 调用**: `cancelOrder(orderId, symbol) → boolean`
+**quant-moo 调用**: `cancelOrder(orderId, symbol) → boolean`
 
 ---
 
@@ -147,7 +147,7 @@ DELETE /api/v3/order (SIGNED)
 wss://stream.binance.com:9443/ws/<streamName>
 ```
 
-**TradingEasy 实现**:
+**quant-moo 实现**:
 
 - `subscribeQuotes(symbols)` — 拼接 `btcusdt@ticker/ethusdt@ticker` → WS 订阅
 - `subscribeDepth(symbol)` — `btcusdt@depth20@100ms` → WS 订阅
@@ -190,7 +190,7 @@ signature = HMAC-SHA256(queryString, secretKey).hex()
 | timestamp | Unix ms |
 | signature | HMAC-SHA256 计算结果 |
 
-### TradingEasy 实现
+### quant-moo 实现
 
 ```typescript
 // server/adapters/binance-adapter.ts
@@ -230,7 +230,7 @@ function sign(queryString: string, secret: string): string {
 | 有 API Key (默认) | 6000/min | 20/s |
 | VIP 1-9 | 更高 | 更高 |
 
-### TradingEasy 限速策略
+### quant-moo 限速策略
 
 - 单券商请求间隔 ≥100ms
 - 同一 endpoint 并发 ≤5
@@ -252,7 +252,7 @@ function sign(queryString: string, secret: string): string {
 
 ### 符号格式转换
 
-| 输入 | Binance 格式 | TradingEasy 格式 |
+| 输入 | Binance 格式 | quant-moo 格式 |
 |------|------------|-----------------|
 | BTC/USDT | BTCUSDT | BTC/USDT |
 | ETH/BTC | ETHBTC | ETH/BTC |
@@ -271,7 +271,7 @@ function sign(queryString: string, secret: string): string {
 
 1. 前往 https://testnet.binance.vision 使用 GitHub 登录
 2. 生成 HMAC_SHA256 API Key
-3. TradingEasy 配置: `type: 'binance-testnet'`
+3. quant-moo 配置: `type: 'binance-testnet'`
 
 ---
 
@@ -294,7 +294,7 @@ function sign(queryString: string, secret: string): string {
 - [ ] API Key 已创建（只读+交易权限）
 - [ ] IP 白名单已配置
 - [ ] Testnet API Key 已获取
-- [ ] TradingEasy 桌面端 API Key 面板已输入
+- [ ] quant-moo 桌面端 API Key 面板已输入
 - [ ] 服务器端 `./data/api-keys.db` 加密存储验证
 - [ ] 连接测试: `/api/v3/ping` → 200
 - [ ] 行情测试: `getQuotes(['BTC/USDT'])` → 返回数据

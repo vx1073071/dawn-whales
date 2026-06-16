@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — vite-plugin-electron-ipc ─────────────────────────────────
+// ── QUANT MOO — vite-plugin-electron-ipc ─────────────────────────────────
 // Auto-generates preload API types from IPC handler modules
 // T51: Round 15 P0 — production plugin
 

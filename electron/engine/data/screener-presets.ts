@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R168 P2-11 — Screener Presets
+ * QUANT MOO R168 P2-11 — Screener Presets
  *
  * 4 built-in screening presets:
  *   1. 放量突破 (Volume Breakout)

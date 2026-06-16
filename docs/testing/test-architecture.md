@@ -6,18 +6,18 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 测试架构文档
+# quant-moo 测试架构文档
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
 > **维护人**: QClaw (文档虾)
-> **本文档受众**: 全体 TradingEasy 开发虾 (JVS/QClaw/youdao/ML/PM)
+> **本文档受众**: 全体 quant-moo 开发虾 (JVS/QClaw/youdao/ML/PM)
 
 ---
 
 ## 一、 测试分层架构
 
-TradingEasy 采用三层测试金字塔架构，从低到高依次为：
+quant-moo 采用三层测试金字塔架构，从低到高依次为：
 
 ```
         ┌──────────────┐
@@ -78,7 +78,7 @@ describe('Order Lifecycle Integration', () => {
 ## 二、 目录结构
 
 ```
-dawn-whales/
+quant-moo/
 ├── tests/                          # 单元测试根目录
 │   ├── helpers/                    # 测试工具集
 │   │   ├── test-utils.ts           # 通用测试函数

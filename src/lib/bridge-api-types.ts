@@ -1,5 +1,5 @@
 
-// ── TradingEasy — IPC API Client ( OpenD， Electron IPC) ──────────────
+// ── quant-moo — IPC API Client ( OpenD， Electron IPC) ──────────────
 // R127-P03: bridge-api type-safety COMPLETE — all 12 namespaces typed (batches 1-4/4). 104/104.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

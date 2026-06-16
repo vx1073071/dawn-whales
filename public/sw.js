@@ -162,11 +162,11 @@ async function networkFirst(request: Request, cacheName: string): Promise<Respon
 
     // Offline fallback page
     return new Response(
-      `<!DOCTYPE html><html><head><meta charset="utf-8"><title>DAWN WHALES — Offline</title>
+      `<!DOCTYPE html><html><head><meta charset="utf-8"><title>QUANT MOO — Offline</title>
        <style>body{background:#0d1117;color:#9ca3af;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
        .box{text-align:center}.box h1{color:#c9a96e;font-size:1.5rem}.box p{font-size:.9rem;opacity:.6}
        button{margin-top:1rem;padding:.5rem 1.5rem;background:#c9a96e;color:#000;border:none;border-radius:.5rem;font-weight:bold;cursor:pointer}
-       </style></head><body><div class="box"><h1>🐋 DAWN WHALES</h1>
+       </style></head><body><div class="box"><h1>🐋 QUANT MOO</h1>
        <p>当前离线 — 请检查网络连接</p><button onclick="location.reload()">重试</button></div></body></html>`,
       { headers: { 'Content-Type': 'text/html' } }
     );

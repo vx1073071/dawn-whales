@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# R50 建议计划 — TradingEasy v1.0.0 Stable Release
+# R50 建议计划 — quant-moo v1.0.0 Stable Release
 
 **提案人**: QClaw  
 **日期**: 2026-06-08  

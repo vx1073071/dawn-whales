@@ -1,4 +1,4 @@
-# TradingEasy R185 设计交付 — 8场景包+35因子里程碑文案+Onboarding向导
+# quant-moo R185 设计交付 — 8场景包+35因子里程碑文案+Onboarding向导
 
 > **Round**: R185 (入门35因子实现) | **角色**: QClaw(设计虾)  
 > **交付物**: ① 8场景包因子组合+权重配置 ② 35因子人话故事文案 ③ Onboarding 3步向导  

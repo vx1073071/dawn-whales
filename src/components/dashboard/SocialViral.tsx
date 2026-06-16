@@ -14,8 +14,8 @@ const tiers: ReferralTier[] = [
 ];
 
 const shareTemplates: ShareTemplate[] = [
-  { id: 'st1', title: '邀请朋友一起赚钱', body: '我发现一个AI量化交易平台，免费试用鲸灵AI做回测。用我的邀请码注册，你我各得1个月免费。试试看: https://dawnwhales.com/invite/ABC123', icon: '💌', channel: '微信' },
-  { id: 'st2', title: '分享我的策略收益', body: '我的MACD策略本月+8.2%！在Dawn Whales上用AI选因子、做回测，免费试用3天。', icon: '📊', channel: '朋友圈' },
+  { id: 'st1', title: '邀请朋友一起赚钱', body: '我发现一个AI量化交易平台，免费试用鲸灵AI做回测。用我的邀请码注册，你我各得1个月免费。试试看: https://QuantMoo.com/invite/ABC123', icon: '💌', channel: '微信' },
+  { id: 'st2', title: '分享我的策略收益', body: '我的MACD策略本月+8.2%！在QUANT MOO上用AI选因子、做回测，免费试用3天。', icon: '📊', channel: '朋友圈' },
   { id: 'st3', title: '分享鲸灵名言', body: '"别追高，等它回踩" — 鲸灵🐋。DW AI交易伙伴真的比我自己瞎买靠谱多了。', icon: '🐋', channel: '投资群' }
 ];
 

@@ -1,4 +1,4 @@
-// ── TradingEasy — DOMPurify XSS Protection (R92 J-01) ─────────────────────
+// ── quant-moo — DOMPurify XSS Protection (R92 J-01) ─────────────────────
 // Provides HTML sanitization for user-generated content to prevent XSS attacks.
 // Usage: import { sanitizeHtml, sanitizeText } from '@/lib/dompurify';
 

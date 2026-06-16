@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/chart/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/chart/';
 
 let p=base+'ReplayAndMicrostructure.tsx';
 let c=fs.readFileSync(p,'utf-8');

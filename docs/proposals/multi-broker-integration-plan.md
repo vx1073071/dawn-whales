@@ -1,4 +1,4 @@
-# TradingEasy — 多券商接入方案 (26 Brokers Integration Plan)
+# quant-moo — 多券商接入方案 (26 Brokers Integration Plan)
 
 > **R108 S-extension | 2026-06-12 | QClaw**
 > 
@@ -229,7 +229,7 @@ electron/engine/broker/
 
 ### 3.3 授权管理
 
-TradingEasy 已有 `BrokerSelector` UI。新增券商后:
+quant-moo 已有 `BrokerSelector` UI。新增券商后:
 
 1. **Config存储**: 加密存储各券商API Key/Secret
 2. **OAuth流程**: Schwab/E*TRADE 需要本地OAuth回调服务器
@@ -303,7 +303,7 @@ TradingEasy 已有 `BrokerSelector` UI。新增券商后:
 
 ## 七、预期成果
 
-接入完成后 TradingEasy 将支持:
+接入完成后 quant-moo 将支持:
 
 | 维度 | 当前 | 目标 |
 |------|------|------|

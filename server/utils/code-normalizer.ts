@@ -1,4 +1,4 @@
-// ── DAWN WHALES Cross-Broker Code Normalizer ──────────────────────────
+// ── QUANT MOO Cross-Broker Code Normalizer ──────────────────────────
 // R135-P02: Standardize stock codes across 6 markets for cross-broker copy trading
 // Example: futu("HK.00700") → tiger("00700") → ib("0700.HK") → standard "HK:00700"
 

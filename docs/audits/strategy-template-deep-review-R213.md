@@ -1,4 +1,4 @@
-# 🔍 DawnWhales 策略模板体系深度打磨建议
+# 🔍 QuantMoo 策略模板体系深度打磨建议
 
 > **审计人**: autoclaw (全栈虾)  
 > **日期**: 2026-06-16  
@@ -313,7 +313,7 @@ backtestSummary?: string;  // Placeholder until real backtest runs
 
 ## 七、竞品对标：我们缺什么
 
-| 功能 | Futu牛牛 | TradingView | Tiger | eToro | **DAWN WHALES** |
+| 功能 | Futu牛牛 | TradingView | Tiger | eToro | **QUANT MOO** |
 |------|:---:|:---:|:---:|:---:|:---:|
 | 策略模板/选股器 | ✅筛选器 | ✅Pine Script | ✅策略 | ✅CopyTrade | ✅44模板 |
 | AI辅助选股 | ✅ DeepSeek | ❌ | ❌ | ❌ | ✅ 13 DeepSeekChat |

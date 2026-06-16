@@ -1,4 +1,4 @@
-# TradingEasy 策略因子库扩容与优化建议
+# quant-moo 策略因子库扩容与优化建议
 
 > **版本**: v1.0 | **日期**: 2026-06-15 | **作者**: QClaw(设计虾)
 > **来源**: 网上深度学习 (WorldQuant 101 Alphas / BigQuant因子库 / 聚宽因子生态 / TradingView社区 / AQR Research / 散户使用习惯研究)

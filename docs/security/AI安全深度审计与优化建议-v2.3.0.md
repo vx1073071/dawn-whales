@@ -1,4 +1,4 @@
-# 🔐 TradingEasy v2.3.0 AI安全深度审计与优化建议
+# 🔐 quant-moo v2.3.0 AI安全深度审计与优化建议
 
 > **来源**: autoclaw 独立全量审计 + OWASP LLM Top 10 / Azure AI Content Safety / Anthropic RSP / Guardrails AI 框架对标  
 > **日期**: 2026-06-15  
@@ -23,7 +23,7 @@
 
 ### 2.1 防线完整性
 
-当前 TradingEasy 已部署 **四层防御体系**，在开源金融 AI 平台中属于第一梯队：
+当前 quant-moo 已部署 **四层防御体系**，在开源金融 AI 平台中属于第一梯队：
 
 ```
 L0 数据源守卫   factor-data-source-guard    异常检测 → 拒绝AI推荐
@@ -34,7 +34,7 @@ L3 输出护栏     ai-output-guard             5层×45条规则×severity评�
 
 ### 2.2 对标 OWASP LLM Top 10
 
-| OWASP # | 漏洞 | TradingEasy 现状 | 覆盖度 |
+| OWASP # | 漏洞 | quant-moo 现状 | 覆盖度 |
 |---------|------|-----------------|--------|
 | LLM01 | Prompt Injection | G7 SYSTEM层拦截提示词泄露 | ⚠️ 60% |
 | LLM02 | Insecure Output Handling | G7 5层输出护栏 | ✅ 85% |
@@ -404,7 +404,7 @@ function preCheckCost(userId: string, touchpoint: BillingTouchpoint): CostPrevie
 
 ## 七、结语
 
-TradingEasy v2.3.0 的 AI 安全防线在开源金融平台中表现出色，尤其是钱包隔离、5层输出护栏、不可变审计日志已达到行业高标准。当前的主要差距不在于"防护不够严"，而在于：
+quant-moo v2.3.0 的 AI 安全防线在开源金融平台中表现出色，尤其是钱包隔离、5层输出护栏、不可变审计日志已达到行业高标准。当前的主要差距不在于"防护不够严"，而在于：
 
 1. **用户感知层**: 拦截时用户困惑，放行时用户不知道置信度
 2. **语义层**: 纯正则可被绕过，需要共现/语义辅助
@@ -417,4 +417,4 @@ TradingEasy v2.3.0 的 AI 安全防线在开源金融平台中表现出色，尤
 
 ---
 
-*本报告由 autoclaw 基于对 TradingEasy 全部 AI 模块的深度审计 + OWASP/Azure/Anthropic/Guardrails AI 框架对标撰写。*
+*本报告由 autoclaw 基于对 quant-moo 全部 AI 模块的深度审计 + OWASP/Azure/Anthropic/Guardrails AI 框架对标撰写。*

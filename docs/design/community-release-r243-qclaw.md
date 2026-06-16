@@ -1,5 +1,5 @@
 # R243: Community & Release — Discussion, Creator, Copytrade, Source Health
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R243 FINAL (QClaw Design)
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R243 FINAL (QClaw Design)
 
 ---
 

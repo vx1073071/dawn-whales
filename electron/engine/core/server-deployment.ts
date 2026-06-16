@@ -53,13 +53,13 @@ export interface PM2AppConfig {
 const DEFAULT_DEPLOY_CONFIG: DeploymentConfig = {
   port: 3000,
   host: "0.0.0.0",
-  corsOrigins: ["https://dawnwhales.com", "app://dawnwhales"],
+  corsOrigins: ["https://QuantMoo.com", "app://QuantMoo"],
   rateLimitWindowMs: 60_000,
   rateLimitMax: 100,
   adminPort: 3001,
   staticDir: "public",
   logDir: "logs",
-  domain: "dawnwhales.com",
+  domain: "QuantMoo.com",
 };
 
 // ── Rate Limiter (in-memory sliding window) ────────────────────────────────
@@ -200,7 +200,7 @@ export class DeploymentManager {
   generatePM2Config(): PM2AppConfig[] {
     return [
       {
-        name: "dawn-whales-api",
+        name: "quant-moo-api",
         script: "dist/server.js",
         env: {
           NODE_ENV: "production",
@@ -234,7 +234,7 @@ export class DeploymentManager {
 
   generateNginxConfig(): string {
     const { port, adminPort, domain } = this.config;
-    return `# Nginx reverse proxy for dawn-whales v1.7.0
+    return `# Nginx reverse proxy for quant-moo v1.7.0
 # Domain: ${domain}
 
 server {
@@ -313,7 +313,7 @@ server {
   // ── .env Template Generator ──────────────────────────────────────────────
 
   generateEnvTemplate(): string {
-    return `# ── dawn-whales v1.7.0 .env ─────────────────────────────
+    return `# ── quant-moo v1.7.0 .env ─────────────────────────────
 # WARNING: Never commit this file to Git!
 
 # Server
@@ -355,7 +355,7 @@ CORS_ORIGINS=${this.config.corsOrigins.join(",")}
       {
         item: "PM2 config",
         passed: true,
-        detail: `dawn-whales-api configured on port ${this.config.port}`,
+        detail: `quant-moo-api configured on port ${this.config.port}`,
         timestamp: now,
       },
       {

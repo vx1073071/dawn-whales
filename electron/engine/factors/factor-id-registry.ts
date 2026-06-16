@@ -1,5 +1,5 @@
 // ══ R245 Claw(PM)代工JVS: Factor ID Registry v3.1 ══ 320 Factors + 3-Level Classification ══
-// Single source of truth for ALL factor identifiers across the DAWN WHALES
+// Single source of truth for ALL factor identifiers across the QUANT MOO
 // factor system. Every module MUST reference factor IDs through this registry.
 //
 // v3.1 changes (R245 — Claw(PM)代工JVS Step1+2):

@@ -23,7 +23,7 @@ Sprint 2 Phase 3 完成了多券商基础设施：
 - ✅ 策略-券商绑定（按 brokerId 路由订单）
 - ✅ 259 tests, 0 fail
 
-Phase 4 的核心问题：**用户已经能在 TradingEasy 上手动交易，如何让系统自动化执行？**
+Phase 4 的核心问题：**用户已经能在 quant-moo 上手动交易，如何让系统自动化执行？**
 
 ---
 

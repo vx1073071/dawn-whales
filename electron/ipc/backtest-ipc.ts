@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: backtest ────────────────────────────────────────────
+// ── QUANT MOO IPC: backtest ────────────────────────────────────────────
 // 7 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

@@ -1,5 +1,5 @@
 // — R119 QClaw: structural type errors pending resolution by JVS/PM (fixed in R231)
-// ── DAWN WHALES — BridgeAdapter Base ─────────────────────────────────────
+// ── QUANT MOO — BridgeAdapter Base ─────────────────────────────────────
 // R1 INF-06: 本地网关型券商适配器基类 (Tiger OpenD / VBKR / uSMART)
 // 复用 poll/complete job queue 模式 (参考 futu-opend + cloud端架构)
 // 子类实现: _enqueueJob, _pollJobStatus, _parseJobResponse

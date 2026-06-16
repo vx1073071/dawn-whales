@@ -101,7 +101,7 @@ Reddit JSON    →  🟡 真实但仅2sub  →  🔵 扩展6sub+StockTwits
 
 ```json
 {
-  "system": "你是Dawn Whales金融情绪分析专家。分析以下财经新闻，返回JSON。",
+  "system": "你是QUANT MOO金融情绪分析专家。分析以下财经新闻，返回JSON。",
   "user": "标题: {title}\n正文: {body}\n\n分析要求: 1)情绪 -1到1 2)置信度0-1 3)关联股票代码 4)关键词5个 5)类别(财报/政策/行业/公司/宏观/技术) 6)影响度1-10 7)一句话理由",
   "output": {"sentiment": 0.7, "confidence": 0.92, "tickers": ["AAPL"], "keywords": ["iPhone", "record", "revenue"], "category": "earnings", "impact": 8, "reasoning": "超预期财报，营收创新高"}
 }

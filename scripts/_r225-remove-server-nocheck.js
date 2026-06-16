@@ -1,5 +1,5 @@
 const fs=require('fs');
-const path='c:/Users/vx107/.easyclaw/workspace/dawn-whales/server/';
+const path='c:/Users/vx107/.easyclaw/workspace/quant-moo/server/';
 
 const files=[
   'copy-trade-executor.ts',

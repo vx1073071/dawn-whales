@@ -1,4 +1,4 @@
-# R129-Q02: TradingEasy Server 安全方案文档
+# R129-Q02: quant-moo Server 安全方案文档
 
 > **Author**: QClaw · **Task**: R129-Q02 · **Hours**: 3h
 > **Version**: v2.0.0 (R129 服务器基础设施)
@@ -47,7 +47,7 @@
 | IV 长度 | 12 bytes (随机生成) |
 | Auth Tag | 16 bytes |
 | 密钥长度 | 32 bytes |
-| 密钥派生 | scrypt(ENCRYPTION_MASTER_KEY, 'dawn-whales-salt', 32) |
+| 密钥派生 | scrypt(ENCRYPTION_MASTER_KEY, 'quant-moo-salt', 32) |
 
 ### 2.2 加密流程
 
@@ -185,10 +185,10 @@ RATE_LIMIT_MAX=100           # 最大: 100次
 # Nginx 反向代理 + Let's Encrypt TLS
 server {
     listen 443 ssl;
-    server_name api.dawn-whales.com;
+    server_name api.quant-moo.com;
 
-    ssl_certificate     /etc/letsencrypt/live/api.dawn-whales.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.dawn-whales.com/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/api.quant-moo.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.quant-moo.com/privkey.pem;
 
     location /api/ {
         proxy_pass http://localhost:3001;
@@ -202,7 +202,7 @@ server {
 
 ```env
 # 生产: 限制到桌面端域名
-CORS_ORIGIN=http://localhost:5173,https://app.dawn-whales.com
+CORS_ORIGIN=http://localhost:5173,https://app.quant-moo.com
 ```
 
 ---
@@ -320,11 +320,11 @@ JWT_REFRESH_EXPIRES_IN=3d    # 生产: 缩短至 3d
 ENCRYPTION_MASTER_KEY=<openssl rand -hex 16>  # >=32 chars
 
 # Database
-DB_PATH=/var/data/dawn-whales/main.db
-KEYS_DB_PATH=/var/data/dawn-whales/keys.db
+DB_PATH=/var/data/quant-moo/main.db
+KEYS_DB_PATH=/var/data/quant-moo/keys.db
 
 # CORS
-CORS_ORIGIN=https://app.dawn-whales.com
+CORS_ORIGIN=https://app.quant-moo.com
 
 # Rate Limit
 RATE_LIMIT_WINDOW_MS=60000
@@ -338,10 +338,10 @@ DEEPSEEK_API_KEY=<your-deepseek-key>
 ### 文件权限
 
 ```bash
-chmod 600 /var/data/dawn-whales/main.db
-chmod 600 /var/data/dawn-whales/keys.db
-chmod 600 /var/data/dawn-whales/.env
-chown -R dawn-whales:dawn-whales /var/data/dawn-whales/
+chmod 600 /var/data/quant-moo/main.db
+chmod 600 /var/data/quant-moo/keys.db
+chmod 600 /var/data/quant-moo/.env
+chown -R quant-moo:quant-moo /var/data/quant-moo/
 ```
 
 ---

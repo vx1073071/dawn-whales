@@ -1,4 +1,4 @@
-# TradingEasy R190 设计交付 — 因子社交证明UI + 因材施教推荐引擎v1 + Phase 2 UX规范审查
+# quant-moo R190 设计交付 — 因子社交证明UI + 因材施教推荐引擎v1 + Phase 2 UX规范审查
 
 > **Round**: R190 (🔥Phase 2收尾·v2.6.0发布) | **角色**: QClaw(设计虾)
 > **交付物**: ① 因子社交证明UI ② 因材施教推荐引擎v1 ③ Phase 2 UX一致性审查

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R133 J01 — Interactive Brokers TWS Cloud Adapter
+ * QUANT MOO R133 J01 — Interactive Brokers TWS Cloud Adapter
  * 
  * Implements ICloudBrokerAdapter for IB TWS via IB Gateway REST API.
  * Uses Client Portal REST API (localhost:5000/v1/api).

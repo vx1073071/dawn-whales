@@ -1,4 +1,4 @@
-// ── DAWN WHALES — License Management (Sprint 3: P2) ───────────────────────
+// ── QUANT MOO — License Management (Sprint 3: P2) ───────────────────────
 //
 
 import crypto from 'crypto';

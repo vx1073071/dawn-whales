@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: risk ────────────────────────────────────────────
+// ── QUANT MOO IPC: risk ────────────────────────────────────────────
 // 17 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

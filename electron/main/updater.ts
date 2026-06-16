@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Auto-Updater (R92 J-02 Enhanced) ─────────────────────────
+// ── QUANT MOO — Auto-Updater (R92 J-02 Enhanced) ─────────────────────────
 // Full electron-updater integration with:
 //   - Download progress tracking
 //   - Version comparison & changelog

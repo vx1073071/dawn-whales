@@ -1,4 +1,4 @@
-# Changelog — Dawn Whales v2.7.0 "NEWS INTELLIGENCE"
+# Changelog — QUANT MOO v2.7.0 "NEWS INTELLIGENCE"
 ## 2026-06-16 · Final Release
 
 ---
@@ -163,7 +163,7 @@
 
 ---
 
-# Changelog — Dawn Whales v2.6.0 "QUANTUM"
+# Changelog — QUANT MOO v2.6.0 "QUANTUM"
 ## 2026-06-16 · Final Release
 
 ---

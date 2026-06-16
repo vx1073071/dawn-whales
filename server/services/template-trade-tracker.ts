@@ -36,7 +36,7 @@ export interface TemplateTradeRecord {
   pnlPct?: number;
   status: 'OPEN' | 'CLOSED' | 'CANCELLED';
   feeUSDT: number;         // fee charged by broker
-  copyTradeFeeUSDT: number;  // DAWN WHALES copy-trade platform fee (0.3%)
+  copyTradeFeeUSDT: number;  // QUANT MOO copy-trade platform fee (0.3%)
   creatorId?: string;      // for copy-trade attribution
   creatorShareUSDT?: number; // creator's revenue share
   matchedAt: number;

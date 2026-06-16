@@ -101,7 +101,7 @@
 
 **3步向导流程**:
 ```
-Step1 欢迎 → "TradingEasy 188因子帮你选股"
+Step1 欢迎 → "quant-moo 188因子帮你选股"
 Step2 选市场 → 🇭🇰港股 / 🇺🇸美股 / 🪙加密 (可多选)
 Step3 选场景 → 8场景包 / 自选因子 / AI推荐
 完成 → 跳转因子市场首页
@@ -296,4 +296,4 @@ v3.0.0 = v2.6.0(🟢31+🟡68=99) + 🔴89 + 高级架构 + 全量测试 + 帮�
 - R190 v2.6.0发布: `docs/proposals/factor-expansion-R190-round-plan.md`
 - R191 Round计划: `docs/proposals/factor-expansion-R191-round-plan.md`
 - R192 Round计划: `docs/proposals/factor-expansion-R192-round-plan.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

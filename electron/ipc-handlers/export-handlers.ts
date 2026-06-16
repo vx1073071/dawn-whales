@@ -74,7 +74,7 @@ export function registerExportHandlers() {
 
       const { filePath, canceled } = await dialog.showSaveDialog(win!, {
         title: i18n.t('exportHandlers.k1'),
-        defaultPath: `dawn-whales-${options.target}-${timestamp}.${ext}`,
+        defaultPath: `quant-moo-${options.target}-${timestamp}.${ext}`,
         filters: [
           { name: i18n.t('exportHandlers.k2'), extensions: ['csv'] },
           { name: i18n.t('exportHandlers.k3'), extensions: ['json'] },

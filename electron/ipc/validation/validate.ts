@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — IPC Zod Validation Wrapper
+ * QUANT MOO R123-Q01 — IPC Zod Validation Wrapper
  * 
  * Wraps ipcMain.handle() with Zod request/response validation.
  * Catches ZodErrors and returns structured {success:false, error} instead of crashing.

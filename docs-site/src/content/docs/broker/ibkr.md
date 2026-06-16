@@ -20,9 +20,9 @@ description: 通过 IB Gateway/TWS 连接 Interactive Brokers
 - ✅ Enable ActiveX and Socket Clients
 - 端口: `7496` (TWS Live) / `7497` (TWS Paper) / `4002` (Gateway Live) / `4001` (Gateway Paper)
 - ✅ "Allow connections from localhost only"
-- Master API Client ID: 留空 (DAWN WHALES 自动分配)
+- Master API Client ID: 留空 (QUANT MOO 自动分配)
 
-### 2. DAWN WHALES 中连接
+### 2. QUANT MOO 中连接
 
 **设置 → 券商管理 → 添加券商 → Interactive Brokers**
 
@@ -58,7 +58,7 @@ description: 通过 IB Gateway/TWS 连接 Interactive Brokers
 
 ## 费用
 
-IB 佣金按交易量计费, DAWN WHALES 平台费详见[费用说明](/user-manual/billing)。
+IB 佣金按交易量计费, QUANT MOO 平台费详见[费用说明](/user-manual/billing)。
 
 ## 故障排除
 

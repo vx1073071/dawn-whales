@@ -1,4 +1,4 @@
-// ── DAWN WHALES — ID Generator (R83 unified) ──────────────────────────────
+// ── QUANT MOO — ID Generator (R83 unified) ──────────────────────────────
 // Canonical implementation extracted from 8 duplicates: async-io-scheduler,
 // condition-engine, data-versioning, docker-manager, pipeline-engine,
 // reward-engine, trade-executor, ws-market-data.

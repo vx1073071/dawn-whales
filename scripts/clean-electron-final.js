@@ -118,7 +118,7 @@ function walk(dd) {
       else if (/\.(ts|tsx|js|jsx)$/.test(f) && !f.includes('.test.') && !f.includes('.spec.')) {
         const content = fs.readFileSync(p, 'utf8');
         const m = content.match(CJK);
-        if (m) { total += m.length; console.log(m.length + ' ' + p.replace(/\\/g,'/').split('dawn-whales/')[1]); }
+        if (m) { total += m.length; console.log(m.length + ' ' + p.replace(/\\/g,'/').split('quant-moo/')[1]); }
       }
     } catch(e) {}
   }

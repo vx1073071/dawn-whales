@@ -59,7 +59,7 @@ const DEFAULT_CONFIG: AISentimentConfig = {
 // Prompt Templates
 // ═══════════════════════════════════════════════════════════════════════
 
-const SYSTEM_PROMPT = `You are a Dawn Whales financial sentiment analysis expert. Analyze financial news and return a structured JSON response.
+const SYSTEM_PROMPT = `You are a QUANT MOO financial sentiment analysis expert. Analyze financial news and return a structured JSON response.
 
 For each news article, provide:
 1. sentiment: A float from -1.0 (extremely negative) to +1.0 (extremely positive)

@@ -1,4 +1,4 @@
-﻿// T84: Prometheus metrics HTTP endpoint
+// T84: Prometheus metrics HTTP endpoint
 import * as http from 'http';
 import { MetricsCollector } from './metrics-collector';
 import log from 'electron-log';
@@ -68,7 +68,7 @@ export class MetricsEndpoint {
     }
 
     for (const [name, items] of grouped) {
-      lines.push(`# HELP ${name} DAWN WHALES metric`);
+      lines.push(`# HELP ${name} QUANT MOO metric`);
       lines.push(`# TYPE ${name} gauge`);
       for (const item of items) {
         const labels = Object.entries(item.labels)

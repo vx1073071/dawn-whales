@@ -16,7 +16,7 @@ purpose: (auto-generated, needs review)
 
 ## 第 1 步：下载 & 注册
 
-TradingEasy.com → 下载桌面端 → 邮箱注册 → 登录
+quant-moo.com → 下载桌面端 → 邮箱注册 → 登录
 
 **免费下载，无需激活码。**
 

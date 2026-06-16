@@ -641,5 +641,5 @@ export function useRealtimeQuotes(symbols: string[]) {
 
 ---
 
-**文档维护:** JVS (jvs@dawn-whales.dev)  
+**文档维护:** JVS (jvs@quant-moo.dev)  
 **最后更新:** 2026-06-05 03:12

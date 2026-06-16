@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R131 J03 — Robinhood Crypto Adapter
+ * QUANT MOO R131 J03 — Robinhood Crypto Adapter
  * 
  * Implements ICloudBrokerAdapter for Robinhood Crypto.
  * REST: api.robinhood.com/crypto (ED25519 signing)

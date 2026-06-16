@@ -11,7 +11,7 @@
 |------|-----|
 | test | **5338 / 0 fail** |
 | tag | **v1.6.0-beta** |
-| 落地页 | ✅ TradingEasy.com |
+| 落地页 | ✅ quant-moo.com |
 | 激活+入驻 | ✅ 全流程 |
 
 ---

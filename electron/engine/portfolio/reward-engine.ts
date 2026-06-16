@@ -1,6 +1,6 @@
 /**
  * Reinforcement Learning Reward Engine
- * Dawn Whales Project (J-38-02)
+ * QUANT MOO Project (J-38-02)
  *
  * Computes rewards for trading actions to support RL-based strategy optimization.
  * Supports multiple reward types (PnL, Sharpe, risk-adjusted, drawdown penalty, composite)

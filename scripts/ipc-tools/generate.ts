@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES — IPC模块自动生成
+ * QUANT MOO — IPC模块自动生成
  * 从 main.ts 中提取339个ipcMain.handle到21个模块文件
  * 
  * 用法: npx tsx electron/ipc/generate.ts
@@ -62,7 +62,7 @@ function makeModule(modName: string, handlers: any[]): string {
   const lines: string[] = [];
 
   // Header
-  lines.push(`// ── DAWN WHALES IPC — ${modName} ───────────────────────────────────────────`);
+  lines.push(`// ── QUANT MOO IPC — ${modName} ───────────────────────────────────────────`);
   lines.push(`// Auto-generated from main.ts — ${handlers.length} handlers`);
   lines.push('');
 
@@ -150,7 +150,7 @@ for (const [modName, handlers] of Object.entries(grouping)) {
 
 // 生成 index.ts
 const indexLines: string[] = [
-  "// ── DAWN WHALES IPC — Unified Registration ───────────────────────────────",
+  "// ── QUANT MOO IPC — Unified Registration ───────────────────────────────",
   "// Auto-generated — imports all 21 IPC modules",
   "",
   "import { ipcMain, BrowserWindow, app } from 'electron';",

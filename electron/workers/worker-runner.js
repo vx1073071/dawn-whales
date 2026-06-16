@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Worker Runner ────────────────────────────────────────────
+// ── QUANT MOO — Worker Runner ────────────────────────────────────────────
 // Runs inside worker_threads, loads the target module and executes
 
 const { parentPort, workerData } = require('worker_threads');

@@ -210,3 +210,60 @@ export type {
   EvidenceScore,
   EvidenceReport,
 } from './ai-verifiable-evidence';
+
+// R252 P2-32: Price move push completion (delivery pipeline + preferences + recap + analytics)
+export { PriceMovePushCompletion, priceMovePushCompletion, resetPriceMovePushCompletion } from './price-move-push-completion';
+export type {
+  DeliveryChannel,
+  DeliveryStatus,
+  RecurrenceRule,
+  PushDeliveryRecord,
+  UserPushPreferences,
+  PostMarketRecap,
+  PushAnalytics,
+  PushFormatTemplate,
+} from './price-move-push-completion';
+
+// R253 DS-03: East Money fetcher (A-share quotes + sector flows + dragon tiger + north-bound)
+export { EastMoneyClient, EastMoneyPipeline, eastMoneyPipeline, resetEastMoneyPipeline } from './eastmoney-fetcher';
+export type {
+  StockExchange,
+  MarketBoard,
+  EastMoneySector,
+  EastMoneyQuote,
+  SectorFlow,
+  DragonTigerRecord,
+  NorthBoundFlow,
+  EastMoneyAnnouncement,
+  EastMoneyMarketSnapshot,
+  EastMoneyPipelineConfig,
+  PipelineQuoteOutput,
+  PipelineFlowOutput,
+} from './eastmoney-fetcher';
+
+// R253 DS-01: Yahoo Finance → Engine bridge (WS normalization + caching + indicators + market clock)
+export { YahooEngineBridge, yahooEngineBridge, resetYahooEngineBridge } from './yahoo-engine-bridge';
+export type {
+  YahooMarket,
+  MarketSession,
+  QuoteUpdateEvent,
+  YahooRawQuote,
+  EngineQuote,
+  BridgeTechnicalIndicators,
+  BridgeHealthProbe,
+  BridgeStats,
+  MarketClock,
+} from './yahoo-engine-bridge';
+
+// R253 DQ-02: Source health pipeline (real-time monitoring + alerts + degradation + trends)
+export { SourceHealthPipeline, sourceHealthPipeline, resetSourceHealthPipeline } from './source-health-pipeline';
+export type {
+  AlertSeverity,
+  AlertRule,
+  DegradationAction,
+  HealthScanResult,
+  HealthAlert,
+  DegradationPolicy,
+  HealthTrendPoint,
+  HealthDashboardStream,
+} from './source-health-pipeline';

@@ -1,21 +1,21 @@
 {
-  "id": "dawnwhales.custom-data-source",
+  "id": "QuantMoo.custom-data-source",
   "name": "Custom Data Source Plugin",
   "version": "1.0.0",
-  "description": "示例插件：自定义数据源接入 — 展示如何接入第三方数据源（如 TradingView Webhook、自定义 REST API、CSV导入）到 Dawn Whales 数据管线中。",
+  "description": "示例插件：自定义数据源接入 — 展示如何接入第三方数据源（如 TradingView Webhook、自定义 REST API、CSV导入）到 QUANT MOO 数据管线中。",
   "author": {
-    "name": "Dawn Whales Team",
-    "email": "dev@dawnwhales.app",
-    "url": "https://dawnwhales.app"
+    "name": "QUANT MOO Team",
+    "email": "dev@QuantMoo.app",
+    "url": "https://QuantMoo.app"
   },
   "minAppVersion": "2.6.0",
   "dependencies": {
-    "dawnwhales.custom-factor": ">=1.0.0"
+    "QuantMoo.custom-factor": ">=1.0.0"
   },
   "permissions": ["network", "market-data", "storage", "notifications", "filesystem"],
   "main": "index.js",
   "icon": "📡",
-  "repository": "https://github.com/dawn-whales/plugin-custom-data-source",
+  "repository": "https://github.com/quant-moo/plugin-custom-data-source",
   "license": "MIT",
   "tags": ["data-source", "webhook", "api", "csv", "example"],
   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"

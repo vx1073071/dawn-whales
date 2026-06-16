@@ -304,4 +304,4 @@ v2.5.0-alpha = R184(基础设施) + R185(35因子实现) + R186(集成+场景包
 - R186 Round计划: `docs/proposals/factor-expansion-R186-round-plan.md`
 - Master Plan: `docs/proposals/factor-expansion-R184-R193-master-plan.md`
 - 因子清单v2: `docs/proposals/factor-expansion-12shrimp-consolidated-checklist-v2.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

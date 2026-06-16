@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Dead Letter Queue (SQLite Persisted) ─────────
+// ── QUANT MOO — Dead Letter Queue (SQLite Persisted) ─────────
 // R108 S-35: Persistent dead letter queue for failed
 // points deductions, reconciliation failures, rate rejections.
 //

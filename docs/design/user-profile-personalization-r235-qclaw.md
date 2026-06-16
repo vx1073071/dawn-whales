@@ -1,5 +1,5 @@
 # R235-QClaw#1: User Profile & Personalization System
-## Dawn Whales v2.6.0 QUANTUM
+## QUANT MOO v2.6.0 QUANTUM
 
 ---
 

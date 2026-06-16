@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: app ────────────────────────────────────────────
+// ── QUANT MOO IPC: app ────────────────────────────────────────────
 // 10 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
@@ -16,7 +16,7 @@ export function registerAppIPC(
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
     version: app.getVersion(),
-    name: 'DAWN WHALES',
+    name: 'QUANT MOO',
     platform: process.platform,
     arch: process.arch,
     electronVersion: process.versions.electron,

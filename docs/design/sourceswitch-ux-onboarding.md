@@ -271,7 +271,7 @@ const ContextMenu = ({ item, onSelectSource, onResetAuto }) => (
 │ [清除历史]                                    │
 └──────────────────────────────────────────────┘
 
-存储: localStorage['dawn-whales-search-history']
+存储: localStorage['quant-moo-search-history']
       格式: [{query, symbol, market, timestamp}]
       上限: 10条 (FIFO)
       点击历史条目 → 自动填充搜索 → 执行搜索

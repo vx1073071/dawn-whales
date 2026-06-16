@@ -1,5 +1,5 @@
 // ══ R245 QClaw P1-04: AI人格「鲸灵」设计 ══
-// TradingEasy AI assistant persona — name, character, catchphrases, greetings, 10 scene templates
+// QUANT MOO AI assistant persona — name, character, catchphrases, greetings, 10 scene templates
 // Design goal: "一个你愿意跟他聊天的AI，不是一个冷冰冰的系统"
 // Reference: Duolingo Owl (fun), GitHub Copilot (helpful), Tony Stark's Jarvis (smart but human)
 

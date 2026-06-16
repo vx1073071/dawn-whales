@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Broker Adapter Interface ──────────────────────────────────
+// ── QUANT MOO — Broker Adapter Interface ──────────────────────────────────
 // interface/API (Sprint 1: Multi-Broker)
 
 export interface BrokerConfig {

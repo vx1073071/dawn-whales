@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy API 参考文档
+# quant-moo API 参考文档
 
 **版本**: v0.13.0  
 **更新日期**: 2026-06-07  
@@ -915,7 +915,7 @@ WebSocket 服务器提供实时数据推送。
 ### 连接 WebSocket
 
 ```javascript
-const ws = new WebSocket('wss://api.dawn-whales.ai/ws');
+const ws = new WebSocket('wss://api.quant-moo.ai/ws');
 
 ws.onopen = () => {
   console.log('Connected');

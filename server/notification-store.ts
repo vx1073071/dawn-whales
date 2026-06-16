@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R132 J04 — Notification History Store & Query API
+ * QUANT MOO R132 J04 — Notification History Store & Query API
  * 
  * In-memory with optional SQLite persistence for notification history.
  * 

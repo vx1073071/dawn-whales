@@ -74,9 +74,9 @@ export interface UpdateCheckResult {
 // ── Version Store ─────────────────────────────────────────────────────────
 
 const DEFAULT_DOWNLOADS: Record<Platform, DownloadInfo> = {
-  windows: { url: 'https://dl.dawnwhales.com/v1.6.0-beta/DawnWhales-Setup-1.6.0-beta.exe', size: 157286400, platform: 'windows', arch: 'x64' },
-  mac: { url: 'https://dl.dawnwhales.com/v1.6.0-beta/DawnWhales-1.6.0-beta.dmg', size: 185597952, platform: 'mac', arch: 'arm64' },
-  linux: { url: 'https://dl.dawnwhales.com/v1.6.0-beta/DawnWhales-1.6.0-beta.AppImage', size: 178257920, platform: 'linux', arch: 'x64' },
+  windows: { url: 'https://dl.QuantMoo.com/v1.6.0-beta/QuantMoo-Setup-1.6.0-beta.exe', size: 157286400, platform: 'windows', arch: 'x64' },
+  mac: { url: 'https://dl.QuantMoo.com/v1.6.0-beta/QuantMoo-1.6.0-beta.dmg', size: 185597952, platform: 'mac', arch: 'arm64' },
+  linux: { url: 'https://dl.QuantMoo.com/v1.6.0-beta/QuantMoo-1.6.0-beta.AppImage', size: 178257920, platform: 'linux', arch: 'x64' },
 };
 
 const DEFAULT_HASHES: Record<Platform, string> = {

@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy · 团队协作规则
+# quant-moo · 团队协作规则
 
 > 版本：v1.1 | 日期：2026-06-04
 > 核心团队：主龙虾 + QClaw + JVS + WorkBuddy（四方 Agent）
@@ -336,7 +336,7 @@ main          ← 发布分支（每个版本一个 tag）
 ### 简报格式
 
 ```
-🎯 TradingEasy 周报 · Week X
+🎯 quant-moo 周报 · Week X
 ━━━━━━━━━━━━━━━━━━
 ✅ 本周完成:
   - xxx (负责: WorkBuddy, Xh)

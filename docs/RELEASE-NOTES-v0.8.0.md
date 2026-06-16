@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v0.8.0 Release Notes
+# quant-moo v0.8.0 Release Notes
 
 **版本**: v0.8.0-alpha  
 **发布日期**: 2026-06-07  
@@ -18,7 +18,7 @@ purpose: (auto-generated, needs review)
 
 ### Phase 4.3: 完整交易闭环
 
-v0.8.0 实现了从策略信号到交易执行的完整闭环，这是 TradingEasy 项目最重要的里程碑之一。
+v0.8.0 实现了从策略信号到交易执行的完整闭环，这是 quant-moo 项目最重要的里程碑之一。
 
 **完整数据流**:
 ```
@@ -150,8 +150,8 @@ v0.8.0 为 Phase 4.4 自主决策引擎奠定基础：
 
 ```bash
 # 克隆仓库
-git clone https://github.com/dawn-whales/tradingeasy.git
-cd dawn-whales
+git clone https://github.com/quant-moo/quant-moo.git
+cd quant-moo
 
 # 安装依赖
 npm install
@@ -179,8 +179,8 @@ npm run dev
 ## 📞 反馈
 
 如有问题或建议，请通过以下方式联系：
-- GitHub Issues: https://github.com/dawn-whales/dawn-whales/issues
-- Discord: https://discord.gg/dawn-whales
+- GitHub Issues: https://github.com/quant-moo/quant-moo/issues
+- Discord: https://discord.gg/quant-moo
 
 ---
 
@@ -195,4 +195,4 @@ npm run dev
 
 ---
 
-**TradingEasy v0.8.0** - Phase 4.3 完整闭环，5 虾协作首航成功！🦞🦐🦐🎯📚
+**quant-moo v0.8.0** - Phase 4.3 完整闭环，5 虾协作首航成功！🦞🦐🦐🎯📚

@@ -1,4 +1,4 @@
-// ── TradingEasy — Logger ───────────────────────────────────────────────────
+// ── quant-moo — Logger ───────────────────────────────────────────────────
 // Lightweight logging wrapper. In dev → console; in production → configurable.
 
 const isDev = typeof process !== 'undefined' &&

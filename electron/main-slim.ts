@@ -1,4 +1,4 @@
-// ── TradingEasy — Electron Main Process ────────────────────────────────────
+// ── quant-moo — Electron Main Process ────────────────────────────────────
 // ： (Electron + C++ core + React)
 // ：Electron + Node.js (Main) + React (Renderer)
 
@@ -287,7 +287,7 @@ function createTray() {
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'TradingEasy', enabled: false },
+    { label: 'quant-moo', enabled: false },
     { type: 'separator' },
     { label: 'Show', click: () => mainWindow?.show() },
     { label: 'Emergency Stop', click: () => strategyEngine?.emergencyStop() },
@@ -295,7 +295,7 @@ function createTray() {
     { label: 'Quit', click: () => app.quit() },
   ]);
 
-  tray.setToolTip('TradingEasy');
+  tray.setToolTip('quant-moo');
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }
@@ -303,7 +303,7 @@ function createTray() {
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
 app.whenReady().then(async () => {
-  log.info('[App] TradingEasy starting...');
+  log.info('[App] quant-moo starting...');
 
   // Initialize modules
   try {
@@ -559,7 +559,7 @@ app.whenReady().then(async () => {
             try {
               const { Notification } = require('electron');
               new Notification({
-                title: '\u26A0\uFE0F TradingEasy Security Alert',
+                title: '\u26A0\uFE0F quant-moo Security Alert',
                 body: `${criticalAlerts.length} critical security anomalies detected. Trading has been paused.`,
               }).show();
             } catch (_) {}
@@ -579,7 +579,7 @@ app.whenReady().then(async () => {
     }, ANOMALY_CHECK_INTERVAL);
   }
 
-  log.info('[App] TradingEasy ready');
+  log.info('[App] quant-moo ready');
 });
 
 app.on('window-all-closed', () => {

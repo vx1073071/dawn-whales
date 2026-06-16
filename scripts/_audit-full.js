@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/';
 
 // 1. Factors
 const reg=fs.readFileSync(base+'electron/engine/factors/factor-id-registry.ts','utf-8');

@@ -1,5 +1,5 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
-// ── DAWN WHALES — eToroAdapter ──────────────────────────────────────────
+— R119 QClaw: structural type errors pending resolution by JVS/PM
+// ── QUANT MOO — eToroAdapter ──────────────────────────────────────────
 // R3 OAU-03: eToro Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code)
 // Markets: US stocks, ETFs, crypto, commodities, forex

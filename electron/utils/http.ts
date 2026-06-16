@@ -1,4 +1,4 @@
-// ── DAWN WHALES — HTTP Utilities (R83 unified) ─────────────────────────────
+// ── QUANT MOO — HTTP Utilities (R83 unified) ─────────────────────────────
 // Canonical HTTP GET/POST helpers. Extracted from 11 duplicates across
 // electron/data/ and electron/engine/.
 

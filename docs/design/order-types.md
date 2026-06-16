@@ -1,4 +1,4 @@
-# TradingEasy Order Types Guide v1.0
+# quant-moo Order Types Guide v1.0
 
 > **Round**: R147 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: USER GUIDE — Production Ready
@@ -8,7 +8,7 @@
 
 ## Overview
 
-TradingEasy supports **4 order types** with intelligent defaults per trading scenario. Users can override defaults based on their needs.
+quant-moo supports **4 order types** with intelligent defaults per trading scenario. Users can override defaults based on their needs.
 
 ---
 
@@ -27,7 +27,7 @@ TradingEasy supports **4 order types** with intelligent defaults per trading sce
 
 ### Smart Defaults
 
-TradingEasy automatically selects the most appropriate order type for each scenario:
+quant-moo automatically selects the most appropriate order type for each scenario:
 
 | Scenario | Default Order Type | Rationale | Overridable? |
 |----------|-------------------|-----------|-------------|

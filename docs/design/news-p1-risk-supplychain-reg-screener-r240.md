@@ -1,5 +1,5 @@
 # R240: P1 News Intelligence — Risk, Supply Chain, Regulation & Screener Design
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R240 (QClaw Design)
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R240 (QClaw Design)
 
 ---
 

@@ -18,7 +18,7 @@ purpose: (auto-generated, needs review)
 
 ### 什么是访客模式
 
-不注册即可体验 dawn-whales。打开桌面端 → "免费体验"按钮 → 直接进入浏览模式。
+不注册即可体验 quant-moo。打开桌面端 → "免费体验"按钮 → 直接进入浏览模式。
 
 ### 访客可用
 

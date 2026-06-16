@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R131 J02 — Bitget Cloud Broker Adapter
+ * QUANT MOO R131 J02 — Bitget Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for Bitget Spot V2.
  * REST: api.bitget.com (HMAC-SHA256 base64 signing)

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Math Utilities (R83 unified) ─────────────────────────────
+// ── QUANT MOO — Math Utilities (R83 unified) ─────────────────────────────
 // Canonical implementations extracted from 8 engine files.
 // All duplicates in bayesian-optimizer, calendar-effects, options-pricing,
 // options-strategy-builder, rar-optimizer, tca-v3, vol-forecast, volatility-models

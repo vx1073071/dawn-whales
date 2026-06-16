@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R144 Claw(PM) — Admin Marketplace Routes
+ * QUANT MOO R144 Claw(PM) — Admin Marketplace Routes
  * 
  * Admin-only management for creator marketplace.
  * All routes require admin JWT + 2FA (if configured).

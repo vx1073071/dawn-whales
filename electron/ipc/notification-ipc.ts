@@ -1,4 +1,4 @@
-// DAWN WHALES R120 — Unified Notification System
+// QUANT MOO R120 — Unified Notification System
 // 任务17: 异动通知 (AlertService → 系统通知) 
 // 任务30: 下单券商确认 (下单按钮显示券商名)
 // 任务32: 套利通知 (ArbitrageEngine → 系统提示)

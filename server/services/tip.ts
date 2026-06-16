@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R143 J04 — Tipping / Reward Service
+ * QUANT MOO R143 J04 — Tipping / Reward Service
  * 
  * ⚠️ CRITICAL: Tipping ≠ Transfer! Two completely separate billing pipelines!
  * 

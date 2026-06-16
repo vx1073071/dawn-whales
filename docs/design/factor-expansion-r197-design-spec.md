@@ -1,4 +1,4 @@
-# TradingEasy R197 — v3.2.0 Release Notes + 7市场Onboarding + 最终UX终审 (100%)
+# quant-moo R197 — v3.2.0 Release Notes + 7市场Onboarding + 最终UX终审 (100%)
 
 > **Round**: R197 (🏆 Phase 4 · 收官 · v3.2.0) | **角色**: QClaw(设计虾) | **日期**: 2026-06-15
 > **项目全貌**: 14轮(R184-R197) / 475h / 232因子 / 10市场 / ~73,000行
@@ -8,7 +8,7 @@
 # Part A: Release Notes v3.2.0 "Global Markets" 🌏
 
 ```
-TradingEasy v3.2.0 "Global Markets"
+quant-moo v3.2.0 "Global Markets"
 Released: 2026-06-15
 Build: v3.2.0-alpha → v3.2.0
 Code Name: 🌏 Global Markets (全球市场)
@@ -97,7 +97,7 @@ Code Name: 🌏 Global Markets (全球市场)
 ## A.3 技术架构
 
 ```
-tradingeasy/
+quant-moo/
 ├── electron/
 │   ├── engine/
 │   │   ├── factors/          # 232因子引擎
@@ -197,7 +197,7 @@ Claw(PM):       14轮方案 + 全程审计 + 版本发布
 🌐 数据源: 15+ (港交所, SEC, JPX, TWSE, KRX, SGX, ASX, NSE,
    STOXX, Binance, Glassnode, FRED, 等)
 
-TradingEasy v3.2.0 — 为全球交易者而生 🌏
+quant-moo v3.2.0 — 为全球交易者而生 🌏
 ```
 
 ---
@@ -222,7 +222,7 @@ TradingEasy v3.2.0 — 为全球交易者而生 🌏
 │  STEP 1/6                   🧭 Welcome                     │
 │  ┌───────────────────────────────────────────────────────┐ │
 │  │                                                       │ │
-│  │   🌏  Welcome to TradingEasy v3.2.0                   │ │
+│  │   🌏  Welcome to quant-moo v3.2.0                   │ │
 │  │                                                       │ │
 │  │   覆盖 10 个全球市场，232 个量化因子                     │ │
 │  │   从入门到专业，从香港到欧洲 — 一站全览                   │ │
@@ -501,7 +501,7 @@ TradingEasy v3.2.0 — 为全球交易者而生 🌏
 
 ```
 ═══════════════════════════════════════════════════════════
-  🏆 TradingEasy v3.2.0 UX 一致性终审 — 100% 通过 🏆
+  🏆 quant-moo v3.2.0 UX 一致性终审 — 100% 通过 🏆
 ═══════════════════════════════════════════════════════════
 
   审查范围: 10市场 + 15组件 = 25单元
@@ -585,4 +585,4 @@ docs/design/factor-expansion-r197-design-spec.md
 
 ---
 
-*QClaw(设计虾) | R197 🏆 Phase 1-4 全14轮完成! | TradingEasy v3.2.0 就绪! 🌏🔥*
+*QClaw(设计虾) | R197 🏆 Phase 1-4 全14轮完成! | quant-moo v3.2.0 就绪! 🌏🔥*

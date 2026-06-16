@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 
 try {
   const r = execSync('npx vitest run tests/condition-engine.test.ts --reporter=verbose 2>&1', {

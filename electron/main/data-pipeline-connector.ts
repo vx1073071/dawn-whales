@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R122 J01 — P0-1a 5条数据链路接线
+ * QUANT MOO R122 J01 — P0-1a 5条数据链路接线
  * DataPipelineConnector: BrokerManagerV2 → IPC → BrowserWindow → preload → renderer
  * 
  * Bridges the 5 dead data links:

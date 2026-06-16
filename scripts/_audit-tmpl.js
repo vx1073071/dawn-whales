@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine/strategies/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine/strategies/';
 const all=fs.readdirSync(base);
 let total=0;
 const results=[];

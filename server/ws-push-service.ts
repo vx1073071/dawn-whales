@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R129 J02 — WebSocket Push Service
+ * QUANT MOO R129 J02 — WebSocket Push Service
  * 
  * Server-side WS server for pushing real-time updates to desktop clients.
  * Handles: connection/auth/heartbeat/reconnection + broker quote pushes.

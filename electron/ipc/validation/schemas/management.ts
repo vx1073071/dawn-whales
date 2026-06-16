@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — Management IPC Schemas (Tier 3)
+ * QUANT MOO R123-Q01 — Management IPC Schemas (Tier 3)
  * 
  * Covers: cache:*, db:*, prefs:*, notification:*, cron:*, snapshot:*, version:*
  * Dev-only validation (skipped in production unless --validate-ipc flag)

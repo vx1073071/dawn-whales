@@ -1,6 +1,6 @@
 # R109-R121: Multi-Broker + Chart Features — Final Delivery Overview
 
-> 📄 **QClaw (document-shrimp)** | 2026-06-12 | TradingEasy v1.12.0 → v1.14.0
+> 📄 **QClaw (document-shrimp)** | 2026-06-12 | quant-moo v1.12.0 → v1.14.0
 >
 > Comprehensive documentation of all 13 rounds (R109–R121) across 5 shrimp.
 

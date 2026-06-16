@@ -1,4 +1,4 @@
-// ── DAWN WHALES Server Config ─────────────────────────────────────────
+// ── QUANT MOO Server Config ─────────────────────────────────────────
 // R129-P01: Environment configuration with validation
 
 import dotenv from 'dotenv';
@@ -10,7 +10,7 @@ export const config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '24h',
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   encryptionMasterKey: process.env.ENCRYPTION_MASTER_KEY || 'dev-key-32-chars-minimum!!',
-  dbPath: process.env.DB_PATH || './data/dawn-whales.db',
+  dbPath: process.env.DB_PATH || './data/quant-moo.db',
   keysDbPath: process.env.KEYS_DB_PATH || './data/api-keys.db',
   corsOrigin: process.env.CORS_ORIGIN || '*',
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),

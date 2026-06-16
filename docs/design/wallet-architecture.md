@@ -1,4 +1,4 @@
-# TradingEasy Wallet Architecture v2.1
+# quant-moo Wallet Architecture v2.1
 
 > **Round**: R141→R200 | **Author**: QClaw + autoclaw | **Date**: 2026-06-16
 > **Status**: DESIGN DOCUMENT — v17.9 Production Ready
@@ -24,7 +24,7 @@
 
 ## 1. Overview
 
-The TradingEasy wallet system is built on SQLite with WAL mode, providing:
+The quant-moo wallet system is built on SQLite with WAL mode, providing:
 
 - **Single-source-of-truth**: All balance computation on the server; clients never hold authoritative balance
 - **Double-entry bookkeeping**: Every debit has a corresponding credit; system invariant: `SUM(debit) == SUM(credit)` per wallet

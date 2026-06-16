@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: py ────────────────────────────────────────────
+// ── QUANT MOO IPC: py ────────────────────────────────────────────
 // 3 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

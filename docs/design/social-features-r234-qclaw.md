@@ -1,12 +1,12 @@
 # R234-QClaw#2: Social Features Design
-## Dawn Whales v2.6.0 QUANTUM
+## QUANT MOO v2.6.0 QUANTUM
 
 ---
 
 ## 1. OVERVIEW
 
 ### 1.1 Purpose
-Transform Dawn Whales from a tool-based marketplace into a social trading community. Three core social features allow creators and followers to interact, building trust and retention.
+Transform QUANT MOO from a tool-based marketplace into a social trading community. Three core social features allow creators and followers to interact, building trust and retention.
 
 ### 1.2 Features
 | Feature | Priority | Target |
@@ -206,7 +206,7 @@ interface CreatorProfile {
 | Whale | 🐋 | Single strategy revenue ≥ 1000 USDT |
 | Fast Responder | ⚡ | Average reply time < 24h |
 | Top Seller | 🏆 | Top 10% by revenue in category |
-| Editor's Pick | 💎 | Curated by Dawn Whales team |
+| Editor's Pick | 💎 | Curated by QUANT MOO team |
 
 ---
 

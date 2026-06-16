@@ -214,7 +214,7 @@ export class CommodityFeeds {
       if (provider.rssUrl) {
         try {
           const response = await fetch(provider.rssUrl, {
-            headers: { 'User-Agent': 'DawnWhales/2.7.0' },
+            headers: { 'User-Agent': 'QuantMoo/2.7.0' },
             signal: AbortSignal.timeout(5000),
           });
           if (response.ok) {

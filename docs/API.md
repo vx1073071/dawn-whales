@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy — API Reference
+# quant-moo — API Reference
 
 > Generated: 2026-06-04 | 9 modules
 

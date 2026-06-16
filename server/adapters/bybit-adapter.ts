@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R131 J01 — Bybit Cloud Broker Adapter
+ * QUANT MOO R131 J01 — Bybit Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for Bybit Spot V5.
  * REST: api.bybit.com (HMAC-SHA256 signing)

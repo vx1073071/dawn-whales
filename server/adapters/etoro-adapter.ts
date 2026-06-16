@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R134 J02 — eToro Cloud Broker Adapter
+ * QUANT MOO R134 J02 — eToro Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for eToro.
  * Uses eToro REST API — OAuth2 + REST + WS.

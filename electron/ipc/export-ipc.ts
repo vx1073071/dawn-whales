@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: export — File export (CSV/JSON/MD/HTML/PDF) ──────────
+// ── QUANT MOO IPC: export — File export (CSV/JSON/MD/HTML/PDF) ──────────
 // R20: Missing handlers — preload exposes export:* but no export-ipc.ts existed.
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
@@ -182,7 +182,7 @@ function getExportData(target: string, _filters?: unknown): any[] {
 }
 
 function generateSummaryReport(): string {
-  return `# DAWN WHALES Trading Summary\n\nGenerated: ${new Date().toISOString()}\n\n## Portfolio\n\n[To be populated by real data]\n\n## Risk\n\n[To be populated by real data]\n`;
+  return `# QUANT MOO Trading Summary\n\nGenerated: ${new Date().toISOString()}\n\n## Portfolio\n\n[To be populated by real data]\n\n## Risk\n\n[To be populated by real data]\n`;
 }
 
 async function saveFileDialog(format: string, content: string): Promise<any> {

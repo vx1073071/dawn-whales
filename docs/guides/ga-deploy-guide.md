@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.7.0 GA 部署手册 & 最终创作者指南
+# quant-moo v1.7.0 GA 部署手册 & 最终创作者指南
 
 **版本**: v1.7.0 GA  
 **更新时间**: 2026-06-09  
@@ -23,7 +23,7 @@ purpose: (auto-generated, needs review)
 apt install nginx nodejs certbot
 
 # 2. 代码部署
-cd /opt/dawn-whales/server
+cd /opt/quant-moo/server
 npm ci && npm run build
 
 # 3. 环境变量 (.env, 不提交 Git)
@@ -39,18 +39,18 @@ pm2 save && pm2 startup
 # 5. Nginx 反向代理
 server {
     listen 443 ssl;
-    server_name api.TradingEasy.com;
+    server_name api.quant-moo.com;
     location / { proxy_pass http://127.0.0.1:3000; }
 }
 
 # 6. SSL 证书
-certbot --nginx -d TradingEasy.com -d api.TradingEasy.com
+certbot --nginx -d quant-moo.com -d api.quant-moo.com
 ```
 
 ### 落地页部署
 
 ```bash
-cp site/index.html /var/www/TradingEasy.com/
+cp site/index.html /var/www/quant-moo.com/
 nginx -s reload
 ```
 
@@ -68,7 +68,7 @@ npm run dist:linux  # Linux .AppImage
 
 | 检查项 | ✅ |
 |--------|-----|
-| TradingEasy.com 可访问 | |
+| quant-moo.com 可访问 | |
 | /api/health 返回 200 | |
 | /admin 2FA 登录正常 | |
 | 桌面端下载+安装+启动 | |

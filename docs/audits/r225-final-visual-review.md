@@ -53,7 +53,7 @@
 | # | 问题 | 严重度 | 文件 | 方案 |
 |---|------|--------|------|------|
 | 1 | 12暗背景变异 | P0 | KeyboardShortcuts/BacktestReport/AIAssistant/MultiTurnMemory等 | 全局替换→#0f172a |
-| 2 | 9种GitHub色 | P1 | BrokerManager群组 | 替换为TradingEasy token |
+| 2 | 9种GitHub色 | P1 | BrokerManager群组 | 替换为quant-moo token |
 | 3 | 2种品牌金变异 | P1 | NotificationToast/AIHistorySearch | #d4a853→#d4a574 |
 | 4 | 成功/错误绿红多级未收敛 | P2 | 全局 | 收敛至3级色阶 |
 

@@ -15,7 +15,7 @@
 | 账户 | 现金+保证金, 华泰金控背景 |
 | 特色 | 社交社区 "华盛通", AI 选股, 低佣金 |
 
-### TradingEasy 适配器
+### quant-moo 适配器
 
 ```
 HuashengBridgeAdapter extends BridgeAdapterBase

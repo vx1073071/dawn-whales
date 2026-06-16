@@ -52,7 +52,7 @@
 | 3 | 🦐 JVS | CreatorReviewBilling(创作者审核计费): 1U/次+不退费+AI异常才退+ledger category=ai_creator_review | 4h | CreatorReviewBilling.ts | 3场景(通过settled/不通过settled/AI异常refund)=3个测试pass |
 | 4 | 🦐 ML | Wallet余额展示组件重构: 顶部栏余额+积分余额+AI剩余次数+执行服务费预估 | 4h | WalletBalanceBar.tsx + i18n | 9语言+余额实时更新+不足红色警告 |
 | 5 | 🦐 ML | 计费Toast组件升级(FeeDeductionToastV3): 22 AI项+执行服务费+创作者审核三种扣费场景 | 3h | FeeDeductionToastV3.tsx | 静默扣款0弹窗+失败退费提示+9语言 |
-| 6 | 🦐 autoclaw | 收费目录txt v17.9更新: 22 AI + 5类执行服务费 + 龙虎榜3级 + 88模板免费 + 创作者审核1U | 2h | DawnWhales-收费目录-v17.9.txt | 与fee-schedule.md完全一致 |
+| 6 | 🦐 autoclaw | 收费目录txt v17.9更新: 22 AI + 5类执行服务费 + 龙虎榜3级 + 88模板免费 + 创作者审核1U | 2h | QuantMoo-收费目录-v17.9.txt | 与fee-schedule.md完全一致 |
 | 7 | 🦐 autoclaw | wallet-architecture.md对齐v17.9: 确认6层防御/5类费率/创作者审核计费/双重记账 | 2h | wallet-architecture.md更新 | 与fee-schedule.md+ai-billing-rules.md一致 |
 | 8 | 🦐 QClaw | 钱包+计费用户话术: "余额不足"引导充值 / "策略执行服务费0.1%"解释 / "AI审核1U不退费"提示 | 2h | 用户话术文档 | 每条≤30字+9语言 |
 | 9 | 🦐 youdao | 服务端计费管道E2E测试: 23触点×4场景(hold+settle+refund+idempotent)=92用例 | 6h | ≥92个E2E用例pass | 无漏覆盖+幂等性验证+并发安全 |
@@ -338,7 +338,7 @@
 | 2 | 🦐 JVS | 23触点计费精准度验证: 每个触点金额精度到0.01积分 + 5类执行服务费精度 | 4h | 计费精准度报告 | 0偏差 |
 | 3 | 🦐 autoclaw | 灰度发布脚本: 10%→30%→50%→100% + 回滚方案 + 监控告警 | 4h | 灰度发布脚本+回滚方案 | 灰度可控+1键回滚 |
 | 4 | 🦐 ML | 发布UI打磨: 启动页v2.1.0 / 更新弹窗 / 新功能引导 / 费率说明弹窗 | 4h | 发布UI全套 | 9语言+无死链 |
-| 5 | 🦐 QClaw | v2.1.0 Release Notes + 费率说明页(dawnwhales.com) | 3h | Release Notes + 网页 | 公开+准确 |
+| 5 | 🦐 QClaw | v2.1.0 Release Notes + 费率说明页(QuantMoo.com) | 3h | Release Notes + 网页 | 公开+准确 |
 | 6 | 🦐 youdao | E2E Playwright全量回归: 88模板+23触点+5类执行费+龙虎榜3级+排行榜+盲盒+保险+创作者+API Key | 8h | ≥80个E2E用例pass | 全场景回归 |
 | 7 | 🦐 Claw | 最终验收+发布决定+v2.1.0 tag | 3h | 验收报告+git tag | 全指标达标→发布 |
 
@@ -419,9 +419,9 @@
 ### 核心架构
 
 ```
-用户在TradingEasy有1000积分 → 连接币安API Key → 策略触发"买入BTC"
-  → TradingEasy发指令给币安 → 币安执行交易 → 币安收0.02-0.1%真USDT
-  → 同时 → TradingEasy内部扣策略执行服务费 0.1% 积分
+用户在quant-moo有1000积分 → 连接币安API Key → 策略触发"买入BTC"
+  → quant-moo发指令给币安 → 币安执行交易 → 币安收0.02-0.1%真USDT
+  → 同时 → quant-moo内部扣策略执行服务费 0.1% 积分
 ```
 
 **两笔费用互不干扰**:
@@ -429,7 +429,7 @@
 | 费用 | 收取方 | 扣款来源 | 法律性质 |
 |------|--------|---------|---------|
 | 交易所手续费 0.02-0.1% | 币安/OKX/富途 | 用户交易所账户真USDT | 交易服务费 |
-| 策略执行服务费 0.02-0.1% | TradingEasy | 用户TradingEasy积分 | 软件服务费 |
+| 策略执行服务费 0.02-0.1% | quant-moo | 用户quant-moo积分 | 软件服务费 |
 
 ### 5类资产费率同步
 
@@ -448,7 +448,7 @@
 | **P0** | API Key委托 | ❌ 无 | 用户自行授权 | **R211立即可用** |
 | **P1** | Broker子账户 | ✅ 40% Maker | 海外公司+KYB | 用户量>2000后 |
 
-> P0: 用户自开交易所账户 → 授权API Key(只读+交易,禁提币) → TradingEasy代下单 → 扣积分服务费
+> P0: 用户自开交易所账户 → 授权API Key(只读+交易,禁提币) → quant-moo代下单 → 扣积分服务费
 > P1: 注册币安Broker → 开子账户 → 用户资金存交易所 → 拿Maker返佣(纯增量)
 
 ### P0 API Key 接入技术 (R211)

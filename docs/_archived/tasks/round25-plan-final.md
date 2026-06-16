@@ -176,7 +176,7 @@ JVS 已完成 → WB-25-03 (Phase 3 规划审核)
 |--------|------|
 | `npm run build` | 0 errors, 0 warnings |
 | `npm test` | exit 0 + ≥116 tests pass（ML-25-01 后 ≥125）|
-| `npm run dist:win` | `release/TradingEasy Setup 0.6.0.exe` 存在 |
+| `npm run dist:win` | `release/quant-moo Setup 0.6.0.exe` 存在 |
 | CHANGELOG.md | 包含 `[0.6.0]` 章节，覆盖 R21-R25 |
 | Demo | `docs/demo/` 目录存在，≥10 场景有截图/GIF |
 | TradeDashboard | 真实 IPC 调用可见，非纯 mock |

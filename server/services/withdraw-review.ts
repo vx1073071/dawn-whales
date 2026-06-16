@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R143 Claw(PM) — Withdrawal Review Service
+ * QUANT MOO R143 Claw(PM) — Withdrawal Review Service
  * 
  * Admin review queue for manual-approval withdrawals.
  * Only triggered when: balance > 1,000 USDT AND registered < 7 days.

@@ -1,6 +1,6 @@
 // ── R173 F5: Factor Weight Optimizer ─────────────────────────────────────
 // Strategy optimizer: brute-force weight scanning + multi-objective Pareto
-// Copyright (c) 2026 DAWN WHALES. All rights reserved.
+// Copyright (c) 2026 QUANT MOO. All rights reserved.
 
 import { log } from '../../../../src/lib/logger';
 

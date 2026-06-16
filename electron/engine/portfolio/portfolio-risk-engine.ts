@@ -1,7 +1,7 @@
 import { EngineError, ErrorCode } from '../../errors';
 /**
  * Portfolio Risk Engine
- * Dawn Whales Project (J-39-03, R39)
+ * QUANT MOO Project (J-39-03, R39)
  *
  * Portfolio-level risk calculations: VaR, CVaR, correlation matrix, stress testing.
  *

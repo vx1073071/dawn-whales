@@ -240,7 +240,7 @@ export class RegionalFeedsFetcher implements NewsFetcher {
     try {
       const resp = await fetch(feed.url, {
         headers: {
-          'User-Agent': 'DawnWhales/2.7.0 (Regional RSS Reader)',
+          'User-Agent': 'QuantMoo/2.7.0 (Regional RSS Reader)',
           'Accept': 'application/rss+xml, application/xml, application/rdf+xml, text/xml, */*',
         },
         signal: AbortSignal.timeout(this.fetchTimeout),

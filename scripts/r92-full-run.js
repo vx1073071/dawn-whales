@@ -3,7 +3,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 process.chdir(ROOT);
 
 console.log('[R92] Starting full vitest run...');
@@ -50,7 +50,7 @@ try {
       if (a.status === 'passed') totalPass++;
       else if (a.status === 'failed') {
         totalFail++;
-        const shortFile = file.name.replace(/.*dawn-whales[\\/]/, '');
+        const shortFile = file.name.replace(/.*quant-moo[\\/]/, '');
         failDetails.push({
           file: shortFile,
           test: (a.ancestorTitles || []).concat(a.title || a.fullName || '').join(' > '),

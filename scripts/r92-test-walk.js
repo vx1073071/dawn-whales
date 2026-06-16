@@ -11,7 +11,7 @@ function _walkRecursive(dir) {
   return r;
 }
 
-const engineDir = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine';
+const engineDir = 'C:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine';
 const allFiles = _walkRecursive(engineDir);
 const tsFiles = allFiles.filter(f => f.endsWith('.ts'));
 console.log('Total files from _walkRecursive:', allFiles.length);

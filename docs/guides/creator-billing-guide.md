@@ -17,7 +17,7 @@ purpose: (auto-generated, needs review)
 > **请勿参考本文档的价格/抽成/等级数据。**
 >
 
-# [DEPRECATED] TradingEasy 创作者付费指南
+# [DEPRECATED] quant-moo 创作者付费指南
 
 **版本**: v1.3.0-alpha **(已废弃，仅供参考)**  
 **更新时间**: 2026-06-09  

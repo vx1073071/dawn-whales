@@ -1,4 +1,4 @@
-# TradingEasy 跟单业务 — 五虾合并审查 (最终版)
+# quant-moo 跟单业务 — 五虾合并审查 (最终版)
 
 > **合并**: PM(Claw) + youdao + QClaw + JVS + ML — 5虾全量
 > **日期**: 2026-06-13 04:47 HKT

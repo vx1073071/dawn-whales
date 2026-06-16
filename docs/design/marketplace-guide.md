@@ -1,4 +1,4 @@
-# TradingEasy Creator Marketplace v17.6
+# quant-moo Creator Marketplace v17.6
 
 > **Round**: R144 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final

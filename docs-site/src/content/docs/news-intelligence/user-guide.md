@@ -1,6 +1,6 @@
 ---
 title: 消息智能用户指南
-description: DAWN WHALES 消息智能 12 项功能完整使用指南 — 如何启用、配置和使用每个功能
+description: QUANT MOO 消息智能 12 项功能完整使用指南 — 如何启用、配置和使用每个功能
 ---
 
 # 📖 用户指南

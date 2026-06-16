@@ -1,7 +1,7 @@
 const fs=require('fs');
 
 // Fix bridge-depth-adapter.ts
-let p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/chart/bridge-depth-adapter.ts';
+let p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/chart/bridge-depth-adapter.ts';
 let c=fs.readFileSync(p,'utf-8');
 
 // Suppress TS1117: duplicate 'best' property
@@ -18,7 +18,7 @@ fs.writeFileSync(p,c);
 console.log('bridge-depth-adapter.ts: fixed');
 
 // Fix lwc-drawing-adapter.ts
-p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/chart/lwc-drawing-adapter.ts';
+p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/chart/lwc-drawing-adapter.ts';
 c=fs.readFileSync(p,'utf-8');
 
 // Remove unused Time import

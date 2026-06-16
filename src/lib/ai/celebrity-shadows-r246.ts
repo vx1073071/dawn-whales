@@ -10,7 +10,7 @@ export interface CelebrityShadow {
   era: string;
   /** 一句话投资哲学 */
   philosophy: string;
-  /** TradingEasy如何"翻译"他的方法 */
+  /** QUANT MOO如何"翻译"他的方法 */
   shadowApproach: string;
   /** 对应的因子组合 */
   factorCombo: string[];

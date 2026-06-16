@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Dead Letter IPC Handlers ──────────────────────
+// ── QUANT MOO — Dead Letter IPC Handlers ──────────────────────
 // R108 S-35: IPC endpoints for Admin dead letter panel.
 
 import { ipcMain } from 'electron';

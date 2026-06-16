@@ -59,10 +59,10 @@
 ### SignalShareComponents.tsx (519L) ✅⭐
 **验收项**: P1-13 信号分享功能
 - **5组件**: SignalShareButton / SignalShareModal / SignalPreviewCard / CopyTradeConfirmModal / CopyTradeHistory
-- **分享链接**: `TradingEasy://signal/{token}` deep link ✅
+- **分享链接**: `quant-moo://signal/{token}` deep link ✅
 - **社交分享**: Telegram / Twitter / 复制链接
 - **QR占位**: 有QR区域但无实际QR渲染 (skeleton UI)
-- **⚠️ 发现**: `window.open()` 在Electron中会打开外部浏览器，但deep link `TradingEasy://` 无法在Twitter/Telegram直接打开
+- **⚠️ 发现**: `window.open()` 在Electron中会打开外部浏览器，但deep link `quant-moo://` 无法在Twitter/Telegram直接打开
 - **⚠️ 发现**: `liveUpdate` toggle存在但未实现实时push更新
 
 ---

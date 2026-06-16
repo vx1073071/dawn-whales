@@ -1,4 +1,4 @@
-// ── R178-R179: TradingEasy Security Module Index ────────────────────────────
+// ── R178-R179: quant-moo Security Module Index ────────────────────────────
 // Central export for all AI security guardrails.
 //
 // Modules:

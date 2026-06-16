@@ -1,4 +1,4 @@
-# TradingEasy 港美股+加密货币 因子深度扩充与UX打磨建议 v2.0
+# quant-moo 港美股+加密货币 因子深度扩充与UX打磨建议 v2.0
 
 > From: ML (前端) | To: PM | Type: DEEP_PROPOSAL
 > Scope: 港美股 (不含A股) | 加密货币 | 基于权威学术因子研究 + 人类使用习惯
@@ -9,7 +9,7 @@
 
 ## 一、现有因子库速览 (44个)
 
-TradingEasy 已有 **44个 canonical 因子**（factor-id-registry.ts），扣除A股专属和legacy duplicates后：
+quant-moo 已有 **44个 canonical 因子**（factor-id-registry.ts），扣除A股专属和legacy duplicates后：
 
 | 类别 | 因子数 | 代表 |
 |------|--------|------|
@@ -474,7 +474,7 @@ SUE (盈余惊喜因子)
   相关性: R²=0.15 | 与MOM_12M重叠度低，互补
   最近表现: 🟡 上月IC=0.038 → 本月IC=0.032 (略降但仍有效)
 
-TradingEasy AI建议: "SUE因子IC在季节性走弱(财报淡季)，预计7月下旬财报季到来后回升。当前建议: 保持，权重从25%临时减至18%。"
+quant-moo AI建议: "SUE因子IC在季节性走弱(财报淡季)，预计7月下旬财报季到来后回升。当前建议: 保持，权重从25%临时减至18%。"
 
 ```
 

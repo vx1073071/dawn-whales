@@ -6,11 +6,11 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.9.0 GA — 发布公告
+# quant-moo v1.9.0 GA — 发布公告
 
-## 🐋 TradingEasy v1.9.0 GA 正式发布
+## 🐋 quant-moo v1.9.0 GA 正式发布
 
-2026-06-09 — 经过 **31轮开发** (R50-R81)，TradingEasy v1.9.0 GA 正式发布。
+2026-06-09 — 经过 **31轮开发** (R50-R81)，quant-moo v1.9.0 GA 正式发布。
 
 ### 🎯 产品定位
 AI驱动的量化策略社区平台。4个AI Agent协作分析股票，
@@ -70,7 +70,7 @@ AI驱动的量化策略社区平台。4个AI Agent协作分析股票，
 
 ### 🔗 链接
 
-- 官网: https://TradingEasy.com
+- 官网: https://quant-moo.com
 - 下载: Windows / macOS / Linux
 - 文档: docs/user-manual-v1.9.0-ga.md
 

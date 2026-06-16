@@ -51,7 +51,7 @@
 
 | 违规色 | 文件数 | 问题 |
 |--------|--------|------|
-| `#3fb950` | 3 | GitHub成功绿，非TradingEasy规范 |
+| `#3fb950` | 3 | GitHub成功绿，非quant-moo规范 |
 | `#f85149` | 3 | GitHub错误红 |
 | `#f0883e` | 3 | GitHub警告橙 |
 | `#30363d` | 3 | GitHub暗色 |
@@ -61,7 +61,7 @@
 | `#8b949e` | 3 | GitHub文字色 |
 | `#e6edf3` | 3 | GitHub浅色 |
 
-**BrokerManager组件群直接搬了GitHub配色** → 应替换为TradingEasy token体系
+**BrokerManager组件群直接搬了GitHub配色** → 应替换为quant-moo token体系
 
 ---
 
@@ -81,7 +81,7 @@
 | 优先级 | 行动 | 预计减少违规 |
 |--------|------|-------------|
 | 🔴 P0 | 12暗背景→`#0f172a` | 72→60 |
-| 🟡 P1 | GitHub色8→TradingEasy替换 | 60→52 |
+| 🟡 P1 | GitHub色8→quant-moo替换 | 60→52 |
 | 🟡 P1 | 品牌金2→`#d4a574` | 52→50 |
 | ⚪ P2 | 蓝色3→`#3b82f6` token | 50→47 |
 | ⚪ P2 | 其余47种(单文件使用) | 渐进收敛 |

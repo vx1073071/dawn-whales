@@ -1,4 +1,4 @@
-// ── DAWN WHALES Multi-Broker Concurrency ──────────────────────────────
+// ── QUANT MOO Multi-Broker Concurrency ──────────────────────────────
 // R133-P02: Concurrent order execution across brokers with timeout
 
 import { logAuditError } from './audit-logger';

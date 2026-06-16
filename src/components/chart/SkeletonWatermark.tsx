@@ -108,7 +108,7 @@ export function useScreenshotWatermark(ref: React.RefObject<HTMLElement>) {
         ctx.fillStyle = 'rgba(156, 163, 175, 0.15)';
         ctx.textAlign = 'left';
         ctx.font = `${fontSize * 0.7}px monospace`;
-        ctx.fillText('dawnwhales.com', fontSize, fontSize);
+        ctx.fillText('QuantMoo.com', fontSize, fontSize);
 
         // Diagonal watermark
         ctx.save();

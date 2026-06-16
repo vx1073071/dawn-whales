@@ -1,4 +1,4 @@
-// ── DAWN WHALES AES-256-GCM Encryption ────────────────────────────────
+// ── QUANT MOO AES-256-GCM Encryption ────────────────────────────────
 // R129-P04: API Key encryption/decryption with audit logging
 
 import crypto from 'crypto';
@@ -11,7 +11,7 @@ const TAG_LENGTH = 16;
 const KEY_LENGTH = 32;
 
 function deriveKey(): Buffer {
-  return crypto.scryptSync(config.encryptionMasterKey, 'dawn-whales-salt', KEY_LENGTH);
+  return crypto.scryptSync(config.encryptionMasterKey, 'quant-moo-salt', KEY_LENGTH);
 }
 
 export function encrypt(plaintext: string): string {

@@ -15,7 +15,7 @@
 | 认证 | API Key + Secret (HMAC-SHA256) |
 | 签名 | tiger-id + timestamp + signature + tiger-sdk-version |
 
-### TradingEasy 适配器模式
+### quant-moo 适配器模式
 
 ```
 TigerAdapter (BridgeAdapterBase 子类)

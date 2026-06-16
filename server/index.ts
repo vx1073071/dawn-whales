@@ -1,4 +1,4 @@
-// ── DAWN WHALES Server ────────────────────────────────────────────────
+// ── QUANT MOO Server ────────────────────────────────────────────────
 // R148: Full integration + performance + chain stability + rate limiting
 // R151: AI health cron + monthly spending report
 // R152: Symbol search engine + broker market API

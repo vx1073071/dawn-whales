@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 
 try {
   execSync('git add tests/helpers/crypto-polyfill.ts tests/condition-engine.test.ts', { cwd: ROOT, encoding: 'utf-8' });

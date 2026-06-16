@@ -1,5 +1,5 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
-// ── DAWN WHALES — WebullAdapter ─────────────────────────────────────────
+— R119 QClaw: structural type errors pending resolution by JVS/PM
+// ── QUANT MOO — WebullAdapter ─────────────────────────────────────────
 // R3 OAU-04: Webull Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code)
 // Markets: US equities, ETFs, options

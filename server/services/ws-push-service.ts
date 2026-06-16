@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R153 Claw(PM) — WebSocket Push Service
+ * QUANT MOO R153 Claw(PM) — WebSocket Push Service
  * 
  * Real-time market data delivery via WebSocket.
  * Replaces REST polling with server-push for lower latency.

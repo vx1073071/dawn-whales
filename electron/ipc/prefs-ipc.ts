@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: prefs — User preferences persistence ────────────────
+// ── QUANT MOO IPC: prefs — User preferences persistence ────────────────
 // R20: Missing handlers detected by QClaw — preload exposes prefs:*
 //      but no prefs-ipc.ts existed. This module provides all prefs:*
 //      handlers using electron-store for persistent JSON storage.

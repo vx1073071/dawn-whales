@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — Broker IPC Schemas (Tier 1, 10 channels)
+ * QUANT MOO R123-Q01 — Broker IPC Schemas (Tier 1, 10 channels)
  * 
  * Covers: broker:connect/disconnect/getQuotes/subscribe/getAccounts/
  *         getPositions/placeOrder/cancelOrder/getOrders/getStatus

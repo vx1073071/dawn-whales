@@ -1,5 +1,5 @@
 /**
- * Dawn Whales — Engine Constants (R84 P2-3)
+ * QUANT MOO — Engine Constants (R84 P2-3)
  * Extracted magic numbers to improve code readability and maintainability.
  * Replace literal numbers throughout the codebase with these named constants.
  */

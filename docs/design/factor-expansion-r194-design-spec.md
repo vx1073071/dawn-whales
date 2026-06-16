@@ -1,4 +1,4 @@
-# TradingEasy R194 设计交付 — 🇯🇵🇹🇼市场UX配色 + 19因子三语故事 + 7市场Onboarding
+# quant-moo R194 设计交付 — 🇯🇵🇹🇼市场UX配色 + 19因子三语故事 + 7市场Onboarding
 
 > **Round**: R194 (🌏7市场扩展首轮 · Phase 4) | **角色**: QClaw(设计虾)
 > **Phase**: 4/4 — 全球扩展 | **交付物**: ①日台市场UX ②19因子故事文案 ③7市场Onboarding

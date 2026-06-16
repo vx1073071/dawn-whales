@@ -349,4 +349,4 @@
 
 - 商品深度学习方案: `commodity-factor-deep-research-proposal.md`
 - Phase 4 Master Plan: `docs/proposals/factor-expansion-7markets-R194-R197-master-plan.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

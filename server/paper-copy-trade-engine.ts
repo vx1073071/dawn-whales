@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R139 J03 — Paper Copy Trade Engine (模拟跟单)
+ * QUANT MOO R139 J03 — Paper Copy Trade Engine (模拟跟单)
  * 
  * Allows new users to experience copy-trading with virtual funds before
  * committing real money.  Runs a full simulation of the copy-trade pipeline

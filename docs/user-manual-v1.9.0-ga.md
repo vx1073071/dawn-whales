@@ -10,11 +10,11 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.9.0 GA — 完整使用手册
+# quant-moo v1.9.0 GA — 完整使用手册
 
 ## 一、产品简介
 
-TradingEasy 是一个 AI 驱动的量化策略社区平台。
+quant-moo 是一个 AI 驱动的量化策略社区平台。
 4 个 AI Agent (基本面/技术面/情绪面/宏观) 像圆桌会议一样协作分析股票，
 创作者发布策略信号赚 USDT，用户订阅跟单。
 
@@ -29,7 +29,7 @@ TradingEasy 是一个 AI 驱动的量化策略社区平台。
 - **IU/UX**: 深色+浅色双主题 / 9语言 / 1366×768响应式 / 私行金配色 / WCAG AA可访问
 
 ### 三产品架构 (永久)
-1. **落地页** (TradingEasy.com) — 静态展示，介绍+下载
+1. **落地页** (quant-moo.com) — 静态展示，介绍+下载
 2. **桌面端** (Electron) — 创作者+用户唯一入口
 3. **服务器** (/api + /admin) — AI+计费+钱包+许可证
 
@@ -38,7 +38,7 @@ TradingEasy 是一个 AI 驱动的量化策略社区平台。
 ## 二、快速开始
 
 ### 安装
-1. 访问 https://TradingEasy.com
+1. 访问 https://quant-moo.com
 2. 下载对应平台版本: Windows(.exe) / macOS(.dmg) / Linux(.AppImage)
 3. 安装并启动
 

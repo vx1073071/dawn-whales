@@ -12,7 +12,7 @@
 | 1 | 🦐 JVS(引擎) | chat-bridge消息 | **28个** | 每市场2-5个，场景驱动，策略卡片+信号灯 |
 | 2 | 🦐 autoclaw(全栈) | factor-strategy-templates-R200.md | **28个** | 16一键+8组合+4自适应，四铁律(人话+止损+市场+自检) |
 | 3 | 🦐 QClaw(设计) | strategy-templates-deep-expansion-qclaw-20260615.md | **68个**(22→68) | 46新增，11市场全覆盖，就地取材原则 |
-| 4 | 🦐 youdao(测试) | tradingeasy-strategy-template-expansion.md | **88个**(22→88) | 8大类×11市场，含10个AI专属模板，28个付费 |
+| 4 | 🦐 youdao(测试) | quant-moo-strategy-template-expansion.md | **88个**(22→88) | 8大类×11市场，含10个AI专属模板，28个付费 |
 | 5 | 🦐 ML(前端) | factor-strategy-audit-v2-20260614.md | — | 策略页90%空stub，6入口太混乱，权重0交互 |
 | 6 | 🦐 QClaw(设计-因子) | commodity-factors-deep-optimization-qclaw-20260615.md | — | 商品因子独立于股票因子，12类别体系，学术+人话 |
 
@@ -161,7 +161,7 @@
 
 ### 3.5 🆕 PM建议：收费模式设计原则
 
-基于行业调研，TradingEasy的AI收费应遵循:
+基于行业调研，quant-moo的AI收费应遵循:
 
 | 原则 | 说明 | 行业依据 |
 |------|------|---------|

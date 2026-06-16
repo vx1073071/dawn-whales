@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/bridge-api/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/bridge-api/';
 
 const files=['app.ts','data.ts','risk.ts','trade.ts'];
 

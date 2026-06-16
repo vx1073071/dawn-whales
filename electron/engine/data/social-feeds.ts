@@ -230,7 +230,7 @@ export class SocialFeedsFetcher implements NewsFetcher {
     try {
       const resp = await fetch(source.endpoint, {
         headers: {
-          'User-Agent': 'DawnWhales/2.7.0 (Reddit Reader; contact@dawnwhales.io)',
+          'User-Agent': 'QuantMoo/2.7.0 (Reddit Reader; contact@QuantMoo.io)',
           'Accept': 'application/json',
         },
         signal: AbortSignal.timeout(10000),
@@ -324,7 +324,7 @@ export class SocialFeedsFetcher implements NewsFetcher {
     try {
       const resp = await fetch(url, {
         headers: {
-          'User-Agent': 'DawnWhales/2.7.0 (StockTwits Reader)',
+          'User-Agent': 'QuantMoo/2.7.0 (StockTwits Reader)',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
         },
         signal: AbortSignal.timeout(10000),

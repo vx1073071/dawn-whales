@@ -1,11 +1,11 @@
 ---
-title: DAWN WHALES 用户手册
+title: QUANT MOO 用户手册
 description: 完整的使用指南，涵盖安装配置到高级功能
 ---
 
-# DAWN WHALES 用户手册
+# QUANT MOO 用户手册
 
-DAWN WHALES v2.6 — 智能量化交易平台。支持 240 因子 × 196 策略模板 × 15 券商 × 11 语言。
+QUANT MOO v2.6 — 智能量化交易平台。支持 240 因子 × 196 策略模板 × 15 券商 × 11 语言。
 
 ## 目录
 
@@ -36,19 +36,19 @@ DAWN WHALES v2.6 — 智能量化交易平台。支持 240 因子 × 196 策略�
 ### 安装方式
 
 **方式一: 发行版安装包 (推荐)**
-从 <https://dawnwhales.app/download> 下载最新安装包。
+从 <https://QuantMoo.app/download> 下载最新安装包。
 
 **方式二: 源码运行 (开发者)**
 ```bash
-git clone https://github.com/dawn-whales/dawn-whales.git
-cd dawn-whales
+git clone https://github.com/quant-moo/quant-moo.git
+cd quant-moo
 npm install
 npm start
 ```
 
 ### OTA 自动更新
 
-DAWN WHALES 默认每 4 小时自动检查更新。可用通道:
+QUANT MOO 默认每 4 小时自动检查更新。可用通道:
 
 - **stable** — 稳定版 (推荐)
 - **beta** — 测试版 (提早体验新功能)
@@ -120,7 +120,7 @@ DAWN WHALES 默认每 4 小时自动检查更新。可用通道:
 
 ### 选择策略模板
 
-DAWN WHALES 内置 **196 个策略模板**, 按市场分类:
+QUANT MOO 内置 **196 个策略模板**, 按市场分类:
 
 1. 进入 **策略 → 模板市场**
 2. 按市场筛选 (美股/港股/...)
@@ -308,7 +308,7 @@ A: 不会。所有数据通过 ReliableIPC 传输 + SQLite WAL 模式持久化, 
 A: 支持 undo/redo, Ctrl+Z / Cmd+Z 撤销策略参数修改。
 
 **Q: 费用如何计算?**
-A: 详见费用目录 `DawnWhales-收费目录-v17.9.txt`。AI 服务按使用量计费。
+A: 详见费用目录 `QuantMoo-收费目录-v17.9.txt`。AI 服务按使用量计费。
 
 **Q: 数据安全吗?**
 A: API Key 加密存储 (AES-256-GCM), 敏感字段脱敏, 所有操作有审计日志追踪。

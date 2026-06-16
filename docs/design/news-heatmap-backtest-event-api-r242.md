@@ -1,5 +1,5 @@
 # R242: P2 News Intelligence — Heatmap, Backtest, Event Strategy Design
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R242 (QClaw Design)
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R242 (QClaw Design)
 
 ---
 

@@ -220,7 +220,7 @@ self.addEventListener('fetch', (event) => {
 1. **检查 Service Worker 版本号**
    ```javascript
    // public/sw.js
-   const CACHE_NAME = 'dawn-whales-v0.12.0';
+   const CACHE_NAME = 'quant-moo-v0.12.0';
    // 检查版本号是否更新
    ```
 
@@ -236,7 +236,7 @@ self.addEventListener('fetch', (event) => {
 
 ```javascript
 // public/sw.js - 更新版本号 + 清理旧缓存
-const CACHE_NAME = 'dawn-whales-v0.12.1'; // 更新版本号
+const CACHE_NAME = 'quant-moo-v0.12.1'; // 更新版本号
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
@@ -494,13 +494,13 @@ navigator.serviceWorker.register('/sw.js', {
 1. **检查 manifest.json**
    ```bash
    # 检查 manifest.json 是否存在且正确
-   curl https://dawn-whales.ai/manifest.json
+   curl https://quant-moo.ai/manifest.json
    ```
 
 2. **检查 HTTPS**
    ```bash
    # PWA 必须使用 HTTPS
-   curl -I https://dawn-whales.ai
+   curl -I https://quant-moo.ai
    ```
 
 3. **检查 Service Worker**
@@ -720,7 +720,7 @@ function showUpdateNotification() {
 
 ```javascript
 // public/sw.js - 确保清理旧缓存
-const CACHE_NAME = 'dawn-whales-v0.12.1'; // 更新版本号
+const CACHE_NAME = 'quant-moo-v0.12.1'; // 更新版本号
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
@@ -884,7 +884,7 @@ self.addEventListener('activate', (event) => {
 ```bash
 # Lighthouse CLI
 npm install -g lighthouse
-lighthouse https://dawn-whales.ai --view
+lighthouse https://quant-moo.ai --view
 
 # Workbox CLI
 npm install -g workbox-cli

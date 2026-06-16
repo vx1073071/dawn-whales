@@ -1,4 +1,4 @@
-# TradingEasy AI Strategy Closed-Loop Workflow v1.0
+# quant-moo AI Strategy Closed-Loop Workflow v1.0
 
 > **Round**: R146 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: DESIGN DOCUMENT — Production Ready

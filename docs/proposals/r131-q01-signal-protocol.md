@@ -221,8 +221,8 @@ Response 200:
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dawn-whales.com/schemas/signal-v1.json",
-  "title": "TradingEasy Copy Trading Signal",
+  "$id": "https://quant-moo.com/schemas/signal-v1.json",
+  "title": "quant-moo Copy Trading Signal",
   "type": "object",
   "required": ["symbol", "direction", "providerId"],
   "properties": {

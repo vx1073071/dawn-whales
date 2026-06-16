@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES — Centralized External Endpoint Configuration
+ * QUANT MOO — Centralized External Endpoint Configuration
  *
  * All external API URLs are defined here. No hardcoded URLs in engine/ source files.
  * Environment-driven via NODE_ENV: development → staging → production.
@@ -115,12 +115,12 @@ export const ENDPOINTS = {
     chat: env('DEEPSEEK_CHAT_URL', 'https://api.deepseek.com/v1/chat/completions'),
   },
 
-  /** Dawn Whales — own platform services */
-  dawnwhales: {
-    www: env('DAWNWHALES_WWW_URL', 'https://dawnwhales.com'),
-    api: env('DAWNWHALES_API_URL', 'https://api.dawnwhales.com'),
-    download: env('DAWNWHALES_DL_URL', 'https://dl.dawnwhales.com'),
-    opendWs: env('DAWNWHALES_OPEND_WS', 'wss://opend.dawn-whales.cloud'),
+  /** QUANT MOO — own platform services */
+  QuantMoo: {
+    www: env('QuantMoo_WWW_URL', 'https://QuantMoo.com'),
+    api: env('QuantMoo_API_URL', 'https://api.QuantMoo.com'),
+    download: env('QuantMoo_DL_URL', 'https://dl.QuantMoo.com'),
+    opendWs: env('QuantMoo_OPEND_WS', 'wss://opend.quant-moo.cloud'),
   },
 
   /** jsDelivr — CDN for static assets */
@@ -130,8 +130,8 @@ export const ENDPOINTS = {
 
   /** GitHub — release downloads */
   github: {
-    releases: env('GITHUB_RELEASES_URL', 'https://github.com/dawn-whales/dawn-whales/releases'),
-    clone: env('GITHUB_CLONE_URL', 'https://github.com/dawn-whales/dawn-whales.git'),
+    releases: env('GITHUB_RELEASES_URL', 'https://github.com/quant-moo/quant-moo/releases'),
+    clone: env('GITHUB_CLONE_URL', 'https://github.com/quant-moo/quant-moo.git'),
   },
 } as const;
 

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — IPC Validation Wiring Patch
+ * QUANT MOO R123-Q01 — IPC Validation Wiring Patch
  * 
  * This file demonstrates how to integrate Zod validation into existing IPC handlers.
  * Copy relevant blocks into the corresponding IPC handler files.

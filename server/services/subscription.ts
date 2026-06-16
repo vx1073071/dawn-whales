@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R144 J03 — Subscription Service
+ * QUANT MOO R144 J03 — Subscription Service
  * 
  * Monthly recurring billing for signal subscriptions.
  * 

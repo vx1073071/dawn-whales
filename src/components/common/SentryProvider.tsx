@@ -71,7 +71,7 @@ async function loadSentry(dsn: string, config: Omit<SentryConfig, 'dsn'>): Promi
         Sentry.init({
           dsn,
           environment: config.environment || 'production',
-          release: config.release || 'dawn-whales@' + (config.release || '0.0.0'),
+          release: config.release || 'quant-moo@' + (config.release || '0.0.0'),
           sampleRate: config.sampleRate ?? 1.0,
           tracesSampleRate: config.tracesSampleRate ?? 0.1,
           enabled: config.enabled !== false,

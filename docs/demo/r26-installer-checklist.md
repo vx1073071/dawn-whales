@@ -6,11 +6,11 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v0.6.0 Installer Verification Checklist
+# quant-moo v0.6.0 Installer Verification Checklist
 
 **Date**: 2026-06-06
 **Tester**: ML (EasyClaw)
-**Build**: `release/TradingEasy Setup 0.6.0.exe` (113 MB, 07:04 GMT+8)
+**Build**: `release/quant-moo Setup 0.6.0.exe` (113 MB, 07:04 GMT+8)
 
 ---
 
@@ -38,11 +38,11 @@ purpose: (auto-generated, needs review)
 
 | # | Step | Expected | Actual |
 |---|------|----------|--------|
-| 1 | Run `TradingEasy Setup 0.6.0.exe` | Installer launches | ☐ |
+| 1 | Run `quant-moo Setup 0.6.0.exe` | Installer launches | ☐ |
 | 2 | Custom install location | User picks directory | ☐ |
 | 3 | Installation completes | No errors | ☐ |
 | 4 | Desktop shortcut created | Shortcut with logo icon | ☐ |
-| 5 | Start menu entry created | TradingEasy appears | ☐ |
+| 5 | Start menu entry created | quant-moo appears | ☐ |
 
 ---
 
@@ -51,13 +51,13 @@ purpose: (auto-generated, needs review)
 | # | Step | Expected | Actual |
 |---|------|----------|--------|
 | 6 | Launch app | Window opens 1,400×900 | ☐ |
-| 7 | Window title | "TradingEasy · 道鲸" | ☐ |
+| 7 | Window title | "quant-moo · 道鲸" | ☐ |
 | 8 | Window icon (title bar) | DW logo (gold → dark gradient) | ☐ |
 | 9 | Taskbar icon | DW logo (not generic electron icon) | ☐ |
 | 10 | System tray icon | DW logo 16×16 (not diamond shape) | ☐ |
 | 11 | Tray right-click menu | Show/Main, Emergency Stop, Quit | ☐ |
 | 12 | Tray double-click | Shows main window | ☐ |
-| 13 | Tray tooltip | "TradingEasy · 道鲸" | ☐ |
+| 13 | Tray tooltip | "quant-moo · 道鲸" | ☐ |
 | 14 | Splash/preload screen | Dark background (#0d1117), no white flash | ☐ |
 
 ---

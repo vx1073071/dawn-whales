@@ -87,7 +87,7 @@ purpose: (auto-generated, needs review)
 ### 2.3 代码目录重构
 
 ```
-dawn-whales/
+quant-moo/
 ├── contracts/                    # 层间契约接口（关键！）
 │   ├── data-provider.d.ts       # IDataProvider, IQuote, IKline
 │   ├── broker-adapter.d.ts      # IBrokerAdapter, IOrderRequest

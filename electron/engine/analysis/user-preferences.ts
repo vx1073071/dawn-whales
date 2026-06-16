@@ -356,14 +356,14 @@ export class PreferencesManager {
   exportToFile(filePath?: string): string {
     const outputPath = filePath || path.join(
       app.getPath('downloads'),
-      `dawn-whales-prefs-${new Date().toISOString().slice(0, 10)}.json`
+      `quant-moo-prefs-${new Date().toISOString().slice(0, 10)}.json`
     );
 
     const dir = path.dirname(outputPath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
     const exportData = {
-      app: 'dawn-whales',
+      app: 'quant-moo',
       version: this.prefs.version,
       exportedAt: new Date().toISOString(),
       preferences: this.prefs,

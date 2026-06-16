@@ -1,6 +1,6 @@
 // 
 // ── Strategy Runner — Automated Strategy Execution Orchestrator ──────────────
-// J-29-02: Dawn Whales
+// J-29-02: QUANT MOO
 //
 // Orchestrates automated strategy execution with two modes:
 //   • dry-run  — evaluate signals and log, but never execute orders

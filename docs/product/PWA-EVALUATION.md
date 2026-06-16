@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy PWA 移动端技术评估报告
+# quant-moo PWA 移动端技术评估报告
 
 > **作者**: JVS (AI量化系统)  
 > **日期**: 2026-06-04  
@@ -61,7 +61,7 @@ purpose: (auto-generated, needs review)
 - ✅ **适合**: 策略监控、行情查看、信号推送、绩效查看、回测报告
 - ❌ **不适合**: 策略执行、下单交易、实时风控计算
 
-**推荐定位**: PWA 作为 TradingEasy 的"移动端只读伴侣"，不做交易执行。
+**推荐定位**: PWA 作为 quant-moo 的"移动端只读伴侣"，不做交易执行。
 
 ---
 
@@ -72,7 +72,7 @@ purpose: (auto-generated, needs review)
 **原理**: 用 `vite-plugin-pwa` 在现有 Vite 构建基础上生成 PWA 配置。
 
 ```
-TradingEasy Desktop (Electron)
+quant-moo Desktop (Electron)
   └── React 前端 (共享)
        └── PWA 构建产物 (独立部署)
             ├── manifest.json
@@ -81,7 +81,7 @@ TradingEasy Desktop (Electron)
 ```
 
 **实现步骤**:
-1. 拆分前端代码为 `@dawn-whales/ui` 共享包
+1. 拆分前端代码为 `@quant-moo/ui` 共享包
 2. 添加 `vite-plugin-pwa` 配置
 3. 替换 Electron IPC 为 REST/WebSocket API
 4. 部署到 Vercel/Netlify/Cloudflare Pages
@@ -106,7 +106,7 @@ TradingEasy Desktop (Electron)
 **原理**: 用 Capacitor 将 React 代码打包为原生 iOS/Android 应用。
 
 ```
-TradingEasy Desktop (Electron)
+quant-moo Desktop (Electron)
   └── React 前端 (共享)
        └── Capacitor 壳 (iOS/Android)
             ├── WebView 渲染
@@ -142,7 +142,7 @@ TradingEasy Desktop (Electron)
 **原理**: 用 React Native 重写移动端，共享业务逻辑但重写 UI。
 
 ```
-TradingEasy Desktop (Electron)
+quant-moo Desktop (Electron)
   └── React 前端
   └── React Native 移动端 (独立项目)
        ├── 共享: Zustand store / 类型定义 / 工具函数
@@ -152,7 +152,7 @@ TradingEasy Desktop (Electron)
 
 **实现步骤**:
 1. 初始化 React Native 项目 (Expo 或 bare)
-2. 提取共享逻辑为 `@dawn-whales/core` 包
+2. 提取共享逻辑为 `@quant-moo/core` 包
 3. 重写 UI 组件 (React Native 组件)
 4. 集成 WebSocket 行情 + REST API
 
@@ -202,7 +202,7 @@ TradingEasy Desktop (Electron)
 
 **部署**:
 - Cloudflare Pages (免费 + 全球 CDN)
-- 自定义域名: `m.TradingEasy.app` 或 `app.TradingEasy.app`
+- 自定义域名: `m.quant-moo.app` 或 `app.quant-moo.app`
 
 #### Phase 2: 交互增强 (可选, +20h)
 
@@ -263,7 +263,7 @@ API Gateway (Node.js + Express/Fastify)
 |------|--------|------|
 | Cloudflare Pages | $0 | 免费套餐足够 |
 | 后端服务器 | $10-20 | Railway/Fly.io |
-| 域名 | $1 | TradingEasy.app |
+| 域名 | $1 | quant-moo.app |
 | **总计** | **$11-21/月** | — |
 
 ### 6.3 预期收益
@@ -330,7 +330,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'TradingEasy · 道鲸',
+        name: 'quant-moo · 道鲸',
         short_name: '道鲸',
         description: 'AI量化交易 · 说人话就能做量化',
         theme_color: '#0d1117',
@@ -346,7 +346,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/api\.TradingEasy\.app\/.*/i,
+            urlPattern: /^https:\/\/api\.quant-moo\.app\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
@@ -392,7 +392,7 @@ wss.on('connection', (ws) => {
 // lib/db.ts
 import { openDB } from 'idb';
 
-const db = await openDB('dawn-whales', 1, {
+const db = await openDB('quant-moo', 1, {
   upgrade(db) {
     db.createObjectStore('strategies', { keyPath: 'id' });
     db.createObjectStore('klines', { keyPath: ['symbol', 'time'] });

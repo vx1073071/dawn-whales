@@ -67,7 +67,7 @@ export function registerPreferencesHandlers() {
       if (!filePath && win) {
         const { filePath: chosen, canceled } = await dialog.showSaveDialog(win, {
           title: i18n.t('preferencesHandlers.k1'),
-          defaultPath: `dawn-whales-prefs-${new Date().toISOString().slice(0, 10)}.json`,
+          defaultPath: `quant-moo-prefs-${new Date().toISOString().slice(0, 10)}.json`,
           filters: [{ name: 'JSON', extensions: ['json'] }],
         });
         if (canceled || !chosen) return { success: false, error: i18n.t('preferencesHandlers.k2') };

@@ -85,7 +85,7 @@ Proposed (10 agents):
 |-----------|-------------|
 | **独立workspace** | `~/.workbuddy/workspace/agent-{id}/` |
 | **独立进程** | WorkBuddy Electron instance with `--profile=agent-{id}` |
-| **共享repo** | 读写同一个 `dawn-whales/` 代码库（git conflict风险） |
+| **共享repo** | 读写同一个 `quant-moo/` 代码库（git conflict风险） |
 | **共享chat-bridge** | 通过 `messages.jsonl` 通信（需要文件锁） |
 | **独立skill集** | 每个agent只加载自己角色需要的skill |
 
@@ -216,7 +216,7 @@ WorkBuddy.exe --profile=market-agent --headless --chat-bridge=./messages.jsonl
 
 1. **安装文件锁包**
    ```bash
-   cd dawn-whales
+   cd quant-moo
    npm install proper-lockfile
    ```
 

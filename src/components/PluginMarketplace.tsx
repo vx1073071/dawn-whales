@@ -364,7 +364,7 @@ export function PluginMarketplace() {
       <div style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>🧩 插件管理</h2>
         <p style={{ fontSize: 14, color: '#666', margin: 0 }}>
-          安装和管理 DAWN WHALES 扩展插件 · {activeCount} 个运行中
+          安装和管理 QUANT MOO 扩展插件 · {activeCount} 个运行中
         </p>
       </div>
 

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 Claw(PM) — AI Strategy Workflow Engine
+ * QUANT MOO R146 Claw(PM) — AI Strategy Workflow Engine
  * 
  * Connects the AI strategy lifecycle into a closed loop:
  *   填充参数(1U) → 回测 → 解读结果(1U) → 优化建议(1.5U) → 再回测...

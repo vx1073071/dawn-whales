@@ -7,7 +7,7 @@
 
 ## 一、OKX 接入概览
 
-### TradingEasy 中的 OKX 架构
+### quant-moo 中的 OKX 架构
 
 ```
 桌面端/server → OkxAdapter (server/adapters/okx-adapter.ts)
@@ -37,7 +37,7 @@
 | 1 | OKX 账号: https://www.okx.com |
 | 2 | 创建 API Key: 用户中心 → API → 创建V5 API Key |
 | 3 | 记录三个凭证: API Key + Secret Key + Passphrase |
-| 4 | TradingEasy 输入: API Key 配置面板 → 服务器 AES-256-GCM 加密 |
+| 4 | quant-moo 输入: API Key 配置面板 → 服务器 AES-256-GCM 加密 |
 
 ---
 
@@ -61,7 +61,7 @@ prehash = "2026-06-13T05:00:00.000ZGET/api/v5/account/balance"
 signature = base64(HMAC-SHA256(prehash, secret))
 ```
 
-### TradingEasy 实现
+### quant-moo 实现
 
 ```typescript
 // server/adapters/okx-adapter.ts
@@ -102,7 +102,7 @@ GET /api/v5/public/time
 返回: { data: [{ ts: "1685059200000" }] }
 ```
 
-**TradingEasy**: `healthCheck() → { ok, latencyMs }`
+**quant-moo**: `healthCheck() → { ok, latencyMs }`
 
 ```typescript
 async healthCheck(): Promise<{ ok: boolean; latencyMs: number }> {
@@ -120,7 +120,7 @@ async healthCheck(): Promise<{ ok: boolean; latencyMs: number }> {
 GET /api/v5/market/ticker?instId=BTC-USDT
 ```
 
-**TradingEasy**: `getQuotes(symbols) → CloudQuoteInfo[]`
+**quant-moo**: `getQuotes(symbols) → CloudQuoteInfo[]`
 - 逐币种调用 (OKX 无批量 ticker 接口)
 - 注意: OKX 价格波动使用 `sodUtc8` (UTC+8 0点) 而非24h前
 
@@ -142,7 +142,7 @@ GET /api/v5/market/books?instId=BTC-USDT&sz=20
 sz 范围: 1-400
 ```
 
-**TradingEasy**: `getDepth(symbol, limit?) → CloudDepthSnapshot`
+**quant-moo**: `getDepth(symbol, limit?) → CloudDepthSnapshot`
 
 返回: `{ bids: [[price, qty, ...], ...], asks: [[price, qty, ...], ...] }`
 
@@ -152,7 +152,7 @@ sz 范围: 1-400
 GET /api/v5/account/balance (SIGNED)
 ```
 
-**TradingEasy**: `getAccount() → CloudAccountInfo`
+**quant-moo**: `getAccount() → CloudAccountInfo`
 
 | OKX 字段 | DW 含义 |
 |---------|--------|
@@ -177,7 +177,7 @@ Body: {
 }
 ```
 
-**TradingEasy**: `placeOrder(req) → CloudOrderInfo`
+**quant-moo**: `placeOrder(req) → CloudOrderInfo`
 
 订单类型映射:
 
@@ -203,7 +203,7 @@ POST /api/v5/trade/cancel-order (SIGNED)
 Body: { instId: "BTC-USDT", ordId: "xxx" }
 ```
 
-**TradingEasy**: `cancelOrder(orderId, symbol) → boolean`
+**quant-moo**: `cancelOrder(orderId, symbol) → boolean`
 
 ---
 
@@ -235,7 +235,7 @@ wss://ws.okx.com:8443/ws/v5/private
 
 需要 `login` 消息 (含 OK-ACCESS-SIGN 签名)
 
-**TradingEasy 实现**:
+**quant-moo 实现**:
 
 - `subscribeQuotes(symbols)` → 订阅 `tickers` 频道
 - `subscribeDepth(symbol)` → 订阅 `books` 频道
@@ -272,7 +272,7 @@ wss://ws.okx.com:8443/ws/v5/private
 }
 ```
 
-### TradingEasy 退避策略
+### quant-moo 退避策略
 
 - HTTP 429 → 等待 Retry-After 头 (默认 10s)
 - 指数退避: 2s→4s→8s, max 30s
@@ -291,7 +291,7 @@ wss://ws.okx.com:8443/ws/v5/private
 | SOL/BTC | SOL-BTC | SOL/BTC |
 
 ```typescript
-// TradingEasy 内置转换
+// quant-moo 内置转换
 const okxSymbol = symbol.replace('/', '-');  // BTC/USDT → BTC-USDT
 ```
 
@@ -305,7 +305,7 @@ OKX 提供 Demo Trading 环境:
 REST: https://www.okx.com (需 Demo Trading API Key)
 ```
 
-**TradingEasy 配置**: `simulateTrading = true` (行情数据模式, 不下真实单)
+**quant-moo 配置**: `simulateTrading = true` (行情数据模式, 不下真实单)
 
 ---
 
@@ -323,7 +323,7 @@ REST: https://www.okx.com (需 Demo Trading API Key)
 
 ### 签名时间同步
 
-OKX 要求时间戳与服务器时间差 ≤30秒。TradingEasy 处理:
+OKX 要求时间戳与服务器时间差 ≤30秒。quant-moo 处理:
 
 1. 连接时调用 `/api/v5/public/time` 获取服务器时间
 2. 计算 `localOffset = serverTime - Date.now()`
@@ -338,7 +338,7 @@ OKX 要求时间戳与服务器时间差 ≤30秒。TradingEasy 处理:
 - [ ] Passphrase 已记录 (3-key auth)
 - [ ] IP 白名单已配置
 - [ ] Demo Trading API Key 已获取
-- [ ] TradingEasy 桌面端配置面板已输入 (3个字段)
+- [ ] quant-moo 桌面端配置面板已输入 (3个字段)
 - [ ] 服务器端 AES-256-GCM 加密存储验证
 - [ ] 连接测试: `/api/v5/public/time` → 200
 - [ ] 行情测试: `getQuotes(['BTC/USDT'])` → 返回数据

@@ -254,7 +254,7 @@ export class CLSTelegraphFetcher implements NewsFetcher {
   }
 
   /**
-   * 转换 CLS 电报 → Dawn Whales NewsItem
+   * 转换 CLS 电报 → QUANT MOO NewsItem
    */
   private transformToNewsItem(item: CLSTelegraphItem): NewsItem {
     // Map CLS level to impact

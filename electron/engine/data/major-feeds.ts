@@ -251,7 +251,7 @@ export class MajorFeedsFetcher {
         signal: controller.signal,
         headers: {
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-          'User-Agent': 'DAWN-WHALES/2.7.0 (RSS Reader)',
+          'User-Agent': 'quant-moo/2.7.0 (RSS Reader)',
         },
       });
 

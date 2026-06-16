@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R147 J01 — Order Types Engine
+ * QUANT MOO R147 J01 — Order Types Engine
  * 
  * 4 order types with default routing per scenario:
  *   1. Strategy Entry → LIMIT  (user can switch to MARKET)

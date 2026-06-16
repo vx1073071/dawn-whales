@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R140 J02 — Mobile Push Notification Service
+ * QUANT MOO R140 J02 — Mobile Push Notification Service
  * 
  * Sends push notifications to mobile devices via Firebase Cloud Messaging (FCM)
  * for Android and Apple Push Notification Service (APNs) for iOS.
@@ -115,7 +115,7 @@ export class PushNotificationService extends EventEmitter {
       apnsKeyId: '',
       apnsTeamId: '',
       apnsKeyPath: '',
-      appBundleId: 'com.dawnwhales.app',
+      appBundleId: 'com.QuantMoo.app',
       maxRatePerMin: 5,
       quietStartHour: 23,
       quietEndHour: 7,

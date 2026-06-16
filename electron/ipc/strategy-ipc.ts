@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: strategy ────────────────────────────────────────────
+// ── QUANT MOO IPC: strategy ────────────────────────────────────────────
 // 38 handlers — strategy/live/paper/nl domains
 
 import { ipcMain, BrowserWindow, app } from "electron";
@@ -846,7 +846,7 @@ function createTray() {
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
 app.whenReady().then(async () => {
-  log.info('[App] DAWN WHALES starting...');
+  log.info('[App] QUANT MOO starting...');
 
   // Initialize modules
   try {

@@ -1,9 +1,9 @@
 ---
-title: DAWN WHALES 文档
+title: QUANT MOO 文档
 description: 智能量化交易平台 — 240因子 · 196策略 · 15券商 · 11语言
 ---
 
-# 🐋 DAWN WHALES
+# 🐋 QUANT MOO
 
 **v2.6.0 QUANTUM** | 智能量化交易平台
 

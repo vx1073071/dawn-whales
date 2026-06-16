@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R148 J01 — Full Backend Integration
+ * QUANT MOO R148 J01 — Full Backend Integration
  * 
  * Registers ALL service routes with unified error handling + degradation chain.
  * 

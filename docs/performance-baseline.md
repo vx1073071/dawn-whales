@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 性能基线文档
+# quant-moo 性能基线文档
 
 > 基线版本: v1.10.0-alpha.2 (R91)
 > 测量日期: 2026-06-11
@@ -31,7 +31,7 @@ purpose: (auto-generated, needs review)
 
 | 指标 | 值 | 备注 |
 |------|-----|------|
-| 安装包体积 | **~85 MB** | TradingEasy 0.10.0.exe (electron-builder NSIS) |
+| 安装包体积 | **~85 MB** | quant-moo 0.10.0.exe (electron-builder NSIS) |
 | 解压后体积 | **~350 MB** | win-unpacked 目录 |
 | app.asar | **~164 MB** | 应用代码 + 依赖打包 |
 | Renderer Bundle (JS) | **~2.5 MB** | dist/assets/*.js (不含 sourcemap) |
@@ -50,9 +50,9 @@ purpose: (auto-generated, needs review)
 
 | 版本 | 文件 | 大小 |
 |------|------|------|
-| v0.10.0 (最新) | TradingEasy 0.10.0.exe | 86,806 KB (84.8 MB) |
-| v0.8.0 | TradingEasy 0.8.0.exe | 86,805 KB (84.8 MB) |
-| v1.0.0 | TradingEasy 1.0.0.exe | 106,594 KB (104.1 MB) |
+| v0.10.0 (最新) | quant-moo 0.10.0.exe | 86,806 KB (84.8 MB) |
+| v0.8.0 | quant-moo 0.8.0.exe | 86,805 KB (84.8 MB) |
+| v1.0.0 | quant-moo 1.0.0.exe | 106,594 KB (104.1 MB) |
 
 **说明**: v0.10.0 与 v0.8.0 体积接近，v1.0.0 较大可能是因为包含了额外的 native modules。
 
@@ -60,7 +60,7 @@ purpose: (auto-generated, needs review)
 
 | 组件 | 大小 | 占比 |
 |------|------|------|
-| TradingEasy.exe | 184,360 KB (180 MB) | 主进程 (含 Chromium 内核) |
+| quant-moo.exe | 184,360 KB (180 MB) | 主进程 (含 Chromium 内核) |
 | app.asar | 168,314 KB (164 MB) | 应用代码 + node_modules |
 | resources.pak | 5,622 KB (5.5 MB) | Chromium 资源包 |
 | locales/*.pak | ~40 MB | 47 个语言包 |

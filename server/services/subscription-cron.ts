@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R144 Claw(PM) — Subscription Cron Scheduler
+ * QUANT MOO R144 Claw(PM) — Subscription Cron Scheduler
  * 
  * Daily cron job that checks expiring signal subscriptions and
  * auto-renews them. If balance insufficient, pauses subscription.

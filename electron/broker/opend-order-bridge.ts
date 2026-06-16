@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R135 J02 — OpenD Order Bridge (桌面端)
+ * QUANT MOO R135 J02 — OpenD Order Bridge (桌面端)
  * 
  * 接收信号 → 调用 OpenD 客户端执行下单 → 返回执行结果。
  * 

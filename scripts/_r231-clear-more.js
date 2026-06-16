@@ -1,6 +1,6 @@
 const fs=require('fs');
 const {execSync}=require('child_process');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/';
 
 // Remaining @ts-nocheck files after R230's 21
 // Target: 30 more files

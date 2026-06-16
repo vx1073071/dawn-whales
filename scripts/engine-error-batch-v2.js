@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const REPO = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const REPO = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 const ENGINE_ERROR_PATH = 'electron/engine/core/engine-error';
 
 function computeImportPath(fileRel) {

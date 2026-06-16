@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R130 J03 — Cloud Broker Adapter Factory
+ * QUANT MOO R130 J03 — Cloud Broker Adapter Factory
  * 
  * Registry and factory for server-side cloud broker adapters.
  * Supports lazy initialization: only load/connect the adapter

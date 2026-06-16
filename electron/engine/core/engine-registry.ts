@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Engine Registry ─────────────────────────────────────────────
+// ── QUANT MOO — Engine Registry ─────────────────────────────────────────────
 // Q-36-02: Global singleton registry for all engine instances
 // Solves: ConditionEngine ↔ TradeExecutor ↔ RiskEngine circular dependency
 // Pattern: lazy initialization + dependency injection via registry

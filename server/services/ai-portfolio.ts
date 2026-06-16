@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 J01 — AI Portfolio Generator
+ * QUANT MOO R146 J01 — AI Portfolio Generator
  * 
  * Takes a user's natural language description and uses DeepSeek V4 Pro to:
  *   1. Select strategies from the marketplace/product library

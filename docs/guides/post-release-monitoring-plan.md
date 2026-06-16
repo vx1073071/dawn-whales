@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.0.0 发布后监控计划
+# quant-moo v1.0.0 发布后监控计划
 
 **制定日期**: 2026-06-08  
 **版本**: v1.0.0  
@@ -364,7 +364,7 @@ alerting:
           - alertmanager:9093
 
 scrape_configs:
-  - job_name: 'dawn-whales'
+  - job_name: 'quant-moo'
     static_configs:
       - targets: ['localhost:3000']
     metrics_path: '/metrics'
@@ -376,7 +376,7 @@ scrape_configs:
 ```json
 {
   "dashboard": {
-    "title": "TradingEasy v1.0.0 监控仪表板",
+    "title": "quant-moo v1.0.0 监控仪表板",
     "panels": [
       {
         "title": "系统概览",
@@ -563,7 +563,7 @@ groups:
 | 渠道 | 用途 | 负责人 | 处理时效 |
 |-----|------|--------|---------|
 | GitHub Issues | 问题报告/功能建议 | youdao | 24 小时内 |
-| 邮件 | 问题咨询/投诉 | support@dawn-whales.ai | 24 小时内 |
+| 邮件 | 问题咨询/投诉 | support@quant-moo.ai | 24 小时内 |
 | 社区论坛 | 讨论/建议 | 社区团队 | 48 小时内 |
 | 应用内反馈 | 快速反馈 | 自动收集 | 实时 |
 
@@ -637,7 +637,7 @@ groups:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                   TradingEasy v1.0.0 监控仪表板         │
+│                   quant-moo v1.0.0 监控仪表板         │
 ├─────────────────────────────────────────────────────────┤
 │ 系统状态: 🟢 正常  |  告警: 0  |  活跃用户: 1,234      │
 ├─────────────────────────────────────────────────────────┤
@@ -766,9 +766,9 @@ groups:
 
 ### 联系方式
 
-- 监控告警: monitoring@dawn-whales.ai
-- 应急响应: emergency@dawn-whales.ai
-- 用户反馈: support@dawn-whales.ai
+- 监控告警: monitoring@quant-moo.ai
+- 应急响应: emergency@quant-moo.ai
+- 用户反馈: support@quant-moo.ai
 
 ---
 

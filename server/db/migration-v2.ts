@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R141 J01 — Production Wallet Schema (migration-v2.ts)
+ * QUANT MOO R141 J01 — Production Wallet Schema (migration-v2.ts)
  * 
  * Permanent foundation: wallets + ledger_entries + idempotency_keys.
  * All subsequent R142–R148 depend on this migration.

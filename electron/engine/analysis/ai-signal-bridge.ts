@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R140 J03 — AI Signal Bridge
+ * QUANT MOO R140 J03 — AI Signal Bridge
  * 
  * Bridges the electron-side TraderSignalBridge (trader→followers pipeline)
  * with the server-side SignalQueue (priority-based copy trade execution).

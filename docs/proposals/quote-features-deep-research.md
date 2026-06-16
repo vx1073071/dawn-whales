@@ -6,7 +6,7 @@ owner: QClaw
 purpose: 行情功能深度学习研究 + PM建议 — 基于 TradingView/Thinkorswim/富途/Bloomberg 等高级平台对比
 -->
 
-# TradingEasy 行情功能深度学习报告 & PM 建议
+# quant-moo 行情功能深度学习报告 & PM 建议
 
 > **日期**: 2026-06-12 | **研究员**: QClaw (文档虾)
 > **对标平台**: TradingView / Thinkorswim (TD Ameritrade) / 富途牛牛 moomoo / Bloomberg Terminal / N2N Connect
@@ -16,7 +16,7 @@ purpose: 行情功能深度学习研究 + PM建议 — 基于 TradingView/Thinko
 
 ## 一、研究发现摘要
 
-通过深度学习 5 大主流交易平台的行情体系，对标 TradingEasy 现有架构（16 券商 BrokerManagerV2 + QuoteAggregator + WebSocket 推送），发现 **5 个高价值缺口** 和 **3 个可立即落地的优化**。
+通过深度学习 5 大主流交易平台的行情体系，对标 quant-moo 现有架构（16 券商 BrokerManagerV2 + QuoteAggregator + WebSocket 推送），发现 **5 个高价值缺口** 和 **3 个可立即落地的优化**。
 
 ---
 
@@ -74,7 +74,7 @@ purpose: 行情功能深度学习研究 + PM建议 — 基于 TradingView/Thinko
 
 ---
 
-## 三、TradingEasy 行情功能现状评估
+## 三、quant-moo 行情功能现状评估
 
 ### 3.1 已有优势（不要丢）
 
@@ -238,7 +238,7 @@ purpose: 行情功能深度学习研究 + PM建议 — 基于 TradingView/Thinko
 
 **工作量**: ~200L engine + ~200L UI = **JVS 3h + ML 3h**
 
-**用户价值**: 16 券商聚合的独特优势 — 只有 TradingEasy 能做到
+**用户价值**: 16 券商聚合的独特优势 — 只有 quant-moo 能做到
 
 ---
 
@@ -328,7 +328,7 @@ Week 4+ (P3 — 长期)
 > 
 > C) 做 "跨券商交易终端" — 执行效率+套利+风控 → 聚焦交易工作流
 > 
-> **QClaw 建议选 C** — TradingEasy 的核心壁垒是 **16 券商并发连接 + SmartOrderRouter + CrossBrokerRisk**，行情功能应围绕"让交易决策更高效"展开，而非拼数据广度。
+> **QClaw 建议选 C** — quant-moo 的核心壁垒是 **16 券商并发连接 + SmartOrderRouter + CrossBrokerRisk**，行情功能应围绕"让交易决策更高效"展开，而非拼数据广度。
 
 ---
 
@@ -355,4 +355,4 @@ Week 4+ (P3 — 长期)
 
 ---
 
-> **总结**: TradingEasy 已经拥有业界领先的 **16 券商并发架构**（独一无二），但行情功能的 **用户感知层**（热力图/筛选器/资金流）远落后于富途/TradingView。补齐 P0 功能仅需 17h 开发量，ROI 极高。建议 PM 优先考虑。
+> **总结**: quant-moo 已经拥有业界领先的 **16 券商并发架构**（独一无二），但行情功能的 **用户感知层**（热力图/筛选器/资金流）远落后于富途/TradingView。补齐 P0 功能仅需 17h 开发量，ROI 极高。建议 PM 优先考虑。

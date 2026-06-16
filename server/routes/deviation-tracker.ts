@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R167 P1-X1 — Live Deviation Tracker Backend
+ * QUANT MOO R167 P1-X1 — Live Deviation Tracker Backend
  *
  * Endpoints:
  *   POST /api/deviation/track — collect live return and compare to backtest expectation

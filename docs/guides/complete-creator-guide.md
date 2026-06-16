@@ -17,7 +17,7 @@ purpose: (auto-generated, needs review)
 > **请勿参考本文档的等级/抽成/定价规则。**
 >
 
-# [DEPRECATED] TradingEasy 创作者完整使用指南
+# [DEPRECATED] quant-moo 创作者完整使用指南
 
 **版本**: v1.6.0 GA  
 **更新时间**: 2026-06-09  
@@ -33,7 +33,7 @@ purpose: (auto-generated, needs review)
 
 ## <a id="1"></a>1. 下载与安装
 
-TradingEasy.com → 下载 (Win/Mac/Linux) → 安装 → 启动
+quant-moo.com → 下载 (Win/Mac/Linux) → 安装 → 启动
 
 **无需激活码，免费下载。**
 

@@ -1,4 +1,4 @@
-// DAWN WHALES R120 QTE-42 — Differential Push IPC Bridge
+// QUANT MOO R120 QTE-42 — Differential Push IPC Bridge
 // 将 differential-push 引擎通过 IPC 暴露给 renderer
 // 目标: IPC带宽省60%+
 

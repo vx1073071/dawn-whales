@@ -1,5 +1,5 @@
 // ── R178 G7: AI Output Guard ────────────────────────────────────────────────
-// 5-layer defense for AI-generated output in TradingEasy.
+// 5-layer defense for AI-generated output in quant-moo.
 //
 // Layer 1: 资金拦截 (Funds)    — block AI from leaking walletBalance / USDT / fee
 // Layer 2: 系统提示拦截 (System) — block AI from revealing internal config

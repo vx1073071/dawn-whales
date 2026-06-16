@@ -2,7 +2,7 @@
  * R242 JVS#1: NewsSentimentFactor — 消息因子值计算引擎
  *
  * Converts news sentiment signals into normalized factor values (-100 to +100)
- * usable across the entire Dawn Whales factor system.
+ * usable across the entire QUANT MOO factor system.
  *
  * Architecture:
  *   ┌─────────────────────────────────────────────────────────────────────┐

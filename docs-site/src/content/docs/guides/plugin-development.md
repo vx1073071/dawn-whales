@@ -1,6 +1,6 @@
 ---
 title: 插件 API 参考
-description: DAWN WHALES 插件系统完整 API 参考 — 清单格式、生命周期、权限模型、沙盒规则、IPC通道、示例代码
+description: QUANT MOO 插件系统完整 API 参考 — 清单格式、生命周期、权限模型、沙盒规则、IPC通道、示例代码
 ---
 
 # 🔌 插件 API 参考
@@ -9,7 +9,7 @@ description: DAWN WHALES 插件系统完整 API 参考 — 清单格式、生命
 
 ## 概述
 
-DAWN WHALES 插件系统允许开发者扩展平台功能，包括自定义因子计算、数据源接入、UI 组件和交易信号处理。插件运行在隔离沙盒中，通过明确的权限模型确保安全性。
+QUANT MOO 插件系统允许开发者扩展平台功能，包括自定义因子计算、数据源接入、UI 组件和交易信号处理。插件运行在隔离沙盒中，通过明确的权限模型确保安全性。
 
 ### 核心特性
 
@@ -66,7 +66,7 @@ DAWN WHALES 插件系统允许开发者扩展平台功能，包括自定义因�
 | `version` | string | ✅ | 语义化版本 (semver) |
 | `description` | string | ✅ | 功能描述（≤200字符） |
 | `author` | object | ✅ | 作者信息 |
-| `minAppVersion` | string | ✅ | 最低 DAWN WHALES 版本要求 |
+| `minAppVersion` | string | ✅ | 最低 QUANT MOO 版本要求 |
 | `dependencies` | object | ❌ | 插件依赖 (`"plugin-id": "version-range"`) |
 | `permissions` | string[] | ✅ | 所需权限列表 |
 | `main` | string | ✅ | 入口文件（相对于插件根目录） |
@@ -291,9 +291,9 @@ module.exports = {
 
 ## 示例插件
 
-DAWN WHALES 提供两个官方示例插件：
+QUANT MOO 提供两个官方示例插件：
 
-### 1. 自定义因子插件 (`dawnwhales.custom-factor`)
+### 1. 自定义因子插件 (`QuantMoo.custom-factor`)
 
 添加 4 个自定义技术指标因子：
 - **BBW** (Bollinger Band Width) — 布林带宽度
@@ -303,19 +303,19 @@ DAWN WHALES 提供两个官方示例插件：
 
 ```javascript
 // 安装
-await ipc.invoke('plugin:install', 'dawnwhales.custom-factor');
+await ipc.invoke('plugin:install', 'QuantMoo.custom-factor');
 // 激活
-await ipc.invoke('plugin:activate', 'dawnwhales.custom-factor');
+await ipc.invoke('plugin:activate', 'QuantMoo.custom-factor');
 ```
 
-### 2. 自定义数据源插件 (`dawnwhales.custom-data-source`)
+### 2. 自定义数据源插件 (`QuantMoo.custom-data-source`)
 
 支持三种数据源接入方式：
 - **TradingView Webhook** — 信号接收
 - **自定义 REST API** — 周期性拉取
 - **CSV 文件导入** — 离线数据导入
 
-依赖 `dawnwhales.custom-factor` ≥ 1.0.0
+依赖 `QuantMoo.custom-factor` ≥ 1.0.0
 
 ---
 
@@ -333,7 +333,7 @@ const results = await ipc.invoke('plugin:search', 'factor', ['technical-analysis
 
 ```typescript
 // IPC: 'plugin:install'
-await ipc.invoke('plugin:install', 'dawnwhales.custom-factor');
+await ipc.invoke('plugin:install', 'QuantMoo.custom-factor');
 // 或从自定义源安装
 await ipc.invoke('plugin:install', 'my-plugin', 'https://my-server.com/plugin.zip');
 ```
@@ -383,7 +383,7 @@ const config = await ipc.invoke('plugin:config', 'my-plugin');
 2. 创建 GitHub Release，附 `manifest.json` + `package.zip`
 3. 计算 SHA-256: `sha256sum package.zip`
 4. 填写上架申请表单
-5. DAWN WHALES 团队审核（1-3 个工作日）
+5. QUANT MOO 团队审核（1-3 个工作日）
 6. 审核通过后上架
 
 ### 版本更新
@@ -406,4 +406,4 @@ const config = await ipc.invoke('plugin:config', 'my-plugin');
 
 ---
 
-*更多信息: [贡献指南](/guides/contributing) | [GitHub](https://github.com/dawn-whales)*
+*更多信息: [贡献指南](/guides/contributing) | [GitHub](https://github.com/quant-moo)*

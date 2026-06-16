@@ -1,5 +1,5 @@
 const fs=require('fs');
-const p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/lib/bridge-api/data.ts';
+const p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/lib/bridge-api/data.ts';
 let c=fs.readFileSync(p,'utf-8');
 
 // Remove any existing duplicate as any casts

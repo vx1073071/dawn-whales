@@ -175,4 +175,4 @@ interface MarketAdapterBase extends FactorDataProvider {
 - Phase 4 Master Plan: `docs/proposals/factor-expansion-7markets-R194-R197-master-plan.md`
 - 因子清单v2: `docs/proposals/factor-expansion-12shrimp-consolidated-checklist-v2.md`
 - R186 FactorDataProvider: `electron/engine/factors/data-provider.ts`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

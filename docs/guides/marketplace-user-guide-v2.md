@@ -40,7 +40,7 @@ purpose: (auto-generated, needs review)
 
 ### 什么是 Marketplace？
 
-Marketplace 是 TradingEasy 的策略市场，允许用户：
+Marketplace 是 quant-moo 的策略市场，允许用户：
 
 - **发布策略**: 将自己的量化策略发布到市场
 - **订阅策略**: 订阅其他用户发布的策略
@@ -74,7 +74,7 @@ Marketplace 是 TradingEasy 的策略市场，允许用户：
 
 ### 第二步：提交策略
 
-1. 登录 TradingEasy
+1. 登录 quant-moo
 2. 进入 **Marketplace** 页面
 3. 点击 **发布策略**
 4. 填写策略信息：
@@ -551,9 +551,9 @@ Marketplace 提供多维度筛选：
 
 ### 联系方式
 
-- 策略市场支持: marketplace@dawn-whales.ai
-- 审核咨询: review@dawn-whales.ai
-- 收益问题: revenue@dawn-whales.ai
+- 策略市场支持: marketplace@quant-moo.ai
+- 审核咨询: review@quant-moo.ai
+- 收益问题: revenue@quant-moo.ai
 
 ---
 

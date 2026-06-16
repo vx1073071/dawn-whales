@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R152 J01-J04 — Symbol Search Engine + Code Normalizer Service
+ * QUANT MOO R152 J01-J04 — Symbol Search Engine + Code Normalizer Service
  *
  * 4 capabilities:
  *   1. SymbolSearchEngine — search by code/name/keyword, annotate exchange + available brokers

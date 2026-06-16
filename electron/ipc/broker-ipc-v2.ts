@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Broker IPC V2 ──────────────────────────────────────────
+// ── QUANT MOO — Broker IPC V2 ──────────────────────────────────────────
 // R1 INF-04: 改造 broker-ipc.ts
 // 删除: broker:switch / broker:setActive
 // 新增: connectMany / getAggregatedFunds / getAggregatedPositions / placeOrders / scanArbitrage / copyTrade / killSwitchAll / getSubscriptions

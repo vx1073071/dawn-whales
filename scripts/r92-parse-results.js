@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const d = fs.readFileSync('C:/Users/vx107/.easyclaw/workspace/dawn-whales/scripts/r92-full-results.txt', 'utf-8');
+const d = fs.readFileSync('C:/Users/vx107/.easyclaw/workspace/quant-moo/scripts/r92-full-results.txt', 'utf-8');
 
 // Extract JSON - it starts with {"numTotalTestSuites
 const jsonStart = d.indexOf('{"numTotalTestSuites');
@@ -45,7 +45,7 @@ for (const r of results) {
   const fails = (r.assertionResults || []).filter(a => a.status === 'failed');
   if (fails.length === 0) continue;
   
-  const shortName = r.name.replace(/.*dawn-whales[\\/]/, '');
+  const shortName = r.name.replace(/.*quant-moo[\\/]/, '');
   failingFiles.push({ file: shortName, count: fails.length });
   
   for (const f of fails) {
@@ -81,7 +81,7 @@ Object.entries(errorTypes).sort((a, b) => b[1].count - a[1].count).forEach(([cat
 
 // Save
 fs.writeFileSync(
-  'C:/Users/vx107/.easyclaw/workspace/dawn-whales/scripts/r92-parsed-results.json',
+  'C:/Users/vx107/.easyclaw/workspace/quant-moo/scripts/r92-parsed-results.json',
   JSON.stringify(parsed, null, 2)
 );
 console.log('\nParsed results saved.');

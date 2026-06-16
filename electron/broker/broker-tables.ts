@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Broker Tables Schema ──────────────────────────────────
+// ── QUANT MOO — Broker Tables Schema ──────────────────────────────────
 // R1 INF-03: broker_connections / broker_jobs / broker_orders 通用DB表
 // 不依赖具体DB实现(SQLite/Supabase), 纯 SQL + TypeScript 类型
 

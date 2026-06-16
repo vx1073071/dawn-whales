@@ -1,4 +1,4 @@
-// ── DAWN WHALES Error Handler Framework ───────────────────────────────
+// ── QUANT MOO Error Handler Framework ───────────────────────────────
 // R131-P02: Global error handler + degradation chain + error codes
 
 import { Request, Response, NextFunction } from 'express';

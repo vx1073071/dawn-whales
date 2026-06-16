@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 服务器部署 + 许可证指南
+# quant-moo 服务器部署 + 许可证指南
 
 **版本**: v1.5.0-rc  
 **更新时间**: 2026-06-09  

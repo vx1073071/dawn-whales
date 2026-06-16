@@ -59,7 +59,7 @@ for (const [file, replacements] of Object.entries(REPLACEMENTS)) {
     const name = path.basename(file);
     const {execSync}=require('child_process');
     try{
-      const found=execSync('cd dawn-whales && dir /s /b '+name,{encoding:'utf8',cwd:'C:/Users/vx107/.easyclaw/workspace'}).trim();
+      const found=execSync('cd quant-moo && dir /s /b '+name,{encoding:'utf8',cwd:'C:/Users/vx107/.easyclaw/workspace'}).trim();
       if(found) console.log(`    found at: ${found}`);
     }catch(e){}
     continue;

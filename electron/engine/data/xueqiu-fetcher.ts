@@ -251,7 +251,7 @@ export class XueqiuFetcher implements NewsFetcher {
   }
 
   /**
-   * 转换 Xueqiu 帖子 → Dawn Whales NewsItem
+   * 转换 Xueqiu 帖子 → QUANT MOO NewsItem
    */
   private transformToNewsItem(post: XueqiuStatus, symbol?: string): NewsItem {
     // Extract tickers from text

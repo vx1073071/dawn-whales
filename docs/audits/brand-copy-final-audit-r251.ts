@@ -29,10 +29,10 @@ export const BRAND_AUDIT_REPORT: BrandAuditReport = {
   auditDate: '2026-06-17T03:30:00+08:00',
   scope: 'R244-R251全部21个文案文件 + 核心UI标签 + 产品命名',
   overallScore: 96,
-  mantra: 'TradingEasy的品牌声音：专业但不冷、温暖但不矫情、直接但不粗暴。像你的交易伙伴，不说废话，不画大饼。',
+  mantra: 'QUANT MOO的品牌声音：专业但不冷、温暖但不矫情、直接但不粗暴。像你的交易伙伴，不说废话，不画大饼。',
 
   topLineFindings: [
-    '✅ 产品命名"TradingEasy"在21个文案文件中全部正确使用，零"Dawn Whales"残留',
+    '✅ 产品命名"QUANT MOO"在21个文案文件中全部正确使用，零"QUANT MOO"残留',
     '✅ 鲸灵(Whaley)AI人格一致：14个文件间语气统一，"🐋"标识符一致使用',
     '✅ 中文文案风格统一：口语化、不学术、不说教、"你">50次出现，建立亲近感',
     '✅ 因子/策略命名中英文对应准确——21个文件无中英文术语冲突',
@@ -48,9 +48,9 @@ export const BRAND_AUDIT_REPORT: BrandAuditReport = {
       issues: [
         {
           severity: 'P2',
-          description: 'R244早期的factor-human-copy-r244.ts中有一条注释提到"DAWN WHALES"，建议替换为TradingEasy',
+          description: 'R244早期的factor-human-copy-r244.ts中有一条注释提到"QUANT MOO"，建议替换为QUANT MOO',
           locations: ['electron/engine/factors/factor-human-copy-r244.ts 第2行注释'],
-          recommendation: '替换注释中的项目代号为TradingEasy（不影响功能，仅注释）',
+          recommendation: '替换注释中的项目代号为QUANT MOO（不影响功能，仅注释）',
         },
       ],
     },
@@ -133,7 +133,7 @@ export const BRAND_AUDIT_REPORT: BrandAuditReport = {
 // ═══════════════════ 品牌语音指南 (Brand Voice Guide) ═══════════════════
 
 export const BRAND_VOICE_GUIDE = {
-  name: 'TradingEasy',
+  name: 'QUANT MOO',
   tagline: '让量化交易，归你所有',
   voiceDescriptors: ['专业', '温暖', '直接', '不粉饰', '有幽默感'],
 
@@ -162,7 +162,7 @@ export const BRAND_VOICE_GUIDE = {
     '"──"底部分隔+🐋 鲸灵说：报告的标志性结尾',
   ],
 
-  prohibitedWords: ['Dawn Whales', 'DW', 'dawnwhales'],
+  prohibitedWords: ['QUANT MOO', 'DW', 'QuantMoo'],
 };
 
 export default BRAND_AUDIT_REPORT;

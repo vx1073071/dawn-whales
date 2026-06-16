@@ -7,7 +7,7 @@
  *   3. Custom Momentum (CMOM) — 自定义动量因子
  *   4. Price Position (PPOS) — 价格位置百分比
  *
- * 展示 Dawn Whales 插件 API 的核心用法：
+ * 展示 QUANT MOO 插件 API 的核心用法：
  *   - 获取行情数据 (getQuote)
  *   - 订阅实时行情 (subscribe)
  *   - 持久化存储 (storage)
@@ -180,7 +180,7 @@ function generateSimulatedCloses(count) {
 
 // ── Plugin Entry ──────────────────────────────────────────────────────
 
-// Dawn Whales loads this file and calls the exported functions
+// QUANT MOO loads this file and calls the exported functions
 module.exports = {
   name: 'Custom Factor Plugin',
   version: '1.0.0',

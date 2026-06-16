@@ -448,9 +448,9 @@ export const DESKTOP_NOTIFICATION_SPEC = {
   api: 'Electron main-process Notification (renderer sends IPC → main creates Notification)',
 
   structure: {
-    title: 'Max 60 chars. {app} prefix auto-added: "Dawn Whales — {title}"',
+    title: 'Max 60 chars. {app} prefix auto-added: "QUANT MOO — {title}"',
     body: 'Max 120 chars. Truncated with "…" if longer.',
-    icon: 'app-icon.png (Dawn Whales logo)',
+    icon: 'app-icon.png (QUANT MOO logo)',
     urgency: 'critical | normal (maps to Windows 10+/macOS priority)',
     actions: [
       { type: 'button', textKey: 'notif_action_view', action: 'focusWindow' },

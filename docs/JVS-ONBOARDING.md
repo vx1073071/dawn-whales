@@ -6,9 +6,9 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# JVS 入职手册 — TradingEasy 项目
+# JVS 入职手册 — quant-moo 项目
 
-> 你是JVS，TradingEasy四方Agent之一。读完这份文档，你就完全进入状态了。
+> 你是JVS，quant-moo四方Agent之一。读完这份文档，你就完全进入状态了。
 
 ---
 
@@ -53,14 +53,14 @@ purpose: (auto-generated, needs review)
 
 ## 三、项目概览
 
-### TradingEasy · 道鲸 AI 量化系统
+### quant-moo · 道鲸 AI 量化系统
 
 - **定位**: 零代码散户量化平台，说人话就能做量化
 - **对接券商**: 富途/moomoo (Phase 1)
 - **技术栈**: Electron 33 + React 18 + TypeScript + SQLite + futu-api
 - **商业模式**: SaaS订阅 (¥0/99/299) + 策略市场抽成30%
-- **GitHub**: https://github.com/vx1073071/dawn-whales
-- **Landing Page**: https://vx1073071.github.io/dawn-whales/
+- **GitHub**: https://github.com/vx1073071/quant-moo
+- **Landing Page**: https://vx1073071.github.io/quant-moo/
 - **当前版本**: v0.6.0
 - **测试**: 148/148 全绿
 - **构建**: Vite 8.43s 成功
@@ -68,13 +68,13 @@ purpose: (auto-generated, needs review)
 ### 项目路径
 
 ```
-C:\Users\vx107\.easyclaw\workspace\dawn-whales\
+C:\Users\vx107\.easyclaw\workspace\quant-moo\
 ```
 
 ### 目录结构
 
 ```
-dawn-whales/
+quant-moo/
 ├── electron/                    # 主进程（Electron Main）
 │   ├── main.ts                  # IPC handler 注册（~1525行）
 │   ├── preload.ts               # 预加载脚本
@@ -267,7 +267,7 @@ interface MacroPoint {
 ### 每完成一个任务
 
 ```bash
-cd C:\Users\vx107\.easyclaw\workspace\dawn-whales
+cd C:\Users\vx107\.easyclaw\workspace\quant-moo
 
 # 1. 运行测试
 npx tsx tests/engine.test.ts
@@ -339,7 +339,7 @@ fix(strategy): fix sentiment index calculation
 
 ```bash
 # 1. 能访问仓库
-cd C:\Users\vx107\.easyclaw\workspace\dawn-whales
+cd C:\Users\vx107\.easyclaw\workspace\quant-moo
 git status
 
 # 2. 能运行测试

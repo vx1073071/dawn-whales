@@ -249,7 +249,7 @@ export class FreeAPIFetcher {
           signal: controller.signal,
           headers: {
             'Accept': 'application/json',
-            'User-Agent': 'DAWN-WHALES/2.7.0',
+            'User-Agent': 'quant-moo/2.7.0',
           },
         });
       } catch {

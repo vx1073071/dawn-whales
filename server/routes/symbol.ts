@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R152 — Symbol Search + Broker Markets Routes
+ * QUANT MOO R152 — Symbol Search + Broker Markets Routes
  *
  * Endpoints:
  *   GET  /api/symbol/search?q=腾讯&market=HK&type=STOCK  — Search symbols

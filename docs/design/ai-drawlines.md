@@ -1,4 +1,4 @@
-# TradingEasy AI Auto-Drawing & Pattern Recognition v1.0
+# quant-moo AI Auto-Drawing & Pattern Recognition v1.0
 
 > **Round**: R145 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: USER GUIDE — Production Ready

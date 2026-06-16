@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — WorkerPool Benchmark ──────────────────────────────────────
+// ── QUANT MOO — WorkerPool Benchmark ──────────────────────────────────────
 // T50: Performance benchmark for multithreaded computation
 
 import { WorkerPool } from './worker-pool';

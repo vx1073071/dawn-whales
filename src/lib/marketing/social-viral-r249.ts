@@ -37,10 +37,10 @@ export const SHARE_TEMPLATES: ShareTemplate[] = [
     trigger: '用户完成第3笔交易后 / 首月月报生成后',
     channels: ['wechat', 'whatsapp', 'telegram', 'copy_link'],
     templates: {
-      dm: '我用TradingEasy做量化交易，感觉还挺靠谱的。你要不要试一下？用我这个链接注册，咱俩都多送一个月的免费AI。👋',
-      timeline: '最近在用TradingEasy做量化，体验比预期好。分享一个邀请码，用这个注册免费多一个月AI分析。不是广告，是真的在用。',
-      group: '群里有做美港股的吗？我在用一个叫TradingEasy的工具，可以自动分析策略信号。用我的邀请链接注册能多送一个月免费AI。想问下大家有用过的吗？',
-      linkPreview: '用我的邀请码注册TradingEasy，你我各得一个月免费AI分析 🎁',
+      dm: '我用QUANT MOO做量化交易，感觉还挺靠谱的。你要不要试一下？用我这个链接注册，咱俩都多送一个月的免费AI。👋',
+      timeline: '最近在用QUANT MOO做量化，体验比预期好。分享一个邀请码，用这个注册免费多一个月AI分析。不是广告，是真的在用。',
+      group: '群里有做美港股的吗？我在用一个叫QUANT MOO的工具，可以自动分析策略信号。用我的邀请链接注册能多送一个月免费AI。想问下大家有用过的吗？',
+      linkPreview: '用我的邀请码注册QUANT MOO，你我各得一个月免费AI分析 🎁',
     },
     reward: '你和朋友各得一个月免费AI（价值2U）',
   },
@@ -74,9 +74,9 @@ export const SHARE_TEMPLATES: ShareTemplate[] = [
     trigger: 'AI月报生成后',
     channels: ['wechat', 'copy_link', 'copy_image'],
     templates: {
-      dm: 'TradingEasy给我出了份月报，挺有意思的。{insight_one}。你要不要也看看你的？',
+      dm: 'QUANT MOO给我出了份月报，挺有意思的。{insight_one}。你要不要也看看你的？',
       timeline: '收到鲸灵的月报了🐋。这个月{win_count}胜{loss_count}负，净{net_pnl}%。最好的操作是{best_trade}，最需要改进的是{worst_trade}。AI说我{good_habit}保持得不错，但{improve_area}可以做得更好。下个月继续加油。',
-      group: '有没有人看TradingEasy的AI月报？它说我的{best_quality}很好但{worst_quality}要改。感觉AI现在分析得越来越准了。',
+      group: '有没有人看QUANT MOO的AI月报？它说我的{best_quality}很好但{worst_quality}要改。感觉AI现在分析得越来越准了。',
       linkPreview: '🐋 我的{month}月报：{net_pnl}%，{win_count}胜{loss_count}负。鲸灵说...',
     },
   },
@@ -100,7 +100,7 @@ export const SHARE_TEMPLATES: ShareTemplate[] = [
     templates: {
       dm: '鲸灵刚说了句话挺有意思的："{whale_quote}"。来源 {source_context}。',
       timeline: '🐋 鲸灵说："{whale_quote}" \n\n背景：{source_context}。我觉得这句话可以贴在交易台前面。',
-      group: 'TradingEasy的AI助手说了一句："{whale_quote}"。 我当时正在{context}，它突然来这么一句，还真把我点醒了。',
+      group: 'QUANT MOO的AI助手说了一句："{whale_quote}"。 我当时正在{context}，它突然来这么一句，还真把我点醒了。',
       linkPreview: '🐋 "{whale_quote_short}" — 来自鲸灵的分析',
     },
   },
@@ -110,7 +110,7 @@ export const SHARE_TEMPLATES: ShareTemplate[] = [
 
 export const REFERRAL_PROGRAM_COPY = {
   title: '邀请朋友，一起赚钱',
-  intro: '你觉得TradingEasy好用的话，把它分享给一个做交易的朋友。不是让你打广告——就是真心的推荐。',
+  intro: '你觉得QUANT MOO好用的话，把它分享给一个做交易的朋友。不是让你打广告——就是真心的推荐。',
   levels: [
     {
       level: 1,
@@ -148,7 +148,7 @@ export function generateShareCopy(
   params: Record<string, string>
 ): string {
   const tmpl = SHARE_TEMPLATES.find(s => s.scenario === scenario);
-  if (!tmpl) return '我用TradingEasy做了笔不错的交易，看看？';
+  if (!tmpl) return '我用QUANT MOO做了笔不错的交易，看看？';
 
   let text = tmpl.templates[channel] || tmpl.templates.dm;
   for (const [k, v] of Object.entries(params)) {

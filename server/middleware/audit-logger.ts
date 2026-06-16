@@ -1,4 +1,4 @@
-// ── DAWN WHALES Audit Logger ──────────────────────────────────────────
+// ── QUANT MOO Audit Logger ──────────────────────────────────────────
 // R130-P03: Winston audit logger with daily rotation + sensitive data masking
 
 import winston from 'winston';

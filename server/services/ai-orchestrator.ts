@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R145 Claw(PM) — AI Orchestrator
+ * QUANT MOO R145 Claw(PM) — AI Orchestrator
  * 
  * Central AI billing + execution pipeline.
  * Every AI call flows: bill → execute DeepSeek → refund on failure.

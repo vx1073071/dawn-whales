@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R128 J01 — SQLite IPC Bridge
+ * QUANT MOO R128 J01 — SQLite IPC Bridge
  * 
  * Moves all better-sqlite3 operations to the main process,
  * enabling sandbox:true in the renderer.
@@ -18,7 +18,7 @@ let db: Database.Database | null = null;
 
 function getDb(): Database.Database {
   if (!db) {
-    const dbPath = path.join(app.getPath('userData'), 'dawn-whales.db');
+    const dbPath = path.join(app.getPath('userData'), 'quant-moo.db');
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');

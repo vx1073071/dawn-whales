@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R130 J01 — Binance Cloud Broker Adapter
+ * QUANT MOO R130 J01 — Binance Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for Binance Spot.
  * REST: api.binance.com (HMAC-SHA256 signing)

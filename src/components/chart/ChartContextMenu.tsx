@@ -67,7 +67,7 @@ function buildMenu(
       { key: 'addWatchlist', icon: <StarOutlined />, label: I18N('addWatchlist'), onClick: () => { handlers.onAddWatchlist?.(s); message.success(I18N('added')); } },
       { key: 'setAlert', icon: <BellOutlined />, label: p ? `${I18N('setAlert')} @ $${p}` : I18N('setAlert'), onClick: () => { handlers.onSetAlert?.(s, p); message.success(I18N('alertSet')); } },
       { separator: true, key: 'sep2' },
-      { key: 'share', icon: <ShareAltOutlined />, label: I18N('share'), onClick: () => { handlers.onShare?.(s); navigator.clipboard.writeText(`https://dawnwhales.com/chart/${s}`).catch(() => {}); message.success(I18N('linkCopied')); } },
+      { key: 'share', icon: <ShareAltOutlined />, label: I18N('share'), onClick: () => { handlers.onShare?.(s); navigator.clipboard.writeText(`https://QuantMoo.com/chart/${s}`).catch(() => {}); message.success(I18N('linkCopied')); } },
       { key: 'export', icon: <DownloadOutlined />, label: I18N('export'), onClick: () => { handlers.onExport?.(s); message.info(I18N('exportStarted')); } },
       { separator: true, key: 'sep3' },
       { key: 'detail', icon: <InfoCircleOutlined />, label: I18N('viewDetail'), onClick: () => { handlers.onViewDetail?.(s); } },

@@ -104,7 +104,7 @@ export const SOCIAL_PROOF_TEMPLATES: SocialProofTemplate[] = [
     trigger: '用户准备购买时',
     templates: [
       '🔒 数据安全加密',
-      '✅ 策略通过TradingEasy审核',
+      '✅ 策略通过QUANT MOO审核',
       '🛡️ {count}人购买后无差评',
       '💡 支持购买前免费回测1次',
       '📝 购买后30天内可退款(限1次)',

@@ -1,11 +1,11 @@
 ---
 title: API 参考
-description: DAWN WHALES REST API + IPC 接口文档
+description: QUANT MOO REST API + IPC 接口文档
 ---
 
 # API 参考
 
-DAWN WHALES 提供两套接口:
+QUANT MOO 提供两套接口:
 - **REST API** — HTTP 接口, 用于外部集成
 - **IPC 通道** — Electron 主进程↔渲染进程通信
 

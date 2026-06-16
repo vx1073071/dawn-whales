@@ -48,7 +48,7 @@ export default function HomeEntryPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-xl shadow-blue-500/20 mb-3">
             <span className="text-3xl">🐋</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1">Dawn Whales</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">QUANT MOO</h1>
           <p className="text-sm text-gray-400">AI量化交易平台 · v2.7.0</p>
           <div className="flex items-center justify-center gap-3 mt-3 text-xs text-gray-500">
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" /> 5/5数据源在线</span>

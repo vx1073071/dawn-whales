@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — CredentialManager (R119 #15 + #37) ──────────────────
+// ── QUANT MOO — CredentialManager (R119 #15 + #37) ──────────────────
 // Secure credential storage for all broker adapters.
 // Uses OAuthTokenStore (keytar) for OS-level encryption.
 // Entry point for BrokerManagerV2 to load credentials before adapter creation.

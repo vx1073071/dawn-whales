@@ -35,7 +35,7 @@ purpose: (auto-generated, needs review)
 ### 场景 1: Dashboard 总资产概览 ⭐ P0
 | 检查项 | 状态 | 备注 |
 |--------|:--:|------|
-| 窗口标题显示 "TradingEasy · 道鲸" | ⬜ | 待验证 |
+| 窗口标题显示 "quant-moo · 道鲸" | ⬜ | 待验证 |
 | DW logo（非 Electron 默认图标） | ⬜ | 待验证 |
 | 总资产/现金/市值/今日盈亏 4 卡片 | ✅ | DashboardPage 实现 |
 | 持仓热力图 ≥2 个色块 | ⬜ | 需有 mock 持仓数据 |

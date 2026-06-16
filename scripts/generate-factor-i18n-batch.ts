@@ -508,7 +508,7 @@ async function main() {
   }
 
   console.log('══════════════════════════════════════════════════════');
-  console.log('  TradingEasy Factor i18n Batch Generator (R184)');
+  console.log('  quant-moo Factor i18n Batch Generator (R184)');
   console.log('══════════════════════════════════════════════════════\n');
 
   // Build a minimal registry with just the fields we need for generation

@@ -1,13 +1,13 @@
 /**
  * Custom Data Source Plugin — 自定义数据源接入示例
  *
- * 展示如何接入外部数据源到 Dawn Whales 数据管线：
+ * 展示如何接入外部数据源到 QUANT MOO 数据管线：
  *   1. TradingView Webhook 接收器
  *   2. 自定义 REST API 数据拉取
  *   3. CSV 文件导入器
  *   4. 数据质量校验与格式转换
  *
- * 展示 Dawn Whales 插件 API 的高级用法：
+ * 展示 QUANT MOO 插件 API 的高级用法：
  *   - 网络请求 (network permission)
  *   - 文件系统访问 (filesystem permission)
  *   - 行情数据写入 (market-data permission)
@@ -86,7 +86,7 @@ function processWebhookData(api, data) {
     return;
   }
 
-  // Transform to Dawn Whales format
+  // Transform to QUANT MOO format
   const quote = {
     symbol: data.symbol,
     price: data.price,
@@ -267,7 +267,7 @@ async function storeQuote(api, quote) {
   if (quotes.length > 1000) quotes = quotes.slice(-1000);
   await api.storage.set(key, quotes);
 
-  // Emit to Dawn Whales data pipeline
+  // Emit to QUANT MOO data pipeline
   api.emit('data-source-quote', quote);
 }
 

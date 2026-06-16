@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R142 J02+J03 — 5-Class Fee Calculator v2 + Rate Router
+ * QUANT MOO R142 J02+J03 — 5-Class Fee Calculator v2 + Rate Router
  * 
  * Replaces the old fee-calculator.ts (v15 model: only taker/maker).
  * New v17.6 model: 5 asset classes with their own fee schedules.

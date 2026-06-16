@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.9.0 GA — 完整用户手册
+# quant-moo v1.9.0 GA — 完整用户手册
 
 **版本**: v1.9.0 GA
 **发布日期**: 2026-06-09
@@ -16,7 +16,7 @@ purpose: (auto-generated, needs review)
 
 ## 🐋 欢迎
 
-TradingEasy 是全球首个四 Agent AI 协作量化交易平台。7 市场全覆盖，30+ 因子，AI 自动画线形态识别，策略市场自由买卖。
+quant-moo 是全球首个四 Agent AI 协作量化交易平台。7 市场全覆盖，30+ 因子，AI 自动画线形态识别，策略市场自由买卖。
 
 **三句话讲完**:
 - 选市场 → 套模板 → 一键回测 → 发布
@@ -29,13 +29,13 @@ TradingEasy 是全球首个四 Agent AI 协作量化交易平台。7 市场全�
 
 ### 下载
 
-打开 [TradingEasy.com](https://TradingEasy.com)，选择你的平台：
+打开 [quant-moo.com](https://quant-moo.com)，选择你的平台：
 
 | 平台 | 文件 | 大小 |
 |------|------|:---:|
-| Windows 10/11 | `dawn-whales-setup-1.9.0.exe` | <150MB |
-| macOS 13+ | `dawn-whales-1.9.0.dmg` | <150MB |
-| Linux (Ubuntu 22+) | `dawn-whales-1.9.0.AppImage` | <150MB |
+| Windows 10/11 | `quant-moo-setup-1.9.0.exe` | <150MB |
+| macOS 13+ | `quant-moo-1.9.0.dmg` | <150MB |
+| Linux (Ubuntu 22+) | `quant-moo-1.9.0.AppImage` | <150MB |
 
 ### 安装步骤
 
@@ -47,7 +47,7 @@ TradingEasy 是全球首个四 Agent AI 协作量化交易平台。7 市场全�
 
 ## 第二步: 连接券商
 
-TradingEasy 支持两种券商：
+quant-moo 支持两种券商：
 
 ### Futu OpenD（推荐）
 
@@ -255,8 +255,8 @@ A: 朋友通过你的邀请链接注册并完成首次 AI 分析后，双方各�
 
 | 渠道 | 地址 |
 |------|------|
-| 在线文档 | [TradingEasy.com/docs](https://TradingEasy.com/docs) |
-| 技术支持 | `support@TradingEasy.com` |
+| 在线文档 | [quant-moo.com/docs](https://quant-moo.com/docs) |
+| 技术支持 | `support@quant-moo.com` |
 | 新手指南 | [完整创作者指南](docs/guides/complete-creator-guide.md) |
 | 部署手册 | [GA 公告 + 运营手册](docs/guides/ga-announcement-ops-manual.md) |
 
@@ -264,7 +264,7 @@ A: 朋友通过你的邀请链接注册并完成首次 AI 分析后，双方各�
 
 # GA 公告文案（落地页更新用）
 
-## 🏆 TradingEasy v1.9.0 GA 正式上线
+## 🏆 quant-moo v1.9.0 GA 正式上线
 
 **全球首个四 Agent AI 协作量化交易平台。免费下载。USDT 付费。即日可用。**
 
@@ -294,7 +294,7 @@ API Key 只在服务器，你的策略在你本地。30 轮安全审计，npm au
 
 ### 立即开始
 
-1. 下载: [TradingEasy.com/download](https://TradingEasy.com/download)
+1. 下载: [quant-moo.com/download](https://quant-moo.com/download)
 2. 注册 → 连接券商 → 选模板 → 回测 → 发布
 3. 新用户赠送 3 次免费 AI 分析
 
@@ -307,4 +307,4 @@ API Key 只在服务器，你的策略在你本地。30 轮安全审计，npm au
 | 策略模板 | 50-1000 USDT |
 | 创作者分成 | 70%-90% |
 
-**TradingEasy v1.9.0 GA — 你的 AI 量化交易伙伴。今天开始。** 🐋
+**quant-moo v1.9.0 GA — 你的 AI 量化交易伙伴。今天开始。** 🐋

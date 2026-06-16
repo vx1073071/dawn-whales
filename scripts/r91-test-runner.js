@@ -8,7 +8,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const CWD = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const CWD = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 const OUT = path.join(CWD, 'r91-test-results.json');
 
 function runRound(roundNum) {

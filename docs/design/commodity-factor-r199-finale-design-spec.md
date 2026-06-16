@@ -1,4 +1,4 @@
-# TradingEasy R199 FINALE — 🛢️🏆 12因子故事+COT追踪+比价卡+Release Notes v3.3.0
+# quant-moo R199 FINALE — 🛢️🏆 12因子故事+COT追踪+比价卡+Release Notes v3.3.0
 
 > **Round**: R199 (🛢️ 商品因子·收官 · v3.3.0发布 · 16轮项目终轮) | **角色**: QClaw(设计虾)
 > **日期**: 2026-06-15 | **因子**: 12 (L3 COT 5 + L4 Macro 4 + L5 Ratio 3) | **故事**: 36条三语
@@ -232,8 +232,8 @@
 ║   💡 一句话: "白银被低估了——金银比78，          ║
 ║       高于历史均值65，白银有回归空间"            ║
 ║                                               ║
-║   📊  TradingEasy · 商品因子 v3.3.0             ║
-║   🔗 tradingeasy.io/gold-silver               ║
+║   📊  quant-moo · 商品因子 v3.3.0             ║
+║   🔗 quant-moo.io/gold-silver               ║
 ║                                               ║
 ╚═══════════════════════════════════════════════╝
 ```
@@ -258,12 +258,12 @@ interface RatioShareCard {
   percentile: number;
   signal: 'buy_first' | 'buy_second' | 'neutral';
   signalText: string;
-  watermarkText: string;  // "TradingEasy · 商品因子 v3.3.0"
-  shareUrl: string;       // tradingeasy.io/share/{type}/{timestamp}
+  watermarkText: string;  // "quant-moo · 商品因子 v3.3.0"
+  shareUrl: string;       // quant-moo.io/share/{type}/{timestamp}
 }
 
 // 分享触发 → 生成卡片图片 → 复制链接/下载图片/Twitter/微信
-// 零成本社交传播：每张卡片底部带 "TradingEasy · 商品因子" 水印
+// 零成本社交传播：每张卡片底部带 "quant-moo · 商品因子" 水印
 ```
 
 ---
@@ -286,11 +286,11 @@ Step 1: 选品类          Step 2: 看核心因子       Step 3: 深度工具   
 
 ---
 
-# Part E: Release Notes — TradingEasy v3.3.0 "Commodity Renaissance"
+# Part E: Release Notes — quant-moo v3.3.0 "Commodity Renaissance"
 
 ## E.1 版本概述
 
-> **TradingEasy v3.3.0 "Commodity Renaissance"** — 16轮545小时的项目交付成果。
+> **quant-moo v3.3.0 "Commodity Renaissance"** — 16轮545小时的项目交付成果。
 > 从188股票因子+44市场专属因子到26大宗商品因子，11个资产大类完整覆盖。
 
 ## E.2 🎉 新增功能

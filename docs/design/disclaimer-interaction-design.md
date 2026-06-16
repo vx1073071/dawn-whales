@@ -1,4 +1,4 @@
-# TradingEasy AI免责声明交互化设计
+# quant-moo AI免责声明交互化设计
 
 > **版本**: v1.0 | **日期**: 2026-06-15 | **作者**: QClaw(设计虾)  
 > **任务**: R182 P1-05 | **工时**: 2h  
@@ -70,7 +70,7 @@
 │  │    不能保证未来表现相同。                          │    │
 │  │                                                  │    │
 │  │ 2. AI建议不是投资建议。所有投资决策的风险由您       │    │
-│  │    自行承担。TradingEasy不承担由此产生的任何损失。  │    │
+│  │    自行承担。quant-moo不承担由此产生的任何损失。  │    │
 │  │                                                  │    │
 │  │ 3. AI可能出错。我们使用多层幻觉检测(偏差>50%会     │    │
 │  │    拦截)，但不能保证100%正确。                     │    │
@@ -264,7 +264,7 @@ ai-generated:
 
 engine-verified:
   zh: "📊 引擎验证 ✓" / en: "📊 Engine Verified ✓"
-  tooltip: "此数值经TradingEasy因子引擎独立计算验证"
+  tooltip: "此数值经quant-moo因子引擎独立计算验证"
 
 engine-mismatch:
   zh: "⚠️ 数据待确认" / en: "⚠️ Data Unconfirmed"

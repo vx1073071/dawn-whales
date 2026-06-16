@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R143 J01+J05 — Withdrawal Service + Risk Control Engine
+ * QUANT MOO R143 J01+J05 — Withdrawal Service + Risk Control Engine
  * 
  * Full withdrawal pipeline:
  *   1. Validate (amount, address, daily limits, risk rules)

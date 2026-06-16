@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 
 // Run the 9 files that had randomUUID failures
 const files = [

@@ -94,7 +94,7 @@ R26 完成了 Moomoo 真实连接、Broker UI 组件、账户聚合骨架、Risk
 ### 🦐 QClaw (3 任务) — 测试盲区补全 + 守护
 
 #### 1. [P0] Q-27-01: nl-parser.ts 全场景测试（≥20 tests）
-**为什么 P0**: `nl-parser.ts` (572 行) 是 TradingEasy 差异化能力核心，从未被测试。自然语言直接解析为交易指令，出错后果严重（"买腾讯"→"买苹果"）。
+**为什么 P0**: `nl-parser.ts` (572 行) 是 quant-moo 差异化能力核心，从未被测试。自然语言直接解析为交易指令，出错后果严重（"买腾讯"→"买苹果"）。
 
 - 新建 `tests/nl-parser.test.ts`
 - 场景:

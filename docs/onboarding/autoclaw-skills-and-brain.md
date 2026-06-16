@@ -7,7 +7,7 @@
 
 ## 第一章：项目全景
 
-### 1.1 TradingEasy 是什么
+### 1.1 quant-moo 是什么
 - 桌面端应用 (Electron + React + TypeScript)
 - 核心业务：USDT P2P 跟单交易 + AI 量化因子系统
 - 三产品拆分：落地页(静态HTML) / 桌面端(Electron) / 服务器(一台)
@@ -240,7 +240,7 @@ autoclaw 是 PM 直属全栈虾，核心职责：
 2. `to` 可以是 `PM` / `ML` / `JVS` / `QClaw` / `youdao` / `ALL`(广播)
 3. 向 PM 报到：append 一条 `from:"autoclaw" to:"PM"` 的消息
 4. PM 会定期读取 chat-bridge 并回复
-5. 项目根目录: `c:\Users\vx107\.easyclaw\workspace\dawn-whales\`
+5. 项目根目录: `c:\Users\vx107\.easyclaw\workspace\quant-moo\`
 
 **❌ 禁止**:
 - 不要用 UTF-16 / UTF-16LE / 带BOM 编码写入

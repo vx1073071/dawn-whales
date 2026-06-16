@@ -1,4 +1,4 @@
-// DAWN WHALES R119 QTE-40 — Indicator Worker IPC Bridge
+// QUANT MOO R119 QTE-40 — Indicator Worker IPC Bridge
 // 将 indicator-engine-worker 的 computeIndicators 暴露为 IPC handler
 
 import { ipcMain } from 'electron';

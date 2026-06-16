@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R130 J02 — OKX Cloud Broker Adapter
+ * QUANT MOO R130 J02 — OKX Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for OKX.
  * REST: www.okx.com (OK-ACCESS-SIGN with HMAC-SHA256 + timestamp)

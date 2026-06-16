@@ -1,7 +1,7 @@
 {
-  "appId": "com.dawnwhales.app",
-  "productName": "DAWN WHALES",
-  "copyright": "Copyright © 2026 Dawn Whales",
+  "appId": "com.QuantMoo.app",
+  "productName": "QUANT MOO",
+  "copyright": "Copyright © 2026 QUANT MOO",
   "directories": {
     "output": "release"
   },
@@ -114,10 +114,10 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "uninstallDisplayName": "DAWN WHALES · 道鲸",
+    "uninstallDisplayName": "QUANT MOO · 道鲸",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "DAWN WHALES",
+    "shortcutName": "QUANT MOO",
     "installerLanguages": [
       "zh_CN",
       "en_US",
@@ -176,7 +176,7 @@
     "icon": "build/icons",
     "category": "Finance",
     "desktop": {
-      "Name": "DAWN WHALES",
+      "Name": "QUANT MOO",
       "Comment": "AI Quantitative Trading System",
       "Categories": "Finance;"
     }
@@ -184,7 +184,7 @@
   "publish": {
     "provider": "github",
     "owner": "vx1073071",
-    "repo": "dawn-whales",
+    "repo": "quant-moo",
     "releaseType": "release"
   }
 }

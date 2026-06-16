@@ -1,6 +1,6 @@
 const fs=require('fs');
 const {execSync}=require('child_process');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/';
 
 // Find @ts-nocheck files in electron/ and src/ (non-component, non-server)
 const dirs=['electron/','src/lib/','src/hooks/','src/services/','src/store/'];

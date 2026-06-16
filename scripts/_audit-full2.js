@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine/strategies/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine/strategies/';
 const all=fs.readdirSync(base);
 let total=0;
 const counts={};
@@ -16,14 +16,14 @@ console.log('TOTAL: '+total+' templates');
 console.log('');
 
 // Brokers: list actual adapter names
-const brokerDir='c:/Users/vx107/.easyclaw/workspace/dawn-whales/server/adapters/';
+const brokerDir='c:/Users/vx107/.easyclaw/workspace/quant-moo/server/adapters/';
 let adapters=[];
 try{adapters=fs.readdirSync(brokerDir).filter(f=>f.endsWith('.ts'))}catch(e){}
 console.log('=== BROKER ADAPTERS (server/adapters/) ===');
 adapters.forEach(f=>console.log('  '+f.replace('-adapter.ts','').replace('.ts','')));
 
 // Also check broker dir for adapter names
-const bd='c:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/broker/';
+const bd='c:/Users/vx107/.easyclaw/workspace/quant-moo/electron/broker/';
 let bfiles=[];
 try{bfiles=fs.readdirSync(bd).filter(f=>f.endsWith('adapter.ts')||f.endsWith('adapter.tsx'))}catch(e){}
 console.log('\nBroker adapters (electron/broker/):');
@@ -33,7 +33,7 @@ bfiles.forEach(f=>console.log('  '+f));
 console.log('\n=== @ts-nocheck remaining ===');
 const {execSync}=require('child_process');
 try{
-  const o=execSync('rg -l "@ts-nocheck" --include="*.ts" --include="*.tsx" electron/ src/ server/ 2>&1',{cwd:'c:/Users/vx107/.easyclaw/workspace/dawn-whales',encoding:'utf-8',timeout:10000});
+  const o=execSync('rg -l "@ts-nocheck" --include="*.ts" --include="*.tsx" electron/ src/ server/ 2>&1',{cwd:'c:/Users/vx107/.easyclaw/workspace/quant-moo',encoding:'utf-8',timeout:10000});
   const files=o.trim().split('\n').filter(Boolean);
   console.log('Files with @ts-nocheck:',files.length);
   files.slice(0,15).forEach(f=>console.log('  '+f));

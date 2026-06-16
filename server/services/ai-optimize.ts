@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 J03 — AI Strategy Optimizer
+ * QUANT MOO R146 J03 — AI Strategy Optimizer
  * 
  * Takes current strategy parameters + backtest history and recommends
  * parameter adjustments from DeepSeek V4 Pro.

@@ -2,7 +2,7 @@
  * ExecutionFeeEngine — R200 J2: 策略执行服务费引擎
  *
  * 5类资产费率, 下单冻结积分 → 成交结算 → 失败退积分.
- * 从 TradingEasy USDT 积分中扣除 (非真USDT, 非交易所手续费).
+ * 从 quant-moo USDT 积分中扣除 (非真USDT, 非交易所手续费).
  *
  * Fee model (v17.9, fee-schedule.md):
  *   Stock/ETF:    0.1%  min 2 积分

@@ -14,7 +14,7 @@
 | 市场 | US stocks, ETFs, crypto, commodities, forex |
 | 特色 | CopyTrader (跟单), Agent Portfolio (智能组合), 社交交易 |
 
-### TradingEasy 适配器
+### quant-moo 适配器
 
 ```
 eToroAdapter extends OAuthBrokerBase

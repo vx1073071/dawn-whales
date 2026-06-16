@@ -1,4 +1,4 @@
-// ── TradingEasy — Broker UI Types (R120 #22 + #23) ────────────────────
+// ── quant-moo — Broker UI Types (R120 #22 + #23) ────────────────────
 // Type definitions for ML UI components:
 //   #22 SignalProviderDashboard — 跟单信号源可视化
 //   #23 BrokerManager+Portfolio  — 跨券商持仓总览

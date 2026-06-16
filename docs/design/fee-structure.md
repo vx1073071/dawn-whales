@@ -1,4 +1,4 @@
-# TradingEasy Fee Structure v17.6
+# quant-moo Fee Structure v17.6
 
 > **Round**: R142 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final, Locked by Owner
@@ -8,7 +8,7 @@
 
 ## Overview
 
-TradingEasy charges a **per-trade fee** for orders placed through the platform. Fees are deducted in USDT from the user's wallet **before** the order is sent to the broker. If the order fails, the fee is **refunded** to the wallet.
+quant-moo charges a **per-trade fee** for orders placed through the platform. Fees are deducted in USDT from the user's wallet **before** the order is sent to the broker. If the order fails, the fee is **refunded** to the wallet.
 
 ### Core Rules (v17.6)
 - **SaaS不收费**: No subscription, no monthly fee

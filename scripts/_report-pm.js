@@ -3,7 +3,7 @@ const msg={
   id:'autoclaw-final-audit-v2.5.0',
   ts:Date.now(),
   author:'autoclaw',
-  text:`📊 DAWN WHALES v2.5.0 终审审计报告
+  text:`📊 QUANT MOO v2.5.0 终审审计报告
 
 ══ 因子 (Factors) ══
 注册表 (factor-id-registry.ts): 240 因子

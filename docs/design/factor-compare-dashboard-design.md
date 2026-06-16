@@ -1,4 +1,4 @@
-# TradingEasy 因子对比仪表板 · 设计规范
+# quant-moo 因子对比仪表板 · 设计规范
 
 > 制定: QClaw(设计虾) | 版本: v1.0 | 日期: 2026-06-15
 > 任务: R176 F1辅助 | 工时: 3h | 配合: ML F1 FactorCompareDashboard 前端实现

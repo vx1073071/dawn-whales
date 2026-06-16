@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R134 J04 — Valuable Capital (华盛/VBKR) + 盈立 (uSMART) Adapters
+ * QUANT MOO R134 J04 — Valuable Capital (华盛/VBKR) + 盈立 (uSMART) Adapters
  * 
  * Two adapters in one file — both are HK-based traditional brokers
  * targeting HK stocks + US stocks.

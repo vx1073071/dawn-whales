@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Performance Benchmark (J1: Backtest Engine) ──────────────
+// ── QUANT MOO — Performance Benchmark (J1: Backtest Engine) ──────────────
 // backtest enginethroughput
 
 import { BacktestEngine } from '../backtest/backtest-engine';

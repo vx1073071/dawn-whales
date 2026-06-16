@@ -384,7 +384,7 @@ export class SourceHealthMonitor {
       const response = await fetch(source.url, {
         method: 'HEAD',
         signal: controller.signal,
-        headers: { 'User-Agent': 'DawnWhales/2.8.0 SourceHealthMonitor' },
+        headers: { 'User-Agent': 'QuantMoo/2.8.0 SourceHealthMonitor' },
       });
       clearTimeout(timeoutId);
       const latency = Math.round(performance.now() - start);

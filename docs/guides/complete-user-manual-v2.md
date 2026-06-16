@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 完整用户手册 v2
+# quant-moo 完整用户手册 v2
 
 **版本**: v0.13.0  
 **更新日期**: 2026-06-07  
@@ -40,18 +40,18 @@ purpose: (auto-generated, needs review)
 1. **安装应用**
    ```bash
    # Windows
-   dawn-whales-setup-0.13.0.exe
+   quant-moo-setup-0.13.0.exe
    
    # macOS
-   dawn-whales-0.13.0.dmg
+   quant-moo-0.13.0.dmg
    
    # Linux
-   dawn-whales-0.13.0.AppImage
+   quant-moo-0.13.0.AppImage
    ```
 
 2. **启动应用**
    - 双击桌面图标
-   - 或命令行: `dawn-whales`
+   - 或命令行: `quant-moo`
 
 3. **创建第一个策略**
    - 点击左侧 "策略" 菜单
@@ -84,23 +84,23 @@ purpose: (auto-generated, needs review)
 
 #### Windows
 
-1. 下载 `dawn-whales-setup-0.13.0.exe`
+1. 下载 `quant-moo-setup-0.13.0.exe`
 2. 双击运行安装程序
 3. 按提示完成安装
 4. 启动应用
 
 #### macOS
 
-1. 下载 `dawn-whales-0.13.0.dmg`
+1. 下载 `quant-moo-0.13.0.dmg`
 2. 双击打开 DMG
 3. 拖拽应用到 Applications
 4. 首次启动需允许权限
 
 #### Linux
 
-1. 下载 `dawn-whales-0.13.0.AppImage`
-2. 添加执行权限: `chmod +x dawn-whales-0.13.0.AppImage`
-3. 运行: `./dawn-whales-0.13.0.AppImage`
+1. 下载 `quant-moo-0.13.0.AppImage`
+2. 添加执行权限: `chmod +x quant-moo-0.13.0.AppImage`
+3. 运行: `./quant-moo-0.13.0.AppImage`
 
 ### 首次启动配置
 
@@ -361,7 +361,7 @@ export default class DualMAStrategy {
 
 ### 概述
 
-AI 助理是 TradingEasy v0.13.0 新增的智能助手，提供：
+AI 助理是 quant-moo v0.13.0 新增的智能助手，提供：
 
 - **策略建议**: 基于市场状况推荐策略
 - **风险问答**: 解答风险管理问题
@@ -694,9 +694,9 @@ AI: 已配置回测参数：
 ### Q10: 如何联系技术支持？
 
 **A**: 
-- 官网: https://dawn-whales.ai
-- 邮箱: support@dawn-whales.ai
-- 社区: https://community.dawn-whales.ai
+- 官网: https://quant-moo.ai
+- 邮箱: support@quant-moo.ai
+- 社区: https://community.quant-moo.ai
 
 ---
 
@@ -721,10 +721,10 @@ AI: 已配置回测参数：
 
 ### 技术支持
 
-- 官网: https://dawn-whales.ai
-- 文档: https://docs.dawn-whales.ai
-- 社区: https://community.dawn-whales.ai
-- 邮箱: support@dawn-whales.ai
+- 官网: https://quant-moo.ai
+- 文档: https://docs.quant-moo.ai
+- 社区: https://community.quant-moo.ai
+- 邮箱: support@quant-moo.ai
 
 ---
 

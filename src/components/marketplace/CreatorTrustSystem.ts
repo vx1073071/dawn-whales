@@ -213,7 +213,7 @@ export const CREATOR_TRUST_SYSTEM = {
 
     footer: {
       guarantee: { zh: '✅ 30天策略效果保障: 如果策略在30天内失效 (信号准确率<50%), 可以申请全额退款。', en: '✅ 30-Day Performance Guarantee: Full refund if strategy signal accuracy drops below 50% within 30 days.', ja: '✅ 30日間パフォーマンス保証: 30日以内にシグナル精度が50%未満に低下した場合、全額返金。' },
-      contact: { zh: '有安全问题? → 联系安全团队: security@tradingeasy.io', en: 'Security concerns? → Contact: security@tradingeasy.io', ja: 'セキュリティに関するお問い合わせ: security@tradingeasy.io' },
+      contact: { zh: '有安全问题? → 联系安全团队: security@quant-moo.io', en: 'Security concerns? → Contact: security@quant-moo.io', ja: 'セキュリティに関するお問い合わせ: security@quant-moo.io' },
     },
   },
 

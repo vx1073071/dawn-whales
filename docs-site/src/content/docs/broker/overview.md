@@ -1,11 +1,11 @@
 ---
 title: 券商接入指南
-description: DAWN WHALES 支持的券商接入完整指南
+description: QUANT MOO 支持的券商接入完整指南
 ---
 
 # 券商接入指南
 
-DAWN WHALES v2.6 支持 **15 个券商适配器**，覆盖港股、美股、A股、日股、加密货币等市场。
+QUANT MOO v2.6 支持 **15 个券商适配器**，覆盖港股、美股、A股、日股、加密货币等市场。
 
 ## 支持的券商
 
@@ -72,7 +72,7 @@ interface IBrokerAdapter {
 
 ### 2. 连接配置
 
-在 DAWN WHALES 设置 → 券商管理 → 添加券商:
+在 QUANT MOO 设置 → 券商管理 → 添加券商:
 
 ```json
 {
@@ -94,7 +94,7 @@ interface IBrokerAdapter {
 ### 4. 数据订阅
 
 ```typescript
-// DAWN WHALES 自动订阅您关注的品种
+// QUANT MOO 自动订阅您关注的品种
 // 在策略配置中选择关注的股票, 系统自动管理数据流
 const adapter = getBrokerManager().getAdapter('ib');
 await adapter.subscribe(['AAPL', 'TSLA', '0700.HK'], ['quote', 'trade', 'depth']);
@@ -130,7 +130,7 @@ await adapter.subscribe(['AAPL', 'TSLA', '0700.HK'], ['quote', 'trade', 'depth']
 ## FAQ
 
 **Q: 可以同时连接多个券商吗?**
-A: 可以。DAWN WHALES 支持最多 15 个券商同时连接, 在 `MultiAccountManager` 中统一管理。
+A: 可以。QUANT MOO 支持最多 15 个券商同时连接, 在 `MultiAccountManager` 中统一管理。
 
 **Q: 模拟交易和实盘交易如何切换?**
 A: 每个连接可独立设置 `paperTrading: true/false`。纸交易使用 `paper-copy-trade-engine.ts`。

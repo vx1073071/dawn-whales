@@ -1,7 +1,7 @@
-# TradingEasy v2.4.0 Changelog
+# quant-moo v2.4.0 Changelog
 
 > Release Date: 2026-06-15
-> From: TradingEasy v2.3.0 → v2.4.0
+> From: quant-moo v2.3.0 → v2.4.0
 > 6 shrimp · 14 rounds (R170-R183)
 
 ---
@@ -66,7 +66,7 @@
 
 - **TSC errors**: 0 (ML files)
 - **Tests**: 3,648 passed
-- **Brand**: TradingEasy (283 files renamed)
+- **Brand**: quant-moo (283 files renamed)
 - **Rounds completed**: 14 (R170-R183)
 - **Total shrimp**: 6 (ML 46 components, autoclaw pipelines, JVS engine, QClaw design, youdao testing, Claw PM)
 - **Lines of ML code**: ~16,000
@@ -84,4 +84,4 @@
 
 ---
 
-_Made with 🦐 by 6 shrimp. TradingEasy v2.4.0 — your AI-powered trading companion._
+_Made with 🦐 by 6 shrimp. quant-moo v2.4.0 — your AI-powered trading companion._

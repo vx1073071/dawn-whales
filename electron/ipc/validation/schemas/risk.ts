@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — Risk IPC Schemas (Tier 1, 5 channels)
+ * QUANT MOO R123-Q01 — Risk IPC Schemas (Tier 1, 5 channels)
  * 
  * ALWAYS validated (financial-critical).
  * Covers: risk:getStatusSnapshot/getAlerts/updateConfig/getDrawdownState/getKellyStats

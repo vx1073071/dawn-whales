@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC Hardening Layer (R91 J-03) ─────────────────────────
+// ── QUANT MOO — IPC Hardening Layer (R91 J-03) ─────────────────────────
 // Provides: input validation, EngineError wrapping, timeout, re-entry guard
 // Usage: import { safeHandle, withTimeout, ReentryGuard } from './ipc-hardening';
 

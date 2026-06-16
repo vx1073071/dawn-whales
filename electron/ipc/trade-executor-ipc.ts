@@ -1,6 +1,6 @@
 /**
  * Trade Executor IPC Handlers
- * Sprint 2 Phase 2 - Dawn Whales
+ * Sprint 2 Phase 2 - QUANT MOO
  *
  * Registers Electron IPC handlers for the Trade Execution Engine,
  * enabling renderer process to interact with the trading engine.

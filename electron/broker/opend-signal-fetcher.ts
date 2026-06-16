@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R135 J01 — OpenD Signal Fetcher (桌面端)
+ * QUANT MOO R135 J01 — OpenD Signal Fetcher (桌面端)
  * 
  * 定期从服务器拉取 OpenD 类型的 pending/failed 跟单信号。
  * 

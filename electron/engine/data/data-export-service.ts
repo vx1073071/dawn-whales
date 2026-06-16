@@ -190,7 +190,7 @@ export async function exportData(request: ExportRequest): Promise<ExportResult> 
 
     // Determine output path
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const fileName = outputPath || `dawn-whales-${module}-${timestamp}.${extension}`;
+    const fileName = outputPath || `quant-moo-${module}-${timestamp}.${extension}`;
     const filePath = path.isAbsolute(fileName) ? fileName : path.join(process.cwd(), 'exports', fileName);
 
     // Ensure directory exists

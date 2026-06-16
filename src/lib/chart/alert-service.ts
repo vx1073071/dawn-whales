@@ -1,4 +1,4 @@
-// TradingEasy R115 QTE-32 — AlertService
+// quant-moo R115 QTE-32 — AlertService
 // PM: 价格/成交量/盘口/指标触发, 4通知渠道: System/Telegram/Toast/邮件, 100并发<100ms, 误触发<1%
 
 export type AlertType = 'price' | 'volume' | 'orderbook' | 'indicator' | 'spread' | 'imbalance';

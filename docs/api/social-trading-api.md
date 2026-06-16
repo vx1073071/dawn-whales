@@ -11,7 +11,7 @@ purpose: (auto-generated, needs review)
 **版本**: v1.1.0-beta  
 **更新日期**: 2026-06-08  
 **作者**: youdao  
-**基础URL**: `https://api.dawn-whales.ai/v1`
+**基础URL**: `https://api.quant-moo.ai/v1`
 
 ---
 
@@ -32,7 +32,7 @@ purpose: (auto-generated, needs review)
 
 ### 基础信息
 
-- **基础URL**: `https://api.dawn-whales.ai/v1`
+- **基础URL**: `https://api.quant-moo.ai/v1`
 - **协议**: HTTPS
 - **数据格式**: JSON
 - **字符编码**: UTF-8
@@ -874,7 +874,7 @@ Accept-Language: zh-CN
 ```typescript
 import axios from 'axios';
 
-const API_BASE_URL = 'https://api.dawn-whales.ai/v1';
+const API_BASE_URL = 'https://api.quant-moo.ai/v1';
 
 class SocialTradingAPI {
   private token: string;
@@ -1040,7 +1040,7 @@ const withdrawal = await api.withdraw(1000, 'bank', {
 ```python
 import requests
 
-API_BASE_URL = 'https://api.dawn-whales.ai/v1'
+API_BASE_URL = 'https://api.quant-moo.ai/v1'
 
 class SocialTradingAPI:
     def __init__(self, token: str):
@@ -1154,9 +1154,9 @@ withdrawal = api.withdraw(1000, 'bank', {
 
 ### 联系方式
 
-- API 支持: api-support@dawn-whales.ai
-- 技术支持: support@dawn-whales.ai
-- 社区论坛: https://community.dawn-whales.ai
+- API 支持: api-support@quant-moo.ai
+- 技术支持: support@quant-moo.ai
+- 社区论坛: https://community.quant-moo.ai
 
 ---
 

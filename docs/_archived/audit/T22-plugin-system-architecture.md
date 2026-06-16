@@ -1,4 +1,4 @@
-﻿# T22: 插件系统架构
+# T22: 插件系统架构
 
 > 日期: 2026-06-05 05:57 | 状态: ✅ 设计完成
 
@@ -20,7 +20,7 @@ interface Plugin {
 
 ### 加载流程
 
-1. 扫描 `%APPDATA%/dawn-whales/plugins/` 目录
+1. 扫描 `%APPDATA%/quant-moo/plugins/` 目录
 2. 每个子目录必须有 `plugin.json` 元数据
 3. 加载 `index.js` → 调用 `plugin.activate()`
 4. 注册页面路由 → App.tsx 动态注入

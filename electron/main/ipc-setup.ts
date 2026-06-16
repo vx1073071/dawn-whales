@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC Handler Setup ────────────────────────────────────────
+// ── QUANT MOO — IPC Handler Setup ────────────────────────────────────────
 // Extracted from electron/main.ts — all IPC handlers under setupIPC()
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
@@ -837,7 +837,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
     version: app.getVersion(),
-    name: 'DAWN WHALES',
+    name: 'QUANT MOO',
     platform: process.platform,
     arch: process.arch,
     electronVersion: process.versions.electron,

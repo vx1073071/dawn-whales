@@ -1,5 +1,5 @@
 /**
- * Playwright E2E Configuration — Dawn Whales (R90 Q-03)
+ * Playwright E2E Configuration — QUANT MOO (R90 Q-03)
  *
  * Usage:
  *   npx playwright test                    — run all E2E tests

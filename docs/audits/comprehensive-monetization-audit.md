@@ -61,9 +61,9 @@
 
 ## 二、Seeking Alpha 对标分析
 
-### 2.1 Seeking Alpha Premium 功能 vs TradingEasy
+### 2.1 Seeking Alpha Premium 功能 vs quant-moo
 
-| Seeking Alpha 功能 | TradingEasy 现状 | 差距 | 货币化机会 |
+| Seeking Alpha 功能 | quant-moo 现状 | 差距 | 货币化机会 |
 |---------------------|------------------|------|------------|
 | **Quant Ratings** (买入/卖出评级) | 因子评分系统 | 🟡 有基础 | 🔴 增加"买入/卖出"信号 + 置信度 |
 | **Top Ideas** (每日精选) | AI早报 (1U/天) | 🟢 已实现 | 🟡 增加"Top 5精选"订阅包 |
@@ -79,7 +79,7 @@
 **Seeking Alpha Premium**: $239/年 = ~$20/月 = ~60 USDT/月  
 **Bloomberg Terminal**: $24,000/年 = ~$2,000/月 = ~6,000 USDT/月
 
-**TradingEasy 建议分层**:
+**quant-moo 建议分层**:
 
 | 层级 | 月费 | 目标用户 | 核心功能 |
 |------|------|----------|----------|
@@ -190,7 +190,7 @@
 4. **Trending News** (热门新闻) - 点击量排序
 5. **In Case You Missed It** (错过的好文) - 上周最佳
 
-**TradingEasy建议结构**:
+**quant-moo建议结构**:
 1. **市场情绪仪表盘** - 恐贪指数 + 板块热力图 + 资金流向
 2. **AI精选机会** - Top 5每日精选 + 个性化推荐
 3. **实时新闻流** - 突发新闻 + 情绪标签 + 关联标的

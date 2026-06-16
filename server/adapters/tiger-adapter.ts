@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R133 J02 — Tiger Brokers Cloud Adapter
+ * QUANT MOO R133 J02 — Tiger Brokers Cloud Adapter
  * 
  * Implements ICloudBrokerAdapter for Tiger Brokers.
  * Uses Tiger HTTP SDK (tigerbrokers) — REST with RSA/HMAC signing.

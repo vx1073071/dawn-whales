@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R145 J04 — AI Param Fill Engine
+ * QUANT MOO R145 J04 — AI Param Fill Engine
  * 
  * Given a strategy framework, use DeepSeek V4 Pro to recommend
  * optimal parameter values based on historical K-line data.

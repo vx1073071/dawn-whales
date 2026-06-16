@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Resource Monitor ─────────────────────────────────────────
+// ── QUANT MOO — Resource Monitor ─────────────────────────────────────────
 // Monitors system resources and adjusts worker pool size adaptively
 
 import os from 'os';

@@ -433,7 +433,7 @@ Fuzzy matching:
 ## 十二、短中长期建议
 
 ### 短期 (R101+) — P0
-- [ ] Landing Page 11语言部署到 TradingEasy.com
+- [ ] Landing Page 11语言部署到 quant-moo.com
 - [ ] git tag v1.11.0-final + GitHub Release
 - [ ] 生产环境 i18n 验收 (11语言全部页面走查)
 - [ ] Bundle analysis 确认 ≤50KB

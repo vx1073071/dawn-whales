@@ -1,4 +1,4 @@
-const f = require('fs').readFileSync('c:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\electron\\engine\\strategies\\factor-strategy-templates.ts', 'utf-8');
+const f = require('fs').readFileSync('c:\\Users\\vx107\\.easyclaw\\workspace\\quant-moo\\electron\\engine\\strategies\\factor-strategy-templates.ts', 'utf-8');
 
 // Verify signal push counts
 const sigPushCount = (f.match(/touchpointId:\s*'AI_FACTOR_SIGNAL_PUSH'/g) || []).length;

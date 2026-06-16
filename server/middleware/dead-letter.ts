@@ -1,4 +1,4 @@
-// ── DAWN WHALES Dead Letter Queue ─────────────────────────────────────
+// ── QUANT MOO Dead Letter Queue ─────────────────────────────────────
 // R132-P02: Failed signals (3 retries) → dead letter store → manual review
 
 import { getMainDb } from '../db/database';

@@ -18,7 +18,7 @@ const SQL_COM_strategy_stats = '-- strategy stats';
 const SQL_COM_user_settings = '-- user settings';
 const SQL_COM_performance_indexes = '-- performance indexes';
 
-const DB_NAME = 'dawn-whales.db';
+const DB_NAME = 'quant-moo.db';
 
 export class DatabaseManager {
   private db: Database.Database | null = null;

@@ -1,4 +1,4 @@
-# TradingEasy Administrator Manual v2.1.0
+# quant-moo Administrator Manual v2.1.0
 
 > **Version**: v2.1.0 | **Last Updated**: 2026-06-13
 > **Audience**: Platform Administrators
@@ -38,7 +38,7 @@ Dashboard shows at a glance:
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  🔐 Admin Dashboard — TradingEasy v2.1.0                         │
+│  🔐 Admin Dashboard — quant-moo v2.1.0                         │
 │                                                                  │
 │  ┌─────────────┬─────────────┬─────────────┬─────────────┐      │
 │  │ Users       │ Revenue      │ Pending      │ System       │      │

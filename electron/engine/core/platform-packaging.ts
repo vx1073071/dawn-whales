@@ -70,15 +70,15 @@ export interface CIJob {
 // ── Default Package Config ─────────────────────────────────────────────────
 
 const DEFAULT_PACKAGE_CONFIG: PackageConfig = {
-  appId: "com.dawnwhales.desktop",
-  productName: "Dawn Whales",
+  appId: "com.QuantMoo.desktop",
+  productName: "QUANT MOO",
   version: "1.7.0",
   platforms: ["win", "mac", "linux"],
   outputDir: "dist/release",
   win: {
     certificateFile: "certs/code-signing.pfx",
     certificatePassword: "${WIN_CERT_PASSWORD}",
-    publisherName: "Dawn Whales Inc.",
+    publisherName: "QUANT MOO Inc.",
   },
   mac: {
     identity: "${APPLE_DEVELOPER_ID}",
@@ -91,7 +91,7 @@ const DEFAULT_PACKAGE_CONFIG: PackageConfig = {
   },
   autoUpdate: {
     provider: "github",
-    url: "https://github.com/dawn-whales/dawn-whales/releases",
+    url: "https://github.com/quant-moo/quant-moo/releases",
     channel: "latest",
   },
 };
@@ -131,7 +131,7 @@ export class PackageManager {
         allowToChangeInstallationDirectory: true,
         createDesktopShortcut: true,
         createStartMenuShortcut: true,
-        shortcutName: "Dawn Whales",
+        shortcutName: "QUANT MOO",
       },
       mac: {
         target: ["dmg", "zip"],
@@ -147,7 +147,7 @@ export class PackageManager {
         icon: "build/icons",
         category: this.config.linux.category,
         desktop: {
-          Name: "Dawn Whales",
+          Name: "QUANT MOO",
           Comment: "AI-powered trading strategy platform",
           Categories: "Finance;Office;",
         },
@@ -167,21 +167,21 @@ export class PackageManager {
     return [
       {
         platform: "win",
-        fileName: `Dawn-Whales-Setup-${v}.exe`,
+        fileName: `quant-moo-Setup-${v}.exe`,
         sizeBytes: 0,
         sha256: "",
         signed: true,
       },
       {
         platform: "mac",
-        fileName: `Dawn-Whales-${v}.dmg`,
+        fileName: `quant-moo-${v}.dmg`,
         sizeBytes: 0,
         sha256: "",
         signed: true,
       },
       {
         platform: "linux",
-        fileName: `Dawn-Whales-${v}.AppImage`,
+        fileName: `quant-moo-${v}.AppImage`,
         sizeBytes: 0,
         sha256: "",
         signed: false,
@@ -244,7 +244,7 @@ export class PackageManager {
             { name: "Build & Package", run: "npm run dist:win", platform: "win" },
             {
               name: "Upload Artifact",
-              run: `actions/upload-artifact@v4 --name Dawn-Whales-Setup-${v}.exe`,
+              run: `actions/upload-artifact@v4 --name quant-moo-Setup-${v}.exe`,
               platform: "win",
             },
           ],
@@ -265,7 +265,7 @@ export class PackageManager {
             },
             {
               name: "Upload Artifact",
-              run: `actions/upload-artifact@v4 --name Dawn-Whales-${v}.dmg`,
+              run: `actions/upload-artifact@v4 --name quant-moo-${v}.dmg`,
               platform: "mac",
             },
           ],
@@ -281,7 +281,7 @@ export class PackageManager {
             { name: "Build & Package", run: "npm run dist:linux", platform: "linux" },
             {
               name: "Upload Artifact",
-              run: `actions/upload-artifact@v4 --name Dawn-Whales-${v}.AppImage`,
+              run: `actions/upload-artifact@v4 --name quant-moo-${v}.AppImage`,
               platform: "linux",
             },
           ],
@@ -293,12 +293,12 @@ export class PackageManager {
             { name: "Download All Artifacts", run: "actions/download-artifact@v4", platform: "all" },
             {
               name: "Generate SHA256",
-              run: "sha256sum Dawn-Whales-* > SHA256SUMS",
+              run: "sha256sum quant-moo-* > SHA256SUMS",
               platform: "all",
             },
             {
               name: "Create Release",
-              run: `npx gh release create v${v} Dawn-Whales-* SHA256SUMS --title "v${v} GA" --generate-notes`,
+              run: `npx gh release create v${v} quant-moo-* SHA256SUMS --title "v${v} GA" --generate-notes`,
               platform: "all",
             },
           ],
@@ -327,7 +327,7 @@ export class PackageManager {
       provider: this.config.autoUpdate.provider,
       url: this.config.autoUpdate.url,
       channel: this.config.autoUpdate.channel,
-      updaterCacheDirName: "dawn-whales-updater",
+      updaterCacheDirName: "quant-moo-updater",
     };
   }
 

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 J04 — AI Strategy Health Check
+ * QUANT MOO R146 J04 — AI Strategy Health Check
  * 
  * Scans ALL of a user's strategies and assigns health status:
  *   🔴 RED:    30-day continuous loss  (连续30天亏损)

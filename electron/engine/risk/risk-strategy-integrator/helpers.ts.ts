@@ -1,7 +1,7 @@
-﻿— R119 QClaw: structural class wrapper for TSC parse errors
+— R119 QClaw: structural class wrapper for TSC parse errors
 export class R119_TempWrapper_helpers {
 // ── Risk-Strategy Integrator — Deep Integration Layer ──────────────────────
-// J-30-02: Dawn Whales
+// J-30-02: QUANT MOO
 //
 // Bridges RiskEngineV3 (multi-broker risk aggregation) with StrategyRunner
 // (automated strategy execution) via UnifiedAccountManager (cross-broker

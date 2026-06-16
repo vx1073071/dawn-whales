@@ -30,7 +30,7 @@ purpose: (auto-generated, needs review)
 
 ### 什么是社交交易？
 
-社交交易是 TradingEasy v1.1.0-beta 引入的核心功能，允许用户：
+社交交易是 quant-moo v1.1.0-beta 引入的核心功能，允许用户：
 
 - **成为交易员**: 分享你的交易策略和信号
 - **跟随交易**: 一键跟随优秀交易员的交易
@@ -140,7 +140,7 @@ interface FollowTrade {
 
 #### 步骤 1: 申请成为交易员
 
-1. 打开 TradingEasy 应用
+1. 打开 quant-moo 应用
 2. 点击左侧导航栏的 "社交交易"
 3. 点击右上角的 "成为交易员" 按钮
 4. 填写交易员申请表：
@@ -220,7 +220,7 @@ interface FollowTrade {
 
 ### 步骤 1: 创建信号
 
-1. 打开 TradingEasy 应用
+1. 打开 quant-moo 应用
 2. 点击左侧导航栏的 "社交交易"
 3. 点击 "发布信号" 按钮
 
@@ -329,7 +329,7 @@ interface FollowTrade {
 
 ### 步骤 1: 浏览交易员
 
-1. 打开 TradingEasy 应用
+1. 打开 quant-moo 应用
 2. 点击左侧导航栏的 "社交交易"
 3. 浏览交易员列表
 4. 查看交易员主页和统计数据
@@ -677,9 +677,9 @@ interface FollowTrade {
 
 ### 联系方式
 
-- 社交交易支持: social-trading@dawn-whales.ai
-- 技术支持: support@dawn-whales.ai
-- 社区论坛: https://community.dawn-whales.ai
+- 社交交易支持: social-trading@quant-moo.ai
+- 技术支持: support@quant-moo.ai
+- 社区论坛: https://community.quant-moo.ai
 
 ---
 

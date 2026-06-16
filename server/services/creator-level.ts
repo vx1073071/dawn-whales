@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R144 J04 — Creator Level Engine
+ * QUANT MOO R144 J04 — Creator Level Engine
  * 
  * Automatic creator tier management based on cumulative sales count.
  * 

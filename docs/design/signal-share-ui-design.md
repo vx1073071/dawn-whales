@@ -29,7 +29,7 @@ v15 模型：创作者提供交易信号 → 用户跟单 → 创作者分成(70
    └─ 交易历史记录
 
 2. 点击 "分享" ────────→  生成分享链接
-   │                        ├─ URL (TradingEasy://signal/xxx)
+   │                        ├─ URL (quant-moo://signal/xxx)
    │                        └─ 二维码
    │
    │  复制链接 / 扫码 ──→  ──→  3. 打开链接
@@ -77,7 +77,7 @@ v15 模型：创作者提供交易信号 → 用户跟单 → 创作者分成(70
 │                                      │
 │  🔗 分享链接                         │
 │  ┌──────────────────────────────┐   │
-│  │ TradingEasy://signal/a1b2c3   │ 📋 │
+│  │ quant-moo://signal/a1b2c3   │ 📋 │
 │  └──────────────────────────────┘   │
 │                                      │
 │  📱 扫码分享                         │
@@ -170,7 +170,7 @@ signal:get-copies     → 获取我的跟单列表
 ### 4.2 Deep Link 协议
 
 ```
-TradingEasy://signal/{shareToken}
+quant-moo://signal/{shareToken}
 
 App 处理:
 1. 解析 deep link → 提取 shareToken
@@ -213,7 +213,7 @@ src/components/signal/
 | P0 | SignalShareButton + Modal | 1h | 生成链接+二维码 |
 | P0 | SignalPreviewCard | 1h | 信号落地展示 |
 | P1 | CopyTradeConfirmModal | 0.5h | 跟单确认 |
-| P2 | Deep link 处理 | 0.5h | TradingEasy:// 协议 |
+| P2 | Deep link 处理 | 0.5h | quant-moo:// 协议 |
 
 > 由 JVS 在 R123 实现。signal-push-engine 已就绪，分享 UI 为商业化最后一环。
 

@@ -1,4 +1,4 @@
-# TradingEasy 双模跟单总体规划：R129 → R136
+# quant-moo 双模跟单总体规划：R129 → R136
 
 > **制定**: PM(Claw/WorkBuddy) | **日期**: 2026-06-13 02:48 HKT
 > **来源**: dual-mode-copytrade-architecture.md

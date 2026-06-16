@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 Claw(PM) — AI Result Cache
+ * QUANT MOO R146 Claw(PM) — AI Result Cache
  * 
  * Reduces DeepSeek API calls by caching results.
  * Cache invalidation based on symbol + candles hash + TTL.

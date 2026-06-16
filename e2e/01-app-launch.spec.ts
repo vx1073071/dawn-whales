@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Smoke: App Launch', () => {
   test('01: page loads successfully', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Dawn Whales| dawn whales|鲸鱼量化/i);
+    await expect(page).toHaveTitle(/QUANT MOO| QUANT MOO|鲸鱼量化/i);
   });
 
   test('02: main content area is visible', async ({ page }) => {

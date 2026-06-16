@@ -1,4 +1,4 @@
-# TradingEasy 大宗商品因子深度扩充建议书
+# quant-moo 大宗商品因子深度扩充建议书
 
 > youdao | 2026-06-15 09:48 HKT | 致 PM
 > 参考: Bloomberg COMMODITY, Goldman Sachs Commodities Research, CME Group, LME, S&P GSCI
@@ -15,7 +15,7 @@
 | 行业对标 (Bloomberg) | 200+ 商品因子 |
 | **缺口** | **~199** |
 
-当前 TradingEasy 支持 10 个股票/加密市场，但零商品市场覆盖。这是对标 Bloomberg Terminal 的最大缺失。
+当前 quant-moo 支持 10 个股票/加密市场，但零商品市场覆盖。这是对标 Bloomberg Terminal 的最大缺失。
 
 ---
 
@@ -246,4 +246,4 @@ CC-03. COMMODITY_VS_EQUITY  — 商品/股票比，>1=商品超级周期，<0.3=
 
 ---
 
-*建议完成: 2026-06-15 09:48 HKT | youdao | TradingEasy 商品因子扩充*
+*建议完成: 2026-06-15 09:48 HKT | youdao | quant-moo 商品因子扩充*

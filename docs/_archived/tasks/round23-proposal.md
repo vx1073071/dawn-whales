@@ -1,4 +1,4 @@
-# Round 23 Proposal — TradingEasy Sprint 1 Final Polish + Sprint 2 Kickoff
+# Round 23 Proposal — quant-moo Sprint 1 Final Polish + Sprint 2 Kickoff
 
 **Author:** QClaw  
 **Created:** 2026-06-06 05:30 GMT+8  
@@ -118,7 +118,7 @@
 
 ## 关键文件路径
 
-- 仓库: `C:\Users\vx107\.easyclaw\workspace\dawn-whales`
+- 仓库: `C:\Users\vx107\.easyclaw\workspace\quant-moo`
 - TradeExecutor: `electron/engine/trade-executor.ts`（1638行）
 - TradeExecutor IPC: `electron/ipc/trade-executor-ipc.ts`（387行）
 - Parallel Backtest: `src/lib/parallel-backtest.ts`（222行新增）

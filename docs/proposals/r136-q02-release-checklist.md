@@ -81,7 +81,7 @@
 
 ```bash
 # 1. 构建镜像
-docker build -t dawn-whales:2.1.0 .
+docker build -t quant-moo:2.1.0 .
 
 # 2. 启动服务
 docker-compose up -d
@@ -117,7 +117,7 @@ curl http://localhost:3000/api/health
 | 配置项 | 值 | 说明 |
 |--------|-----|------|
 | PORT | 3000 | 服务器端口 |
-| DATABASE_PATH | ./data/dawn-whales.db | SQLite 路径 |
+| DATABASE_PATH | ./data/quant-moo.db | SQLite 路径 |
 | JWT_SECRET | 随机 64 字符 | JWT 签名密钥 |
 | ENCRYPTION_KEY | 64 字符 hex | AES-256-GCM 密钥 |
 | RATE_LIMIT_WINDOW | 60000 | 限流窗口 (ms) |
@@ -130,10 +130,10 @@ curl http://localhost:3000/api/health
 ```nginx
 server {
     listen 443 ssl;
-    server_name api.TradingEasy.com;
+    server_name api.quant-moo.com;
 
-    ssl_certificate /etc/ssl/TradingEasy.crt;
-    ssl_certificate_key /etc/ssl/TradingEasy.key;
+    ssl_certificate /etc/ssl/quant-moo.crt;
+    ssl_certificate_key /etc/ssl/quant-moo.key;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -158,7 +158,7 @@ server {
 ```bash
 # 如果 v2.1.0 出现问题:
 docker-compose down
-docker tag dawn-whales:2.0.0 dawn-whales:2.1.0  # 回退标签
+docker tag quant-moo:2.0.0 quant-moo:2.1.0  # 回退标签
 docker-compose up -d
 
 # 或 git 回滚:
@@ -198,7 +198,7 @@ npm run server &
 # PM 执行:
 git checkout master
 git pull origin master
-git tag -a v2.1.0 -m "TradingEasy v2.1.0 — Multi-Broker Copy Trade (17 brokers, Cloud+OpenD dual mode)"
+git tag -a v2.1.0 -m "quant-moo v2.1.0 — Multi-Broker Copy Trade (17 brokers, Cloud+OpenD dual mode)"
 git push origin v2.1.0
 
 # GitHub Release:

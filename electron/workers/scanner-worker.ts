@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Scanner Worker ───────────────────────────────────────────
+// ── QUANT MOO — Scanner Worker ───────────────────────────────────────────
 // Parameter scanning / grid search in worker thread
 
 import { ParameterScanner } from '../engine/portfolio/parameter-scanner-v2';

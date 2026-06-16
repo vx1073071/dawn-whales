@@ -6,7 +6,7 @@ owner: PM
 purpose: (auto-generated, needs review)
 -->
 
-# Phase 5.0 路线图 — TradingEasy
+# Phase 5.0 路线图 — quant-moo
 
 > 版本: v0.8.0 → v1.0.0
 > 状态: Phase 4.4 中 → Phase 5.0 规划
@@ -128,4 +128,4 @@ Phase 5.0 自主交易
 
 ---
 
-*Phase 5.0: 让 TradingEasy 从"工具"进化为"交易伙伴"。*
+*Phase 5.0: 让 quant-moo 从"工具"进化为"交易伙伴"。*

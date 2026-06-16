@@ -1,4 +1,4 @@
-# TradingEasy Trading Agent (TA) Billing Rules v17.6
+# quant-moo Trading Agent (TA) Billing Rules v17.6
 
 > **Round**: R147 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final

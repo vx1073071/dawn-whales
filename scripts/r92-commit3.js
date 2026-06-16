@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 const GIT = 'C:/Users/vx107/AppData/Local/OpenClaw/deps/portable-git/mingw64/bin/git.exe';
 
 try {

@@ -17,7 +17,7 @@ export function httpGet(url: string, options?: { timeout?: number; headers?: Rec
     const req = client.get(url, {
       timeout,
       headers: {
-        'User-Agent': 'DAWN-WHALES/1.0',
+        'User-Agent': 'quant-moo/1.0',
         'Accept': 'application/json, text/plain, */*',
         ...options?.headers,
       },
@@ -55,7 +55,7 @@ export function httpPost(url: string, body: string | object, options?: { timeout
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(bodyStr),
-        'User-Agent': 'DAWN-WHALES/1.0',
+        'User-Agent': 'quant-moo/1.0',
         ...options?.headers,
       },
     }, (res) => {

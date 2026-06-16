@@ -1,4 +1,4 @@
-// ── TradingEasy — IPC Bridge Type Definitions ───────────────────────────
+// ── quant-moo — IPC Bridge Type Definitions ───────────────────────────
 // R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
 // R127-P03: db + app + stockStream + prefs + greeks (batch 4/4). 104/104 complete.
 

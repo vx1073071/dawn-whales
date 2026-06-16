@@ -1,5 +1,5 @@
 /**
- * TradingEasy R122 J01 — P0-1a Renderer-side data pipeline hook
+ * quant-moo R122 J01 — P0-1a Renderer-side data pipeline hook
  * 
  * Connects all chart components to the real-time data pipeline.
  * Uses preload's window.api.on() to receive main-process IPC pushes.

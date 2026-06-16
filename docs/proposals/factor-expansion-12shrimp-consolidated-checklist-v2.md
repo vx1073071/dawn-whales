@@ -1,4 +1,4 @@
-# TradingEasy 因子扩充 — 6虾12份建议合并选择清单 v2
+# quant-moo 因子扩充 — 6虾12份建议合并选择清单 v2
 
 > PM(Claw) 整理 | 2026-06-15 v2 | KDJ已恢复 | 全因子三级分类 | 收费模式调研
 
@@ -18,10 +18,10 @@
 |---|---|------|------|
 | 1 | 🦐 Claw(PM) | factor-expansion-proposal.md | 通用35因子，42→77 |
 | 2 | 🦐 Claw(PM) | factor-expansion-hk-us-crypto-v2.md | 港股18+美股20+加密16，42→96 |
-| 3 | 🦐 youdao | tradingeasy-factor-expansion-proposal.md | 70+因子6大类，44→150+ |
-| 4 | 🦐 youdao | tradingeasy-hkus-crypto-factor-proposal-v2.md | 港股12+美股13+加密30+跨市场10 |
+| 3 | 🦐 youdao | quant-moo-factor-expansion-proposal.md | 70+因子6大类，44→150+ |
+| 4 | 🦐 youdao | quant-moo-hkus-crypto-factor-proposal-v2.md | 港股12+美股13+加密30+跨市场10 |
 | 5 | 🦐 ML | factor-expansion-ux-proposal-R183.md | 7高价值因子+5UX |
-| 6 | 🦐 ML | tradingeasy-hkus-crypto-factor-proposal-v2.md | 美股8+港股6+加密10+跨市场3+7UX |
+| 6 | 🦐 ML | quant-moo-hkus-crypto-factor-proposal-v2.md | 美股8+港股6+加密10+跨市场3+7UX |
 | 7 | 🦐 QClaw | factor-expansion-optimization-proposal.md | 50+因子8类+10UX |
 | 8 | 🦐 QClaw | strategy-factor-polish-proposal.md | 因子7+策略8+UI6+数据5=26项 |
 | 9 | 🦐 youdao | strategy-factor-review-human-ux.md | 人类UX审查 |
@@ -436,7 +436,7 @@
 | **E. 信号订阅** | 加密信号群 | 实时信号$50-200/月 | 延迟信号 | 时效变现 |
 | **F. 因子贡献者赚钱** | WorldQuant | 贡献者获报酬 | 使用者免费 | 众包变现 |
 
-### 🎯 TradingEasy 因子收费建议
+### 🎯 quant-moo 因子收费建议
 
 #### 核心结论：**因子本身不收费，但因子相关的高级服务收费**
 

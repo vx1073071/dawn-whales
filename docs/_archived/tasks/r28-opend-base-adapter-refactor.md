@@ -2,7 +2,7 @@
 
 **JIRA:** J-28-03  
 **Status:** Draft  
-**Author:** TradingEasy Architecture  
+**Author:** quant-moo Architecture  
 **Created:** 2026-06-06  
 **Dependencies:** R29 broker adapter unification  
 
@@ -1018,7 +1018,7 @@ export class FutuOpenDAdapter extends OpenDBaseAdapter {
   }
 
   protected getProtoRoot(): any { return futuProtoRoot; }
-  protected getClientID(): string { return 'TradingEasy-Desktop'; }
+  protected getClientID(): string { return 'quant-moo-Desktop'; }
   protected getDefaultPort(): number { return 11111; }
 
   protected generateMockQuote(code: string): QuoteInfo {
@@ -1118,7 +1118,7 @@ export class MoomooAdapter extends OpenDBaseAdapter {
   }
 
   protected getProtoRoot(): any { /* same proto loader */ }
-  protected getClientID(): string { return 'TradingEasy-Moomoo'; }
+  protected getClientID(): string { return 'quant-moo-Moomoo'; }
   protected getDefaultPort(): number { return 11211; }
 
   // ... mock providers (same structure, different base prices)

@@ -94,7 +94,7 @@ R67:v1.6.0GA → R68:功能增强 → R69:质量打磨 → R70:v1.7.0GA 🏁
 - **全量回归 5轮 0 fail**
 - **GitHub Release 发布 (v1.7.0 GA tag)**
 - **三平台安装包 (Win/Mac/Linux) 校验通过**
-- **落地页 TradingEasy.com 更新下载链接**
+- **落地页 quant-moo.com 更新下载链接**
 - **Release Notes 完整 (新功能+修复+升级指引)**
 
 ---

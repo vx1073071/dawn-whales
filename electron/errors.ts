@@ -1,5 +1,5 @@
 import { EngineError } from './engine/core/engine-error';
-// ── TradingEasy — Standardized Error Types ────────────────────────────
+// ── quant-moo — Standardized Error Types ────────────────────────────
 // P2-5: Error standardization for critical paths (engine/ + ipc/)
 //
 // Usage:

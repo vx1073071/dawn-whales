@@ -1,6 +1,6 @@
 ---
 title: 消息智能 API 参考
-description: DAWN WHALES 消息智能模块完整 API 参考 — 所有导出类、方法、类型定义
+description: QUANT MOO 消息智能模块完整 API 参考 — 所有导出类、方法、类型定义
 ---
 
 # 📚 API 参考

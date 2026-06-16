@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R147 Claw(PM) — TA Fee Service (TradingAgents Billing)
+ * QUANT MOO R147 Claw(PM) — TA Fee Service (TradingAgents Billing)
  * 
  * 3-tier billing for 4 TradingAgents:
  *   - TA Standard:  1.0 USDT/round

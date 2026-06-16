@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R141 J02–J05 — Wallet + Ledger + Idempotency API Routes
+ * QUANT MOO R141 J02–J05 — Wallet + Ledger + Idempotency API Routes
  * 
  * Production Billing Foundation (v17.6 billing model).
  * All endpoints protected by JWT authMiddleware.

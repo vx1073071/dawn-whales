@@ -1,4 +1,4 @@
-// TradingEasy R119 QTE-02 — Broker ↔ Chart Engine Data Pipeline (Simplified)
+// quant-moo R119 QTE-02 — Broker ↔ Chart Engine Data Pipeline (Simplified)
 // 因 tsconfig 隔离，bridge 使用 chart 内部类型定义，不与 electron/broker 耦合
 
 import type { OrderBookSnapshot, OrderBookDelta, DepthLevel } from './depth-types';

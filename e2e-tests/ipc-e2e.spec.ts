@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { ElectronApplication, Page } from 'playwright';
 
-test.describe('Dawn Whales IPC E2E Tests', () => {
+test.describe('QUANT MOO IPC E2E Tests', () => {
   let electronApp: ElectronApplication;
   let mainPage: Page;
 

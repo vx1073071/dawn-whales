@@ -1,4 +1,4 @@
-// ── DAWN WHALES SQLite Database ───────────────────────────────────────
+// ── QUANT MOO SQLite Database ───────────────────────────────────────
 // R129-P02: SQLite initialization with 3 tables + WAL mode
 
 import Database from 'better-sqlite3';

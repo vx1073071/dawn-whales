@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — IPC Validation Module Index
+ * QUANT MOO R123-Q01 — IPC Validation Module Index
  * 
  * Barrel export for all Zod schemas + validation utilities.
  * 

@@ -1,4 +1,4 @@
-# TradingEasy 全量审计: 策略因子 + 策略模板 + @ts-nocheck
+# quant-moo 全量审计: 策略因子 + 策略模板 + @ts-nocheck
 
 > youdao | 2026-06-16 04:12 HKT | 致 PM
 

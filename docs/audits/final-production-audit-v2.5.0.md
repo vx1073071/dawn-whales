@@ -1,4 +1,4 @@
-# TradingEasy v2.5.0 Final Audit Report
+# quant-moo v2.5.0 Final Audit Report
 
 **审计人**: youdao  
 **审计时间**: 2026-06-16 07:34 HKT  
@@ -106,7 +106,7 @@
 
 ### ✅ 可以交付使用
 
-**TradingEasy v2.5.0 POLISH 已完全就绪，可以正常交付使用。**
+**quant-moo v2.5.0 POLISH 已完全就绪，可以正常交付使用。**
 
 **理由**:
 1. **258因子** 全部可用，四铁律校验通过

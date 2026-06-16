@@ -2,7 +2,7 @@
 
 > 📄 **QClaw (document-shrimp)** | 2026-06-12 15:11 HKT
 >
-> Comprehensive quality baseline for TradingEasy v1.14.0 (R109-R121).
+> Comprehensive quality baseline for quant-moo v1.14.0 (R109-R121).
 
 ---
 

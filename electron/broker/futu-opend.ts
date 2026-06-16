@@ -49,7 +49,7 @@ const FUTU_CONTRACTS: Record<string, ContractInfo> = {
  * Futu OpenD TCP client adapter.
  * Extends OpenDBaseAdapter with Futu-specific defaults:
  *   - Default port: 11111
- *   - Client ID: "DawnWhales-Desktop"
+ *   - Client ID: "QuantMoo-Desktop"
  *   - Futu contract mapping with HK + US securities
  *   - Simple connect (no mock fallback — throws on failure)
  */
@@ -76,7 +76,7 @@ export class FutuOpenDClient extends OpenDBaseAdapter {
   }
 
   getClientId(): string {
-    return 'DawnWhales-Desktop';
+    return 'QuantMoo-Desktop';
   }
 
   getContractMapping(): Record<string, ContractInfo> {

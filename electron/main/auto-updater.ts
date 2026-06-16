@@ -85,7 +85,7 @@ export interface UpdateConfig {
 const DEFAULT_CONFIG: UpdateConfig = {
   checkIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
   channel: 'stable',
-  updateServerUrl: 'https://updates.dawnwhales.app',
+  updateServerUrl: 'https://updates.QuantMoo.app',
   autoDownload: true,
   autoInstallOnQuit: true,
   allowDowngrade: false,
@@ -226,7 +226,7 @@ async function notifyUser(info: UpdateInfo, status: UpdateStatus): Promise<'inst
 
   const result = await dialog.showMessageBox(window, {
     type: 'info',
-    title: `DAWN WHALES 更新${info.isCritical ? ' 🔴重要' : ''}`,
+    title: `QUANT MOO 更新${info.isCritical ? ' 🔴重要' : ''}`,
     message: `${info.isCritical ? '🔴 重要安全更新\n\n' : ''}新版本 ${info.version} 可用`,
     detail: `发布日期: ${info.releaseDate}\n大小: ${(info.sizeBytes / 1024 / 1024).toFixed(1)} MB\n\n${info.releaseNotes}`,
     buttons,

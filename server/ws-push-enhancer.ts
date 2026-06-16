@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R132 J03 — WebSocket Push Enhancement
+ * QUANT MOO R132 J03 — WebSocket Push Enhancement
  * 
  * Extends WSPushService with real-time broker status pushing and alert broadcasting.
  * 

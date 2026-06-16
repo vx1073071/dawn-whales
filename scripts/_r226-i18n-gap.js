@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine/factors/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine/factors/';
 
 // Extract all factor IDs from registry (4th column in map entries)
 const registry=fs.readFileSync(base+'factor-id-registry.ts','utf-8');

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — SQLite Persistence Layer (Production) ────────────────────
+// ── QUANT MOO — SQLite Persistence Layer (Production) ────────────────────
 // T105: Strategy/Config/Order persistent storage with better-sqlite3
 
 import path from 'path';
@@ -147,7 +147,7 @@ export class DatabaseManager {
   private ready = false;
 
   constructor(dbPath?: string) {
-    this.dbPath = dbPath || path.join(app?.getPath('userData') || '', 'dawn-whales.db');
+    this.dbPath = dbPath || path.join(app?.getPath('userData') || '', 'quant-moo.db');
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────

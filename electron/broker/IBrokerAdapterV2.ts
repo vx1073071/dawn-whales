@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IBrokerAdapterV2 + Tagged Types ──────────────────────
+// ── QUANT MOO — IBrokerAdapterV2 + Tagged Types ──────────────────────
 // R1 INF-01: Extended broker interface with Tagged data types
 // Location: electron/broker/IBrokerAdapter.ts (extends existing)
 // Tagged types: brokerId贯穿所有行情/持仓/订单数据, 支持多券商并发

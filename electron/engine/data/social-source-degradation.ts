@@ -91,7 +91,7 @@ const REDDIT_SOURCES: SocialSourceConfig = {
     id: 'reddit_api', name: 'Reddit API (OAuth)',
     url: 'https://oauth.reddit.com/r/{subreddit}/search.json?q={ticker}&sort=new&limit=25',
     method: 'GET',
-    headers: { 'User-Agent': 'DawnWhales/2.8.0' },
+    headers: { 'User-Agent': 'QuantMoo/2.8.0' },
     timeoutMs: 8000, rateLimitPerMin: 30,
   },
   mirrors: [

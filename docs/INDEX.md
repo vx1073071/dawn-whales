@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 文档导航
+# quant-moo 文档导航
 
 **版本**: v1.9.4 | **更新**: 2026-06-10
 
@@ -90,6 +90,6 @@ purpose: (auto-generated, needs review)
 
 ## 🔗 快速链接
 
-- **下载**: [TradingEasy.com/download](https://TradingEasy.com/download)
-- **GitHub**: [github.com/vx1073071/dawn-whales](https://github.com/vx1073071/dawn-whales)
-- **技术支持**: `support@TradingEasy.com`
+- **下载**: [quant-moo.com/download](https://quant-moo.com/download)
+- **GitHub**: [github.com/vx1073071/quant-moo](https://github.com/vx1073071/quant-moo)
+- **技术支持**: `support@quant-moo.com`

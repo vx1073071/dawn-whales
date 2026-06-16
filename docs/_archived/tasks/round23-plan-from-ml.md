@@ -48,7 +48,7 @@ R23 = **Sprint 1 最终收关**，不再新增功能，只修 bug + 打验收基
 
 #### 1. [P0] Electron dist 打包 + 启动验收（~100 行配置）
 - 执行 `npm run dist:win`，验证 `signAndEditExecutable:false` 绕过 macOS symlink 问题
-- 生成 TradingEasy Setup x.x.x.exe
+- 生成 quant-moo Setup x.x.x.exe
 - 双击安装 → 启动 → Dashboard 显示 → 0 crash
 - 更新 `docs/demo/v0.7.0-launch-checklist.md`
 

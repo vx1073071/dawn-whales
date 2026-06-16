@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 免费入门指南
+# quant-moo 免费入门指南
 
 **版本**: v1.6.0-beta  
 **更新时间**: 2026-06-09  
@@ -58,16 +58,16 @@ purpose: (auto-generated, needs review)
 
 | 平台 | 链接 |
 |------|------|
-| Windows | TradingEasy.com/download/win |
-| macOS | TradingEasy.com/download/mac |
-| Linux | TradingEasy.com/download/linux |
+| Windows | quant-moo.com/download/win |
+| macOS | quant-moo.com/download/mac |
+| Linux | quant-moo.com/download/linux |
 
 ---
 
 ## 📝 注册流程
 
 ```
-TradingEasy.com → 注册（邮箱+密码）→ 桌面端登录 → 充 USDT → 开始
+quant-moo.com → 注册（邮箱+密码）→ 桌面端登录 → 充 USDT → 开始
 ```
 
 ---

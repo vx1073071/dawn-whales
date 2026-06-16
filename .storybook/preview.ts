@@ -36,8 +36,8 @@ const mockReactI18next = {
 // Register module mock via vite resolve
 (globalThis as any).__mocks = { 'react-i18next': mockReactI18next };
 
-/** Global dark background for Dawn Whales theme */
-const DawnWhalesTheme = ({ children, theme }: { children: React.ReactNode; theme: string }) => {
+/** Global dark background for QUANT MOO theme */
+const QuantMooTheme = ({ children, theme }: { children: React.ReactNode; theme: string }) => {
   const bg = theme === 'light' ? '#F9FAFB' : '#0B0E14';
   return React.createElement('div', {
     style: {
@@ -72,7 +72,7 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       name: 'Theme',
-      description: 'Dawn Whales dark/light theme',
+      description: 'QUANT MOO dark/light theme',
       defaultValue: 'dark',
       toolbar: {
         icon: 'mirror',
@@ -87,7 +87,7 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const theme = context.globals.theme || 'dark';
-      return React.createElement(DawnWhalesTheme, { theme }, React.createElement(Story));
+      return React.createElement(QuantMooTheme, { theme }, React.createElement(Story));
     },
   ],
 };

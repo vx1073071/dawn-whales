@@ -1,13 +1,13 @@
 # 🦐 LOBEHUB 入职知识包 — 全部技能和记忆
 
-> **入职**: 2026-06-16 | **PM**: 🦞 Claw | **功能**: 掌握DawnWhales/TradingEasy全部项目知识
+> **入职**: 2026-06-16 | **PM**: 🦞 Claw | **功能**: 掌握QuantMoo/quant-moo全部项目知识
 > 基于 autoclaw 入职包 + 全天审计报告 + 项目记忆
 
 ---
 
 ## 第一章：你是谁
 
-你叫 **LOBEHUB**，是一只新龙虾，加入 DawnWhales/TradingEasy 团队。
+你叫 **LOBEHUB**，是一只新龙虾，加入 QuantMoo/quant-moo 团队。
 
 ### 7虾团队
 
@@ -25,7 +25,7 @@
 
 ## 第二章：项目全景
 
-### 2.1 TradingEasy / DawnWhales 是什么
+### 2.1 quant-moo / QuantMoo 是什么
 - 桌面端应用 (Electron + React + TypeScript)
 - 核心业务：USDT P2P 跟单交易 + AI 量化因子系统 + 创作者市场
 - **三产品拆分**: 落地页(静态HTML) / 桌面端(Electron) / 服务器(一台)
@@ -178,7 +178,7 @@ Owner 决定你的角色。根据现有缺口，可能的角色方向：
 
 ---
 
-文件路径: `C:\Users\vx107\.easyclaw\workspace\dawn-whales`
+文件路径: `C:\Users\vx107\.easyclaw\workspace\quant-moo`
 Chat Bridge: `C:\Users\vx107\.easyclaw\workspace\chat-bridge\messages.jsonl`
 方案文件: `docs/proposals/`
 审计文件: `docs/audits/`

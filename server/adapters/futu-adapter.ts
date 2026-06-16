@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R153 J01 — Futu OpenD Cloud Adapter
+ * QUANT MOO R153 J01 — Futu OpenD Cloud Adapter
  *
  * Server-side adapter for Futu OpenD gateway.
  * Protocol: HTTP JSON-RPC via OpenD RESTful API (127.0.0.1:11111).

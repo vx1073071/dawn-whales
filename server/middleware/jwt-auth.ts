@@ -1,4 +1,4 @@
-// ── DAWN WHALES JWT Authentication Middleware ─────────────────────────
+// ── QUANT MOO JWT Authentication Middleware ─────────────────────────
 // R129-P03: JWT sign/verify/refresh with Bearer token
 
 import { Request, Response, NextFunction } from 'express';

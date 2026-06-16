@@ -201,7 +201,7 @@ function verifyUpdateFeed(): boolean {
 function printSummary(artifacts: Artifact[]) {
   const version = getVersion();
   console.log('\n' + '='.repeat(62));
-  console.log(`  🐋 DAWN WHALES v${version} — Build Summary`);
+  console.log(`  🐋 QUANT MOO v${version} — Build Summary`);
   console.log('='.repeat(62));
 
   const groups: Record<string, Artifact[]> = {};

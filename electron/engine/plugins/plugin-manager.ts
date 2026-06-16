@@ -63,7 +63,7 @@ export interface PluginManifest {
   description: string;
   /** Author info */
   author: { name: string; email?: string; url?: string };
-  /** Minimum DAWN WHALES version required */
+  /** Minimum QUANT MOO version required */
   minAppVersion: string;
   /** Plugin dependencies */
   dependencies?: Record<string, string>;
@@ -122,7 +122,7 @@ export interface PluginExposedAPI {
   };
   /** Notify user */
   notify: (title: string, body: string, options?: { urgency?: 'low' | 'normal' | 'critical' }) => void;
-  /** Emit event to DAWN WHALES */
+  /** Emit event to QUANT MOO */
   emit: (event: string, data: unknown) => void;
   /** Register hook */
   on: (hook: PluginHook, handler: (...args: any[]) => void) => () => void;
@@ -139,9 +139,9 @@ export class PluginManager extends EventEmitter {
   constructor(options?: { pluginDir?: string; marketplaceUrl?: string }) {
     super();
     this.pluginDir = options?.pluginDir ||
-      path.join(process.env.APPDATA || '', 'dawn-whales', 'plugins');
+      path.join(process.env.APPDATA || '', 'quant-moo', 'plugins');
     this.marketplaceUrl = options?.marketplaceUrl ||
-      'https://marketplace.dawnwhales.app/api/v1';
+      'https://marketplace.QuantMoo.app/api/v1';
 
     // Ensure plugin directory exists
     if (!fs.existsSync(this.pluginDir)) {
@@ -382,7 +382,7 @@ export class PluginManager extends EventEmitter {
     const currentVersion = '2.6.0'; // From app
     if (this.compareVersions(currentVersion, manifest.minAppVersion) < 0) {
       throw new Error(
-        `Plugin requires DAWN WHALES >= ${manifest.minAppVersion} (current: ${currentVersion})`,
+        `Plugin requires QUANT MOO >= ${manifest.minAppVersion} (current: ${currentVersion})`,
       );
     }
 

@@ -64,16 +64,16 @@ export class StrategyGrpcService {
 
   constructor(grpc: GrpcServer) {
     this.grpc = grpc;
-    grpc.register('dawnwhales.v1.StrategyService', 'CreateStrategy', async (req) => ({
+    grpc.register('QuantMoo.v1.StrategyService', 'CreateStrategy', async (req) => ({
       id: `strat-${Date.now()}`,
       name: req.name,
       status: 'created',
     }));
-    grpc.register('dawnwhales.v1.StrategyService', 'ListStrategies', async () => ({
+    grpc.register('QuantMoo.v1.StrategyService', 'ListStrategies', async () => ({
       strategies: [],
       total: 0,
     }));
-    grpc.register('dawnwhales.v1.StrategyService', 'Backtest', async (req) => ({
+    grpc.register('QuantMoo.v1.StrategyService', 'Backtest', async (req) => ({
       id: `bt-${Date.now()}`,
       sharpeRatio: 1.5,
       totalReturn: 0.15,
@@ -87,13 +87,13 @@ export class MarketDataGrpcService {
 
   constructor(grpc: GrpcServer) {
     this.grpc = grpc;
-    grpc.register('dawnwhales.v1.MarketDataService', 'GetQuote', async (req) => ({
+    grpc.register('QuantMoo.v1.MarketDataService', 'GetQuote', async (req) => ({
       symbol: req.symbol,
       price: 150.0,
       change: 0.02,
       volume: 1000000,
     }));
-    grpc.register('dawnwhales.v1.MarketDataService', 'StreamQuotes', async (req) => ({
+    grpc.register('QuantMoo.v1.MarketDataService', 'StreamQuotes', async (req) => ({
       symbols: req.symbols || [],
       quotes: [],
     }));

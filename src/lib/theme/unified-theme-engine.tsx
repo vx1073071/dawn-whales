@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES — R229 auto-3.3e: Unified Theme Engine
+ * QUANT MOO — R229 auto-3.3e: Unified Theme Engine
  * 
  * One-line global theme switching with built-in color-blind support.
  * 

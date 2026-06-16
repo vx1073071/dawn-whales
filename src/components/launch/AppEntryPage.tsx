@@ -27,7 +27,7 @@ export default function AppEntryPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-2xl shadow-blue-500/30 mb-4">
             <span className="text-4xl">🐋</span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-1">Dawn Whales</h1>
+          <h1 className="text-3xl font-bold text-white mb-1">QUANT MOO</h1>
           <p className="text-sm text-gray-400">AI 量化交易平台 v2.7.0</p>
           <div className="flex items-center justify-center gap-2 mt-3">
             <span className="w-2 h-2 rounded-full bg-green-400"/>

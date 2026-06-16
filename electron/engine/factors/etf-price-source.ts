@@ -205,7 +205,7 @@ export class ETFPriceSource {
   constructor(cacheDir?: string) {
     const dir = cacheDir || path.join(
       process.env.APPDATA || process.env.HOME || '/tmp',
-      'tradingeasy',
+      'quant-moo',
       'etf-data',
     );
     this.cachePath = path.join(dir, 'etf-price-cache.json');

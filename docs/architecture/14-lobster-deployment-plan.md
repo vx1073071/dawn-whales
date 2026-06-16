@@ -126,7 +126,7 @@ npm run dev
 **结构**:
 ```
 ~/.easyclaw/workspace/
-├── dawn-whales/              # 主仓库 (PM 使用)
+├── quant-moo/              # 主仓库 (PM 使用)
 ├── agent-market/             # 📊 MARKET
 ├── agent-account/            # 💰 ACCOUNT
 ├── agent-history/            # 📚 HISTORY
@@ -149,7 +149,7 @@ npm run dev
 ```bash
 # scripts/create-agent-workspaces.bat
 for %%R in (market account history futu intl strategy risk exec auto ui-trade ui-mon ui-config qa devops) do (
-  xcopy /E /I dawn-whales agent-%%R
+  xcopy /E /I quant-moo agent-%%R
   cd agent-%%R
   git checkout -b agent-%%R
   cd ..

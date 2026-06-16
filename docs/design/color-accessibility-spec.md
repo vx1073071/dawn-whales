@@ -1,4 +1,4 @@
-# TradingEasy 无障碍色觉规范 (Color Accessibility Spec)
+# quant-moo 无障碍色觉规范 (Color Accessibility Spec)
 
 > **版本**: v1.0 | **日期**: 2026-06-15 | **作者**: QClaw(设计虾)  
 > **任务**: R182 P1-10 | **工时**: 1h  
@@ -38,7 +38,7 @@
 ```
 全球约8%男性有红绿色觉障碍 (Deuteranopia/Protanopia)。
 中国男性: ~6-8%，约5500万人。
-TradingEasy预估目标用户中男性>80%。
+quant-moo预估目标用户中男性>80%。
 → 约5-6%用户无法区分红/绿 → 无法正确解读K线、盈亏、因子方向。
 
 模拟效果:
@@ -319,7 +319,7 @@ K线 阴线          🟦青灰   ↘下降斜纹        始终 (蜡烛实体)
 ## 六、CSS变量定义
 
 ```css
-/* ─── tradingeasy/color-tokens.css ─── */
+/* ─── quant-moo/color-tokens.css ─── */
 
 :root {
   /* ── 核心语义色 ────────────────────────── */

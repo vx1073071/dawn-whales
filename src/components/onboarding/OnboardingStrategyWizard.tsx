@@ -11,7 +11,7 @@ const STORAGE_KEY = 'dw_onboarding_v250_complete';
 // ── i18n ────────────────────────────────────────────────────────────
 const I18N: Record<string, Record<string, string>> = {
   'zh-CN': {
-    welcome: '👋 欢迎来到 Dawn Whales!',
+    welcome: '👋 欢迎来到 QUANT MOO!',
     tagline: '3步发现你的第一个量化策略',
     startBtn: '🚀 开始发现策略',
     skipBtn: '跳过，我自己探索',
@@ -24,7 +24,7 @@ const I18N: Record<string, Record<string, string>> = {
     hint: '只需3步，找到适合你的量化策略',
   },
   en: {
-    welcome: '👋 Welcome to Dawn Whales!',
+    welcome: '👋 Welcome to QUANT MOO!',
     tagline: 'Discover your first quant strategy in 3 steps',
     startBtn: '🚀 Discover Strategy',
     skipBtn: 'Skip, I\'ll explore',
@@ -37,7 +37,7 @@ const I18N: Record<string, Record<string, string>> = {
     hint: 'Just 3 steps to find your perfect quant strategy',
   },
   ja: {
-    welcome: '👋 Dawn Whalesへようこそ!',
+    welcome: '👋 QUANT MOOへようこそ!',
     tagline: '3ステップで最初のクオンツ戦略を発見',
     startBtn: '🚀 戦略を発見',
     skipBtn: 'スキップ',

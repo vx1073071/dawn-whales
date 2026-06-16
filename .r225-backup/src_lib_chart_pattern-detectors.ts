@@ -1,6 +1,6 @@
 // @ts-nocheck
 // R127-Q01: nocheck cleared — extracted from pattern-recognition.ts, internal types preserved
-// ── TradingEasy — Pattern Detectors (extracted from pattern-recognition.ts) ──
+// ── quant-moo — Pattern Detectors (extracted from pattern-recognition.ts) ──
 // 20 chart pattern detection functions (W底/头肩/M顶/三角形/旗形 etc.)
 // Imported by pattern-recognition.ts
 //

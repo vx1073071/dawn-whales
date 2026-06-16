@@ -1,5 +1,5 @@
 /**
- * TradingEasy R151 Claw(PM) — Unified Fee Constants (v17.6 PERMANENT LOCK)
+ * quant-moo R151 Claw(PM) — Unified Fee Constants (v17.6 PERMANENT LOCK)
  * 
  * SINGLE SOURCE OF TRUTH for all fee rates.
  * Every component, page, and service references this file.

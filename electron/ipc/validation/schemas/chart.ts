@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — Chart / Indicator / Depth IPC Schemas (Tier 2)
+ * QUANT MOO R123-Q01 — Chart / Indicator / Depth IPC Schemas (Tier 2)
  * 
  * Covers: chart:getKlines, indicator:compute, depth:getOrderBook, alert:subscribe, scanner:search
  */

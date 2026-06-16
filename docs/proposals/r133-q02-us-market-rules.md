@@ -23,7 +23,7 @@
 | 3月–11月 (EDT) | ET + 12h = HKT |
 | 11月–3月 (EST) | ET + 13h = HKT |
 
-### TradingEasy 订单 session 参数
+### quant-moo 订单 session 参数
 
 | 参数值 | 说明 |
 |--------|------|
@@ -58,7 +58,7 @@
 | IB | `isShortable()` 返回 `shortableShares` |
 | Tiger | 查询 `short_available` |
 
-### TradingEasy 风控
+### quant-moo 风控
 
 ```
 做空下单前:
@@ -90,7 +90,7 @@ Day T+2:        资金/股票交割 → 可提现/可划转
 | 转仓 | T+2 后才能转移 |
 | 分红除权 | Ex-Date = T+2 前一日 |
 
-### TradingEasy 实现
+### quant-moo 实现
 
 ```
 getAccount():
@@ -129,7 +129,7 @@ getAccount():
 | 最低资产 | 触发后需维持 $25,000 |
 | 违反后果 | 账户限制 90 天 (只能卖不能买) |
 
-### TradingEasy PDT 监控
+### quant-moo PDT 监控
 
 ```
 跟单执行前:
@@ -162,7 +162,7 @@ getAccount():
 
 ---
 
-## 八、TradingEasy 时间显示
+## 八、quant-moo 时间显示
 
 ```
 UI 显示时间: 用户本地时间 (HKT)

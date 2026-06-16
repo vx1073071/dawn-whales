@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/';
 
 // Fix bridge-depth-adapter.ts
 let p=base+'lib/chart/bridge-depth-adapter.ts';

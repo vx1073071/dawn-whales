@@ -89,7 +89,7 @@ function buildPlatform(platform: 'win' | 'mac' | 'linux'): BuildResult[] {
 
 function printSummary(results: BuildResult[]) {
   console.log('\n' + '='.repeat(60));
-  console.log('  📦 DAWN WHALES — Multi-Platform Build Summary');
+  console.log('  📦 QUANT MOO — Multi-Platform Build Summary');
   console.log('='.repeat(60));
 
   const byPlatform: Record<string, BuildResult[]> = {};

@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 合规文档
+# quant-moo 合规文档
 
 **版本**: v1.9.0 GA | **更新**: 2026-06-10 | **轮次**: R88
 
@@ -37,10 +37,10 @@ purpose: (auto-generated, needs review)
 
 | 权利 | 说明 | 行使方式 |
 |------|------|------|
-| 访问权 (Art.15) | 请求导出所有个人数据 | `privacy@TradingEasy.com` |
+| 访问权 (Art.15) | 请求导出所有个人数据 | `privacy@quant-moo.com` |
 | 更正权 (Art.16) | 修正不准确数据 | 设置 → 账户 |
-| 删除权 (Art.17) | 删除账号及关联数据 | `privacy@TradingEasy.com` |
-| 限制处理 (Art.18) | 限制特定处理 | `privacy@TradingEasy.com` |
+| 删除权 (Art.17) | 删除账号及关联数据 | `privacy@quant-moo.com` |
+| 限制处理 (Art.18) | 限制特定处理 | `privacy@quant-moo.com` |
 | 数据可携 (Art.20) | JSON/CSV 格式导出 | 设置 → 导出数据 |
 
 ### 数据处理者
@@ -103,7 +103,7 @@ purpose: (auto-generated, needs review)
 
 ### 数据删除
 
-用户可随时请求删除：`privacy@TradingEasy.com`
+用户可随时请求删除：`privacy@quant-moo.com`
 - 30 天内确认并执行
 - 策略市场发布的策略：匿名化（保留策略逻辑，移除作者信息）
 - 交易记录：匿名化后保留以满足法定义务
@@ -156,7 +156,7 @@ purpose: (auto-generated, needs review)
 1. 立即下线受影响服务
 2. 轮换所有密钥 (API Key / JWT Secret / Wallet Key)
 3. 审计日志确定泄露范围和时间线
-4. 72h 内通知受影响用户 (`privacy@TradingEasy.com`)
+4. 72h 内通知受影响用户 (`privacy@quant-moo.com`)
 5. 72h 内通知监管机构 (如适用)
 6. 发布事后分析报告
 
@@ -166,10 +166,10 @@ purpose: (auto-generated, needs review)
 
 | 用途 | 邮箱 |
 |------|------|
-| 隐私/GDPR | `privacy@TradingEasy.com` |
-| 安全漏洞 | `security@TradingEasy.com` |
-| 法律事务 | `legal@TradingEasy.com` |
-| DPO (数据保护官) | `dpo@TradingEasy.com` |
+| 隐私/GDPR | `privacy@quant-moo.com` |
+| 安全漏洞 | `security@quant-moo.com` |
+| 法律事务 | `legal@quant-moo.com` |
+| DPO (数据保护官) | `dpo@quant-moo.com` |
 
 ---
 

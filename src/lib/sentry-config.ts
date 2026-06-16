@@ -10,7 +10,7 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 export const sentryPlugin = sentryVitePlugin({
   // Only upload in production builds
   org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT || 'dawn-whales',
+  project: process.env.SENTRY_PROJECT || 'quant-moo',
   authToken: process.env.SENTRY_AUTH_TOKEN,
   release: {
     name: process.env.npm_package_version || '0.0.0',

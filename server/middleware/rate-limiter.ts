@@ -1,4 +1,4 @@
-// ── DAWN WHALES Rate Limiter ──────────────────────────────────────────
+// ── QUANT MOO Rate Limiter ──────────────────────────────────────────
 // R129: Per-endpoint rate limiting with memory store
 
 import { Request, Response, NextFunction } from 'express';

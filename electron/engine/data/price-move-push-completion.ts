@@ -544,7 +544,7 @@ export class PriceMovePushCompletion {
       includeChart: false,
       format: (push: PushNotification) => {
         const syms = push.moves.map(m => `${m.symbol}${m.direction === 'up' ? '+' : '-'}${Math.abs(m.changePercent)}%`).join(', ');
-        return `[DAWN WHALES] ${push.summary}: ${syms}`;
+        return `[QUANT MOO] ${push.summary}: ${syms}`;
       },
     });
 

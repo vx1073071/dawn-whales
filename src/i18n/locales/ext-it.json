@@ -21,7 +21,7 @@
   "community_follow": "Segui",
   "community_unfollow": "Non seguire più",
   "community_report": "Segnala",
-  "onboarding_welcome": "Benvenuto su TradingEasy!",
+  "onboarding_welcome": "Benvenuto su quant-moo!",
   "onboarding_step1": "Connetti il broker",
   "onboarding_step2": "Crea prima strategia",
   "onboarding_step3": "Esegui backtest",
@@ -65,7 +65,7 @@
   "LandingPageV18.v111_7": "11 Languages",
   "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase.",
   "upgrade": {
-    "welcome": "🎉 Dawn Whales v2.3.0 CRYSTAL",
+    "welcome": "🎉 QUANT MOO v2.3.0 CRYSTAL",
     "subtitle": "The Crystal Ship — 12 rounds of craftsmanship, 75+ enhancements",
     "stepHighlights": "What's New",
     "stepWalkthrough": "Walkthrough",

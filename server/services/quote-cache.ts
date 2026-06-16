@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R153 Claw(PM) — Quote Cache + Latency Monitor
+ * QUANT MOO R153 Claw(PM) — Quote Cache + Latency Monitor
  * 
  * Caches quote data to reduce duplicate broker API calls.
  * Tracks per-broker latency for SymbolQuoteRouter health decisions.

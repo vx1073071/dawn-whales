@@ -7,7 +7,7 @@
 //   3. Market impact (slippage) — proportional to trade size vs volume
 //   4. Factor-specific turnover rate — how often each factor triggers rebalancing
 //
-// Default rates align with DawnWhales v17.6 commission schedule:
+// Default rates align with QuantMoo v17.6 commission schedule:
 //   Stocks/ETF: 0.1%, Crypto spot: 0.1%, Crypto futures: 0.02%
 
 import { log } from '../../../../src/lib/logger';

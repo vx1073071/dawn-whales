@@ -1,4 +1,4 @@
-# TradingEasy 策略可见性交互设计规范
+# quant-moo 策略可见性交互设计规范
 
 > 版本: v1.0 | 日期: 2026-06-15 | 作者: QClaw(设计虾)
 > 任务: R179 P1 UX安全收尾 | 工时: 2h
@@ -178,10 +178,10 @@ FactorLab [导出💾] 按钮 → 下拉菜单:
 
 自动叠加:
   • 水印: "仅供展示 · 非完整策略" (40% opacity, 45°倾斜, 平铺)
-  • 品牌: "TradingEasy" logo (右下角, 30% opacity)
+  • 品牌: "quant-moo" logo (右下角, 30% opacity)
   • 创作者: @AlphaQuant (左下角)
   • 日期: 2026-06-15 (左下角)
-  • 声明: "完整策略请访问 TradingEasy 策略市场" (底部居中)
+  • 声明: "完整策略请访问 quant-moo 策略市场" (底部居中)
 ```
 
 ### 4.3 分享PNG预览 (导出前)
@@ -204,7 +204,7 @@ FactorLab [导出💾] 按钮 → 下拉菜单:
 │ │                                 │ │
 │ │  📈 (模糊回测曲线)              │ │
 │ │                                 │ │
-│ │  完整策略请访问 TradingEasy      │ │
+│ │  完整策略请访问 quant-moo      │ │
 │ │             🦐                  │ │
 │ └─────────────────────────────────┘ │
 │                                     │
@@ -268,7 +268,7 @@ FactorLab [导出💾] 按钮 → 下拉菜单:
 
 ```
 分享链接格式:
-  https://tradingeasy.io/share/strat_{shortId}
+  https://quant-moo.io/share/strat_{shortId}
 
 安全属性:
   • 7天有效期 (可配置)

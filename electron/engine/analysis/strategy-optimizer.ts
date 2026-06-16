@@ -2,7 +2,7 @@
 import { EngineError, ErrorCode } from '../../errors';
 /**
  * Strategy Optimizer Engine
- * Dawn Whales Project (J-39-01, R39)
+ * QUANT MOO Project (J-39-01, R39)
  *
  * Multi-objective strategy parameter optimization engine.
  * Supports grid search, random search, and bayesian optimization.

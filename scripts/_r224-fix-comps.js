@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/';
 
 // Fix price-locale.ts — add divisor field to type
 let p=base+'lib/i18n/price-locale.ts';

@@ -1,5 +1,5 @@
 /**
- * AI Gateway Client — DAWN WHALES
+ * AI Gateway Client — QUANT MOO
  * 
  * Routes all LLM calls through the server-side AI gateway endpoint,
  * eliminating direct api.deepseek.com calls with client-side keys.

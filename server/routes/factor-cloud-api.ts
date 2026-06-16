@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R166 P1-A2 — Factor Cloud API
+ * QUANT MOO R166 P1-A2 — Factor Cloud API
  *
  * Cloud factor marketplace backend:
  *   GET  /api/factor-cloud/search?text=momentum&market=HK&page=1

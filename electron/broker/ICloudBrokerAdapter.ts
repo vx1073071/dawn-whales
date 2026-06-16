@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R129 J01 — ICloudBrokerAdapter
+ * QUANT MOO R129 J01 — ICloudBrokerAdapter
  * 
  * Server-side cloud broker adapter interface.
  * Extends IBrokerAdapterV2 semantics but lives on the Express server,

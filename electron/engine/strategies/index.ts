@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R169 P3-06 — strategies/ unified barrel export
+ * QUANT MOO R169 P3-06 — strategies/ unified barrel export
  *
  * All strategy modules in one place.
  * Legacy paths through electron/engine/analysis/ still work (copies preserved).

@@ -1,4 +1,4 @@
-// TradingEasy R120 QTE-41 — WebSocket Connection Pool
+// quant-moo R120 QTE-41 — WebSocket Connection Pool
 // 同券商多symbol复用WS连接: 40+币对共享一个Binance WS
 // 目标: 避免每个symbol独立建立连接, 减少连接数和带宽
 

@@ -1,6 +1,6 @@
 /**
  * J-56-03: Strategy Signal Converter (R56 TradingAgents Integration)
- * Agent → dawn-whales strategy/policy
+ * Agent → quant-moo strategy/policy
  *
  * Features:
  * - Convert TradingAgents analysis results to StrategyMarketplace format

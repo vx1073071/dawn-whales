@@ -1,4 +1,4 @@
-# TradingEasy AI安全 + 人类UX 独立审查终版
+# quant-moo AI安全 + 人类UX 独立审查终版
 
 > youdao | 2026-06-15 02:29 HKT | 致 PM
 
@@ -67,7 +67,7 @@ grep -n "walletBalance\|userEmail\|accountId" electron/engine/agents/ai-factor-a
 
 ### 2.4 致命4: 无产品级AI聊天界面
 
-**问题**: 当前AI推荐功能是嵌入在引擎中，用户通过因子界面触发。如果TradingEasy以后加"AI对话"功能（聊天窗口），当前所有安全防线都不会自动生效。
+**问题**: 当前AI推荐功能是嵌入在引擎中，用户通过因子界面触发。如果quant-moo以后加"AI对话"功能（聊天窗口），当前所有安全防线都不会自动生效。
 
 **建议**: 如果将来做AI聊天界面，必须在UI层加第6层防护——UI脱敏层（不显示精确数字，用色条/等级替代）。
 
@@ -206,7 +206,7 @@ grep -n "walletBalance\|userEmail\|accountId" electron/engine/agents/ai-factor-a
 
 ## 六、总结
 
-TradingEasy v2.3.0 有9个安全模块的"砖"，但缺一个统一的"房子框架"。
+quant-moo v2.3.0 有9个安全模块的"砖"，但缺一个统一的"房子框架"。
 
 **核心问题**: 模块孤岛 → 开发者需要记住手动调用9个模块 → 人类不可靠。
 
@@ -216,4 +216,4 @@ TradingEasy v2.3.0 有9个安全模块的"砖"，但缺一个统一的"房子框
 
 ---
 
-*审查完成: 2026-06-15 02:30 HKT | youdao | TradingEasy v2.3.0 post-release audit*
+*审查完成: 2026-06-15 02:30 HKT | youdao | quant-moo v2.3.0 post-release audit*

@@ -1,4 +1,4 @@
-# TradingEasy AI Billing Rules v17.9
+# quant-moo AI Billing Rules v17.9
 
 > **Round**: R145+R184+R200 | **Author**: QClaw/Claw | **Date**: 2026-06-15
 > **Status**: SPECIFICATION — v17.9 Final, Locked by Owner
@@ -8,7 +8,7 @@
 
 ## Overview
 
-All AI-powered features in TradingEasy follow a **unified pay-per-use model**: deduct before calling, refund on failure, no free tiers, no subscriptions.
+All AI-powered features in quant-moo follow a **unified pay-per-use model**: deduct before calling, refund on failure, no free tiers, no subscriptions.
 
 ### Core Principles
 

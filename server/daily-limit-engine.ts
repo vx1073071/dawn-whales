@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R139 J02 — Daily Copy Trade Limit Engine
+ * QUANT MOO R139 J02 — Daily Copy Trade Limit Engine
  * 
  * Tracks per-user daily copy-trade limits and enforces them before
  * signal execution.  Exposes both a server-side engine and IPC handlers

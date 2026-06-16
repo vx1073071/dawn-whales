@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R142 Claw(PM) — Risk Engine
+ * QUANT MOO R142 Claw(PM) — Risk Engine
  * 
  * v17.6 Withdrawal Risk Control (PERMANENT LOCK):
  *   - Single withdrawal ≤ 100,000 USDT

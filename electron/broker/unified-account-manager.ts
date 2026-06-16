@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Unified Account Manager (Cross-Broker) ─────────────────────
+// ── QUANT MOO — Unified Account Manager (Cross-Broker) ─────────────────────
 // J-28-02: Manages multiple broker connections simultaneously.
 // Aggregates accounts, positions, funds, and P&L across Futu, Moomoo, and IB.
 // All currency values are normalized to USD using hardcoded FX rates.

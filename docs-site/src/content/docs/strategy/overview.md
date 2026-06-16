@@ -1,11 +1,11 @@
 ---
 title: 策略开发指南
-description: DAWN WHALES 策略体系与因子框架开发指南
+description: QUANT MOO 策略体系与因子框架开发指南
 ---
 
 # 策略开发指南
 
-DAWN WHALES v2.6 拥有 **240 个因子** 和 **196 个策略模板**, 覆盖 4 大类资产市场。
+QUANT MOO v2.6 拥有 **240 个因子** 和 **196 个策略模板**, 覆盖 4 大类资产市场。
 
 ## 策略体系
 

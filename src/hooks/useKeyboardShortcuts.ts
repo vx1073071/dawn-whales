@@ -1,4 +1,4 @@
-// ── useKeyboardShortcuts — Global hotkeys for TradingEasy ──────────────────
+// ── useKeyboardShortcuts — Global hotkeys for quant-moo ──────────────────
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/appStore';
 import i18n from '../i18n';

@@ -1,4 +1,4 @@
-# TradingEasy AI因子推荐 · 5种新Intent话术设计 v2
+# quant-moo AI因子推荐 · 5种新Intent话术设计 v2
 
 > 制定: QClaw(设计虾) | 版本: v2.0 | 日期: 2026-06-15
 > 任务: R175 E1辅助 | 工时: 2h | 配合: JVS E1 AI推荐引擎intent完善

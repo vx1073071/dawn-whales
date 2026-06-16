@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R134 J03 — MT5 (MetaTrader 5) Cloud Broker Adapter
+ * QUANT MOO R134 J03 — MT5 (MetaTrader 5) Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for MT5 via MetaApi (metaapi.cloud).
  * 

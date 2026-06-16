@@ -17,7 +17,7 @@
 | 市场 | US equities, ETFs, options, futures |
 | 客户规模 | 860万 |
 
-### TradingEasy 适配器
+### quant-moo 适配器
 
 ```
 ETRADEAdapter extends OAuthBrokerBase

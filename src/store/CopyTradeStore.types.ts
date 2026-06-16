@@ -1,4 +1,4 @@
-// ── TradingEasy CopyTradeStore Types ──────────────────────────────────
+// ── quant-moo CopyTradeStore Types ──────────────────────────────────
 // R137-P02: Unified Zustand store types for all 12 copy-trade components
 // Replaces scattered localStorage + per-component mock data
 

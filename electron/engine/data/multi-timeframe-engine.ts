@@ -1,6 +1,6 @@
 /**
  * Multi-Timeframe Signal Fusion Engine
- * Dawn Whales Project (J-39-02, R39)
+ * QUANT MOO Project (J-39-02, R39)
  *
  * Aggregates and fuses signals from multiple timeframes (1m/5m/15m/30m/1h/4h/1d).
  * Supports majority, weighted, and any fusion modes.

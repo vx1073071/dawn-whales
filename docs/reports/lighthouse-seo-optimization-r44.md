@@ -94,7 +94,7 @@ purpose: (auto-generated, needs review)
 ```html
 <!-- index.html -->
 <head>
-  <title>TradingEasy</title>
+  <title>quant-moo</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -111,31 +111,31 @@ purpose: (auto-generated, needs review)
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
   <!-- SEO Meta -->
-  <title>TradingEasy - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
-  <meta name="description" content="TradingEasy 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
-  <meta name="keywords" content="量化交易,智能策略,AI交易,自动回测,风控系统,多账户,实时行情,TradingEasy">
-  <meta name="author" content="TradingEasy Team">
+  <title>quant-moo - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
+  <meta name="description" content="quant-moo 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
+  <meta name="keywords" content="量化交易,智能策略,AI交易,自动回测,风控系统,多账户,实时行情,quant-moo">
+  <meta name="author" content="quant-moo Team">
   <meta name="robots" content="index, follow">
   
   <!-- Open Graph (Facebook/LinkedIn) -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://dawn-whales.ai/">
-  <meta property="og:title" content="TradingEasy - 智能量化交易平台">
+  <meta property="og:url" content="https://quant-moo.ai/">
+  <meta property="og:title" content="quant-moo - 智能量化交易平台">
   <meta property="og:description" content="AI 策略生成 + 自动回测优化 + 实时性能监控 + 多账户管理">
-  <meta property="og:image" content="https://dawn-whales.ai/og-image.png">
+  <meta property="og:image" content="https://quant-moo.ai/og-image.png">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://dawn-whales.ai/">
-  <meta name="twitter:title" content="TradingEasy - 智能量化交易平台">
+  <meta name="twitter:url" content="https://quant-moo.ai/">
+  <meta name="twitter:title" content="quant-moo - 智能量化交易平台">
   <meta name="twitter:description" content="AI 策略生成 + 自动回测优化 + 实时性能监控">
-  <meta name="twitter:image" content="https://dawn-whales.ai/twitter-card.png">
+  <meta name="twitter:image" content="https://quant-moo.ai/twitter-card.png">
   
   <!-- 性能优化 -->
-  <link rel="preconnect" href="https://api.dawn-whales.ai">
-  <link rel="dns-prefetch" href="https://api.dawn-whales.ai">
+  <link rel="preconnect" href="https://api.quant-moo.ai">
+  <link rel="dns-prefetch" href="https://api.quant-moo.ai">
   <link rel="preload" href="/assets/main.css" as="style">
   <link rel="preload" href="/assets/main.js" as="script">
   
@@ -155,7 +155,7 @@ purpose: (auto-generated, needs review)
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "TradingEasy",
+    "name": "quant-moo",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Windows, macOS, Linux",
     "description": "智能量化交易平台",
@@ -183,7 +183,7 @@ purpose: (auto-generated, needs review)
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- 首页 -->
   <url>
-    <loc>https://dawn-whales.ai/</loc>
+    <loc>https://quant-moo.ai/</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -191,28 +191,28 @@ purpose: (auto-generated, needs review)
   
   <!-- 功能页面 -->
   <url>
-    <loc>https://dawn-whales.ai/strategy</loc>
+    <loc>https://quant-moo.ai/strategy</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/backtest</loc>
+    <loc>https://quant-moo.ai/backtest</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/optimization</loc>
+    <loc>https://quant-moo.ai/optimization</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/marketplace</loc>
+    <loc>https://quant-moo.ai/marketplace</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -220,21 +220,21 @@ purpose: (auto-generated, needs review)
   
   <!-- 文档页面 -->
   <url>
-    <loc>https://dawn-whales.ai/docs</loc>
+    <loc>https://quant-moo.ai/docs</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/docs/user-manual</loc>
+    <loc>https://quant-moo.ai/docs/user-manual</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/docs/api</loc>
+    <loc>https://quant-moo.ai/docs/api</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -242,21 +242,21 @@ purpose: (auto-generated, needs review)
   
   <!-- 关于页面 -->
   <url>
-    <loc>https://dawn-whales.ai/about</loc>
+    <loc>https://quant-moo.ai/about</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/pricing</loc>
+    <loc>https://quant-moo.ai/pricing</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://dawn-whales.ai/contact</loc>
+    <loc>https://quant-moo.ai/contact</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -269,7 +269,7 @@ purpose: (auto-generated, needs review)
 #### robots.txt
 
 ```txt
-# TradingEasy Robots.txt
+# quant-moo Robots.txt
 # Last updated: 2026-06-07
 
 # 允许所有爬虫
@@ -298,10 +298,10 @@ Allow: /robots.txt
 Crawl-delay: 1
 
 # Sitemap 位置
-Sitemap: https://dawn-whales.ai/sitemap.xml
+Sitemap: https://quant-moo.ai/sitemap.xml
 
 # 主机偏好
-Host: https://dawn-whales.ai
+Host: https://quant-moo.ai
 ```
 
 ### 优化 4: 图片优化
@@ -321,7 +321,7 @@ Host: https://dawn-whales.ai
 <picture>
   <source srcset="/logo.avif" type="image/avif">
   <source srcset="/logo.webp" type="image/webp">
-  <img src="/logo.png" alt="TradingEasy Logo" width="200" height="60" loading="eager" decoding="async">
+  <img src="/logo.png" alt="quant-moo Logo" width="200" height="60" loading="eager" decoding="async">
 </picture>
 
 <picture>
@@ -348,8 +348,8 @@ Host: https://dawn-whales.ai
 <link rel="modulepreload" href="/assets/main.js">
 
 <!-- 预连接第三方域名 -->
-<link rel="preconnect" href="https://api.dawn-whales.ai">
-<link rel="dns-prefetch" href="https://api.dawn-whales.ai">
+<link rel="preconnect" href="https://api.quant-moo.ai">
+<link rel="dns-prefetch" href="https://api.quant-moo.ai">
 
 <!-- 预加载字体 -->
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
@@ -385,29 +385,29 @@ Host: https://dawn-whales.ai
 
 ```html
 <!-- 首页 -->
-<title>TradingEasy - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
+<title>quant-moo - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
 
 <!-- 策略页 -->
-<title>策略管理 - TradingEasy | AI 策略生成 + 模板库 + 手动编写</title>
+<title>策略管理 - quant-moo | AI 策略生成 + 模板库 + 手动编写</title>
 
 <!-- 回测页 -->
-<title>回测系统 - TradingEasy | 历史数据回测 + 收益分析 + 风险评估</title>
+<title>回测系统 - quant-moo | 历史数据回测 + 收益分析 + 风险评估</title>
 
 <!-- 优化页 -->
-<title>策略优化 - TradingEasy | 参数优化 + Walk-Forward + 多目标优化</title>
+<title>策略优化 - quant-moo | 参数优化 + Walk-Forward + 多目标优化</title>
 ```
 
 #### 描述优化
 
 ```html
 <!-- 首页 -->
-<meta name="description" content="TradingEasy 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
+<meta name="description" content="quant-moo 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
 
 <!-- 策略页 -->
-<meta name="description" content="使用 TradingEasy 策略管理系统，通过 AI 自动生成策略、选择模板快速创建、或手动编写自定义策略。支持双均线、RSI、MACD 等多种策略类型。">
+<meta name="description" content="使用 quant-moo 策略管理系统，通过 AI 自动生成策略、选择模板快速创建、或手动编写自定义策略。支持双均线、RSI、MACD 等多种策略类型。">
 
 <!-- 回测页 -->
-<meta name="description" content="TradingEasy 回测系统提供历史数据回测、收益曲线分析、风险指标评估。支持自定义时间范围、初始资金、手续费设置。">
+<meta name="description" content="quant-moo 回测系统提供历史数据回测、收益曲线分析、风险指标评估。支持自定义时间范围、初始资金、手续费设置。">
 ```
 
 ### 结构化数据
@@ -418,13 +418,13 @@ Host: https://dawn-whales.ai
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "TradingEasy",
+  "name": "quant-moo",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Windows, macOS, Linux",
   "description": "智能量化交易平台",
-  "url": "https://dawn-whales.ai",
-  "image": "https://dawn-whales.ai/og-image.png",
-  "screenshot": "https://dawn-whales.ai/screenshot.png",
+  "url": "https://quant-moo.ai",
+  "image": "https://quant-moo.ai/og-image.png",
+  "screenshot": "https://quant-moo.ai/screenshot.png",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -449,7 +449,7 @@ Host: https://dawn-whales.ai
   "datePublished": "2026-06-07",
   "author": {
     "@type": "Organization",
-    "name": "TradingEasy Team"
+    "name": "quant-moo Team"
   }
 }
 ```
@@ -495,20 +495,20 @@ Host: https://dawn-whales.ai
 npm install -g lighthouse
 
 # 运行审计
-lighthouse https://dawn-whales.ai --view
+lighthouse https://quant-moo.ai --view
 
 # 生成报告
-lighthouse https://dawn-whales.ai --output html --output-path ./report.html
+lighthouse https://quant-moo.ai --output html --output-path ./report.html
 ```
 
 ### SEO 验证
 
 ```bash
 # 检查 sitemap
-curl https://dawn-whales.ai/sitemap.xml
+curl https://quant-moo.ai/sitemap.xml
 
 # 检查 robots.txt
-curl https://dawn-whales.ai/robots.txt
+curl https://quant-moo.ai/robots.txt
 
 # 检查结构化数据
 # 使用 Google Rich Results Test: https://search.google.com/test/rich-results

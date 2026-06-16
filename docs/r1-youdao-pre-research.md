@@ -23,7 +23,7 @@
  * A2. 项目结构
  *
  * agent-account/electron/broker/ — 现有V1代码 (6个文件)
- * dawn-whales/electron/broker/ — V1+V2代码 (10个文件, JVS已经创建V2基础)
+ * quant-moo/electron/broker/ — V1+V2代码 (10个文件, JVS已经创建V2基础)
  *
  * V2基础设施进度 (JVS R1):
  * ✅ IBrokerAdapterV2.ts (Tagged types + V2 interface)
@@ -140,7 +140,7 @@
  *
  * 已有文件:
  *   agent-account/electron/broker/moomoo-adapter.ts (262行)
- *   dawn-whales/electron/broker/moomoo-adapter.ts (copy)
+ *   quant-moo/electron/broker/moomoo-adapter.ts (copy)
  *
  * 已实现功能:
  * ✅ connect/disconnect (TCP + Mock fallback)

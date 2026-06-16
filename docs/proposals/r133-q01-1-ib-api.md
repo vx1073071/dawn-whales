@@ -15,7 +15,7 @@
 | 货币 | USD, HKD, GBP, EUR, JPY 等 |
 | 行情模式 | 真实TCP + Mock自动降级 |
 
-### TradingEasy 实现
+### quant-moo 实现
 
 ```
 IBAdapter (electron/broker/ib-adapter.ts)
@@ -37,9 +37,9 @@ IBAdapter (electron/broker/ib-adapter.ts)
 | 2 | 启用 API 连接 (Configuration → API → Settings) |
 | 3 | 勾选 "Enable ActiveX and Socket Clients" |
 | 4 | 设置端口 (4001 Live / 4002 Paper) |
-| 5 | 添加 TradingEasy 服务器 IP 到 Trusted IPs |
+| 5 | 添加 quant-moo 服务器 IP 到 Trusted IPs |
 
-### TradingEasy 配置
+### quant-moo 配置
 
 ```typescript
 {

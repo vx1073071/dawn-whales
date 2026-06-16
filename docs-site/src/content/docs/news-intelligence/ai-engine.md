@@ -1,6 +1,6 @@
 ---
 title: AI 情绪引擎
-description: DAWN WHALES DeepSeek AI 情绪分析引擎 — 原理、Prompt 设计、降级策略、准确率
+description: QUANT MOO DeepSeek AI 情绪分析引擎 — 原理、Prompt 设计、降级策略、准确率
 ---
 
 # 🤖 AI 情绪引擎
@@ -9,7 +9,7 @@ description: DAWN WHALES DeepSeek AI 情绪分析引擎 — 原理、Prompt 设�
 
 ## 概述
 
-DAWN WHALES 使用 **DeepSeek V4 Pro** 作为情绪分析引擎，对所有新闻进行自动化情绪分类和影响评估。引擎采用分级处理 + 多层降级策略，确保高可用性和低延迟。
+QUANT MOO 使用 **DeepSeek V4 Pro** 作为情绪分析引擎，对所有新闻进行自动化情绪分类和影响评估。引擎采用分级处理 + 多层降级策略，确保高可用性和低延迟。
 
 ---
 

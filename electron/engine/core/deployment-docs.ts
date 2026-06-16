@@ -107,7 +107,7 @@ export class DeploymentGuide {
             {
               id: "step-1-clone",
               title: i18n.t('deploymentDocs.k29'),
-              content: `git clone https://github.com/dawn-whales/dawn-whales.git && cd dawn-whales && git checkout v${v} && npm ci`,
+              content: `git clone https://github.com/quant-moo/quant-moo.git && cd quant-moo && git checkout v${v} && npm ci`,
             },
             {
               id: "step-2-env",
@@ -127,12 +127,12 @@ export class DeploymentGuide {
             {
               id: "step-5-nginx",
               title: i18n.t('deploymentDocs.k35'),
-              content: `cp nginx/dawnwhales.conf /etc/nginx/sites-available/ && ln -s /etc/nginx/sites-available/dawnwhales.conf /etc/nginx/sites-enabled/ && nginx -t && systemctl reload nginx`,
+              content: `cp nginx/QuantMoo.conf /etc/nginx/sites-available/ && ln -s /etc/nginx/sites-available/QuantMoo.conf /etc/nginx/sites-enabled/ && nginx -t && systemctl reload nginx`,
             },
             {
               id: "step-6-ssl",
               title: i18n.t('deploymentDocs.k36'),
-              content: "certbot --nginx -d dawnwhales.com -d api.dawnwhales.com",
+              content: "certbot --nginx -d QuantMoo.com -d api.QuantMoo.com",
             },
             {
               id: "step-7-verify",
@@ -144,7 +144,7 @@ export class DeploymentGuide {
         {
           id: "update",
           title: i18n.t('deploymentDocs.k39'),
-          content: `git pull origin master && git checkout v<new-version> && npm ci && npm run build && pm2 reload dawn-whales-api`,
+          content: `git pull origin master && git checkout v<new-version> && npm ci && npm run build && pm2 reload quant-moo-api`,
         },
         {
           id: "troubleshoot",

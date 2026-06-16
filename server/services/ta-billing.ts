@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R147 J02 — TA Billing & Trade Detail Engine
+ * QUANT MOO R147 J02 — TA Billing & Trade Detail Engine
  * 
  * Trading Agent (TA) billing — 3 tiers:
  *   - Standard (标准): 1.0 USDT/round

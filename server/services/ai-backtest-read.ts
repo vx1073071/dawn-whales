@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R146 J02 — AI Backtest Reader
+ * QUANT MOO R146 J02 — AI Backtest Reader
  * 
  * Takes real backtest results and generates human-readable analysis.
  * 

@@ -168,7 +168,7 @@ purpose: (auto-generated, needs review)
 ## 代码目录隔离规则
 
 ```
-dawn-whales/
+quant-moo/
 ├── contracts/              # 共享契约 (所有虾只读)
 │   ├── index.ts
 │   ├── data-contracts.ts

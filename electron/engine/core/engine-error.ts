@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Engine Error Standardization (R84) ──────────────────────
+// ── QUANT MOO — Engine Error Standardization (R84) ──────────────────────
 // Unified error types for all engine error paths.
 // Replace throw new Error('...') with throw new EngineError(...) for structured logging.
 

@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy · main.ts 模块化重构方案
+# quant-moo · main.ts 模块化重构方案
 
 > 状态：骨架已预建 | 等待主龙虾拆分后合并
 > 创建者：QClaw | 2026-06-04

@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: backfill ────────────────────────────────────────────
+// ── QUANT MOO IPC: backfill ────────────────────────────────────────────
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

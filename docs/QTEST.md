@@ -8,7 +8,7 @@ purpose: (auto-generated, needs review)
 
 # QTest Documentation
 
-> Custom test framework for TradingEasy — no Jest/Vitest dependency required.
+> Custom test framework for quant-moo — no Jest/Vitest dependency required.
 > Location: `test-framework/`
 
 ## Quick Start

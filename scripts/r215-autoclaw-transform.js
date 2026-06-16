@@ -1,7 +1,7 @@
 // R215 autoclaw transform — P10 (altData +15) + P11 (healthCheck +23)
 const fs = require('fs');
 
-const filePath = 'c:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\electron\\engine\\strategies\\factor-strategy-templates.ts';
+const filePath = 'c:\\Users\\vx107\\.easyclaw\\workspace\\quant-moo\\electron\\engine\\strategies\\factor-strategy-templates.ts';
 let src = fs.readFileSync(filePath, 'utf-8');
 let changes = 0;
 

@@ -81,7 +81,7 @@ const FactorFinalHub: React.FC<FactorFinalHubProps> = ({
       <div style={styles.hero}>
         <div style={styles.heroContent}>
           <h1 style={styles.heroTitle}>
-            <span>🧬</span> Dawn Whales Factor Engine
+            <span>🧬</span> QUANT MOO Factor Engine
           </h1>
           <p style={styles.heroSubtitle}>
             {factorCount} factors · {marketCount} markets · Built for professional quant research
@@ -199,7 +199,7 @@ const FactorFinalHub: React.FC<FactorFinalHubProps> = ({
       <Divider style={{ borderColor: '#2a2a4a' }} />
       <div style={styles.footer}>
         <span style={styles.footerText}>
-          Dawn Whales v4.0 · Factor Engine · 
+          QUANT MOO v4.0 · Factor Engine · 
           {factorCount} factors · {marketCount} markets ·
           Powered by DeepSeek V4
         </span>

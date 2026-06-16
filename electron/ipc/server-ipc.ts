@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Server Client IPC (R129 M-01) ─────────────────────────
+// ── QUANT MOO — Server Client IPC (R129 M-01) ─────────────────────────
 // IPC handlers for server-client communication (desktop ↔ server).
 
 import { ipcMain } from 'electron';

@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: portfolio ────────────────────────────────────────────
+// ── QUANT MOO IPC: portfolio ────────────────────────────────────────────
 // 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

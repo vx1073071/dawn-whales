@@ -1,4 +1,4 @@
-// ── TradingEasy · — Core Type Definitions ─────────────────────────────
+// ── quant-moo · — Core Type Definitions ─────────────────────────────
 
 // ── Broker Types ──────────────────────────────────────────────────────────
 

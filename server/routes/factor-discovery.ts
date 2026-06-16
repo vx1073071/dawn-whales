@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R164 P1-E5 — Factor Discovery Wizard Backend API
+ * QUANT MOO R164 P1-E5 — Factor Discovery Wizard Backend API
  *
  * Stepped wizard endpoints:
  *   GET /api/factor/discover/step1 — list available factors (categorized + IC + source)

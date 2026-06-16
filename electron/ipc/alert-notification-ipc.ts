@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: alert-notification ────────────────────────────────────────────
+// ── QUANT MOO IPC: alert-notification ────────────────────────────────────────────
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

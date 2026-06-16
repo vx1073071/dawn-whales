@@ -1,5 +1,5 @@
 // — R119 QClaw: structural type errors pending resolution by JVS/PM (fixed in R231)
-// ── DAWN WHALES — OAuthBrokerBase ──────────────────────────────────────
+// ── QUANT MOO — OAuthBrokerBase ──────────────────────────────────────
 // R1 INF-07: OAuth1/OAuth2 券商适配器基类
 // 用于 Schwab (OAuth2) / E*TRADE (OAuth1.0a) / eToro (OAuth2) / Webull (OAuth2)
 // 通过 local server 回调获取 access_token

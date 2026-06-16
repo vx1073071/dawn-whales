@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R139 J01 — Dead Letter Queue (DLQ) for Copy Trade
+ * QUANT MOO R139 J01 — Dead Letter Queue (DLQ) for Copy Trade
  * 
  * A Dead Letter Queue (DLQ) stores signals that failed after all retries.
  * When a signal exhausts maxRetries, instead of just marking it 'failed',

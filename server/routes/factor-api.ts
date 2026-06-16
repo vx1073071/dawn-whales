@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R163 P1-X3 — Factor Spot-Check + Comparison API
+ * QUANT MOO R163 P1-X3 — Factor Spot-Check + Comparison API
  *
  * Endpoints:
  *   GET /api/factor/spot-check?symbol=HK:00700&market=HK — full factor scoring + drag analysis

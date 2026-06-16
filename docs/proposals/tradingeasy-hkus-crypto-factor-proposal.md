@@ -1,4 +1,4 @@
-# TradingEasy 港美股+加密货币 策略因子深度扩充建议书 v2.0
+# quant-moo 港美股+加密货币 策略因子深度扩充建议书 v2.0
 
 > youdao | 2026-06-15 03:10 HKT | 致 PM
 > 市场: HKEX / NYSE / NASDAQ / SGX / TSE(东京) / ASX(澳洲) / TSX(加拿大) / BURSA(马来) + CRYPTO
@@ -280,4 +280,4 @@ MVRV: 历史上从<1回升到>3.7的平均时间是18个月
 
 ---
 
-*建议完成: 2026-06-15 03:10 HKT | youdao | TradingEasy 港美股+加密因子 v2.0*
+*建议完成: 2026-06-15 03:10 HKT | youdao | quant-moo 港美股+加密因子 v2.0*

@@ -181,5 +181,5 @@
 - R184 Round计划: `docs/proposals/factor-expansion-R184-round-plan.md`
 - R185 Round计划: `docs/proposals/factor-expansion-R185-round-plan.md`
 - R185 验收报告: `docs/proposals/factor-expansion-R185-verification-report.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`
 - 费率体系: `docs/reference/fee-schedule.md`

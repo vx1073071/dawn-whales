@@ -1,6 +1,6 @@
 ---
 title: 架构概览
-description: DAWN WHALES 系统架构与技术栈
+description: QUANT MOO 系统架构与技术栈
 ---
 
 # 系统架构

@@ -6,7 +6,7 @@ owner: PM
 purpose: (auto-generated, needs review)
 -->
 
-# Sprint 2 Technical Roadmap — TradingEasy v0.8.0
+# Sprint 2 Technical Roadmap — quant-moo v0.8.0
 
 > 日期: 2026-06-06 | 作者: JVS | 状态: 草案
 

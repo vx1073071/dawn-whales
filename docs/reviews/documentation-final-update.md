@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.0.0 文档最终完善报告
+# quant-moo v1.0.0 文档最终完善报告
 
 **更新时间**: 2026-06-08 00:20 GMT+8  
 **更新人**: youdao  
@@ -103,23 +103,23 @@ purpose: (auto-generated, needs review)
 ## 视频教程
 
 ### 快速开始 (3分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-quickstart)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-quickstart)
 - 内容：安装、创建第一个策略、运行回测
 
 ### 策略创建详解 (10分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-strategy)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-strategy)
 - 内容：AI生成、模板选择、手动编写
 
 ### 回测系统使用 (8分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-backtest)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-backtest)
 - 内容：配置回测、查看结果、导出报告
 
 ### 策略优化技巧 (12分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-optimize)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-optimize)
 - 内容：参数优化、Walk-Forward验证、应用最优参数
 
 ### AI 助理使用 (5分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-ai)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-ai)
 - 内容：策略建议、风险问答、NL回测配置
 ```
 
@@ -131,7 +131,7 @@ purpose: (auto-generated, needs review)
 ## 视频教程
 
 ### PWA 安装教程 (5分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-pwa)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-pwa)
 - 内容：安装到主屏幕、离线访问、推送通知
 ```
 
@@ -143,7 +143,7 @@ purpose: (auto-generated, needs review)
 ## 视频教程
 
 ### 性能监控入门 (6分钟)
-- 📹 [视频链接](https://www.youtube.com/watch?v=dawn-whales-performance)
+- 📹 [视频链接](https://www.youtube.com/watch?v=quant-moo-performance)
 - 内容：查看指标、配置告警、查看趋势
 ```
 
@@ -304,7 +304,7 @@ purpose: (auto-generated, needs review)
 
 | 术语 | 使用次数 | 状态 |
 |-----|---------|------|
-| TradingEasy | 50+ | ✅ 统一 |
+| quant-moo | 50+ | ✅ 统一 |
 | v1.0.0 | 30+ | ✅ 统一 |
 | youdao | 20+ | ✅ 统一 |
 | Phase 6.4 | 15+ | ✅ 统一 |

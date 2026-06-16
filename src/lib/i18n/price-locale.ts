@@ -1,6 +1,6 @@
 // R127-Q01: nocheck cleared
 /**
- * TradingEasy R125 J02 — Price Localization Utilities
+ * quant-moo R125 J02 — Price Localization Utilities
  * 
  * Locale-aware number/price formatting for i18n support.
  * Chinese locales: 万/亿 notation

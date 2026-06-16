@@ -1,6 +1,6 @@
 /**
  * Adaptive Parameter Adjustment Engine
- * Dawn Whales Project (J-38-01)
+ * QUANT MOO Project (J-38-01)
  *
  * Automatically adjusts strategy parameters based on historical performance data.
  * Supports multiple optimization methods: grid search, random search, gradient descent,

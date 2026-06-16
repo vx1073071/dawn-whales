@@ -1,18 +1,18 @@
 {
-  "id": "dawnwhales.custom-factor",
+  "id": "QuantMoo.custom-factor",
   "name": "Custom Factor Plugin",
   "version": "1.0.0",
-  "description": "示例插件：自定义因子计算 — 添加布林带宽度、成交量加权RSI、自定义动量等因子到策略模板中。展示如何扩展 Dawn Whales 因子计算管线。",
+  "description": "示例插件：自定义因子计算 — 添加布林带宽度、成交量加权RSI、自定义动量等因子到策略模板中。展示如何扩展 QUANT MOO 因子计算管线。",
   "author": {
-    "name": "Dawn Whales Team",
-    "email": "dev@dawnwhales.app",
-    "url": "https://dawnwhales.app"
+    "name": "QUANT MOO Team",
+    "email": "dev@QuantMoo.app",
+    "url": "https://QuantMoo.app"
   },
   "minAppVersion": "2.6.0",
   "permissions": ["market-data", "storage", "notifications"],
   "main": "index.js",
   "icon": "🧬",
-  "repository": "https://github.com/dawn-whales/plugin-custom-factor",
+  "repository": "https://github.com/quant-moo/plugin-custom-factor",
   "license": "MIT",
   "tags": ["factor", "indicator", "technical-analysis", "example"],
   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"

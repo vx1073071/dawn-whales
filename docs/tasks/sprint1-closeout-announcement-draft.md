@@ -16,7 +16,7 @@ purpose: (auto-generated, needs review)
 
 ## 公告正文
 
-> **【TradingEasy Sprint 1 收官公告】**
+> **【quant-moo Sprint 1 收官公告】**
 >
 > 各位虾友，Sprint 1 正式结束！
 >

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R147 Claw(PM) — Trade Detail Service
+ * QUANT MOO R147 Claw(PM) — Trade Detail Service
  * 
  * Query/paginate/filter/export trading fee details.
  * Every order generates a trade fee record with full metadata.

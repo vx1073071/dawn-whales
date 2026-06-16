@@ -1,5 +1,5 @@
 /**
- * Window API type declarations for TradingEasy Electron app.
+ * Window API type declarations for quant-moo Electron app.
  * R84 P1-6b: eliminates `(window as any).api` pattern.
  * Mirrors electron/preload.ts contextBridge.exposeInMainWorld('api', {...})
  */

@@ -293,7 +293,7 @@ export class CNSources {
     if (cfg.rssUrl) {
       try {
         const response = await fetch(cfg.rssUrl, {
-          headers: { 'User-Agent': 'DawnWhales/2.7.0', 'Accept': 'application/rss+xml, application/xml, text/xml' },
+          headers: { 'User-Agent': 'QuantMoo/2.7.0', 'Accept': 'application/rss+xml, application/xml, text/xml' },
           signal: AbortSignal.timeout(5000),
         });
 

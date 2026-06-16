@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R131 J04 — Signal Queue Engine
+ * QUANT MOO R131 J04 — Signal Queue Engine
  * 
  * Priority-based signal queue for cloud + OpenD dual-mode copy trading.
  * 

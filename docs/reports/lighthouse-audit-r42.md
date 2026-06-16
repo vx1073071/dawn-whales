@@ -10,7 +10,7 @@ purpose: (auto-generated, needs review)
 
 **审计时间**: 2026-06-07T06:10:00+08:00  
 **审计工具**: Lighthouse 11.0  
-**审计页面**: TradingEasy 主应用  
+**审计页面**: quant-moo 主应用  
 
 ---
 

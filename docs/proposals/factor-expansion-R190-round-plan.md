@@ -256,4 +256,4 @@ v2.6.0 = v2.5.0(🟢31因子+8场景包) + 🟡68因子 + 12交互组件 + 深�
 - R187 Round计划: `docs/proposals/factor-expansion-R187-round-plan.md`
 - R188 Round计划: `docs/proposals/factor-expansion-R188-round-plan.md`
 - R189 Round计划: `docs/proposals/factor-expansion-R189-round-plan.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

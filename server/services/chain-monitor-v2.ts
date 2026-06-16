@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R148 J03 — Chain Monitor v2: Resilience
+ * QUANT MOO R148 J03 — Chain Monitor v2: Resilience
  * 
  * Extends chain-monitor.ts with:
  *   - Exponential backoff reconnection

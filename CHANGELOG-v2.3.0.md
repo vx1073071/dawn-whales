@@ -1,7 +1,7 @@
-# TradingEasy v2.3.0 Changelog
+# quant-moo v2.3.0 Changelog
 
 > Release Date: 2026-06-15
-> From: Dawn Whales → TradingEasy (brand rename)
+> From: QUANT MOO → quant-moo (brand rename)
 > 6 shrimp · 10 rounds (R170-R180) · ~500 commits
 
 ---
@@ -22,11 +22,11 @@
 - **P0 Critical** (R178): Electron security audit (11/11 checks PASS), AI response financial data masking (balance/position/PnL/user ID), financial disclaimer injection (5 types: factor/strategy/market/signal/general)
 - **P1 Hardening** (R179): Six-ministry compliance (C1/C2/C3 data classification + audit trail), strategy visibility control (private/shared/public 3 modes), share card protection (top 3 factors only + blurred weights)
 
-### Brand: Dawn Whales → TradingEasy (R179)
+### Brand: QUANT MOO → quant-moo (R179)
 - 137 frontend source files renamed
 - 5 HTML titles updated
 - 8 language i18n locales rebranded
-- TradingEasy watermark on all share cards
+- quant-moo watermark on all share cards
 
 ---
 
@@ -80,4 +80,4 @@
 
 ---
 
-_Made with 🐋 by 6 shrimp. TradingEasy v2.3.0 — your AI-powered trading companion._
+_Made with 🐋 by 6 shrimp. quant-moo v2.3.0 — your AI-powered trading companion._

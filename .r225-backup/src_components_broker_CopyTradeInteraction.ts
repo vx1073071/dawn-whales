@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * TradingEasy R140 J01 — CopyTrade Interaction Details
+ * quant-moo R140 J01 — CopyTrade Interaction Details
  * 
  * Custom React hooks and utility components for polishing the copy trade
  * module's interactive behavior across all devices and themes.

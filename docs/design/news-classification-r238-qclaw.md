@@ -1,5 +1,5 @@
 # R238-QClaw#1: News Classification System Design
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R238
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R238
 
 ---
 

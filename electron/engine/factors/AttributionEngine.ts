@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R203 — AI Portfolio Attribution Engine (AttributionEngine)
+ * QUANT MOO R203 — AI Portfolio Attribution Engine (AttributionEngine)
  * autoclaw #3 | Phase 1 收官 | v17.9
  *
  * 三层归因体系:

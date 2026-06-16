@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: dashboard ────────────────────────────────────────────
+// ── QUANT MOO IPC: dashboard ────────────────────────────────────────────
 // R18 P0-1: Dashboard IPC — summary / pnl / positions / health
 //
 // PM:

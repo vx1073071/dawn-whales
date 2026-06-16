@@ -17,7 +17,7 @@ export const DARK_MODE_SPEC = {
   /* ═══════════════════════════════════════════════════════════════════════
    * SECTION A: Dark Palette — 暗色色板
    * Naming convention: surface-x (lighter), bg-x (deeper)
-   * Primary accent: #d4a574 (gold) — Dawn Whales brand
+   * Primary accent: #d4a574 (gold) — QUANT MOO brand
    * ═══════════════════════════════════════════════════════════════════════ */
   palette: {
     // ── Background Hierarchy ─────────────────────────────────

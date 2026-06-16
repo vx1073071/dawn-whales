@@ -26,7 +26,7 @@ purpose: (auto-generated, needs review)
 1. 下载 [Futu OpenD](https://www.futunn.com/download/openAPI)
 2. 安装并启动 OpenD
 3. 默认端口: `127.0.0.1:11111`
-4. 在 TradingEasy 中配置:
+4. 在 quant-moo 中配置:
    ```
    设置 → 券商 → 添加 Futu OpenD
    地址: 127.0.0.1
@@ -35,7 +35,7 @@ purpose: (auto-generated, needs review)
 
 ### 验证连接
 ```bash
-# TradingEasy 中检查 OpenD 状态
+# quant-moo 中检查 OpenD 状态
 设置 → 券商 → 连接状态: 🟢 已连接
 ```
 

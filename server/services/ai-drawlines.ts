@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R145 J01 — AI Auto Drawlines Engine
+ * QUANT MOO R145 J01 — AI Auto Drawlines Engine
  * 
  * Feeds K-line data to DeepSeek V4 Pro and returns structured
  * drawing coordinates for chart rendering.

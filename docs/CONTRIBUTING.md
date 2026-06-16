@@ -6,9 +6,9 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# Contributing to TradingEasy
+# Contributing to quant-moo
 
-> 感谢你考虑为 TradingEasy 做出贡献！
+> 感谢你考虑为 quant-moo 做出贡献！
 
 ## 目录
 
@@ -38,8 +38,8 @@ purpose: (auto-generated, needs review)
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/vx1073071/tradingeasy.git
-cd dawn-whales
+git clone https://github.com/vx1073071/quant-moo.git
+cd quant-moo
 
 # 2. 安装依赖
 npm install --legacy-peer-deps
@@ -54,7 +54,7 @@ node --no-warnings node_modules/vitest/vitest.mjs run
 ### 目录结构概览
 
 ```
-dawn-whales/
+quant-moo/
 ├── electron/          # Electron 主进程 (Node.js)
 │   ├── main/          # 入口、窗口管理
 │   ├── engine/        # 交易引擎

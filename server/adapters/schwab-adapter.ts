@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R133 J03 — Charles Schwab Cloud Broker Adapter
+ * QUANT MOO R133 J03 — Charles Schwab Cloud Broker Adapter
  * 
  * Implements ICloudBrokerAdapter for Charles Schwab (thinkorswim).
  * Uses Schwab Trader API — OAuth2 + REST.

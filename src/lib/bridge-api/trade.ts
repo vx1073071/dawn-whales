@@ -3,7 +3,7 @@
  * @deprecated Use src/services/trading-service.ts and src/services/portfolio-service.ts instead (R108 S-34).
  * Service layer provides typed interfaces and abstracts IPC calls.
  *
- * ── TradingEasy — Bridge API Trade Module ─────────────────────────────
+ * ── quant-moo — Bridge API Trade Module ─────────────────────────────
  * S-15p1 split: Broker + Broker Manager + Strategy + Strategy CRUD + Signals
  * S-15p2: Zod-derived types replaced all `any` usage
  */

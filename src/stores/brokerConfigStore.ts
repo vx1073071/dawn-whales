@@ -1,5 +1,5 @@
 /**
- * TradingEasy R156 Claw(PM) — Shared Broker Config Store
+ * quant-moo R156 Claw(PM) — Shared Broker Config Store
  * 
  * Single source of truth for broker connection status and priority.
  * Used by: BrokerPriority (settings) + QuoteSourceBadge (market) + SymbolSearch.

@@ -1,4 +1,4 @@
-# TradingEasy User Manual v2.2.0
+# quant-moo User Manual v2.2.0
 
 > **Version**: v2.5.0 | **Last Updated**: 2026-06-14
 > **Covers**: Wallet, Marketplace, AI, Trading, Quotes — Complete Operation Guide
@@ -36,13 +36,13 @@
 - Internet connection (for AI features and real-time data)
 
 ### First Launch
-1. Install TradingEasy from the official download page
+1. Install quant-moo from the official download page
 2. Launch the desktop application
 3. Go to Wallet → Deposit USDT to start using paid features
 4. All AI features are pay-per-use — check pricing before clicking
 5. Connect your broker to start trading
 
-> 💡 New to TradingEasy? See the **Onboarding Guide** (Help → Getting Started) for a 5-minute walkthrough.
+> 💡 New to quant-moo? See the **Onboarding Guide** (Help → Getting Started) for a 5-minute walkthrough.
 
 ### Navigation
 ```
@@ -62,7 +62,7 @@ Sidebar:
 ## 2. Wallet & Balance
 
 ### USDT Wallet
-All TradingEasy paid features use **USDT (internal credits)**. This is NOT on-chain USDT — it's your internal balance.
+All quant-moo paid features use **USDT (internal credits)**. This is NOT on-chain USDT — it's your internal balance.
 
 ### Deposit USDT
 
@@ -160,7 +160,7 @@ This check runs before every paid action (purchase, AI, TA). No deduction attemp
 
 ### Fee Table (v17.6)
 
-When you place a trade through TradingEasy, you pay:
+When you place a trade through quant-moo, you pay:
 
 | Asset Type | Fee Rate | Minimum Fee | Example |
 |-----------|---------|------------|---------|
@@ -454,7 +454,7 @@ Market statuses auto-detect:
 
 ### Broker Priority Settings
 
-Go to Settings → Broker Priority to control which broker TradingEasy uses first:
+Go to Settings → Broker Priority to control which broker quant-moo uses first:
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -615,7 +615,7 @@ The progress bar updates after every sale. You can see exactly how close you are
 ## 5. AI Features
 
 ### Overview
-TradingEasy has **10 AI-powered features** — all pay-per-use with silent deduction.
+quant-moo has **10 AI-powered features** — all pay-per-use with silent deduction.
 
 ### AI Pricing Table
 
@@ -811,7 +811,7 @@ The report auto-generates on the 1st of each month and is available anytime.
 ## 11. Settings & Preferences
 
 ### Language
-TradingEasy supports 8 languages: 🇨🇳 简体中文 | 🇺🇸 English | 🇯🇵 日本語 | 🇰🇷 한국어 | 🇪🇸 Español | 🇫🇷 Français | 🇩🇪 Deutsch | 🇷🇺 Русский
+quant-moo supports 8 languages: 🇨🇳 简体中文 | 🇺🇸 English | 🇯🇵 日本語 | 🇰🇷 한국어 | 🇪🇸 Español | 🇫🇷 Français | 🇩🇪 Deutsch | 🇷🇺 Русский
 
 Go to Settings → Language to change.
 
@@ -840,7 +840,7 @@ Go to Settings → Broker to connect your trading accounts.
 
 ### Broker Priority & Quote Health
 
-Configure which broker TradingEasy uses first for quotes. Drag to reorder — changes apply immediately.
+Configure which broker quant-moo uses first for quotes. Drag to reorder — changes apply immediately.
 
 ```
 Settings → Broker Priority:

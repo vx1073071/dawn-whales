@@ -1,4 +1,4 @@
-# TradingEasy AI安全综合深度分析 — 6虾视野合并 + OWASP LLM Top 10 2025
+# quant-moo AI安全综合深度分析 — 6虾视野合并 + OWASP LLM Top 10 2025
 
 > youdao 独立深度研究 | 2026-06-15 01:58 HKT | 致 PM
 
@@ -70,22 +70,22 @@
 
 ### 3.1 Anthropic Constitutional AI 模式
 
-Anthropic训练Claude时定义了完整的"宪法"规则集。对比TradingEasy现状：
+Anthropic训练Claude时定义了完整的"宪法"规则集。对比quant-moo现状：
 
-| Claude宪法 | TradingEasy现状 |
+| Claude宪法 | quant-moo现状 |
 |-----------|-----------------|
 | "不帮助设计武器" | ❌ 无金融义务约束 |
 | "不泄露个人信息" | ❌ 可泄露用户余额 |
 | "承认不确定性" | ❌ AI输出确定性IC值 |
 | "拒绝有害请求" | ❌ 无prompt injection防御 |
 
-**建议**: 仿照Anthropic设计 TradingEasy AI宪法 (10条)，注入系统提示。
+**建议**: 仿照Anthropic设计 quant-moo AI宪法 (10条)，注入系统提示。
 
 ### 3.2 Google SAIF 框架
 
 Google Secure AI Framework 有6要素，最重要的3个对标：
 
-| SAIF原则 | TradingEasy现状 |
+| SAIF原则 | quant-moo现状 |
 |----------|-----------------|
 | 1. 扩展现有安全基础到AI | ❌ 无AI安全策略层 |
 | 2. 检测AI特定威胁 | ❌ 无幻觉检测/注入检测 |
@@ -99,7 +99,7 @@ Google Secure AI Framework 有6要素，最重要的3个对标：
 防线3 (POST): 审计日志 + 异常检测 + 回滚机制
 ```
 
-TradingEasy当前: 防线1=0%, 防线2=0%, 防线3=20%(只有基础日志)
+quant-moo当前: 防线1=0%, 防线2=0%, 防线3=20%(只有基础日志)
 
 ### 3.4 关键对标差异 — 策略泄露
 
@@ -108,7 +108,7 @@ TradingView的策略分享有明确隐私开关:
 - "Invite-only" → 仅受邀者可见 → 不可转发
 - "Private" → 仅自己 + 不存储在服务器
 
-TradingEasy现状: 策略分享 = 导出PNG → 完整权重+回测曲线 → 社交媒体自由传播。这是**最危险的策略泄露模式**。
+quant-moo现状: 策略分享 = 导出PNG → 完整权重+回测曲线 → 社交媒体自由传播。这是**最危险的策略泄露模式**。
 
 ---
 

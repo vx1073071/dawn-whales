@@ -1,5 +1,5 @@
 // — R119 QClaw: structural type errors pending resolution by JVS/PM (fixed in R231)
-// ── DAWN WHALES — DirectAdapter Base ─────────────────────────────────────
+// ── QUANT MOO — DirectAdapter Base ─────────────────────────────────────
 // R1 INF-05: Direct REST + WebSocket 适配器基类
 // 用于直连云API的券商(加密5家、Robinhood Crypto)
 // 子类实现: _buildHeaders, _signRequest, _getBaseURL, _getWSUrl

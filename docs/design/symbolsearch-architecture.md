@@ -7,7 +7,7 @@
 
 ## 一、现状 — 两种搜索并存
 
-TradingEasy 目前有两套搜索系统，**前端用 A，后端有 B，但互不相通**。
+quant-moo 目前有两套搜索系统，**前端用 A，后端有 B，但互不相通**。
 
 ```
 ┌─ 前端 SymbolSearch.tsx ───────────┐  ┌─ 后端 symbol-search.ts ────────┐

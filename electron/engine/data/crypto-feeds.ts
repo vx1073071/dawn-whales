@@ -253,7 +253,7 @@ export class CryptoFeedsFetcher implements NewsFetcher {
     try {
       const resp = await fetch(feed.url, {
         headers: {
-          'User-Agent': 'DawnWhales/2.7.0 (RSS Reader)',
+          'User-Agent': 'QuantMoo/2.7.0 (RSS Reader)',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
         },
         signal: AbortSignal.timeout(this.fetchTimeout),

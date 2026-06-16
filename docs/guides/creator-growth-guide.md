@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 创作者增长指南
+# quant-moo 创作者增长指南
 
 **版本**: v1.6.0 GA  
 **更新时间**: 2026-06-09  

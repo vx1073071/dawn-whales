@@ -1,5 +1,5 @@
 const fs=require('fs');
-const base='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/';
+const base='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/';
 
 // 1. Fix OrderBookWaterfall.tsx — revert _ renaming, use @ts-ignore instead
 let p=base+'components/chart/OrderBookWaterfall.tsx';

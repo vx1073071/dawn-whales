@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R142 Claw(PM) — Reconciliation Engine
+ * QUANT MOO R142 Claw(PM) — Reconciliation Engine
  * 
  * Hourly + daily reconciliation between on-chain USDT balances and
  * internal ledger balances. Detects mismatches and triggers alerts.

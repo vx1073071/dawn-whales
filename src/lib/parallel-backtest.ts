@@ -1,5 +1,5 @@
 // R127-Q01: nocheck cleared
-// ── TradingEasy — Web Worker backtest (v0.6.0) ─────────────────────────────
+// ── quant-moo — Web Worker backtest (v0.6.0) ─────────────────────────────
 // parameter sweep/periodWorker
 
 const BATCH_SIZE = 4; // 4backtest

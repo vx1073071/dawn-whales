@@ -1,5 +1,5 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
-// ── DAWN WHALES — SchwabAdapter ─────────────────────────────────────────
+— R119 QClaw: structural type errors pending resolution by JVS/PM
+// ── QUANT MOO — SchwabAdapter ─────────────────────────────────────────
 // R2 OAU-01: Charles Schwab Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code + PKCE)
 // API Base: https://api.schwabapi.com
@@ -312,7 +312,7 @@ export class SchwabAdapter extends OAuthBrokerBase implements IBrokerAdapterV2 {
   protected _klinePath(code: string, period: string, count: number): string {
     const symbol = code.replace(/^US\./, '');
 
-    // Map Dawn Whales period → Schwab frequency parameters
+    // Map QUANT MOO period → Schwab frequency parameters
     const freqMap: Record<string, { periodType: string; period: string; frequencyType: string; frequency: number }> = {
       '1D': { periodType: 'day', period: String(count), frequencyType: 'minute', frequency: 5 },
       '1W': { periodType: 'week', period: String(count), frequencyType: 'daily', frequency: 1 },
@@ -357,7 +357,7 @@ export class SchwabAdapter extends OAuthBrokerBase implements IBrokerAdapterV2 {
   }
 
   // ═══ Abstract: Data Parsers ══════════════════════════════
-  // Each parser must transform Schwab's response format to Dawn Whales types
+  // Each parser must transform Schwab's response format to QUANT MOO types
 
   protected _parseQuotes(data: any): QuoteInfo[] {
     if (!data || typeof data !== 'object') return [];

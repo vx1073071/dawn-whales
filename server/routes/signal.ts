@@ -1,4 +1,4 @@
-// ── DAWN WHALES Signal API Routes ─────────────────────────────────────
+// ── QUANT MOO Signal API Routes ─────────────────────────────────────
 // R129-P05: Signal receiver endpoint + query
 // R137 J02 FIX: /pending brokerId now filters by broker_id (not used as LIMIT)
 

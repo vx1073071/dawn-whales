@@ -1,4 +1,4 @@
-# TradingEasy v2.0.0 — Architecture & IPC Reference
+# quant-moo v2.0.0 — Architecture & IPC Reference
 
 **Last updated:** 2026-06-13 (R128 final)
 **Target:** v2.0.0 — Production Release Candidate
@@ -7,7 +7,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                        TradingEasy v2.0.0                        │
+│                        quant-moo v2.0.0                        │
 │                    AI-Powered Investment Platform                 │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
@@ -162,7 +162,7 @@ Layer 5: Data
    └── Preload: electron/preload.ts → dist-electron/preload.cjs (15KB)
 
 2. electron-builder
-   └── Packages app + asar → TradingEasy Setup.exe (<400MB)
+   └── Packages app + asar → quant-moo Setup.exe (<400MB)
 
 3. Release
    └── git tag v2.0.0 + CHANGELOG

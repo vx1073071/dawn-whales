@@ -1,4 +1,4 @@
-# TradingEasy 行情系统深度学习建议 v1.0
+# quant-moo 行情系统深度学习建议 v1.0
 
 > 2026-06-12 | 作者: youdao | 提交: PM(Claw/64001)
 
@@ -6,7 +6,7 @@
 
 ## 摘要
 
-当前 dawn-whales 行情系统基于 `QuoteAggregator` + `CodeNormalizer` + `BrokerEventBus` 实现了多券商行情聚合基础。通过深度学习行业最佳实践，建议在以下 6 个方向深化：
+当前 quant-moo 行情系统基于 `QuoteAggregator` + `CodeNormalizer` + `BrokerEventBus` 实现了多券商行情聚合基础。通过深度学习行业最佳实践，建议在以下 6 个方向深化：
 
 ---
 

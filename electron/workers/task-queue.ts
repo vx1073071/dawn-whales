@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Task Queue with Priority ──────────────────────────────────
+// ── QUANT MOO — Task Queue with Priority ──────────────────────────────────
 import { EventEmitter } from 'events';
 
 export type TaskPriority = 'high' | 'normal' | 'low';

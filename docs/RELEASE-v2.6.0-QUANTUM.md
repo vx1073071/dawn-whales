@@ -1,10 +1,10 @@
-# Dawn Whales v2.6.0 "QUANTUM" — Release Notes
+# QUANT MOO v2.6.0 "QUANTUM" — Release Notes
 
 ---
 
 ## 🎯 The Quantum Leap
 
-v2.6.0 QUANTUM is the biggest release in Dawn Whales history. After 37 rounds of relentless iteration by 6 agents over 500+ hours, we've transformed from a strategy marketplace into a complete social trading platform with AI-powered personalization, creator economy, and institutional-grade infrastructure.
+v2.6.0 QUANTUM is the biggest release in QUANT MOO history. After 37 rounds of relentless iteration by 6 agents over 500+ hours, we've transformed from a strategy marketplace into a complete social trading platform with AI-powered personalization, creator economy, and institutional-grade infrastructure.
 
 ### What's New in 60 Seconds
 
@@ -39,7 +39,7 @@ v2.6.0 QUANTUM is the biggest release in Dawn Whales history. After 37 rounds of
 ## 🚀 Release Copy
 
 ### EN — English
-**Dawn Whales v2.6.0 "QUANTUM" is here.**
+**QUANT MOO v2.6.0 "QUANTUM" is here.**
 
 Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 markets. AI that matches strategies to your personality. Creator marketplace where your trading skill becomes income. Dark mode, 9 languages, and WASM-accelerated backtesting at 25,000× speed. Trade smarter, not harder.
 
@@ -48,7 +48,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### ZH-CN — 简体中文
-**Dawn Whales v2.6.0「量子」发布**
+**QUANT MOO v2.6.0「量子」发布**
 
 你的AI交易副驾驶迎来量子级跃升。11个市场88套策略模板。AI根据你的交易性格精准匹配策略。创作者市场让你的交易能力变现。暗色模式、9种语言、WASM加速回测提升25000倍。聪明交易, 轻松致胜。
 
@@ -57,7 +57,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### ZH-HK — 繁體中文（香港）
-**Dawn Whales v2.6.0「量子」發佈**
+**QUANT MOO v2.6.0「量子」發佈**
 
 你嘅AI交易副駕駛迎來量子級躍升。11個市場88套策略模板。AI根據你嘅交易性格精準匹配策略。創作者市場令你嘅交易能力變現。暗黑模式、9種語言、WASM加速回測提升25000倍。聰明交易, 輕鬆致勝。
 
@@ -66,7 +66,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### ZH-TW — 繁體中文（台灣）
-**Dawn Whales v2.6.0「量子」發布**
+**QUANT MOO v2.6.0「量子」發布**
 
 你的 AI 交易副駕駛迎來量子級躍升。11 個市場 88 套策略模板。AI 根據你的交易性格精準匹配策略。創作者市場讓你的交易能力變現。暗色模式、9 種語言、WASM 加速回測提升 25000 倍。聰明交易，輕鬆致勝。
 
@@ -75,7 +75,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### JA — 日本語
-**Dawn Whales v2.6.0「QUANTUM」リリース**
+**QUANT MOO v2.6.0「QUANTUM」リリース**
 
 あなたのAI取引コパイロットが量子飛躍しました。11市場88の戦略テンプレート。AIがあなたの取引スタイルに最適な戦略をマッチング。クリエイター市場であなたの取引スキルが収入に。ダークモード、9言語対応、WASM加速バックテスト25,000倍高速化。より賢く、より簡単に。
 
@@ -84,7 +84,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### KO — 한국어
-**Dawn Whales v2.6.0 "QUANTUM" 출시**
+**QUANT MOO v2.6.0 "QUANTUM" 출시**
 
 당신의 AI 트레이딩 코파일럿이 퀀텀 점프했습니다. 11개 시장 88개 전략 템플릿. AI가 당신의 트레이딩 성향에 맞는 전략을 매칭합니다. 크리에이터 마켓에서 트레이딩 실력이 수익이 됩니다. 다크 모드, 9개 언어, WASM 가속 백테스트 25,000배 고속화. 더 똑똑하게, 더 쉽게.
 
@@ -93,7 +93,7 @@ Your AI trading co-pilot just got a quantum upgrade. 88 strategies across 11 mar
 ---
 
 ### DE — Deutsch
-**Dawn Whales v2.6.0 "QUANTUM" ist da.**
+**QUANT MOO v2.6.0 "QUANTUM" ist da.**
 
 Dein KI-Trading-Copilot macht einen Quantensprung. 88 Strategien fur 11 Markte. KI, die Strategien auf deine Personlichkeit abstimmt. Creator-Marktplatz, auf dem dein Trading-Konnen zu Einkommen wird. Dark Mode, 9 Sprachen, WASM-beschleunigtes Backtesting mit 25.000-facher Geschwindigkeit. Intelligenter traden, nicht harder.
 
@@ -102,7 +102,7 @@ Dein KI-Trading-Copilot macht einen Quantensprung. 88 Strategien fur 11 Markte. 
 ---
 
 ### FR — Francais
-**Dawn Whales v2.6.0 "QUANTUM" est la.**
+**QUANT MOO v2.6.0 "QUANTUM" est la.**
 
 Votre copilote de trading IA fait un bond quantique. 88 strategies sur 11 marches. Une IA qui associe les strategies a votre personnalite. Un marche de createurs ou votre talent de trading devient un revenu. Mode sombre, 9 langues, backtesting accelere WASM 25 000× plus rapide. Tradez plus intelligemment.
 
@@ -111,7 +111,7 @@ Votre copilote de trading IA fait un bond quantique. 88 strategies sur 11 marche
 ---
 
 ### ES — Espanol
-**Dawn Whales v2.6.0 "QUANTUM" ya esta aqui.**
+**QUANT MOO v2.6.0 "QUANTUM" ya esta aqui.**
 
 Tu copiloto de trading con IA da un salto cuantico. 88 estrategias en 11 mercados. IA que empareja estrategias con tu personalidad. Mercado de creadores donde tu habilidad de trading se convierte en ingresos. Modo oscuro, 9 idiomas, backtesting acelerado WASM 25.000× mas rapido. Opera mas inteligente, no mas duro.
 
@@ -121,18 +121,18 @@ Tu copiloto de trading con IA da un salto cuantico. 88 estrategias en 11 mercado
 
 ## 🔗 Links
 
-- **Website**: https://dawnwhales.io
-- **Documentation**: https://docs.dawnwhales.io
-- **Creator Guide**: https://docs.dawnwhales.io/creators
-- **GitHub**: https://github.com/vx1073071/dawn-whales
+- **Website**: https://QuantMoo.io
+- **Documentation**: https://docs.QuantMoo.io
+- **Creator Guide**: https://docs.QuantMoo.io/creators
+- **GitHub**: https://github.com/vx1073071/quant-moo
 - **Changelog**: CHANGELOG.md (this repository)
-- **API Reference**: https://docs.dawnwhales.io/api
+- **API Reference**: https://docs.QuantMoo.io/api
 
 ---
 
 ## 🙏 Credits
 
-Built by the Dawn Whales team with 💙 from Hong Kong.
+Built by the QUANT MOO team with 💙 from Hong Kong.
 
 - **JVS** — Engine & Backend (WASM, Multi-Account, Factor Cache)
 - **ML** — Frontend & UX (Strategy Compare, Skeleton, Hotkeys, Dark Mode)
@@ -143,4 +143,4 @@ Built by the Dawn Whales team with 💙 from Hong Kong.
 
 ---
 
-*Dawn Whales v2.6.0 "QUANTUM" — Trade smarter, not harder.*
+*QUANT MOO v2.6.0 "QUANTUM" — Trade smarter, not harder.*

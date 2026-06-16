@@ -2,7 +2,7 @@ import log from 'electron-log';
 import { EngineError } from './engine/core/engine-error';
 
 /**
- * Secure Key Manager — DAWN WHALES
+ * Secure Key Manager — QUANT MOO
  * Uses DPAPI (Windows only) to encrypt API keys at rest.
  * Falls back to env-var loading for cross-platform / non-Windows builds.
  *
@@ -34,7 +34,7 @@ const fs     = require('fs');
 const KEYSTORE_FILE = 'keystore.json';
 
 /** Salt used for PBKDF2 (in addition to DPAPI) — not sensitive, can be public */
-const KDF_SALT = 'dawn-whales-v1-salt';
+const KDF_SALT = 'quant-moo-v1-salt';
 
 /** PBKDF2 rounds — balance between derive-time and security */
 const KDF_ROUNDS = 100_000;

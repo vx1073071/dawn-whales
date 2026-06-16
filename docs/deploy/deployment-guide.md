@@ -6,7 +6,7 @@ owner: PM
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy Deployment Guide
+# quant-moo Deployment Guide
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
@@ -51,24 +51,24 @@ purpose: (auto-generated, needs review)
 
 **方式一: NSIS 安装包 (推荐)**
 ```
-1. 从 GitHub Releases 下载 TradingEasy Setup 1.10.0.exe (128MB)
+1. 从 GitHub Releases 下载 quant-moo Setup 1.10.0.exe (128MB)
 2. 双击运行 → 选择安装目录 → 完成
 3. 验证 SHA256:
-   certutil -hashfile "TradingEasy Setup 1.10.0.exe" SHA256
+   certutil -hashfile "quant-moo Setup 1.10.0.exe" SHA256
    应为: AEFE59FEB5650936A51790E21A874BE07357EB77A15839DA2FD3ED032CE393A4
 ```
 
 **方式二: Portable 免安装版**
 ```
-1. 下载 TradingEasy 1.10.0.exe (105MB)
+1. 下载 quant-moo 1.10.0.exe (105MB)
 2. 直接双击运行 (无需安装)
 3. SHA256: 388136A24C0DB68D8F8B8E9EE6E6EC3BEB97C63C4B41CDE6C2D840C2EA2A955A
 ```
 
 **方式三: 开发模式**
 ```bash
-git clone https://github.com/vx1073071/tradingeasy.git
-cd dawn-whales
+git clone https://github.com/vx1073071/quant-moo.git
+cd quant-moo
 pnpm install
 pnpm run build
 ```
@@ -77,7 +77,7 @@ pnpm run build
 
 ```bash
 # 1. 下载 DMG 镜像
-open "TradingEasy-1.10.0-arm64.dmg"
+open "quant-moo-1.10.0-arm64.dmg"
 # 2. 拖拽到 Applications
 # 3. 首次打开: 右键 → Open (绕过 Gatekeeper)
 ```
@@ -86,11 +86,11 @@ open "TradingEasy-1.10.0-arm64.dmg"
 
 ```bash
 # AppImage (推荐)
-chmod +x "TradingEasy-1.10.0.AppImage"
-./"TradingEasy-1.10.0.AppImage"
+chmod +x "quant-moo-1.10.0.AppImage"
+./"quant-moo-1.10.0.AppImage"
 
 # .deb 安装包
-sudo dpkg -i "dawn-whales_1.10.0_amd64.deb"
+sudo dpkg -i "quant-moo_1.10.0_amd64.deb"
 ```
 
 ---
@@ -101,8 +101,8 @@ sudo dpkg -i "dawn-whales_1.10.0_amd64.deb"
 
 ```json
 {
-  "appId": "com.TradingEasy.app",
-  "productName": "TradingEasy",
+  "appId": "com.quant-moo.app",
+  "productName": "quant-moo",
   "directories": { "output": "release" },
   "files": ["dist/**/*", "dist-electron/**/*", "package.json"],
   "asar": true,
@@ -137,7 +137,7 @@ sudo dpkg -i "dawn-whales_1.10.0_amd64.deb"
   "publish": {
     "provider": "github",
     "owner": "vx1073071",
-    "repo": "dawn-whales",
+    "repo": "quant-moo",
     "releaseType": "release"
   }
 }
@@ -213,7 +213,7 @@ npm run build                             # Vite 前端构建
 npx electron-builder --win --publish never  # Electron 打包
 
 # 4. 生成 SHA256
-certutil -hashfile "release/TradingEasy Setup 1.10.0.exe" SHA256 > release/SHA256SUMS.txt
+certutil -hashfile "release/quant-moo Setup 1.10.0.exe" SHA256 > release/SHA256SUMS.txt
 
 # 5. Git 操作
 git add .
@@ -250,7 +250,7 @@ git push origin master --tags
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `DB_PATH` | `./data/dawn-whales.db` | SQLite 数据库路径 |
+| `DB_PATH` | `./data/quant-moo.db` | SQLite 数据库路径 |
 | `DB_MAX_SIZE` | `536870912` (512MB) | 最大数据库大小 |
 
 ---
@@ -264,7 +264,7 @@ git push origin master --tags
 curl http://127.0.0.1:11111/api/getGlobalState
 
 # 进程检查
-ps aux | grep "TradingEasy"
+ps aux | grep "quant-moo"
 ps aux | grep "FutuOpenD"
 ```
 
@@ -272,9 +272,9 @@ ps aux | grep "FutuOpenD"
 
 | 平台 | 路径 |
 |------|------|
-| Windows | `%APPDATA%/dawn-whales/logs/main.log` |
-| macOS | `~/Library/Logs/dawn-whales/main.log` |
-| Linux | `~/.config/dawn-whales/logs/main.log` |
+| Windows | `%APPDATA%/quant-moo/logs/main.log` |
+| macOS | `~/Library/Logs/quant-moo/main.log` |
+| Linux | `~/.config/quant-moo/logs/main.log` |
 
 ### 6.3 性能监控指标
 
@@ -294,7 +294,7 @@ ps aux | grep "FutuOpenD"
 
 ```bash
 # 通过自动更新回滚
-# 1. 打开 Help → About TradingEasy
+# 1. 打开 Help → About quant-moo
 # 2. 点击 "Restore previous version"
 # 3. 自动下载并重启
 
@@ -307,18 +307,18 @@ ps aux | grep "FutuOpenD"
 
 ```bash
 # SQLite 数据库自动备份位置
-# 主数据库: ./data/dawn-whales.db
-# 备份: ./data/dawn-whales.db.bak.<timestamp>
+# 主数据库: ./data/quant-moo.db
+# 备份: ./data/quant-moo.db.bak.<timestamp>
 
 # 手动回滚数据库
-cp ./data/dawn-whales.db.bak.20260612 ./data/dawn-whales.db
+cp ./data/quant-moo.db.bak.20260612 ./data/quant-moo.db
 ```
 
 ### 7.3 紧急回滚场景
 
 | 场景 | 操作 | 预计恢复时间 |
 |------|------|-------------|
-| 启动崩溃 | 删除 `~/dawn-whales/config.json` → 重启 | <1 min |
+| 启动崩溃 | 删除 `~/quant-moo/config.json` → 重启 | <1 min |
 | 数据库损坏 | 替换备份数据库 | <5 min |
 | OpenD 连接失败 | 重启 FutuOpenD 服务 | <2 min |
 | 版本不兼容 | 覆盖安装上一版本 | <3 min |
@@ -348,8 +348,8 @@ cp ./data/dawn-whales.db.bak.20260612 ./data/dawn-whales.db
 
 ```bash
 # 自动迁移由 Electron main process 在首次启动时执行
-# 日志: ~/dawn-whales/logs/migration.log
-# 如失败, 从备份恢复: ./data/dawn-whales.db.bak.<timestamp>
+# 日志: ~/quant-moo/logs/migration.log
+# 如失败, 从备份恢复: ./data/quant-moo.db.bak.<timestamp>
 ```
 
 ---
@@ -360,8 +360,8 @@ cp ./data/dawn-whales.db.bak.20260612 ./data/dawn-whales.db
 
 **Q: 启动白屏**
 ```
-1. 删除 config.json 重置: rm ~/dawn-whales/config.json
-2. 清除 Electron 缓存: rm -rf ~/dawn-whales/Cache
+1. 删除 config.json 重置: rm ~/quant-moo/config.json
+2. 清除 Electron 缓存: rm -rf ~/quant-moo/Cache
 3. 检查 TSC: npx tsc --noEmit (开发模式)
 ```
 

@@ -76,7 +76,7 @@ const DEFAULT_FRAGMENT_CONFIG: FragmentConfig = {
 };
 
 const DEFAULT_CLOUD_CONFIG: CloudOpenDConfig = {
-  host: process.env.OPEND_HOST || 'opend.dawn-whales.cloud',
+  host: process.env.OPEND_HOST || 'opend.quant-moo.cloud',
   port: parseInt(process.env.OPEND_PORT || '11111', 10),
   tlsEnabled: process.env.OPEND_TLS !== 'false',
   timeoutMs: parseInt(process.env.OPEND_TIMEOUT_MS || '5000', 10),

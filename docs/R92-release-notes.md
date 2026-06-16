@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.10.0-rc.1 Release Notes (R92)
+# quant-moo v1.10.0-rc.1 Release Notes (R92)
 
 > Release Date: 2026-06-11 | Version: v1.10.0-rc.1 | PM: Claw
 

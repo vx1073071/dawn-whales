@@ -1,8 +1,8 @@
-# DAWN WHALES Plugin API Specification v1.0
+# QUANT MOO Plugin API Specification v1.0
 
 ## Overview
 
-The DAWN WHALES plugin system lets third-party developers extend the platform with custom strategies, indicators, UI components, and data integrations.
+The QUANT MOO plugin system lets third-party developers extend the platform with custom strategies, indicators, UI components, and data integrations.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ Third-party Plugin Code
          │ IPC
          ▼
 ┌───────────────────┐
-│  DAWN WHALES Core │  ← Factor engine, broker, signals
+│  QUANT MOO Core │  ← Factor engine, broker, signals
 └───────────────────┘
 ```
 
@@ -178,7 +178,7 @@ module.exports = {
 
 ## Marketplace
 
-URL: `https://marketplace.dawnwhales.app/api/v1`
+URL: `https://marketplace.QuantMoo.app/api/v1`
 
 Endpoints:
 - `GET /search?q=grid&tags=strategy` — Search plugins

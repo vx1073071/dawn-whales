@@ -1,4 +1,4 @@
-# TradingEasy 品牌指南 v1.0
+# quant-moo 品牌指南 v1.0
 
 > 版本: v1.0 | 日期: 2026-06-15 | 维护: QClaw(设计虾)
 > 适用范围: 全平台 (桌面端 + 落地页 + 服务器 + 文档 + 营销)
@@ -8,7 +8,7 @@
 ## 一、品牌身份
 
 ```
-品牌名: TradingEasy
+品牌名: quant-moo
 标语: 让交易更简单
 英文标语: Trade Smarter, Not Harder
 简称: TE
@@ -17,9 +17,9 @@
 
 ### 1.1 品牌故事
 
-TradingEasy 不是一个冷冰冰的交易终端。它是一个**AI驱动的因子量化平台**，让专业量化分析像聊天一样简单。
+quant-moo 不是一个冷冰冰的交易终端。它是一个**AI驱动的因子量化平台**，让专业量化分析像聊天一样简单。
 
-**三句话解释 TradingEasy:**
+**三句话解释 quant-moo:**
 1. 像选菜一样选因子 → 拖放到画布 → AI自动构建策略
 2. 44个专业因子 + 实时IC追踪 + 一键回测 → 零代码量化
 3. 创作者市场分享策略 → 躺着赚钱 (L1:70% L2:80% L3:90%)
@@ -32,31 +32,31 @@ TradingEasy 不是一个冷冰冰的交易终端。它是一个**AI驱动的因�
 
 | 场景 | 写法 | 示例 |
 |------|------|------|
-| 品牌全名 | TradingEasy | TradingEasy 是一款AI量化平台 |
-| 代码仓库 | tradingeasy | github.com/vx1073071/tradingeasy |
-| 域名 | tradingeasy.io | https://tradingeasy.io |
-| 邮箱 | xxx@tradingeasy.io | support@tradingeasy.io |
-| 包名 | tradingeasy | npm install tradingeasy |
+| 品牌全名 | quant-moo | quant-moo 是一款AI量化平台 |
+| 代码仓库 | quant-moo | github.com/vx1073071/quant-moo |
+| 域名 | quant-moo.io | https://quant-moo.io |
+| 邮箱 | xxx@quant-moo.io | support@quant-moo.io |
+| 包名 | quant-moo | npm install quant-moo |
 | 文件路径 | tradineasy/ | C:\Users\...\tradineasy\ |
 | 简称 | TE | TE v2.3.0 |
 
 ### 2.2 ❌ 禁止写法
 
 ```
-❌ Dawn Whales / DawnWhales / dawnwhales / dawn-whales
+❌ QUANT MOO / QuantMoo / QuantMoo / quant-moo
 ❌ DW
-❌ dawnwhales.com
+❌ QuantMoo.com
 ❌ anything with "whale"
 ```
 
 ### 2.3 大小写规则
 
 ```
-代码中 (PascalCase): TradingEasy
-URL/路径 (小写): tradingeasy
-文档正文 (首字母大写): TradingEasy
+代码中 (PascalCase): quant-moo
+URL/路径 (小写): quant-moo
+文档正文 (首字母大写): quant-moo
 CSS类名 (BEM): .te-xxx
-环境变量: TRADINGEASY_xxx
+环境变量: quant-moo_xxx
 ```
 
 ---
@@ -77,7 +77,7 @@ CSS类名 (BEM): .te-xxx
 ### 3.2 水印规范
 
 ```
-文字水印: "TradingEasy" + 🦐
+文字水印: "quant-moo" + 🦐
 位置: 右下角或居中平铺
 透明度: 25-40%
 倾斜: 0° (水平平铺) 或 45° (对角平铺)
@@ -87,7 +87,7 @@ CSS类名 (BEM): .te-xxx
 ### 3.3 吉祥物
 
 ```
-🦐 = TradingEasy 品牌吉祥物
+🦐 = quant-moo 品牌吉祥物
 含义: 虾 — 灵活、快速、精准、群居协作
 
 使用场景:
@@ -105,9 +105,9 @@ CSS类名 (BEM): .te-xxx
 
 | 产品 | 名称 | 定位 |
 |------|------|------|
-| 桌面端 | TradingEasy Desktop | Electron全功能交易终端 |
-| 落地页 | TradingEasy Web | 品牌展示+下载入口 |
-| 服务器 | TradingEasy Server | API/钱包/计费/创作者市场 |
+| 桌面端 | quant-moo Desktop | Electron全功能交易终端 |
+| 落地页 | quant-moo Web | 品牌展示+下载入口 |
+| 服务器 | quant-moo Server | API/钱包/计费/创作者市场 |
 
 ### 4.2 核心功能命名
 
@@ -128,19 +128,19 @@ AI助手: AI Advisor
 ### 5.1 域名
 
 ```
-主站: https://tradingeasy.io
-文档: https://docs.tradingeasy.io
-API: https://api.tradingeasy.io
-GitHub: https://github.com/vx1073071/tradingeasy
+主站: https://quant-moo.io
+文档: https://docs.quant-moo.io
+API: https://api.quant-moo.io
+GitHub: https://github.com/vx1073071/quant-moo
 ```
 
 ### 5.2 邮箱
 
 ```
-技术支持: support@tradingeasy.io
-隐私合规: privacy@tradingeasy.io
-商务合作: business@tradingeasy.io
-安全报告: security@tradingeasy.io
+技术支持: support@quant-moo.io
+隐私合规: privacy@quant-moo.io
+商务合作: business@quant-moo.io
+安全报告: security@quant-moo.io
 ```
 
 ---
@@ -162,7 +162,7 @@ GitHub: https://github.com/vx1073071/tradingeasy
 用户: "你" (不称"您"，保持友好)
 创作者: "创作者" 或直接 @昵称
 AI: "AI Advisor" 或 "🦐 AI"
-品牌自称: "TradingEasy" 或 "TE"
+品牌自称: "quant-moo" 或 "TE"
 ```
 
 ### 6.3 营销短语库
@@ -180,11 +180,11 @@ AI: "AI Advisor" 或 "🦐 AI"
 ## 七、品牌使用禁止事项
 
 ```
-❌ 不要在正式产品中自称 "Dawn Whales"
+❌ 不要在正式产品中自称 "QUANT MOO"
 ❌ 不要用鲸鱼🐋相关的视觉元素
-❌ 不要引用 dawnwhales.com 任何URL
-❌ 不要在水印中写 "Dawn Whales" 或 "DW"
-❌ 不要在代码注释中保留 "Dawn Whales" (除非是历史changelog)
+❌ 不要引用 QuantMoo.com 任何URL
+❌ 不要在水印中写 "QUANT MOO" 或 "DW"
+❌ 不要在代码注释中保留 "QUANT MOO" (除非是历史changelog)
 ❌ 不要用 DW 作为缩写
 ```
 
@@ -213,11 +213,11 @@ AI: "AI Advisor" 或 "🦐 AI"
 - [ ] SSL证书
 
 ### 8.4 确认验证
-- [ ] grep全项目零 "Dawn Whales" 残留
-- [ ] grep全项目零 "dawnwhales" 残留
-- [ ] grep全项目零 "dawn-whales" (除路径外)
+- [ ] grep全项目零 "QUANT MOO" 残留
+- [ ] grep全项目零 "QuantMoo" 残留
+- [ ] grep全项目零 "quant-moo" (除路径外)
 - [ ] TSC=0, Build=0
 
 ---
 
-*品牌指南 v1.0: 2026-06-15 | QClaw(设计虾) | TradingEasy R179*
+*品牌指南 v1.0: 2026-06-15 | QClaw(设计虾) | quant-moo R179*

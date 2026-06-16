@@ -93,7 +93,7 @@ const AssetClassSelector: React.FC<AssetClassSelectorProps> = ({
   return (
     <div style={styles.container}>
       <div style={styles.hero}>
-        <h2 style={styles.heroTitle}>🧬 Dawn Whales Factor Engine</h2>
+        <h2 style={styles.heroTitle}>🧬 QUANT MOO Factor Engine</h2>
         <p style={styles.heroSubtitle}>
           {totalCount} factors across stocks, commodities, and crypto
         </p>

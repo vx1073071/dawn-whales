@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R157 JVS #16 — Watchlist Import/Export API
+ * QUANT MOO R157 JVS #16 — Watchlist Import/Export API
  *
  * Endpoints:
  *   POST /api/watchlist/import      — Import watchlist from JSON or CSV

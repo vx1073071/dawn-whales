@@ -58,7 +58,7 @@ for (let idx = 0; idx < targetHandlers.length; idx++) {
 
 // 构建输出
 const out = [];
-out.push('// ── DAWN WHALES IPC: strategy ────────────────────────────────────────────');
+out.push('// ── QUANT MOO IPC: strategy ────────────────────────────────────────────');
 out.push(`// ${blocks.length} handlers — strategy/live/paper/nl domains`);
 out.push('');
 out.push('import { ipcMain, BrowserWindow, app } from "electron";');

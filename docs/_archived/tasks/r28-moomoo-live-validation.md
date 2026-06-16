@@ -593,7 +593,7 @@ console.log(JSON.stringify(klines.slice(0, 3), null, 2));
 
 ```
 ┌──────────────┐                          ┌──────────────┐
-│  TradingEasy  │                          │ Moomoo OpenD │
+│  quant-moo  │                          │ Moomoo OpenD │
 │   (Client)   │                          │  (Port 11211)│
 └──────┬───────┘                          └──────┬───────┘
        │                                         │
@@ -605,7 +605,7 @@ console.log(JSON.stringify(klines.slice(0, 3), null, 2));
        │                                         │
        │  3. InitConnect Request (cmdID: 1001)   │
        │     { clientVer: 106,                   │
-       │       clientID: 'TradingEasy-Moomoo',    │
+       │       clientID: 'quant-moo-Moomoo',    │
        │       recvNotify: true,                 │
        │       packetEncAlgo: -1,                │
        │       programmingLanguage: 'TypeScript' }│

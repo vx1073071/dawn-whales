@@ -1,4 +1,4 @@
-# DAWN WHALES Docs Site — Deployment Configuration
+# QUANT MOO Docs Site — Deployment Configuration
 
 ## R236-auto#2 / C5-final
 
@@ -8,8 +8,8 @@ This directory contains deployment configurations for the documentation site.
 
 | Target | Config File | URL |
 |--------|------------|-----|
-| GitHub Pages | `.github/workflows/docs-deploy.yml` | https://dawn-whales.github.io/dawn-whales/ |
-| Vercel | `vercel.json` | https://docs.dawnwhales.app |
+| GitHub Pages | `.github/workflows/docs-deploy.yml` | https://quant-moo.github.io/quant-moo/ |
+| Vercel | `vercel.json` | https://docs.QuantMoo.app |
 
 ### Search
 

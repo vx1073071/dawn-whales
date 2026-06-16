@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123-Q01 — Trade IPC Schemas (Tier 1, 5 channels)
+ * QUANT MOO R123-Q01 — Trade IPC Schemas (Tier 1, 5 channels)
  * 
  * ALWAYS validated regardless of NODE_ENV (financial-critical).
  * Covers: trade:execute/cancel/emergency-stop/get-orders/get-summary

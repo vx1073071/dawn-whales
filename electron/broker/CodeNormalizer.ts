@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — CodeNormalizer ───────────────────────────────────────
+// ── QUANT MOO — CodeNormalizer ───────────────────────────────────────
 // R1 CONC-01: 统一代码映射器 + UnifiedCode映射表
 // 职责: normalize(券商原生代码) → standardCode, denormalize(standardCode, brokerId) → 券商代码
 

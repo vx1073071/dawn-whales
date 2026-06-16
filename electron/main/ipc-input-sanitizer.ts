@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC Input Sanitizer (R92 J-01) ──────────────────────────
+// ── QUANT MOO — IPC Input Sanitizer (R92 J-01) ──────────────────────────
 // Universal input validation and sanitization for all IPC handlers.
 // Applied as a middleware layer before handler execution.
 

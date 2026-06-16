@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Risk Worker ─────────────────────────────────────────────
+// ── QUANT MOO — Risk Worker ─────────────────────────────────────────────
 // Risk calculations (VaR / Monte Carlo) in worker thread
 
 import { decomposeRisk, runMonteCarlo } from '../engine/risk/risk-decomposition';

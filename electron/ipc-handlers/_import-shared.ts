@@ -1,4 +1,4 @@
-��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+��// ── QUANT MOO — Electron Main Process ────────────────────────────────────
 // ： (Electron + C++ core + React)
 // ：Electron + Node.js (Main) + React (Renderer)
 

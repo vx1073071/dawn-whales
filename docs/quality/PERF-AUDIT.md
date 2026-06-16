@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy 性能审计报告
+# quant-moo 性能审计报告
 
 **审计日期**: 2026-06-04  
 **审计者**: WorkBuddy  

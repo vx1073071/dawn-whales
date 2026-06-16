@@ -130,7 +130,7 @@ export const useMarketStore = create<MarketStore>()(
       })),
     }),
     {
-      name: 'dawn-whales-watchlist',   // localStorage key
+      name: 'quant-moo-watchlist',   // localStorage key
       // 仅持久化 watchlist (不持久化 quotes/当前选中等)
       partialize: (state) => ({ watchlist: state.watchlist }),
     }
@@ -216,7 +216,7 @@ const handleAdd = useCallback((s: SearchResult) => {
 persist(
   (set, get) => ({ ... }),  // store definition
   {
-    name: 'dawn-whales-watchlist-v2',  // 版本化 key (防 schema 冲突)
+    name: 'quant-moo-watchlist-v2',  // 版本化 key (防 schema 冲突)
     version: 2,                         // 迁移版本号
     migrate: (persisted, version) => {
       // 从 v1 (string[]) 迁移到 v2 (WatchlistItem[])
@@ -297,7 +297,7 @@ function detectMarketFromCode(code: string): Market {
 如果迁移出现问题 (如 localStorage 损坏):
 
 ```
-1. 用户侧: 清除 localStorage['dawn-whales-watchlist-v2']
+1. 用户侧: 清除 localStorage['quant-moo-watchlist-v2']
 2. 代码侧: zustand persist version 回退 → 加载 DEFAULT_WATCHLIST
 3. DEFAULT_WATCHLIST 保持为 WatchlistItem[] (新格式)
 4. 用户重新添加自选 (数据量通常 < 20, 影响有限)

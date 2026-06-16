@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: sentiment ────────────────────────────────────────────
+// ── QUANT MOO IPC: sentiment ────────────────────────────────────────────
 // 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

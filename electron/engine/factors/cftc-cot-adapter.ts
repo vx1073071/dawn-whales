@@ -8,7 +8,7 @@
 import log from 'electron-log';
 import { CFTCData } from './commodity-types';
 
-// ── CFTC Symbol Mapping (Dawn Whales -> CFTC market codes) ─────
+// ── CFTC Symbol Mapping (QUANT MOO -> CFTC market codes) ─────
 
 const SYMBOL_TO_CFTC: Record<string, string> = {
   'GC': '088691',  // Gold

@@ -1,4 +1,4 @@
-// DAWN WHALES R113 - Indicator Engine Worker
+// QUANT MOO R113 - Indicator Engine Worker
 // Web Worker: 20 core technical indicators parallel computing
 // Input: { bars: KlineBar[], indicators: IndicatorRequest[] }
 // Output: { results: IndicatorResult[], elapsed: number }

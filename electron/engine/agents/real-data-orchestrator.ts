@@ -147,7 +147,7 @@ export class RealDataOrchestrator {
         enabled: true,
         clientId: config?.reddit?.clientId ?? "",
         clientSecret: config?.reddit?.clientSecret ?? "",
-        userAgent: config?.reddit?.userAgent ?? "DawnWhales/1.8.0",
+        userAgent: config?.reddit?.userAgent ?? "QuantMoo/1.8.0",
         subreddits: ["wallstreetbets", "stocks", "investing", "StockMarket"],
         rateLimit_perMin: 30,
         timeoutMs: 5000,

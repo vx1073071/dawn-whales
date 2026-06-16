@@ -40,7 +40,7 @@ export default function SocialProofTicker() {
   useEffect(() => {
     const timer = setInterval(() => {
       const newToast: SocialProof = {
-        id: `t${Date.now()}`, type: 'purchase', user: '新用户', avatar: '🎉', text: '加入了Dawn Whales', time: '刚刚'
+        id: `t${Date.now()}`, type: 'purchase', user: '新用户', avatar: '🎉', text: '加入了QUANT MOO', time: '刚刚'
       };
       setVisibleToast(newToast);
       setTimeout(() => setVisibleToast(null), 4000);

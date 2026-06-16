@@ -175,7 +175,7 @@ export class YahooFinanceAdapter extends BaseAdapter {
     const url = `${this.config.baseUrl}${mappedSymbol}?interval=1d&range=5d`;
 
     const response = await fetch(url, {
-      headers: { "User-Agent": "DawnWhales/1.8" },
+      headers: { "User-Agent": "QuantMoo/1.8" },
     });
 
     if (!response.ok) throw new EngineError("`Yahoo returned ${response.status}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
@@ -209,7 +209,7 @@ export class YahooFinanceAdapter extends BaseAdapter {
     const url = `${this.config.baseUrl}${mappedSymbol}?interval=1d&period1=${period1}&period2=${period2}`;
 
     const response = await fetch(url, {
-      headers: { "User-Agent": "DawnWhales/1.8" },
+      headers: { "User-Agent": "QuantMoo/1.8" },
     });
 
     if (!response.ok) throw new EngineError("`Yahoo history failed: ${response.status}`", { code: ErrorCode.ENGINE_AI_ERROR });
@@ -233,7 +233,7 @@ export class YahooFinanceAdapter extends BaseAdapter {
   protected async doHealthCheck(): Promise<boolean> {
     try {
       const r = await fetch(`${this.config.baseUrl}AAPL?interval=1d&range=1d`, {
-        headers: { "User-Agent": "DawnWhales/1.8" },
+        headers: { "User-Agent": "QuantMoo/1.8" },
       });
       return r.ok;
     } catch {
@@ -434,7 +434,7 @@ export class SocialSentimentAdapter extends BaseAdapter {
       try {
         const url = `${this.config.baseUrl}/r/${sub}/search.json?q=${encodeURIComponent(symbol)}&sort=new&limit=10&t=week`;
         const response = await fetch(url, {
-          headers: { "User-Agent": "DawnWhales/1.8 (research bot)" },
+          headers: { "User-Agent": "QuantMoo/1.8 (research bot)" },
         });
         if (!response.ok) continue;
         const json = await response.json();
@@ -474,7 +474,7 @@ export class SocialSentimentAdapter extends BaseAdapter {
   protected async doHealthCheck(): Promise<boolean> {
     try {
       const r = await fetch(`${this.config.baseUrl}/r/stocks/hot.json?limit=1`, {
-        headers: { "User-Agent": "DawnWhales/1.8" },
+        headers: { "User-Agent": "QuantMoo/1.8" },
       });
       return r.ok;
     } catch { return false; }

@@ -1,4 +1,4 @@
-# TradingEasy AI 对抗样本测试套件
+# quant-moo AI 对抗样本测试套件
 
 > **版本**: v1.0 | **日期**: 2026-06-15 | **作者**: QClaw(设计虾)  
 > **任务**: R183 P2-07 | **工时**: 3h  
@@ -8,7 +8,7 @@
 
 ## 一、测试目标
 
-验证TradingEasy AI安全防线的5层输入(prompt-injection-guard) + 5层输出(ai-output-guard) + 行动边界(ai-action-guard) + 语义层(ai-semantic-guard)共12个安全模块对已知攻击手法的防御能力。
+验证quant-moo AI安全防线的5层输入(prompt-injection-guard) + 5层输出(ai-output-guard) + 行动边界(ai-action-guard) + 语义层(ai-semantic-guard)共12个安全模块对已知攻击手法的防御能力。
 
 ---
 

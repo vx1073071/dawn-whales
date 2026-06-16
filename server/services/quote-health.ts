@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R154 Claw(PM) — Quote Health Monitor + Broker Priority Config
+ * QUANT MOO R154 Claw(PM) — Quote Health Monitor + Broker Priority Config
  *
  * Three subsystems:
  *   1. Broker priority config — user-reorderable broker preference storage

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const ROOT = 'C:/Users/vx107/.easyclaw/workspace/dawn-whales';
+const ROOT = 'C:/Users/vx107/.easyclaw/workspace/quant-moo';
 
 const config = fs.readFileSync(ROOT + '/vitest.config.ts', 'utf-8');
 

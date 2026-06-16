@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R132 J02 — Fee Calculator + Stop-Loss/Take-Profit Engine
+ * QUANT MOO R132 J02 — Fee Calculator + Stop-Loss/Take-Profit Engine
  * 
  * Dual-mode fee calculation:
  *  - v15 business model: taker 0.1% / maker 0.02% / platform 100%

@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Backtest Worker ──────────────────────────────────────────
+// ── QUANT MOO — Backtest Worker ──────────────────────────────────────────
 // CPU-intensive backtest execution in worker thread
 
 import { BacktestEngine } from '../engine/backtest/backtest-engine';

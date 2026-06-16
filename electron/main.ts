@@ -1,4 +1,4 @@
-// ── TradingEasy — Electron Main Process ───────────────────────────────
+// ── quant-moo — Electron Main Process ───────────────────────────────
 // S-19: Modularized into electron/main/{lifecycle,ipc-setup,tray,updater}.ts
 // main.ts now imports and delegates — <100 lines
 

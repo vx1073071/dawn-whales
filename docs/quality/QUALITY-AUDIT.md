@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy · 质量审计报告
+# quant-moo · 质量审计报告
 
 > v1.0 | 2026-06-04
 

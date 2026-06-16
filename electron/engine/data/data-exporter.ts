@@ -427,14 +427,14 @@ export function exportData(options: ExportOptions): ExportResult {
   }
 
   // 3. Determine output path
-  const outputDir = options.outputPath || path.join(app.getPath('downloads'), 'dawn-whales-exports');
+  const outputDir = options.outputPath || path.join(app.getPath('downloads'), 'quant-moo-exports');
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
   const ext = format === 'csv' ? 'csv' : format === 'md' ? 'md' : 'json';
-  const filename = `dawn-whales-${target}-${timestamp}.${ext}`;
+  const filename = `quant-moo-${target}-${timestamp}.${ext}`;
   const filePath = path.join(outputDir, filename);
 
   // 4. Write file
@@ -460,7 +460,7 @@ export function exportData(options: ExportOptions): ExportResult {
 // ── Batch Export ───────────────────────────────────────────────────────────
 
 export function batchExport(request: BatchExportRequest): BatchExportResult {
-  const outputDir = request.outputDir || path.join(app.getPath('downloads'), 'dawn-whales-exports', `batch-${Date.now()}`);
+  const outputDir = request.outputDir || path.join(app.getPath('downloads'), 'quant-moo-exports', `batch-${Date.now()}`);
 
   const results: ExportResult[] = [];
   let totalSize = 0;
@@ -535,7 +535,7 @@ Total PnL: ${totalPnl}
 Total Commission: ${totalCommission}
 
 ---
-*Dawn Whales Data Exporter v1.0*
+*QUANT MOO Data Exporter v1.0*
 ${now}
 `;
 }
@@ -563,7 +563,7 @@ export function generatePdf(title: string, sections: Array<{ heading: string; ro
   }
 
   lines.push(`Total sections: ${sections.length}`);
-  lines.push('Dawn Whales Data Exporter v2.0');
+  lines.push('QUANT MOO Data Exporter v2.0');
 
   const textContent = lines.join('\n');
   return buildMinimalPdf(textContent);
@@ -661,17 +661,17 @@ export function exportPdf(options: ExportOptions): ExportResult {
 
   // Build PDF sections
   const sections = buildPdfSections(target, rows);
-  const title = `Dawn Whales - ${target} Report`;
+  const title = `QUANT MOO - ${target} Report`;
   const pdfBuffer = generatePdf(title, sections);
 
   // Write file
-  const outputDir = options.outputPath || path.join(app.getPath('downloads'), 'dawn-whales-exports');
+  const outputDir = options.outputPath || path.join(app.getPath('downloads'), 'quant-moo-exports');
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const filename = `dawn-whales-${target}-${timestamp}.pdf`;
+  const filename = `quant-moo-${target}-${timestamp}.pdf`;
   const filePath = path.join(outputDir, filename);
 
   try {

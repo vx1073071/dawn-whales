@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES — main.ts 拆分脚本
+ * QUANT MOO — main.ts 拆分脚本
  * 
  * 提取所有顶层 ipcMain.handle() 调用，按 domain 分组到 electron/ipc/ 下
  * main.ts 缩减为 ~400 行（imports + createWindow + services + registerAllIPC + app lifecycle）
@@ -185,7 +185,7 @@ function generateModule(modName, handlerList) {
 
   const out = [];
 
-  out.push(`// ── DAWN WHALES IPC: ${modName} ────────────────────────────────────────────`);
+  out.push(`// ── QUANT MOO IPC: ${modName} ────────────────────────────────────────────`);
   out.push(`// Auto-split from main.ts — ${handlerList.length} handlers`);
   out.push(`//`);
   out.push(`// Registered channels:`);
@@ -245,7 +245,7 @@ for (const [modName, handlerList] of sortedModules) {
 // ─────────────────────────────────────────────────────────────────────
 
 const indexOut = [];
-indexOut.push(`// ── DAWN WHALES IPC — Unified Registration ─────────────────────────`);
+indexOut.push(`// ── QUANT MOO IPC — Unified Registration ─────────────────────────`);
 indexOut.push(`// Auto-generated. Imports all IPC modules.`);
 indexOut.push(``);
 

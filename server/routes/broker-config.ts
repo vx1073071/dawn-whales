@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R154 J01-J03 — Broker Config API + Market Status + Playback
+ * QUANT MOO R154 J01-J03 — Broker Config API + Market Status + Playback
  *
  * JVS deliverables:
  *   J01: PUT /api/broker/priority — 券商优先级配置存储

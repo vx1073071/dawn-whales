@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R145 J02 — AI Billing Unified Interface
+ * QUANT MOO R145 J02 — AI Billing Unified Interface
  * 
  * Billing pipeline for ALL AI services (drawlines, chat, param-fill).
  * 

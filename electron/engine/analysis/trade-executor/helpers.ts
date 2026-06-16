@@ -1,7 +1,7 @@
 import { EngineError, ErrorCode } from '../../errors';
 /**
  * Trade Execution Engine
- * Sprint 2 Phase 2 - Dawn Whales
+ * Sprint 2 Phase 2 - QUANT MOO
  *
  * Handles trade signal processing, risk management, order execution,
  * and trade logging for both paper and real trading modes.

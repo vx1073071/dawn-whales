@@ -1,7 +1,7 @@
 // @ts-nocheck
 // R127-Q01: nocheck cleared
 
-// ── TradingEasy — IPC API Client ( OpenD， Electron IPC) ──────────────
+// ── quant-moo — IPC API Client ( OpenD， Electron IPC) ──────────────
 // R127-P03: bridge-api type-safety COMPLETE — all 12 namespaces (104/104).
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -155,6 +155,12 @@ declare global {
         reset: (...args: string[]) => Promise<IpcResponse>;
         exportPrefs: () => Promise<IpcResponse<PrefsExport>>;
         importPrefs: (...args: string[]) => Promise<IpcResponse>;
+      };
+      cockpit: {
+        getState: () => Promise<{ success: boolean; state?: any; error?: string }>;
+        getWatchlist: () => Promise<{ success: boolean; watchlist?: any[]; error?: string }>;
+        subscribe: (params?: { intervalMs?: number }) => Promise<{ success: boolean; error?: string }>;
+        unsubscribe: () => Promise<{ success: boolean }>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;

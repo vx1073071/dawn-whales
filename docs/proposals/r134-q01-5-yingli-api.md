@@ -14,7 +14,7 @@
 | 市场 | 港股 (HKEX) + 美股 (NYSE/NASDAQ) + A股 (沪深港通) |
 | 特色 | 零佣金美股, 智能条件单, 定投 |
 
-### TradingEasy 适配器
+### quant-moo 适配器
 
 ```
 YingliBridgeAdapter extends BridgeAdapterBase

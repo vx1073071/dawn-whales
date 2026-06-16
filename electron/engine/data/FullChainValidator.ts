@@ -373,7 +373,7 @@ export class FullChainValidator {
 
   printReport(report: IntegrationReport): string {
     const lines: string[] = [
-      '═══ DawnWhales Full-Chain Integration Report ═══',
+      '═══ QuantMoo Full-Chain Integration Report ═══',
       `Generated: ${report.generatedAt.toISOString()}`,
       `Version: ${report.version} | Status: ${report.overallStatus}`,
       `Nodes: ${report.passedNodes}/${report.totalNodes} | Checks: ${report.passedChecks}/${report.totalChecks} | Time: ${report.elapsedMs}ms`,

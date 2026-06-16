@@ -70,7 +70,7 @@
 #### ML-23-01 [P0] Electron .exe 打包验证
 - **内容**:
   - 运行 `npm run dist:win`，处理 `better-sqlite3` native module 重编译（electron-rebuild 或 prebuilt）
-  - 产出 `release/DAWN-WHALES-Setup-x.x.x.exe`
+  - 产出 `release/quant-moo-Setup-x.x.x.exe`
   - 安装并启动，验证 Dashboard 正常显示
   - DevTools Console 0 red errors
   - 若 NSIS 配置有问题，修复 `electron-builder.json`

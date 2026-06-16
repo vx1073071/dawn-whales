@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R122 J02 — BrokerAdapterFactory
+ * QUANT MOO R122 J02 — BrokerAdapterFactory
  * 17券商工厂注册: registerAllFactories() for BrokerManagerV2
  * 
  * Uses existing adapters: Futu (opend), Moomoo, Longbridge, IB.

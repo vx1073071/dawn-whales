@@ -16,7 +16,7 @@
 | Streamer | WebSocket (行情推送) |
 | 市场 | US equities, ETFs, options, futures, mutual funds, bonds |
 
-### TradingEasy 适配器
+### quant-moo 适配器
 
 ```
 SchwabAdapter extends OAuthBrokerBase implements IBrokerAdapterV2
@@ -36,16 +36,16 @@ SchwabAdapter extends OAuthBrokerBase implements IBrokerAdapterV2
 | 1 | https://developer.schwab.com → 注册 App |
 | 2 | 获取 `client_id` 和 `client_secret` |
 | 3 | 设置 redirect_uri: `http://localhost:8083/callback` |
-| 4 | TradingEasy 配置面板输入 |
+| 4 | quant-moo 配置面板输入 |
 
 ### 2.2 授权流程
 
 ```
-TradingEasy → 打开浏览器 → Schwab 授权页 → 用户确认
+quant-moo → 打开浏览器 → Schwab 授权页 → 用户确认
                                     ↓
                                 redirect → localhost:8083?code=xxx
                                     ↓
-                            TradingEasy 兑换 token → 存储 token
+                            quant-moo 兑换 token → 存储 token
 ```
 
 ### 2.3 Token 管理

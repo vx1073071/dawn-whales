@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R153 J04 — Longbridge Cloud Adapter Skeleton
+ * QUANT MOO R153 J04 — Longbridge Cloud Adapter Skeleton
  *
  * Server-side adapter for Longbridge Securities.
  * Protocol: REST API via api.longbridge.com with JWT auth.

@@ -1,6 +1,6 @@
 const fs=require('fs'),path=require('path');
-const ED='C:/Users/vx107/.easyclaw/workspace/dawn-whales/electron/engine';
-const TD='C:/Users/vx107/.easyclaw/workspace/dawn-whales/tests';
+const ED='C:/Users/vx107/.easyclaw/workspace/quant-moo/electron/engine';
+const TD='C:/Users/vx107/.easyclaw/workspace/quant-moo/tests';
 let ef=0,tl=0;
 function w(d){try{for(const f of fs.readdirSync(d,{withFileTypes:true})){if(f.isDirectory())w(path.join(d,f.name));else if(f.name.endsWith('.ts')&&f.name!=='index.ts'&&!f.name.endsWith('.d.ts')){ef++;try{tl+=fs.readFileSync(path.join(d,f.name),'utf-8').split('\n').length}catch{}}}}catch{}}
 w(ED);

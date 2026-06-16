@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R143 Claw(PM) — Tip Engine (打赏等级抽成引擎)
+ * QUANT MOO R143 Claw(PM) — Tip Engine (打赏等级抽成引擎)
  * 
  * CRITICAL: 转账 ≠ 打赏! Two completely independent billing pipelines!
  *   - TRANSFER: sender 0.3% + receiver 0.3% platform fee

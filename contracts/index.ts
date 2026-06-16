@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES 契约总出口
+ * QUANT MOO 契约总出口
  * @version 1.0.0
  *
  * 各虾通过此文件import所需契约，不直接访问其他虾的实现代码。

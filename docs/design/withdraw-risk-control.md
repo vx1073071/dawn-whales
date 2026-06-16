@@ -1,4 +1,4 @@
-# TradingEasy Withdrawal Risk Control v17.6
+# quant-moo Withdrawal Risk Control v17.6
 
 > **Round**: R143 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final, Locked by Owner
@@ -8,7 +8,7 @@
 
 ## Overview
 
-TradingEasy manages USDT withdrawals through a **6-rule risk engine** with automated routing and manual review for high-risk cases. All withdrawals are non-custodial — the user owns the destination address.
+quant-moo manages USDT withdrawals through a **6-rule risk engine** with automated routing and manual review for high-risk cases. All withdrawals are non-custodial — the user owns the destination address.
 
 ---
 

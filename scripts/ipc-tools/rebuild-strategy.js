@@ -35,7 +35,7 @@ console.log('Block: L' + (blockStart+1) + ' to L' + (liveOrdersEnd+1));
 const block = lines.slice(blockStart, liveOrdersEnd + 1);
 
 const out = [];
-out.push('// ── DAWN WHALES IPC: strategy ────────────────────────────────────────────');
+out.push('// ── QUANT MOO IPC: strategy ────────────────────────────────────────────');
 out.push('// ' + block.length + ' lines');
 out.push('');
 out.push('import { ipcMain, BrowserWindow, app } from "electron";');

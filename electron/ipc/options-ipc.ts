@@ -1,4 +1,4 @@
-// ── DAWN WHALES IPC: options ────────────────────────────────────────────
+// ── QUANT MOO IPC: options ────────────────────────────────────────────
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

@@ -1,4 +1,4 @@
-# TradingEasy Reconciliation Engine v2.0
+# quant-moo Reconciliation Engine v2.0
 
 > **Round**: R142 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: DESIGN DOCUMENT — Production Ready

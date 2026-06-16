@@ -217,4 +217,4 @@
 - 因子清单v2: `docs/proposals/factor-expansion-12shrimp-consolidated-checklist-v2.md`
 - R186 Phase1审计: `docs/proposals/factor-expansion-R186-phase1-audit-report.md`
 - R187 Round计划: `docs/proposals/factor-expansion-R187-round-plan.md`
-- 收费目录v17.7: `Desktop/TradingEasy-收费目录-v17.7.txt`
+- 收费目录v17.7: `Desktop/quant-moo-收费目录-v17.7.txt`

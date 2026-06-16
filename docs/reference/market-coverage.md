@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy — 市场覆盖参考文档
+# quant-moo — 市场覆盖参考文档
 
 > **版本**: v1.11.0
 > **最后更新**: 2026-06-12

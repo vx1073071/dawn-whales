@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Backtest Enhancement (Sprint 2: P1) ───────────────────────
+// ── QUANT MOO — Backtest Enhancement (Sprint 2: P1) ───────────────────────
 // period + parameter sweep + Walk-Forward + metric
 
 import { BacktestEngine } from './backtest-engine';

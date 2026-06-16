@@ -1,6 +1,6 @@
 
 /**
- * DAWN WHALES R132 J01 + R137 J01 — Copy Trade Executor Engine
+ * QUANT MOO R132 J01 + R137 J01 — Copy Trade Executor Engine
  * 
  * Full copy-trade execution pipeline:
  *   Source Signal → API Key Lookup(decrypt) → Subscription Check →

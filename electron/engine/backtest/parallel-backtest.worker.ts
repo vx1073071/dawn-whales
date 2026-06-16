@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Parallel Backtest Worker (J2) ─────────────────────────────
+// ── QUANT MOO — Parallel Backtest Worker (J2) ─────────────────────────────
 // parameter sweep 100 → 10x
 // (strategy, params[], klines[]) 4 ， Worker 25
 

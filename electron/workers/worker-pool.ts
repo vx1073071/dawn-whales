@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Worker Pool (Production Ready) ──────────────────────────
+// ── QUANT MOO — Worker Pool (Production Ready) ──────────────────────────
 // CPU offload worker_threads
 // JVS-51: Production-ready worker pool with monitoring and recovery
 

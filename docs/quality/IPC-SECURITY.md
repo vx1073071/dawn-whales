@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy IPC 安全审计报告
+# quant-moo IPC 安全审计报告
 
 **审计日期**: 2026-06-04  
 **审计者**: WorkBuddy  

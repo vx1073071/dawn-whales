@@ -42,7 +42,7 @@
 
 #### 1. [P0] ML-24-01: Electron .exe 打包 + 安装验证
 - 执行 `npm run dist:win`，处理 better-sqlite3 native module 路径
-- 产出 `release/TradingEasy Setup x.x.x.exe`
+- 产出 `release/quant-moo Setup x.x.x.exe`
 - 双击安装 → 启动 → Dashboard 显示 → 切换 Market/Trade/Risk 页面 → 0 crash
 - 截图上传 `docs/demo/r24-exe-screenshot.png`
 - **这是 R24 收关硬 gate，优先级最高**

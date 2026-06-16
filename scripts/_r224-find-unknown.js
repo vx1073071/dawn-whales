@@ -1,12 +1,12 @@
 const fs=require('fs');
-let p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/market/NewsDashboardPage.tsx';
+let p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/market/NewsDashboardPage.tsx';
 let c=fs.readFileSync(p,'utf-8');
 c=c.replace(/\{mood\s*\&\&/g, '{mood as any &&');
 fs.writeFileSync(p,c);
 console.log('NewsDashboardPage: mood fixed');
 
 // Fix AnomalyAlertPanel — find similar unknown pattern
-p='c:/Users/vx107/.easyclaw/workspace/dawn-whales/src/components/risk/AnomalyAlertPanel.tsx';
+p='c:/Users/vx107/.easyclaw/workspace/quant-moo/src/components/risk/AnomalyAlertPanel.tsx';
 c=fs.readFileSync(p,'utf-8');
 // Search for useState<unknown> patterns
 const lines=c.split('\n');

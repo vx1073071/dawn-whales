@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Parallel Backtest Orchestrator (J2) ──────────────────────
+// ── QUANT MOO — Parallel Backtest Orchestrator (J2) ──────────────────────
 // Splits configs across numWorkers threads, collects results
 // Fallback to serial when Worker threads unavailable (renderer/Sandbox)
 

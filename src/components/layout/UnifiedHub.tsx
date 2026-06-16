@@ -39,7 +39,7 @@ const recentItems: RecentItem[] = [
 const WelcomeCard = () => (
   <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-5 text-white mb-4">
     <div className="flex items-center justify-between mb-2">
-      <h2 className="text-xl font-bold">📊 Dawn Whales</h2>
+      <h2 className="text-xl font-bold">📊 QUANT MOO</h2>
       <span className="text-xs bg-white/20 px-2 py-1 rounded-full">v2.7.0</span>
     </div>
     <p className="text-sm text-white/80 mb-3">你的AI量化交易伙伴 — 市场、因子、策略、AI 一站式搞定</p>

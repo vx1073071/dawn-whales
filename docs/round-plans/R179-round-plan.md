@@ -1,10 +1,10 @@
-# R179 圆桌计划 — 安全加固 + TradingEasy改名
+# R179 圆桌计划 — 安全加固 + quant-moo改名
 
 > PM(Claw) | 2026-06-15 02:20 启动 | 3天 | 25h
 
 ## R179 目标
 
-P1安全防线完整 + TradingEasy→TradingEasy 全平台品牌切换
+P1安全防线完整 + quant-moo→quant-moo 全平台品牌切换
 
 ## R179 改名范围
 
@@ -25,9 +25,9 @@ P1安全防线完整 + TradingEasy→TradingEasy 全平台品牌切换
 - [ ] IPC速率限制生效
 
 ### 改名线
-- [ ] 全代码零"TradingEasy"/"TradingEasy"/"dawn-whales"残留
-- [ ] 8语言i18n全部改为TradingEasy
-- [ ] 水印/标题/package.json改为TradingEasy
+- [ ] 全代码零"quant-moo"/"quant-moo"/"quant-moo"残留
+- [ ] 8语言i18n全部改为quant-moo
+- [ ] 水印/标题/package.json改为quant-moo
 - [ ] TSC=0, Build=0
 
 ## 审计记录

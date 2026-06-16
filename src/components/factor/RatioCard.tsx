@@ -158,7 +158,7 @@ const RatioCard: React.FC<RatioCardProps> = ({ data, onShare, onCopy }) => {
   const [shared, setShared] = useState(false);
 
   const handleCopy = () => {
-    const text = `${data.name}: ${data.currentValue} (5yr range ${data.fiveYearLow}-${data.fiveYearHigh})\n${data.insight}\nvia Dawn Whales`;
+    const text = `${data.name}: ${data.currentValue} (5yr range ${data.fiveYearLow}-${data.fiveYearHigh})\n${data.insight}\nvia QUANT MOO`;
     navigator.clipboard?.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

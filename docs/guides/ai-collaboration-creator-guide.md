@@ -10,7 +10,7 @@ purpose: (auto-generated, needs review)
 
 **版本**: v1.2.0-alpha  
 **更新时间**: 2026-06-09  
-**适用版本**: TradingEasy v1.2.0+
+**适用版本**: quant-moo v1.2.0+
 
 ---
 
@@ -29,7 +29,7 @@ purpose: (auto-generated, needs review)
 
 ## 什么是 AI 协作
 
-AI 协作是 TradingEasy v1.2.0 推出的核心功能，通过 **4 个专业 AI Agent** 协作分析，帮助创作者生成高质量交易策略。
+AI 协作是 quant-moo v1.2.0 推出的核心功能，通过 **4 个专业 AI Agent** 协作分析，帮助创作者生成高质量交易策略。
 
 ### 核心优势
 
@@ -524,9 +524,9 @@ LLM 成本: 0.2 USDT
 
 ### 联系方式
 
-- **技术支持**: support@dawn-whales.ai
-- **社区论坛**: https://community.dawn-whales.ai
-- **问题反馈**: https://github.com/dawn-whales/dawn-whales/issues
+- **技术支持**: support@quant-moo.ai
+- **社区论坛**: https://community.quant-moo.ai
+- **问题反馈**: https://github.com/quant-moo/quant-moo/issues
 
 ---
 

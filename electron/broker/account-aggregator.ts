@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Account Aggregator (Cross-Broker Asset Aggregation) ────────
+// ── QUANT MOO — Account Aggregator (Cross-Broker Asset Aggregation) ────────
 // Aggregates account data, positions, and summary across multiple brokers.
 
 import log from 'electron-log';

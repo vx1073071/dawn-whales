@@ -1,6 +1,6 @@
 ---
 title: 数据源接入指南
-description: DAWN WHALES 消息智能平台 40+ 数据源完整接入说明 — RSS 配置、API 密钥、多语言支持
+description: QUANT MOO 消息智能平台 40+ 数据源完整接入说明 — RSS 配置、API 密钥、多语言支持
 ---
 
 # 📡 数据源接入指南

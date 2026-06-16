@@ -1,5 +1,5 @@
 # R241-QClaw#1: Risk Scanner + Stock Screener — User Education
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R241
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R241
 
 ---
 

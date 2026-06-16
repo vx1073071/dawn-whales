@@ -1,4 +1,4 @@
-// DAWN WHALES R121 — Full-stack Performance Benchmark
+// QUANT MOO R121 — Full-stack Performance Benchmark
 // 16券商压测 / 500币对 / 60fps基准报告
 // JVS: 全端性能profile (4h)
 
@@ -139,7 +139,7 @@ export function runFullPerformanceBenchmark(config: Partial<BenchmarkConfig> = {
   const cfg: BenchmarkConfig = { ...DEFAULT_CONFIG, ...config };
   const results: BenchmarkResult[] = [];
 
-  console.log(`\n=== DAWN WHALES R121 Performance Benchmark ===`);
+  console.log(`\n=== QUANT MOO R121 Performance Benchmark ===`);
   console.log(`Config: ${cfg.brokerCount} brokers, ${cfg.symbolCount} symbols, ${cfg.klineBars} bars, ${cfg.depthLevels} levels`);
   console.log(`Iterations per test: ${cfg.iterations}\n`);
 

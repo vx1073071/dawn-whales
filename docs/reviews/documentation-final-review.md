@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# TradingEasy v1.0.0 文档终审报告
+# quant-moo v1.0.0 文档终审报告
 
 **审查时间**: 2026-06-07 23:25 GMT+8  
 **审查人**: youdao  

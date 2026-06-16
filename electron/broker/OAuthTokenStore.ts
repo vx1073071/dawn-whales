@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — OAuth Token Secure Storage ───────────────────────────
+// ── QUANT MOO — OAuth Token Secure Storage ───────────────────────────
 // R1 SEC-02: OAuth token安全存储(keytar)
 // 使用操作系统原生密钥管理(Windows Credential Manager/macOS Keychain/Linux libsecret)
 // 封装 keytar 调用, 提供 fallback 文件存储
@@ -23,11 +23,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class OAuthTokenStore {
-  private static SERVICE_NAME = 'dawn-whales-broker-tokens';
+  private static SERVICE_NAME = 'quant-moo-broker-tokens';
   private filePath: string;
 
   constructor() {
-    const userDataPath = app?.getPath?.('userData') || path.join(process.env.APPDATA || '', 'dawn-whales');
+    const userDataPath = app?.getPath?.('userData') || path.join(process.env.APPDATA || '', 'quant-moo');
     this.filePath = path.join(userDataPath, 'oauth-tokens.enc');
   }
 

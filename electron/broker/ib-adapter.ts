@@ -1,4 +1,4 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
+— R119 QClaw: structural type errors pending resolution by JVS/PM
 /**
  * Interactive Brokers (IB) Adapter
  * Implements IBrokerAdapter interface for IB Gateway / TWS integration.
@@ -513,7 +513,7 @@ export class IBAdapter implements IBrokerAdapter {
 
       // 6. Send startApi with clientId
       if (this.serverVersion >= 3) {
-        const startApiMsg = encodeMsg(71, 2, this.clientId, '', 'DawnWhales');
+        const startApiMsg = encodeMsg(71, 2, this.clientId, '', 'QuantMoo');
         this.socket.write(startApiMsg);
       }
 

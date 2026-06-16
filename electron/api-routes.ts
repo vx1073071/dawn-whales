@@ -1,4 +1,4 @@
-// ── TradingEasy API Routes — P2-4 Server Endpoints ──────────────────
+// ── quant-moo API Routes — P2-4 Server Endpoints ──────────────────
 // 5 REST endpoints for the Electron server-side API.
 // Import and mount in main.ts or a dedicated server entry:
 //   import { registerApiRoutes } from './electron/api-routes';

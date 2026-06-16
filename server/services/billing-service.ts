@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R141 Claw(PM) — Core Billing Pipeline
+ * QUANT MOO R141 Claw(PM) — Core Billing Pipeline
  * 
  * Foundation layer for ALL financial operations. Every charge, refund,
  * transfer, and withdrawal must go through this service.

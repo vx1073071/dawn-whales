@@ -1,4 +1,4 @@
-# TradingEasy UX安全审查报告
+# quant-moo UX安全审查报告
 
 > 版本: v1.0 | 日期: 2026-06-15 | 作者: QClaw(设计虾)
 > 任务: R178 UX安全审查 | 工时: 2h
@@ -124,7 +124,7 @@ FactorLab + 策略分享所有数据以"全或无"方式展示——创建者要
 
 ```
 导出PNG必须包含:
-  ✅ "TradingEasy/TradingEasy" 水印 (35% opacity, 居中)
+  ✅ "quant-moo/quant-moo" 水印 (35% opacity, 居中)
   ✅ 策略ID + 创建时间 (可追溯)
   ✅ "仅供展示，非完整策略" 声明 (底部)
   ✅ 创作者昵称 (品牌保护)

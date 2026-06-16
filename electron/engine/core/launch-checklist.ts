@@ -48,7 +48,7 @@ export class LaunchChecklist {
         category: "api",
         description: "CORS whitelist blocks unauthorized origins",
         passed: true,
-        detail: "Only https://dawnwhales.com & app://dawnwhales allowed",
+        detail: "Only https://QuantMoo.com & app://QuantMoo allowed",
         severity: "critical",
       },
       {
@@ -194,7 +194,7 @@ export class LaunchChecklist {
       {
         id: "DEP-03",
         category: "deploy",
-        description: "Landing page deployed (dawnwhales.com)",
+        description: "Landing page deployed (QuantMoo.com)",
         passed: true,
         detail: "Static HTML+Tailwind, SEO tags, GA instrumented",
         severity: "major",

@@ -271,7 +271,7 @@ python3 scripts/get_data.py --query "今天最热的股票有哪些"
 
 ---
 
-## 在TradingEasy中集成EM数据
+## 在quant-moo中集成EM数据
 
 ### IPC Handler命名规范
 

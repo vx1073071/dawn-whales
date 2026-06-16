@@ -1,6 +1,6 @@
 ---
 title: 消息智能总览
-description: DAWN WHALES v2.7.0 NEWS INTELLIGENCE — 40+ 数据源、AI 情绪引擎、12 项智能功能
+description: QUANT MOO v2.7.0 NEWS INTELLIGENCE — 40+ 数据源、AI 情绪引擎、12 项智能功能
 ---
 
 # 🗞️ 消息智能 (v2.7.0)
@@ -9,7 +9,7 @@ description: DAWN WHALES v2.7.0 NEWS INTELLIGENCE — 40+ 数据源、AI 情绪�
 
 ## 概述
 
-消息智能是 DAWN WHALES v2.7.0 的核心模块，将全球金融新闻转化为可交易的量化信号。系统接入 **40+ 数据源**，覆盖 **12 个市场** 和 **11 种语言**，通过 DeepSeek AI 进行情绪分析和智能归因。
+消息智能是 QUANT MOO v2.7.0 的核心模块，将全球金融新闻转化为可交易的量化信号。系统接入 **40+ 数据源**，覆盖 **12 个市场** 和 **11 种语言**，通过 DeepSeek AI 进行情绪分析和智能归因。
 
 ### 核心指标
 

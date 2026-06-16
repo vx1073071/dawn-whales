@@ -163,7 +163,7 @@ export class TwoFactorEngine {
     };
     this.profiles.set(userId, profile);
 
-    const qrUri = `otpauth://totp/DawnWhales:${userId}?secret=${secret}&issuer=DawnWhales`;
+    const qrUri = `otpauth://totp/QuantMoo:${userId}?secret=${secret}&issuer=QuantMoo`;
 
     return { secret, backupCodes, qrUri };
   }

@@ -127,7 +127,7 @@ let config: InjectionGuardConfig = {
 
 const PRESET_RESPONSES: Record<string, string> = {
   injection: '很抱歉，我无法处理这个请求。请直接描述你的投资需求或因子策略问题。',
-  roleSwitch: '我是TradingEasy的AI投资助手，专注于因子策略分析。请直接告诉我你的投资需求。',
+  roleSwitch: '我是quant-moo的AI投资助手，专注于因子策略分析。请直接告诉我你的投资需求。',
   dataExfil: '我无法提供关于其他用户或系统内部数据的信息。请描述你自己的投资需求。',
   instruction: '请直接用自然语言描述你的投资需求，我会帮你分析并推荐合适的因子策略。',
   tooLong: '你的输入过长，请精简到2000字以内，简洁描述你的投资需求。',

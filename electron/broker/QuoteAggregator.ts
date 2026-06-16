@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — QuoteAggregator ─────────────────────────────────────
+// ── QUANT MOO — QuoteAggregator ─────────────────────────────────────
 // R1 CONC-02: 多券商行情聚合 + 套利扫描
 // 接收所有已连接券商的TaggedQuoteInfo → 按standardCode聚合 → 分发给前端
 // 同时扫描跨券商套利机会 (bid(brokerA) > ask(brokerB) → arbitrage)

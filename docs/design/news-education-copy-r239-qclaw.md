@@ -1,5 +1,5 @@
 # R239-QClaw#1: News Intelligence — User Education Copy
-## Dawn Whales v2.7.0 NEWS INTELLIGENCE · R239
+## QUANT MOO v2.7.0 NEWS INTELLIGENCE · R239
 
 ---
 
