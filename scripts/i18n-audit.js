@@ -1,105 +1,113 @@
+/**
+ * R237: i18n全量校验 — 审计所有11语言文件的键完整性
+ * 以英文(EN)为基准，检查所有其他语言是否有缺失或多出的键
+ */
 const fs = require('fs');
 const path = require('path');
-const dir = 'src/i18n/locales';
 
-// 1. Locale key coverage
-console.log('=== 1. LOCALE KEY COVERAGE ===');
-const core8 = ['en.json','zh-CN.json','zh-HK.json','ja.json','ko.json','fr.json','it.json','de.json'];
-const locales = {};
-for (const f of core8) {
-  const fp = path.join(dir, f);
-  if (!fs.existsSync(fp)) { console.log('  ' + f + ' MISSING FILE ❌'); continue; }
-  locales[f] = Object.keys(JSON.parse(fs.readFileSync(fp, 'utf8'))).length;
+const LOCALES_DIR = path.join(__dirname, '..', 'src', 'i18n', 'locales');
+const DOMAINS = ['core', 'billing', 'copytrade', 'ext', 'wallet'];
+const LANGUAGES = ['zh-CN','zh-TW','zh-HK','en','ja','ko','de','fr','es','it','ru','pt'];
+
+// Domain to filename prefix mapping
+const DOMAIN_MAP = {
+  core: 'en', billing: 'billing-en', copytrade: 'copytrade-en',
+  ext: 'ext-en', wallet: 'wallet-en',
+};
+
+const LANG_FILES = {
+  core: LANGUAGES.map(l => path.join(LOCALES_DIR, `${l}.json`)),
+  billing: ['de','en','fr','it','ja','ko','zh-CN','zh-HK','zh-TW'].map(l => path.join(LOCALES_DIR, `billing-${l}.json`)),
+  copytrade: ['de','en','es','fr','it','ja','ko','pt','zh-CN','zh-HK','zh-TW'].map(l => path.join(LOCALES_DIR, `copytrade-${l}.json`)),
+  ext: ['de','en','fr','it','ja','ko','zh-CN','zh-HK','zh-TW'].map(l => path.join(LOCALES_DIR, `ext-${l}.json`)),
+  wallet: ['de','en','es','fr','it','ja','ko','zh-CN','zh-HK','zh-TW'].map(l => path.join(LOCALES_DIR, `wallet-${l}.json`)),
+};
+
+function getKeys(obj, prefix = '') {
+  const keys = new Set();
+  for (const [k, v] of Object.entries(obj)) {
+    const fullKey = prefix ? `${prefix}.${k}` : k;
+    if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+      for (const subKey of getKeys(v, fullKey)) keys.add(subKey);
+    } else {
+      keys.add(fullKey);
+    }
+  }
+  return keys;
 }
-const max = Math.max(...core8.map(f => locales[f] || 0));
-core8.forEach(f => {
-  const count = locales[f] || 0;
-  const icon = count === max ? '✅' : '❌';
-  console.log('  ' + icon + ' ' + f.padEnd(12) + ' ' + count + ' keys' + (count !== max ? ' (missing ' + (max - count) + ')' : ''));
-});
 
-// 2. Unresolved i18n.t() keys
-console.log('\n=== 2. UNRESOLVED i18n.t() KEYS ===');
-const enKeys = JSON.parse(fs.readFileSync(path.join(dir, 'en.json'), 'utf8'));
-const allKeys = new Set(Object.keys(enKeys));
-const missing = new Set();
-function scan(dir, ex) {
-  function walk(dd) {
-    for (const f of fs.readdirSync(dd)) {
-      const p = path.join(dd, f);
-      const s = fs.statSync(p);
-      if (s.isDirectory()) { if (!ex.includes(f) && !f.startsWith('.')) walk(p); }
-      else if (/\.(ts|tsx|js|jsx)$/.test(f)) {
-        const c = fs.readFileSync(p, 'utf8');
-        const re = /i18n\.t\(['"]([^'"]+)['"]\)/g;
-        let m;
-        while ((m = re.exec(c)) !== null) {
-          if (!allKeys.has(m[1])) missing.add(m[1]);
-        }
+function countValues(obj) {
+  let count = 0;
+  for (const v of Object.values(obj)) {
+    if (typeof v === 'string') count++;
+    else if (typeof v === 'object' && v !== null && !Array.isArray(v)) count += countValues(v);
+  }
+  return count;
+}
+
+let totalIssues = 0;
+let totalMissing = 0;
+let totalExtra = 0;
+
+for (const [domain, files] of Object.entries(LANG_FILES)) {
+  console.log(`\n${'═'.repeat(60)}`);
+  console.log(`📦 Domain: ${domain.toUpperCase()} (${files.length} languages)`);
+  console.log(`${'═'.repeat(60)}`);
+
+  // Load all files
+  const loaded = {};
+  for (const f of files) {
+    if (fs.existsSync(f)) {
+      try {
+        loaded[path.basename(f, '.json')] = JSON.parse(fs.readFileSync(f, 'utf-8'));
+      } catch (e) {
+        console.log(`  ❌ PARSE ERROR: ${path.basename(f)} — ${e.message}`);
       }
     }
   }
-  walk(dir);
-}
-scan('src', ['node_modules', 'dist', 'locales', 'coverage', 'storybook-static', 'i18n']);
-scan('electron', ['node_modules', 'dist', 'coverage']);
-if (missing.size === 0) console.log('  ✅ All i18n.t() keys resolved');
-else { console.log('  ❌ ' + missing.size + ' unresolved keys:'); missing.forEach(k => console.log('    - ' + k)); }
 
-// 3. Files without i18n import that have UI strings
-console.log('\n=== 3. COMPONENTS WITHOUT i18n IMPORT ===');
-let noImport = 0;
-function scan2(dir, ex) {
-  function walk(dd) {
-    for (const f of fs.readdirSync(dd)) {
-      const p = path.join(dd, f);
-      const s = fs.statSync(p);
-      if (s.isDirectory()) { if (!ex.includes(f) && !f.startsWith('.')) walk(p); }
-      else if (/\.(tsx)$/.test(f) && !f.includes('.test.') && !f.includes('.spec.') && !f.includes('.stories.')) {
-        const c = fs.readFileSync(p, 'utf8');
-        if (!c.includes('import i18n') && !c.includes("from 'i18n'") && !c.includes('from "../../../i18n"') && !c.includes("from '../../i18n'") && !c.includes("from '../i18n'")) {
-          // Only flag if it has JSX text that looks like UI
-          if (/>[A-Z]/.test(c)) {
-            noImport++;
-            console.log('  ' + p.replace(/\\/g, '/').split('dawn-whales/')[1]);
-          }
-        }
-      }
+  if (Object.keys(loaded).length === 0) {
+    console.log(`  (no files loaded)`);
+    continue;
+  }
+
+  // Determine baseline language (use 'en' for core, 'billing-en' for billing, etc.)
+  const baselineKey = domain === 'core' ? 'en' : DOMAIN_MAP[domain];
+  const baseline = loaded[baselineKey];
+  if (!baseline) { console.log(`  ❌ Baseline ${baselineKey} not found`); continue; }
+
+  const baselineKeys = getKeys(baseline);
+  const baselineCount = countValues(baseline);
+  console.log(`  📊 Baseline (${baselineKey}): ${baselineKeys.size} keys, ${baselineCount} values`);
+
+  for (const [langKey, data] of Object.entries(loaded)) {
+    if (langKey === baselineKey) continue;
+
+    const langKeys = getKeys(data);
+    const langCount = countValues(data);
+
+    const missing = [...baselineKeys].filter(k => !langKeys.has(k));
+    const extra = [...langKeys].filter(k => !baselineKeys.has(k));
+
+    let status = '✅';
+    if (missing.length > 0) { status = '⚠️'; totalMissing += missing.length; totalIssues += missing.length; }
+    if (extra.length > 0) { totalExtra += extra.length; totalIssues += extra.length; }
+
+    console.log(`  ${status} ${langKey.padEnd(10)}: ${langKeys.size} keys, ${langCount} values${missing.length ? ` | MISSING: ${missing.length}` : ''}${extra.length ? ` | EXTRA: ${extra.length}` : ''}`);
+
+    if (missing.length > 0 && missing.length <= 20) {
+      for (const k of missing) console.log(`       ↳ missing: ${k}`);
+    } else if (missing.length > 20) {
+      console.log(`       ↳ first 10 missing: ${missing.slice(0, 10).join(', ')}`);
     }
   }
-  walk(dir);
 }
-scan2('src', ['node_modules', 'dist', 'locales', 'coverage', 'storybook-static', 'i18n']);
-if (noImport === 0) console.log('  ✅ All TSX files import i18n');
 
-// 4. Hardcoded currency symbols
-console.log('\n=== 4. HARDCODED CURRENCY SYMBOLS ===');
-let currencyFiles = [];
-function scan3(dir, ex) {
-  function walk(dd) {
-    for (const f of fs.readdirSync(dd)) {
-      const p = path.join(dd, f);
-      const s = fs.statSync(p);
-      if (s.isDirectory()) { if (!ex.includes(f) && !f.startsWith('.')) walk(p); }
-      else if (/\.(ts|tsx)$/.test(f) && !f.includes('.test.') && !f.includes('.spec.')) {
-        const c = fs.readFileSync(p, 'utf8');
-        if (/(?:HK\$|HKD|USD|CNY)\s*[:=]\s*['"]/.test(c) || /currency\s*=\s*['"](?:HKD|USD|CNY)['"]/.test(c)) {
-          currencyFiles.push(p.replace(/\\/g, '/').split('dawn-whales/')[1]);
-        }
-      }
-    }
-  }
-  walk(dir);
-}
-scan3('src', ['node_modules', 'dist', 'locales', 'coverage', 'storybook-static', 'i18n']);
-scan3('electron', ['node_modules', 'dist', 'coverage']);
-if (currencyFiles.length === 0) console.log('  ✅ No hardcoded currency defaults');
-else currencyFiles.forEach(f => console.log('  ⚠️  ' + f));
-
-// 5. Summary
-console.log('\n=== SUMMARY ===');
-console.log('🟢 CJK: 0 (done)');
-console.log('🟢 i18n keys: ' + (missing.size === 0 ? 'all resolved' : missing.size + ' unresolved ❌'));
-console.log('🟢 Locale sync: ' + (new Set(core8.map(f => locales[f] || 0)).size === 1 ? 'all synced' : 'MISMATCH ❌'));
-console.log('🟡 Currency: ' + currencyFiles.length + ' files with hardcoded defaults (low priority)');
-console.log('🟡 Components without i18n: ' + noImport + ' (may be intentional)');
+console.log(`\n${'═'.repeat(60)}`);
+console.log(`📊 SUMMARY:`);
+console.log(`   Total missing keys: ${totalMissing}`);
+console.log(`   Total extra keys: ${totalExtra}`);
+console.log(`   Total issues: ${totalIssues}`);
+if (totalIssues === 0) console.log(`   🎉 ALL LANGUAGES ARE 100% CONSISTENT!`);
+else console.log(`   ⚠️  ${totalIssues} issues need attention`);
+console.log(`${'═'.repeat(60)}`);

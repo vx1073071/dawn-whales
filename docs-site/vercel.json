@@ -1,0 +1,23 @@
+{
+  "buildCommand": "cd docs-site && pnpm build",
+  "outputDirectory": "docs-site/dist",
+  "framework": "astro",
+  "installCommand": "pnpm install",
+  "rewrites": [
+    { "source": "/:path*", "destination": "/:path*" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/pagefind/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
+}

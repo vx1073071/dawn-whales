@@ -31,6 +31,14 @@ export default defineConfig({
       social: {
         github: 'https://github.com/dawn-whales',
       },
+      components: {
+        PageTitle: './src/components/PageTitle.astro',
+      },
+      editLink: {
+        baseUrl: 'https://github.com/dawn-whales/docs/edit/main/',
+      },
+      lastUpdated: true,
+      pagination: true,
       sidebar: [
         {
           label: '🚀 快速开始',
@@ -82,6 +90,15 @@ export default defineConfig({
           ],
         },
         {
+          label: '📚 开发指南',
+          collapsed: true,
+          items: [
+            { label: '贡献指南', link: '/guides/contributing' },
+            { label: '插件开发', link: '/guides/plugin-development' },
+            { label: '插件 API', link: '/reference/plugin-api' },
+          ],
+        },
+        {
           label: '📡 API 参考',
           collapsed: true,
           items: [
@@ -117,14 +134,6 @@ export default defineConfig({
         },
       ],
       customCss: ['./src/styles/custom.css'],
-      components: {
-        PageTitle: './src/components/PageTitle.astro',
-      },
-      editLink: {
-        baseUrl: 'https://github.com/dawn-whales/docs/edit/main/',
-      },
-      lastUpdated: true,
-      pagination: true,
     }),
   ],
 });
