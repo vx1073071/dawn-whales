@@ -177,13 +177,41 @@ export type {
   SceneBundle,
 } from './factor-scene-bridge';
 
-// R247 P2-28: AI evidence bridge (conclusion → source annotation → evidence chain)
-export { AIEvidenceBridge, aiEvidenceBridge, resetAIEvidenceBridge } from './ai-evidence-bridge';
+// R249 P1-03: Factor marketplace completion (reviews + UGC + featured + changelog)
+export { FactorMarketplaceCompletion, factorMarketplaceCompletion, resetFactorMarketplaceCompletion } from './factor-marketplace-completion';
 export type {
-  Evidence,
-  EvidenceLevel,
-  EvidenceCategory,
-  EvidenceChain,
-  AIRecommendation,
-  EvidenceStats,
-} from './ai-evidence-bridge';
+  FactorReview,
+  ReviewStats,
+  UGCSubmission,
+  UGCRevision,
+  UGCQueue,
+  FeaturedFactor,
+  FactorChangelogEntry,
+} from './factor-marketplace-completion';
+
+// R249 P2-26: Factor visualization data engine (IC curves, correlation, heatmap, distribution)
+export { FactorVisualizationDataEngine, factorVisualizationDataEngine, resetFactorVisualizationDataEngine } from './factor-viz-data-engine';
+export type {
+  ICTimeSeries,
+  CumulativeReturnCurve,
+  CorrelationMatrix,
+  FactorRanking,
+  HeatmapData,
+  DistributionData,
+  GroupComparison,
+  DashboardSnapshot,
+} from './factor-viz-data-engine';
+
+// R249 P2-29: AI questionable engine (user feedback + dispute resolution + learning loop)
+export { AIQuestionableEngine, aiQuestionableEngine, resetAIQuestionableEngine } from './ai-questionable-engine';
+export type {
+  DecisionType,
+  FeedbackAction,
+  DisputeStatus,
+  DisputeResolution,
+  AIDecision,
+  DecisionFeedback,
+  DecisionDispute,
+  FeedbackStats,
+  LearningInsight,
+} from './ai-questionable-engine';
