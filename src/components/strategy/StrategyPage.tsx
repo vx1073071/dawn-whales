@@ -1,10 +1,8 @@
 // ML R223 C3: @ts-nocheck removed — types validated
 // #ts-nocheck-cleared -- R107 S-24: StrategyPage split into 10 sub-components
 import { useState, useEffect, useCallback } from 'react';
-import { Modal } from 'antd';
-import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 
-// @ts-ignore R224: imported for v2.4 usage
+import { getAllStrategies, deleteStrategy } from '../../lib/bridge-api'// @ts-ignore R224: imported for v2.4 usage
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
@@ -14,12 +12,12 @@ import AdaptiveParamPanel from './AdaptiveParamPanel';
 // Sub-components (R107 S-24 split)
 import { ModeSelector } from './StrategyPage/ModeSelector';
 import { AICreator } from './StrategyPage/AICreator';
-import { BacktestPanel } from './StrategyPage/BacktestPanel';
-import { MetricCard } from './StrategyPage/MetricCard';
+
+
 // import { EquityChart } // R224: not yet used from './StrategyPage/EquityChart';
 import { TemplateBrowser } from './StrategyPage/TemplateBrowser';
 import { FormCreator } from './StrategyPage/FormCreator';
-import { SliderInput } from './StrategyPage/SliderInput';
+
 import { MyStrategies } from './StrategyPage/MyStrategies';
 import { StrategyDetail } from './StrategyPage/StrategyDetail';
 

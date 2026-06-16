@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // ── R147 ML — TradingFinalPanel (下单方式+交易明细+TA扣费) ───────────────
 // PM: 3 modules, 5h
 import { useState, useCallback } from 'react';

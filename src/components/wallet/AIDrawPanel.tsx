@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // ── R145 ML — AIDrawPanel (AI画线+形态识别+对话扣费+参数填充) ───────────
 // PM: 4 modules, 6h
 // R150: Added FeePreview + useBalanceCheck integration

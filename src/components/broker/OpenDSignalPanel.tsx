@@ -1,20 +1,12 @@
 // ── R135-M01 OpenDSignalPanel — OpenD信号面板 (待处理+执行) ───────────────
 // PM: GET /api/signal/pending → 列表 → 单个or批量执行 → POST回传
 
-import { useState, useCallback, useEffect } from 'react';
-import {
-  Card, Button, Tag, Space, Badge, Table, Modal, Progress,
-  Tooltip, Empty, message, Checkbox, Statistic, Alert,
-} from 'antd';
-import {
-  ThunderboltOutlined, SyncOutlined, CheckCircleOutlined,
+import { useState, useCallback } from 'react'
+import { Card, Button, Tag, Space, Badge, Table, Modal, Progress,
+  Tooltip, Empty, message, Checkbox, Alert, } from 'antd'
+import { ThunderboltOutlined, SyncOutlined, CheckCircleOutlined,
   CloseCircleOutlined, PlayCircleOutlined, PauseCircleOutlined,
-  ReloadOutlined, ApiOutlined, ArrowRightOutlined,
-  CloudServerOutlined, DesktopOutlined, ClockCircleOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
-
-// ═══════════ Types ═══════════
+  ReloadOutlined, ApiOutlined, DesktopOutlined, ClockCircleOutlined } from '@ant-design/icons'// ═══════════ Types ═══════════
 
 interface OpenDSignal {
   id: string;

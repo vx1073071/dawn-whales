@@ -1,19 +1,12 @@
 // ── R134-M02 CopyTradeDashboard — 跟单仪表盘 (总资产/总收益/各券商分布) ──
 // PM: 全局跟单状态一览
 
-import { useState, useMemo } from 'react';
-import {
-  Card, Statistic, Tag, Space, Tooltip, Progress, Badge, Empty,
-} from 'antd';
-import {
-  DollarOutlined, RiseOutlined, FallOutlined, PieChartOutlined,
-  ThunderboltOutlined, SyncOutlined, CheckCircleOutlined,
-  CloseCircleOutlined, WalletOutlined, TrophyOutlined,
+import { useMemo } from 'react'
+import { Card, Tag, Space, Tooltip, Progress, Badge, Empty, } from 'antd'
+import { RiseOutlined, FallOutlined, PieChartOutlined,
+  ThunderboltOutlined, WalletOutlined, TrophyOutlined,
   BankOutlined, UserOutlined, TeamOutlined,
-  ArrowUpOutlined, ArrowDownOutlined,
-} from '@ant-design/icons';
-
-// ═══════════ Types ═══════════
+  ArrowUpOutlined, ArrowDownOutlined, } from '@ant-design/icons'// ═══════════ Types ═══════════
 
 interface BrokerPnL {
   brokerId: string;
