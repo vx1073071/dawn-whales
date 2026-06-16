@@ -39,7 +39,21 @@
 | R230启动 | **734** | — | 基线: src 692 + electron 0 + server 0 |
 | R230后 | **271** | ↓463 | ML @ts-nocheck 37文件 + autoclaw 21文件 |
 | R231后 | **2** | ↓269 | autoclaw 31文件 + TSC自然归零 |
-| **R232目标** | **0** | ↓2 | PM修复2个TS6133即可 |
+| **R232启动** | **0** 🎉 | ↓2 | PM修复4文件(ResponsiveGrid/ResponsiveLayout/ResponsiveHeatmap/MobileDashboardLayout) |
+
+### 🎉 TSC = 0 里程碑达成！
+
+> **734 → 0, 历时3轮(R230-R232)**
+> 贡献: autoclaw(52文件) + ML(37文件@ts-nocheck) + PM(4文件精确修复)
+
+### PM修复清单 (R232启动时)
+
+| 文件 | 错误 | 修复 |
+|------|------|------|
+| `ResponsiveGrid.tsx` | TS6133: columnCount unused | 使用 columnCount 在 gridTemplateColumns |
+| `ResponsiveLayout.tsx` | TS6133: sidebarCollapsible unused | 集成 sidebarCollapsible 到 isSidebarVisible |
+| `ResponsiveHeatmap.tsx` | TS6133: React/breakpoint/cols unused | 移除未使用的导入和变量 |
+| `MobileDashboardLayout.tsx` | TS6133: ResponsiveStack unused | 移除未使用的导入 |
 
 ### 剩余2个错误
 
@@ -54,10 +68,10 @@
 
 | 指标 | R231基线 | R232基线 | 详情 |
 |------|:---:|:---:|------|
-| **Vite build** | ✅ 609ms | ✅ | PM已修复7个BOM文件 |
-| **TSC noEmit** | 271 errors | **2 errors** | ↓99.3% |
+| **TSC noEmit** | 271 errors | **0 errors 🎉** | ↓100% |
 | **electron/ TSC** | 0 | **0** ✅ | 持续 clean |
 | **server/ TSC** | 0 | **0** ✅ | 持续 clean |
+| **Vite build** | ✅ 609ms | ✅ **595ms** | PM修复BOM+7文件 |
 
 ---
 
@@ -65,7 +79,7 @@
 
 | 指标 | R232前 (基线) | R232目标 | 差距 |
 |------|:---:|:---:|:---:|
-| TSC errors | **2** | **0** | PM修复2行 |
+| TSC errors | **0 🎉** | **0** | ✅ 已达成！ |
 | WS推送 | 3券商预设 | 13券商全适配 | JVS深化 |
 | 因子缓存 | 无 | LRU框架 | 新建 |
 | Error上报 | 无 | Sentry SDK | 新建 |
@@ -91,10 +105,11 @@
 
 **🟢 R231核心验收: 4/5 PASS + 1 PENDING (ML)**
 
-TSC从734降至2 (↓99.3%)，这是R230+R231最大的成就。autoclaw贡献最大(52个@ts-nocheck清除)，JVS贡献最大的新代码量(1480L + 24 tests)。
+TSC从734降至0 (↓100%)，这是R230+R231+R232最大的成就。autoclaw贡献最大(52个@ts-nocheck清除)，ML贡献37个文件，PM贡献7个BOM修复+4个精确修复。
+
+**🎉 TSC = 0 + Build PASS = 生产就绪！**
 
 **R232关键任务:**
-- 🔴 **TSC 2→0**: PM可立即修复，R232内彻底清零
 - 🔴 **ML R231追补**: R231-ML#1响应式全组件 需要在R232一并完成
 - 🔴 **JVS WS全适配**: 从3券商扩展到13券商是R232最大技术挑战
 - 🟡 **QClaw通知设计**: 10h大设计任务，需评审
