@@ -19,7 +19,12 @@ export type NewsSource =
   | 'reuters'
   | 'cnbc'
   | 'yahoo_finance'
-  | 'marketwatch';
+  | 'marketwatch'
+  | 'coindesk'
+  | 'cointelegraph'
+  | 'decrypt'
+  | 'theblock'
+  | 'cryptofeedr';
 
 /** 消息分类 */
 export type NewsCategory =
