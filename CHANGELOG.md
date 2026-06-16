@@ -1,3 +1,168 @@
+# Changelog — Dawn Whales v2.7.0 "NEWS INTELLIGENCE"
+## 2026-06-16 · Final Release
+
+---
+
+## BREAKING CHANGES
+
+### Fee Model v17.10 Final
+- **2 new P2 billing items**: News backtest (1.5U/scan), Event-driven strategy (1.5U/generation)
+- **5 P1 billing items**: Morning briefing (1U/day), Position risk scan (1U/scan), Supply chain (1U/scan), Sentiment heatmap (free), Screener (free)
+- **API tier pricing**: Free(10req/min)→Basic(5U/mo)→Pro(20U/mo)→Unlimited(50U/mo)
+- **Total v2.7.0 revenue items**: 6 (estimated ~3,250U/mo at 1,000 users)
+
+---
+
+## NEW FEATURES
+
+### 📰 News Intelligence Core
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **News Classification** | R238 | 12 market label system (emoji+color+CSS var), 23 sources in 4 tiers, auto-categorization |
+| **News Sentiment Factor** | R242 | NEWS_SENTIMENT -100 to +100, 7-tone color scale, market/sector/time 3D |
+| **Breaking News Pipeline** | R238 | 60+ P0 keywords, 40+ P1, 20+ P2, push/desktop/sound routing matrix |
+| **News Intelligence API** | R242 | 8 endpoints, 4-tier rate limits, unified interface |
+| **40+ Global Sources** | R241 | 🇺🇸Reuters/Bloomberg/SEC · 🇨🇳华尔街见闻/金十/新浪 · 🇯🇵Nikkei · 🇮🇳Investing India · 🛢️OilPrice/CommodityTV · 💬Reddit6/StockTwits |
+| **Source Health** | R243 | 40-source monitor, latency/uptime tracking, 3-tier alert rules |
+
+### 📊 Visualization
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **Sentiment Heatmap** | R242 | 3D grid (Market×Sector×Time), 7-tone color scale, cell drill-down |
+| **Fear & Greed Dashboard** | R242 | 6-component index (News25%+Momentum25%+Breadth15%+PCR15%+VIX10%+SafeHaven10%), interpretive insights |
+| **Social Compare Panel** | R241 | Reddit vs StockTwits vs 华尔街见闻 side-by-side |
+
+### 🔴 Risk & Analysis
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **Position Risk Scanner** | R240 | 5-level matrix (Severe/High/Moderate/Low/Info), estimated impact, auto-scan |
+| **Supply Chain Impact** | R240 | 4-tier knowledge graph, TSMC example, sector impact cascading |
+| **Regulatory Tracker** | R240 | 17 bodies across 6 regions, 5 impact categories, portfolio assessment |
+
+### 📈 Backtest & Strategy
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **News Backtest Engine** | R242 | 12 event types, 3-year data, return distribution, by-market/by-window, 1.5U/scan |
+| **Event Strategy Generator** | R242 | 7 templates, AI-suggested parameters, one-click apply, 1.5U/generation |
+| **AI Morning Briefing** | R239 | 3-tab (Holdings/Watchlist/Market), sentiment columns, 1U/day, first 3 free |
+
+### 🔍 Discovery
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **News Stock Screener** | R240 | 8 filter dimensions, 6 presets, composite scoring (Sentiment40%+Vol30%+News20%+Price10%) |
+| **Screener Custom Builder** | R241 | 6-step wizard, save/share presets |
+| **Event Strategy Panel** | R242 | Event select→AI analysis→parameter preview→apply |
+
+### 💬 Social & Community
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **Strategy Discussion** | R243 | Threads, nested replies (3 levels), 4 sort modes, creator reply badge, pinning |
+| **Creator Materials** | R243 | Strategy editor sidebar, AI-suggested citations, 6 filter dimensions |
+| **Copytrade News** | R243 | Confirmation modal with WHY context, historical stats, feed badges |
+| **Social Sentiment** | R241 | Reddit (6 subs: r/wallstreetbets, r/stocks, r/investing, r/cryptocurrency, r/options, r/trading) + StockTwits |
+
+### 🎓 Education
+| Feature | Round | Description |
+|---------|-------|-------------|
+| **Risk Scanner Guide** | R241 | What/Levels/Reading/Auto-Scan 4 sections, 5-level education cards |
+| **Screener Guide** | R241 | What/Presets/Reading/Custom/ProTips 5 sections, 6 preset tradeoffs |
+| **Daily Briefing Guide** | R239 | 3-step onboarding, 5-term glossary, 6 contextual help triggers |
+| **Attribution Education** | R239 | 5 badge states, 4 confidence levels, NVDA example card |
+
+### 🌍 Internationalization
+- **9 languages**: EN, ZH-CN, ZH-HK, ZH-TW, JA, KO, DE, FR, ES — maintained across all R238-R243
+- **~2,500 total i18n keys** (v2.7.0 contribution: ~315 new keys ≈ ~2,835 entries)
+- R238 (45 keys) + R239 (50) + R240 (52) + R241 (60) + R242 (55) + R243 (55) = **317 keys**
+
+### 🧪 Quality
+- **TSC**: 0 errors (13 consecutive rounds: R231-R243)
+- **Build**: <700ms (stable)
+- **E2E**: All 40+ sources validated, 6 AI functions regression-passed
+
+---
+
+## ARCHITECTURE
+
+### News Pipeline
+```
+23+ Sources → NewsParser → SentimentAnalyzer → NewsRouter →
+  ├─ HeatmapGrid (market×sector)
+  ├─ FearGreedIndex (6 components)
+  ├─ RiskScanner (portfolio match)
+  ├─ SupplyChainGraph (tier propagation)
+  ├─ RegulatoryTracker (17 bodies)
+  ├─ StockScreener (8 dimensions)
+  ├─ BacktestEngine (12 event types×3yr)
+  ├─ EventStrategy (7 templates)
+  ├─ DailyBriefing (3-tab)
+  ├─ Discussion (threaded)
+  ├─ CreatorMaterials (editor sidebar)
+  └─ CopytradeNews (confirmation context)
+```
+
+### Key Engines
+- `NewsSentimentFactor.ts` — factor value calculation
+- `NewsBacktestEngine.ts` — event→forward window analysis
+- `EventStrategyGenerator.ts` — earning/M&A/dividend→strategy
+- `NewsIntelligenceAPI.ts` — public unified interface
+- `NewsDiscussionAPI.ts` — threaded comments + moderation
+- `CreatorMaterialEngine.ts` — AI-news matching for analysts
+- `CopytradeNewsEnhancer.ts` — trade rationale context
+- `SourceHealthDashboard.ts` — 40-source monitor
+
+---
+
+## METRICS
+
+| Metric | v2.6.0 | v2.7.0 | Change |
+|--------|--------|--------|--------|
+| News Sources | 0 | 40+ | NEW |
+| Markets Covered (news) | 0 | 12 | NEW |
+| AI News Services | 0 | 6 | NEW |
+| News API Endpoints | 0 | 8 | NEW |
+| Event Types (backtest) | 0 | 12 | NEW |
+| Strategy Templates (event) | 0 | 7 | NEW |
+| Regulatory Bodies Tracked | 0 | 17 | NEW |
+| i18n Keys (total) | ~2,500 | ~2,800 | +12% |
+| TSC Errors | 0 (7 rounds) | 0 (13 rounds) | — |
+| @ts-nocheck Remaining | 0 (core) | 0 (core) | — |
+| Build Time | 669ms | ~694ms | stable |
+
+---
+
+## ROUND SUMMARY (v2.7.0)
+
+| Round | Focus | Key Deliverables |
+|-------|-------|-----------------|
+| **R238** | News Classification | 12 markets, 23 sources, 4 tiers, 405 i18n |
+| **R239** | AI Sentiment + Briefing | Attribution engine, morning briefing, 450 i18n |
+| **R240** | P1 Risk Features | Position risk, supply chain, regulatory, screener, 468 i18n |
+| **R241** | Data Sources + Education | CN 3-sources, social 2-sources, risk/screener education, 540 i18n |
+| **R242** | P2 Visualization + Backtest | Heatmap, fear-greed, news backtest, event strategy, API, 495 i18n |
+| **R243** | Community + Release | Discussion, creator materials, copytrade news, source health, 495 i18n |
+
+**Total**: 6 rounds, ~162 hours across 5-6 agents
+
+---
+
+## UPGRADE GUIDE
+
+### From v2.6.0
+1. **Fee model**: v17.10 adds 2 P2 items. `ai-billing.ts` must register `news-backtest` and `event-strategy` as `AIServiceType`.
+2. **News sources**: All 40+ sources configured in `CNSources.ts`, `CommodityFeeds.ts`, `SocialFeeds.ts`, `RegionalFeeds.ts`.
+3. **Database**: No new tables needed (discussion uses existing comments table).
+4. **i18n**: Run R238-R243 i18n scripts to sync ~317 new keys.
+5. **API keys**: BrokerConnect Wizard now includes API key encryption (AES-256-GCM). Existing keys auto-migrated.
+
+### Breaking Changes Checklist
+- [ ] Register `news-backtest` and `event-strategy` in `ai-billing.ts`
+- [ ] Sync i18n with R238-R243 locale additions
+- [ ] Verify 40+ source connectivity
+- [ ] Verify TSC=0 after all merges
+- [ ] Run news E2E test suite
+
+---
+
 # Changelog — Dawn Whales v2.6.0 "QUANTUM"
 ## 2026-06-16 · Final Release
 
