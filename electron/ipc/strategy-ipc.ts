@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── DAWN WHALES IPC: strategy ────────────────────────────────────────────
 // 38 handlers — strategy/live/paper/nl domains
 

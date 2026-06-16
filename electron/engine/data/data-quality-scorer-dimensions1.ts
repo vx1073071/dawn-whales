@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-/**
+﻿/**
  * Built-in dimension scorers part 1: Completeness, Accuracy, Timeliness, Consistency.
  * @module engine/data-quality/data-quality-scorer-dimensions1
  */

@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-// ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────────────────
+﻿// ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────────────────
 // WebSocket-based real-time data streaming replacing polling
 // Supports: reconnection, heartbeat, subscription management
 // IPC: ws:connect, ws:disconnect, ws:subscribe, ws:unsubscribe, ws:status

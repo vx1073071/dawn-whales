@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-/**
+﻿/**
  * J-77-02: child_process 
  * 
  * + + timeoutkill

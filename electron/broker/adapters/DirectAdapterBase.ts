@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — DirectAdapter Base ─────────────────────────────────────
 // R1 INF-05: Direct REST + WebSocket 适配器基类
 // 用于直连云API的券商(加密5家、Robinhood Crypto)

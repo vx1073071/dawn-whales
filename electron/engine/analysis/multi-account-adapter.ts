@@ -1,6 +1,5 @@
 
-﻿// @ts-nocheck
-/**
+﻿/**
  * Multi-Account Adapter (J-42-01)
  *
  * Manages dual account isolation with data sync.

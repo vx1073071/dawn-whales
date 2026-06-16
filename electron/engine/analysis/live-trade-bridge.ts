@@ -1,6 +1,5 @@
 
-﻿// @ts-nocheck
-/**
+﻿/**
  * LiveTradeBridge - (Enhanced)
  * （Paper Trading Live Trading
  * ordersync、risk control audit trail、 Dry-run 。

@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-// ── DAWN WHALES IPC: report ────────────────────────────────────────────
+﻿// ── DAWN WHALES IPC: report ────────────────────────────────────────────
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';

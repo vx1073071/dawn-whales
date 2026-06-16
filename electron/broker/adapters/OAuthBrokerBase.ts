@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — OAuthBrokerBase ──────────────────────────────────────
 // R1 INF-07: OAuth1/OAuth2 券商适配器基类
 // 用于 Schwab (OAuth2) / E*TRADE (OAuth1.0a) / eToro (OAuth2) / Webull (OAuth2)
