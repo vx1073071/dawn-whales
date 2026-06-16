@@ -1,0 +1,71 @@
+/* DAWN WHALES Documentation Theme */
+:root {
+  --dw-blue: #1a73e8;
+  --dw-teal: #0d9488;
+  --dw-navy: #0f172a;
+  --dw-slate: #334155;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --sl-color-accent: var(--dw-teal);
+  --sl-color-accent-high: #2dd4bf;
+}
+
+/* Light mode overrides */
+:root[data-theme="light"] {
+  --sl-color-accent: var(--dw-blue);
+  --sl-color-accent-high: #2563eb;
+}
+
+/* Hero styling */
+.hero {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+/* Table enhancements */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background: var(--sl-color-gray-1);
+  font-weight: 600;
+  text-align: left;
+}
+th, td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+/* Callout boxes */
+.dw-info {
+  border-left: 4px solid var(--dw-blue);
+  background: var(--sl-color-blue-low);
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1rem 0;
+}
+.dw-warning {
+  border-left: 4px solid #f59e0b;
+  background: var(--sl-color-yellow-low);
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1rem 0;
+}
+.dw-danger {
+  border-left: 4px solid #ef4444;
+  background: var(--sl-color-red-low);
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1rem 0;
+}
+
+/* Checklist */
+.checklist li {
+  list-style: none;
+}
+.checklist li::before {
+  content: "✅ ";
+}

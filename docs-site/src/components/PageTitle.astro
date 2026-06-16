@@ -1,0 +1,33 @@
+---
+// Custom PageTitle component for DAWN WHALES docs
+// Adds version badge next to titles
+---
+---
+import type { Props } from '@astrojs/starlight/props';
+
+const { entry } = Astro.props;
+const { title } = entry.data;
+---
+
+<h1 class="dw-page-title">
+  {title}
+  <span class="dw-version-badge">v2.6</span>
+</h1>
+
+<style>
+  .dw-page-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .dw-version-badge {
+    display: inline-block;
+    background: var(--sl-color-accent);
+    color: var(--sl-color-white);
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+</style>
