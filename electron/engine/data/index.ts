@@ -158,14 +158,32 @@ export type {
   PipelineStats,
 } from './one-click-deploy-pipeline';
 
-// R246 P2-32: Price move push engine (pre-market detection + AI explanation)
-export { PriceMovePushEngine, priceMovePushEngine, resetPriceMovePushEngine } from './price-move-push-engine';
+// R247 P1-06: Factor signal translator bridge (factor ID → human language + frontend data flow)
+export { FactorSignalTranslator, factorSignalTranslator, resetFactorSignalTranslator } from './factor-signal-translator';
 export type {
-  PriceMove,
-  MoveExplanation,
-  ExplanationReason,
-  PushNotification,
-  PushMove,
-  WatchlistItem,
-  PushSchedule,
-} from './price-move-push-engine';
+  FactorCard,
+  FactorTranslationRequest,
+  FactorTranslation,
+  TranslatorStats,
+} from './factor-signal-translator';
+
+// R247 P1-07: Factor scene bridge (5 scenes → factor matching → backtest trigger)
+export { FactorSceneBridge, factorSceneBridge, resetFactorSceneBridge } from './factor-scene-bridge';
+export type {
+  FactorScene,
+  SceneFactorWithWeight,
+  SceneMatchResult,
+  UserPreferences,
+  SceneBundle,
+} from './factor-scene-bridge';
+
+// R247 P2-28: AI evidence bridge (conclusion → source annotation → evidence chain)
+export { AIEvidenceBridge, aiEvidenceBridge, resetAIEvidenceBridge } from './ai-evidence-bridge';
+export type {
+  Evidence,
+  EvidenceLevel,
+  EvidenceCategory,
+  EvidenceChain,
+  AIRecommendation,
+  EvidenceStats,
+} from './ai-evidence-bridge';
