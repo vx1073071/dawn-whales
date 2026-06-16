@@ -20,6 +20,7 @@
  *   - 两者皆不可用 → 返回空 (不影响主流程)
  */
 
+import { createHash } from 'crypto';
 import type { NewsItem, NewsFetcher } from './news-types';
 
 // ── Configuration ─────────────────────────────────────────────────────
@@ -307,7 +308,6 @@ export class CLSTelegraphFetcher implements NewsFetcher {
   }
 
   private computeFingerprint(item: CLSTelegraphItem): string {
-    const { createHash } = require('crypto');
     const content = (item.title + item.content).replace(/\s+/g, '').substring(0, 500);
     return createHash('sha256').update(content).digest('hex').substring(0, 16);
   }

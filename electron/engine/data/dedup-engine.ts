@@ -14,6 +14,7 @@
  *   - 增量处理: 流式推送，不阻塞
  */
 
+import { createHash } from 'crypto';
 import type { NewsItem, DedupResult } from './news-types';
 
 // ── Configuration ─────────────────────────────────────────────────────
@@ -61,8 +62,12 @@ function getSourcePriority(source: string): number {
 
 // ── Fingerprint ───────────────────────────────────────────────────────
 
+function computeContentFingerprint(text: string, length: number): string {
+  const normalized = text.replace(/\s+/g, '').substring(0, 1000);
+  return createHash('sha256').update(normalized).digest('hex').substring(0, length);
+}
+
 function computeTitleFingerprint(title: string): string {
-  // Normalize: lowercase, remove punctuation, tokenize
   const tokens = title
     .toLowerCase()
     .replace(/[^a-z0-9\u4e00-\u9fff\s]/g, '')
@@ -71,13 +76,6 @@ function computeTitleFingerprint(title: string): string {
     .sort();
 
   return tokens.join(' ');
-}
-
-function computeContentFingerprint(text: string, length: number): string {
-  const { createHash } = require('crypto');
-  // Normalize for comparison: remove whitespace, take first 1000 chars
-  const normalized = text.replace(/\s+/g, '').substring(0, 1000);
-  return createHash('sha256').update(normalized).digest('hex').substring(0, length);
 }
 
 // ── Similarity Functions ──────────────────────────────────────────────

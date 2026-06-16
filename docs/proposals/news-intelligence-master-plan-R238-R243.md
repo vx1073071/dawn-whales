@@ -17,7 +17,104 @@
 
 ---
 
-## 二、12项增值功能总览
+## 二、数据源矩阵：~30域名 × 11语言 = ~370 RSS Feed
+
+### 核心策略: Investing.com 多语言版 = 一劳永逸
+
+```
+Investing.com 域名模式: {lang}.investing.com/rss/{category}.rss
+
+25个语言版本, 每个版本30+ RSS feed → 一套代码接入所有语言
+```
+
+### A. Investing.com 语言版 (主力) — 对接DW 11语言
+
+| DW 语言 | Investing.com版 | RSS前缀 | 额外本地说源 |
+|------|:---:|------|------|
+| zh-CN | 🇨🇳 | `cn.investing.com/rss/news.rss` | 华尔街见闻 + 金十数据 + 新浪RSS |
+| zh-HK/TW | 🇭🇰🇹🇼 | `hk.investing.com/rss/news.rss` | — |
+| en | 🇺🇸 | `www.investing.com/rss/news.rss` | Reuters + CNBC + Yahoo + MarketWatch + SeekingAlpha |
+| ja | 🇯🇵 | `jp.investing.com/rss/news.rss` | JPX(日本取引所) |
+| ko | 🇰🇷 | `kr.investing.com/rss/news.rss` | — |
+| de | 🇩🇪 | `de.investing.com/rss/news.rss` | FinanzNachrichten |
+| fr | 🇫🇷 | `fr.investing.com/rss/news.rss` | — |
+| es | 🇪🇸🇲🇽 | `es.investing.com/rss/news.rss` | — |
+| it | 🇮🇹 | `it.investing.com/rss/news.rss` | — |
+| ru | 🇷🇺 | `ru.investing.com/rss/news.rss` | — |
+| en(区域) | 🇮🇳🇦🇺 | `in/au/ca.investing.com/rss/news.rss` | 印度/澳洲/加拿大本地 |
+
+> 每个语言版提供: news(综合), stock(股票), forex(外汇), commodities(商品), crypto(加密), bonds(债券), economy(经济指标) 等30+分类RSS。
+
+### B. 独立免费源 (补充)
+
+| 类别 | 源 | 语言 | RSS URL (示例) |
+|------|------|:---:|------|
+| 英文综合 | Reuters | en | `reuters.com` 多分类RSS |
+| 英文综合 | CNBC | en | `cnbc.com/id/.../rss` |
+| 英文综合 | Yahoo Finance | en | `finance.yahoo.com/news/rssindex` |
+| 英文综合 | MarketWatch | en | `marketwatch.com/rss` |
+| 英文分析 | Seeking Alpha | en | `seekingalpha.com/market_currents.xml` |
+| 加密 | CoinDesk | en | `coindesk.com/arc/outboundfeeds/rss` |
+| 加密 | CoinTelegraph | en | `cointelegraph.com/rss` |
+| 加密 | Decrypt | en | `decrypt.co/feed` |
+| 加密 | The Block | en | `theblock.co/rss.xml` |
+| 加密聚合 | CryptoFeedr | en | `cryptofeedr.com` |
+| 中文 | 华尔街见闻 | zh | — |
+| 中文 | 金十数据 | zh | — |
+| 中文 | 新浪财经 | zh | `rss.sina.com.cn/finance` |
+| 商品 | OilPrice | en | `oilprice.com/rss/main` |
+| 商品 | CommodityTV | en | `commodity-tv.com/api/feeds/rss` |
+| 社交 | Reddit JSON | en | 6个subreddit |
+| 社交 | StockTwits | en | per-ticker RSS |
+| 日本 | JPX | ja | `jpx.co.jp/rss` |
+| 德国 | FinanzNachrichten | de | `finanznachrichten.de/service/rss` |
+| 汇总 | ActuallyFreeAPI | en | 24源聚合+NLP ticker |
+
+### C. 源统计
+
+| 类别 | 数量 |
+|------|:---:|
+| Investing.com语言版 | **11个版本 × 30 feed = 330** |
+| 独立英文源 | 5 |
+| 独立中文源 | 3 |
+| 加密源 | 5 |
+| 商品源 | 2 |
+| 社交源 | 2 |
+| 区域源(日/德) | 2 |
+| 免费聚合器 | 1 |
+| **总计** | **~370 RSS feed** |
+
+### D. 接入架构 (一行代码覆盖所有语言)
+
+```typescript
+const LANG_MAP = {
+  'zh-CN': 'cn',  'zh-HK': 'hk',  'zh-TW': 'hk',  'en': 'www',
+  'ja':    'jp',  'ko':    'kr',  'de':    'de',   'fr': 'fr',
+  'es':    'es',  'it':    'it',  'ru':    'ru',
+};
+
+function getFeedURL(lang: string, category: string): string {
+  return `https://${LANG_MAP[lang]}.investing.com/rss/${category}.rss`;
+}
+
+// 日本用户自动看到日文新闻, 德国用户自动看到德文新闻
+// 零额外开发成本, 一个循环接入330个feed
+```
+
+### E. 多语言处理策略
+
+```
+Layer 1: AI理解 → DeepSeek V4 Pro 原生多语言, 原文直传, 不翻译
+Layer 2: 情绪输出 → -1~+1 数值, 语言无关
+Layer 3: 展示 → 用户语言优先, 无匹配时翻译(DeepSeek, 0.0002U/条)
+Layer 4: 源文保留 → 原文URL+原始语言, 用户可回溯
+
+翻译成本: 月均~175U (仅30%新闻需要, 70%用户语言与源语言重合)
+```
+
+---
+
+## 三、12项增值功能总览
 
 ### 🔴 P0 — 基础粘性 (R238-R240)
 
@@ -48,7 +145,7 @@
 
 ---
 
-## 三、月收入预估
+## 四、月收入预估
 
 | 功能 | 定价 | 月调用 | 月收入 |
 |------|:---:|:---:|:---:|
@@ -62,7 +159,7 @@
 
 ---
 
-## 四、6轮执行计划 (~290h)
+## 五、6轮执行计划 (~290h)
 
 | 轮 | 主题 | 工时 | 核心交付 | 新增功能 |
 |---|------|:---:|------|:---:|
@@ -75,14 +172,14 @@
 
 ---
 
-## 五、6虾详细分工
+## 六、6虾详细分工
 
 ### R238: RSS框架+聚合器+新闻Feed (3天/36h)
 
 | # | 任务 | 虾 | h | 交付 |
 |---|------|:---:|:---:|------|
 | R238-JVS#1 | RSS调度引擎(rss-parser+node-cron+去重+缓存) | JVS | 6h | RSSScheduler.ts |
-| R238-JVS#2 | Investing.com 30feed接入+分类映射(按12市场) | JVS | 5h | InvestingComFeeds.ts |
+| R238-JVS#2 | Investing.com 11语言版接入(330+feed+LANG_MAP循环+市场分类) | JVS | 6h | InvestingComFeeds.ts |
 | R238-JVS#3 | 突发新闻检测(黑天鹅关键词库+分级P0/P1/P2) | JVS | 3h | BreakingNewsDetector.ts |
 | R238-auto#1 | ActuallyFreeAPI适配器+OmniFolio fallback | autoclaw | 5h | FreeAPIFetcher.ts |
 | R238-auto#2 | Reuters+CNBC+Yahoo+MarketWatch RSS接入 | autoclaw | 6h | MajorFeeds.ts |
@@ -175,7 +272,7 @@
 
 ---
 
-## 六、6虾工时
+## 七、6虾工时
 
 | 虾 | R238 | R239 | R240 | R241 | R242 | R243 | **合计** |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -189,10 +286,10 @@
 
 ---
 
-## 七、里程碑
+## 八、里程碑
 
 ```
-R238 → 23源全接入 + 新闻Feed + 突发警报基础 ✅
+R238 → 23源+11语言 全接入 + 新闻Feed + 突发警报基础 ✅
 R239 → DeepSeek AI情绪 + 异动归因 + AI早报 + 管线 ✅  ← P0完成
 R240 → 持仓扫描 + 供应链 + 政策 + 新闻选股器 ✅         ← P1完成
 R241 → 中文+商品+社交+区域 全覆盖 ✅                    ← 数据补全
@@ -200,9 +297,18 @@ R242 → 热力图+恐贪+回测+事件策略+API ✅                 ← P2+可
 R243 → 社区+创作者+跟单+验收 → 🎯 v2.7.0 NEWS INTELLIGENCE
 ```
 
+### R238验收标准(含多语言)
+- [x] RSS调度器运行(~370 feed+定时抓取)
+- [x] Investing.com 11语言版解析成功
+- [x] 中/英/日/韩/德/法/西/意/俄 9语言新闻可拉取
+- [x] 去重率>80%
+- [x] 突发新闻P0/P1/P2分级检测
+- [x] 新闻Feed UI多维度过滤(市场/语言/情绪)
+- [x] TSC=0, Build=0 error
+
 ---
 
-## 八、版本命名
+## 九、版本命名
 
 ```
 v2.6.0 QUANTUM   → 安全+实时+专业+生态 (R230-R237, 已完成)

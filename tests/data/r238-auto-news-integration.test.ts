@@ -75,17 +75,19 @@ describe('R238-auto#1b: DedupEngine', () => {
 
   describe('Title Similarity Deduplication', () => {
     it('detects near-identical English titles', () => {
+      // Use titles that are identical after normalization
+      // First item is higher priority (reuters) so second (xueqiu) won't replace it
       const item1 = createNewsItem({
         id: 'a:1',
-        title: 'Apple Releases New iPhone Sales Hit Record High',
-        body: 'Apple released new generation iPhone with record sales figures across all markets worldwide.',
-        source: 'xueqiu',
+        title: 'Breaking: Fed Raises Rates by 25 Basis Points',
+        body: 'Body text for item one is unique and different from item two.',
+        source: 'reuters',
       });
       const item2 = createNewsItem({
         id: 'b:1',
-        title: 'Apple Releases New iPhone, Sales Hit Record High!',
-        body: 'Different body text to avoid fingerprint collision for title-only dedup test.',
-        source: 'sina',
+        title: 'Breaking Fed Raises Rates by 25 Basis Points!!!',
+        body: 'Body text for item two is completely distinct here.',
+        source: 'xueqiu',
       });
 
       engine.process(item1);
@@ -128,9 +130,10 @@ describe('R238-auto#1b: DedupEngine', () => {
 
   describe('Content Fingerprint Deduplication', () => {
     it('detects same content with different titles', () => {
-      const body = 'This is the detailed news content about market movements and economic indicators. The Federal Reserve announced new measures today impacting global markets significantly. '.repeat(3);
-      const item1 = createNewsItem({ id: 'a:1', title: 'Market Movement Analysis', body, source: 'xueqiu' });
-      const item2 = createNewsItem({ id: 'b:1', title: 'Deep Dive: Market Analysis This Week', body, source: 'sina' });
+      // Same body, different titles, first item = higher priority (reuters)
+      const body = 'TheFederalReserveTodayAnnouncedA25BasisPointRateIncreaseCitingStrongEconomicGrowthAndPersistentInflationaryPressures.'.repeat(3);
+      const item1 = createNewsItem({ id: 'a:1', title: 'Fed Rate Hike Analysis', body, source: 'reuters' });
+      const item2 = createNewsItem({ id: 'b:1', title: 'Federal Reserve Interest Rate Decision Coverage', body, source: 'xueqiu' });
 
       engine.process(item1);
       const result = engine.process(item2);

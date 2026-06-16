@@ -16,6 +16,7 @@
  *   - GET /stock/{symbol}/news.json?page=1&size=20    — 个股新闻
  */
 
+import { createHash } from 'crypto';
 import type { NewsItem, NewsFetcher } from './news-types';
 
 // ── Configuration ─────────────────────────────────────────────────────
@@ -328,7 +329,6 @@ export class XueqiuFetcher implements NewsFetcher {
    * 计算去重指纹
    */
   private computeFingerprint(post: XueqiuStatus): string {
-    const { createHash } = require('crypto');
     const content = (post.title + post.text).replace(/\s+/g, '').substring(0, 500);
     return createHash('sha256').update(content).digest('hex').substring(0, 16);
   }
