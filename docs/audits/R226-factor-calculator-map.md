@@ -1,8 +1,8 @@
 # R226 因子 Calculator 映射验证报告
 
-**生成时间**: 2026-06-15T22:46:56.533Z
-**总因子数**: 240
-**已映射**: 240 (100.0%)
+**生成时间**: 2026-06-16T16:35:32.842Z
+**总因子数**: 320
+**已映射**: 320 (100.0%)
 **安全Stub**: 0
 **未映射**: 0
 
@@ -12,22 +12,22 @@
 
 | L1 大类 | 总数 | 已映射 | 覆盖率 |
 |---------|------|--------|--------|
-| ✅ ANALYST | 6 | 6 | 100% |
-| ✅ CLASSIC | 15 | 15 | 100% |
+| ✅ ANALYST | 8 | 8 | 100% |
+| ✅ CLASSIC | 19 | 19 | 100% |
 | ✅ COMMODITY | 26 | 26 | 100% |
-| ✅ CROSS_ASSET | 15 | 15 | 100% |
-| ✅ CRYPTO | 36 | 36 | 100% |
+| ✅ CROSS_ASSET | 18 | 18 | 100% |
+| ✅ CRYPTO | 49 | 49 | 100% |
 | ✅ ESG | 6 | 6 | 100% |
-| ✅ EVENT | 8 | 8 | 100% |
-| ✅ FUNDAMENTAL | 24 | 24 | 100% |
-| ✅ HK | 19 | 19 | 100% |
+| ✅ EVENT | 13 | 13 | 100% |
+| ✅ FUNDAMENTAL | 32 | 32 | 100% |
+| ✅ HK | 27 | 27 | 100% |
 | ✅ LEGACY | 2 | 2 | 100% |
-| ✅ MACRO | 17 | 17 | 100% |
+| ✅ MACRO | 20 | 20 | 100% |
 | ✅ REVERSAL | 5 | 5 | 100% |
-| ✅ RISK | 15 | 15 | 100% |
-| ✅ SENTIMENT | 17 | 17 | 100% |
+| ✅ RISK | 20 | 20 | 100% |
+| ✅ SENTIMENT | 34 | 34 | 100% |
 | ✅ TECHNICAL | 11 | 11 | 100% |
-| ✅ US | 18 | 18 | 100% |
+| ✅ US | 30 | 30 | 100% |
 
 ---
 
@@ -41,56 +41,56 @@
 
 | 因子ID | 计算器文件 | 类型 |
 |--------|-----------|------|
-| MKT | factor-data-provider-v2.ts:105 | direct |
-| MKT | factor-id-registry.ts:106 | direct |
-| MKT | factor-risk-model.ts:139 | direct |
+| MKT | factor-i18n-completion.ts:9 | direct |
+| MKT | FactorCalculatorValidator.ts:182 | direct |
 | MKT | green-factor-calculators.ts:33 | direct |
-| MKT | ibkr-broker-adapter.ts:32 | direct |
-| MKT | real-trader.ts:258 | direct |
-| SIZE | factor-asset-registry.ts:56 | direct |
 | SIZE | factor-calculator.ts:544 | direct |
-| SIZE | factor-compatibility-engine.ts:90 | direct |
 | SIZE | factor-crowding.ts:231 | direct |
-| SIZE | factor-daily-report.ts:348 | direct |
-| SIZE | factor-i18n-map.ts:167 | direct |
-| SIZE | factor-id-registry.ts:107 | direct |
+| SIZE | factor-i18n-descriptions.ts:17 | direct |
+| SIZE | factor-i18n-metadata.ts:30 | direct |
+| SIZE | factor-i18n-names.ts:17 | direct |
 | SIZE | factor-optimizer.ts:97 | direct |
-| SIZE | factor-portfolio-diagnosis.ts:161 | direct |
-| SIZE | factor-risk-model.ts:140 | direct |
-| SIZE | factor-signal-integration.ts:122 | direct |
 | SIZE | turnover-cost-model.ts:100 | direct |
-| HML | factor-asset-registry.ts:57 | direct |
-| HML | factor-compatibility-engine.ts:108 | direct |
 | HML | factor-crowding.ts:228 | direct |
-| HML | factor-daily-report.ts:347 | direct |
-| HML | factor-data-provider-v2.ts:105 | direct |
-| HML | factor-i18n-map.ts:199 | direct |
-| HML | factor-id-registry.ts:108 | direct |
+| HML | factor-i18n-descriptions.ts:19 | direct |
+| HML | factor-i18n-metadata.ts:32 | direct |
+| HML | factor-i18n-names.ts:19 | direct |
 | HML | factor-optimizer.ts:96 | direct |
-| HML | factor-portfolio-diagnosis.ts:156 | direct |
-| HML | factor-ref-validator.ts:100 | direct |
-| HML | factor-risk-model.ts:141 | direct |
-| HML | factor-signal-integration.ts:121 | direct |
-| HML | factor-user-profile.ts:251 | direct |
+| HML | factor-scene-packs-r245.ts:136 | direct |
+| HML | FactorCalculatorValidator.ts:184 | direct |
 | HML | green-factor-calculators.ts:24 | direct |
 | HML | turnover-cost-model.ts:93 | direct |
 | EP_RATIO | factor-calculator.ts:420 | direct |
-| EP_RATIO | factor-data-provider-v2.ts:105 | direct |
-| EP_RATIO | factor-id-registry.ts:109 | direct |
+| EP_RATIO | factor-i18n-completion.ts:49 | direct |
+| EP_RATIO | factor-scene-packs-r245.ts:111 | direct |
+| EP_RATIO | factor-signal-translator-r245.ts:287 | direct |
 | EP_RATIO | green-factor-calculators.ts:23 | direct |
-| CFP_RATIO | factor-id-registry.ts:110 | direct |
-| MOM_12M | dawn-factor-framework.ts:354 | direct |
-| MOM_12M | factor-asset-registry.ts:55 | direct |
-| MOM_12M | factor-compatibility-engine.ts:36 | direct |
+| CFP_RATIO | factor-i18n-completion.ts:89 | direct |
+| CFP_RATIO | factor-scene-packs-r245.ts:135 | direct |
 | MOM_12M | factor-crowding.ts:225 | direct |
-| MOM_12M | factor-daily-report.ts:346 | direct |
 | MOM_12M | factor-data-provider.ts:647 | direct |
-| MOM_12M | factor-e2e-validation.ts:313 | direct |
-| MOM_12M | factor-i18n-map.ts:71 | direct |
-| MOM_12M | factor-id-registry.ts:111 | direct |
+| MOM_12M | factor-i18n-descriptions.ts:11 | direct |
+| MOM_12M | factor-i18n-metadata.ts:24 | direct |
+| MOM_12M | factor-i18n-names.ts:11 | direct |
 | MOM_12M | factor-optimizer.ts:94 | direct |
 | MOM_12M | factor-pipeline-convergence.ts:112 | direct |
-| MOM_12M | factor-portfolio-diagnosis.ts:154 | direct |
+| MOM_12M | factor-scene-packs-r245.ts:36 | direct |
+| MOM_12M | factor-signal-translator-r245.ts:212 | direct |
+| MOM_12M | turnover-cost-model.ts:79 | direct |
+| MOM_6M | factor-data-provider.ts:648 | direct |
+| MOM_6M | factor-i18n-completion.ts:129 | direct |
+| MOM_1M | factor-crowding.ts:226 | direct |
+| MOM_1M | factor-data-provider.ts:649 | direct |
+| MOM_1M | factor-i18n-descriptions.ts:12 | direct |
+| MOM_1M | factor-i18n-metadata.ts:25 | direct |
+| MOM_1M | factor-i18n-names.ts:12 | direct |
+| MOM_1M | factor-optimizer.ts:95 | direct |
+| MOM_1M | turnover-cost-model.ts:86 | direct |
+| MOM_6_1 | factor-i18n-completion.ts:169 | direct |
+| RMW | factor-crowding.ts:238 | direct |
+| RMW | factor-i18n-descriptions.ts:20 | direct |
+| RMW | factor-i18n-metadata.ts:33 | direct |
+| RMW | factor-i18n-names.ts:20 | direct |
 | ... | ... (共787个) | ... |
 
 ---

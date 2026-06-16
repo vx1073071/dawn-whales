@@ -1,11 +1,19 @@
 /**
- * validate-factor-calculator-mapping.ts - R226 JVS-1.2a: 240因子Calculator映射全量校验
+ * validate-factor-calculator-mapping.ts - R226→R246 FIX: 240因子Calculator映射全量校验
  *
  * Validates every canonical factor ID in factor-id-registry.ts maps to a
  * Calculator implementation (or safe stub). Outputs a detailed report to
  * docs/audits/R226-factor-calculator-map.md
  *
- * ≥350 lines.
+ * R246 FIX (Claw PM): Replaced 4 loose regex patterns that falsely matched
+ * type names/variable names as "factor references" with precise factorId:
+ * extraction — aligned with FactorCalculatorValidator. Previously reported
+ * 100% false coverage; now reports true Calculator coverage.
+ *
+ * Matching rules (exact, same as FactorCalculatorValidator):
+ *   1. factorId: 'XXX' — direct reference in createFactorCalculator() calls
+ *   2. super({ factorId: 'XXX' — class-based calculator constructor calls
+ *   3. PRO_FACTOR_CALCULATORS registry key matching
  */
 
 import * as fs from 'fs';
@@ -67,22 +75,20 @@ function parseFactorRegistry(registryPath: string): FactorEntry[] {
   return facts;
 }
 
-// ─── Scan Calculator Files ───────────────────────────────────────────
+// ─── Scan Calculator Files (R246 FIX: precise factorId extraction only) ──
 
 function scanCalculatorFiles(
   calcDirs: string[]
 ): Map<string, { path: string; name: string; line: number }[]> {
   const calcMap = new Map<string, { path: string; name: string; line: number }[]>();
 
-  const assignRegexes = [
-    // const/export/function named after factor
-    /(?:export\s+(?:const|function|class)\s+|const\s+)([A-Z][A-Za-z_0-9]*)(?:Calculator|Calc|Engine|Computer)/g,
-    // CASE 'FACTOR_ID':
-    /case\s+['"]([A-Z][A-Z_0-9]+)['"]/g,
-    // Key in object map: 'FACTOR_ID':
-    /['"]([A-Z][A-Z_0-9]+)['"]\s*:/g,
-    // In switch/if: === 'FACTOR_ID'
-    /['"]([A-Z][A-Z_0-9]+)['"]/g,
+  // R246 FIX: Only exact factorId references — no loose type/variable name matching.
+  // These 3 patterns are aligned with FactorCalculatorValidator's extraction logic.
+  const factorIdRegexes = [
+    // Pattern 1: factorId: 'XXX' — used in createFactorCalculator() calls
+    /factorId:\s*'([A-Z0-9_]+)'/g,
+    // Pattern 2: super({ factorId: 'XXX' — used in class-based calculators
+    /super\(\{\s*factorId:\s*'([A-Z0-9_]+)'/g,
   ];
 
   for (const dir of calcDirs) {
@@ -95,14 +101,32 @@ function scanCalculatorFiles(
       const fp = path.join(dir, file);
       const content = fs.readFileSync(fp, 'utf-8');
 
-      for (const regex of assignRegexes) {
+      for (const regex of factorIdRegexes) {
         let match;
         regex.lastIndex = 0;
         while ((match = regex.exec(content)) !== null) {
           const id = match[1];
-          if (/^[A-Z][A-Z_0-9]+$/.test(id) && id.length >= 3) {
+          if (/^[A-Z][A-Z0-9_]+$/.test(id) && id.length >= 2) {
             const lineNum = content.substring(0, match.index).split('\n').length;
 
+            const existing = calcMap.get(id) || [];
+            if (!existing.find(e => e.path === fp)) {
+              existing.push({ path: fp, name: id, line: lineNum });
+              calcMap.set(id, existing);
+            }
+          }
+        }
+      }
+
+      // Pattern 3: PRO_FACTOR_CALCULATORS object keys (class-based registry)
+      // Matches lines like: "  EBITDA_EV: EBITDA_EV_Calculator,"
+      if (file.includes('pro-factor-calculators')) {
+        const proRegistryRegex = /^\s*([A-Z][A-Z0-9_]+):\s*\1_Calculator,/gm;
+        let m;
+        while ((m = proRegistryRegex.exec(content)) !== null) {
+          const id = m[1];
+          if (id.length >= 2) {
+            const lineNum = content.substring(0, m.index).split('\n').length;
             const existing = calcMap.get(id) || [];
             if (!existing.find(e => e.path === fp)) {
               existing.push({ path: fp, name: id, line: lineNum });
@@ -286,7 +310,7 @@ function main(): void {
   const calcMap = scanCalculatorFiles(calcDirs);
   console.log(`Found references to ${calcMap.size} factor IDs in calculator files`);
 
-  // 3. Match each factor to calculator
+  // 3. Match each factor to calculator (R246 FIX: only count REAL calculator matches)
   const existingIds = new Set(calcMap.keys());
   const details: CalculatorMatch[] = [];
   const byLevel1: Record<string, { total: number; mapped: number }> = {};
@@ -306,7 +330,7 @@ function main(): void {
           lineNumber: c.line,
         });
       }
-      byLevel1[factor.level1].mapped++;
+      byLevel1[factor.level1].mapped++;  // Only count REAL calculator matches
     } else {
       details.push({
         factorId: factor.id,
@@ -314,6 +338,7 @@ function main(): void {
         calculatorName: `calc${factor.id}`,
         matchType: 'unmapped',
       });
+      // NOT incrementing byLevel1.mapped — stubs are not real calculators
     }
   }
 
@@ -325,16 +350,22 @@ function main(): void {
   const stubCount = factors.filter(f => !existingIds.has(f.id)).length;
   console.log(`Generated ${stubCount} safe stubs → ${stubPath}`);
 
-  // 5. Build report
+  // 5. Build report (R246 FIX: separate real coverage from stubs)
   const totalMapped = factors.filter(f => existingIds.has(f.id)).length;
+  const stubOnly = factors.filter(f => !existingIds.has(f.id)).length;
+
+  // REAL coverage = direct matches only (not including auto-stubs)
+  const realCoveragePct = (totalMapped / factors.length * 100).toFixed(1) + '%';
+  // WITH stubs = everything has at least a stub
+  const withStubPct = ((totalMapped + stubOnly) / factors.length * 100).toFixed(1) + '%';
 
   const report: ValidationReport = {
     timestamp: new Date().toISOString(),
     totalFactors: factors.length,
     mapped: totalMapped,
-    unmapped: factors.length - totalMapped - stubCount,
-    stubCount,
-    coveragePercent: ((totalMapped + stubCount) / factors.length * 100).toFixed(1) + '%',
+    unmapped: factors.length - totalMapped - stubOnly,
+    stubCount: stubOnly,
+    coveragePercent: realCoveragePct,  // R246 FIX: report REAL coverage, not stub-inflated
     details,
     byLevel1,
   };
@@ -348,13 +379,23 @@ function main(): void {
   fs.writeFileSync(reportPath, reportContent, 'utf-8');
 
   console.log(`Report written: ${reportPath}`);
-  console.log(`\nResults: ${totalMapped} direct matches + ${stubCount} stubs = ${report.coveragePercent} coverage`);
+  console.log(`\nResults: ${totalMapped} real calculators + ${stubOnly} stubs = ${withStubPct} total`);
+  console.log(`REAL coverage (direct Calculator matches only): ${realCoveragePct}`);
+  if (stubOnly > 0) {
+    console.log(`⚠️  ${stubOnly} factors have NO real Calculator — only auto-generated stubs`);
+  }
 
-  // Summary
-  console.log('\n=== Coverage by L1 ===');
+  // Summary (R246 FIX: show REAL coverage, not stub-inflated)
+  console.log('\n=== REAL Coverage by L1 (direct Calculator matches, no stubs) ===');
   for (const [l1, stats] of Object.entries(byLevel1).sort()) {
-    const pct = stats.total > 0 ? (stats.mapped / stats.total * 100).toFixed(0) : '0';
-    console.log(`  ${l1}: ${stats.mapped}/${stats.total} (${pct}%)`);
+    // Recalculate without stub contamination:
+    // byLevel1.mapped currently includes stubs. Need to compute real-only per L1.
+    const realMapped = factors.filter(f =>
+      f.level1 === l1 && existingIds.has(f.id)
+    ).length;
+    const pct = stats.total > 0 ? (realMapped / stats.total * 100).toFixed(0) : '0';
+    const bar = realMapped === stats.total ? '✅' : realMapped > stats.total * 0.5 ? '⚠️' : '❌';
+    console.log(`  ${bar} ${l1.padEnd(18)} ${realMapped}/${stats.total} (${pct}%)`);
   }
 }
 

@@ -138,11 +138,34 @@ export type {
   FastDeployConfig,
 } from './fast-deploy-bridge';
 
-// R245 P1-18: Factor trial engine (try-before-buy)
-export { FactorTrialEngine, factorTrialEngine, resetFactorTrialEngine } from './factor-trial-engine';
+// R246 P1-03: Factor marketplace bridge (factor data → marketplace → buyout unlock)
+export { FactorMarketplaceBridge, factorMarketplaceBridge, resetFactorMarketplaceBridge } from './factor-marketplace-bridge';
 export type {
-  FactorTrial,
-  TrialResult,
-  TrialQuota,
-  TrialStats,
-} from './factor-trial-engine';
+  FactorListing,
+  PurchaseRecord,
+  FactorSearchQuery,
+  MarketplaceStats,
+  FactorReview,
+} from './factor-marketplace-bridge';
+
+// R246 P0-10 COMPLETE: One-click deploy pipeline (3-step ≤30s E2E)
+export { OneClickDeployPipeline, oneClickDeployPipeline, resetOneClickDeployPipeline } from './one-click-deploy-pipeline';
+export type {
+  DeployStep,
+  StepTiming,
+  OneClickResult,
+  PipelineConfig as DeployPipelineConfig,
+  PipelineStats,
+} from './one-click-deploy-pipeline';
+
+// R246 P2-32: Price move push engine (pre-market detection + AI explanation)
+export { PriceMovePushEngine, priceMovePushEngine, resetPriceMovePushEngine } from './price-move-push-engine';
+export type {
+  PriceMove,
+  MoveExplanation,
+  ExplanationReason,
+  PushNotification,
+  PushMove,
+  WatchlistItem,
+  PushSchedule,
+} from './price-move-push-engine';
