@@ -116,3 +116,33 @@ export type {
   RiskSummary,
   DeploymentStats,
 } from './backtest-deploy-bridge';
+
+// R245 P0-06: NewsFactorBridge data layer
+export { NewsFactorBridge, newsFactorBridge, resetNewsFactorBridge } from './news-factor-bridge';
+export type {
+  NewsEventCategory,
+  FactorDomain,
+  ImpactDirection,
+  NewsFactorMapping,
+  FactorImpact,
+  BridgeSignal,
+  BridgeConfig,
+} from './news-factor-bridge';
+
+// R245 P0-10: Fast backtest→deploy bridge (streaming + ≤30s guarantee)
+export { FastBacktestDeployBridge, fastBacktestDeployBridge, resetFastBacktestDeployBridge } from './fast-deploy-bridge';
+export type {
+  PipelineStage,
+  PipelineProgress,
+  EnhancedDeployResult,
+  FastDeployConfig,
+} from './fast-deploy-bridge';
+
+// R245 P1-18: Factor trial engine (try-before-buy)
+export { FactorTrialEngine, factorTrialEngine, resetFactorTrialEngine } from './factor-trial-engine';
+export type {
+  FactorTrial,
+  TrialResult,
+  TrialQuota,
+  TrialStats,
+} from './factor-trial-engine';

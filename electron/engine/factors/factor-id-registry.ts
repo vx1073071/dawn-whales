@@ -1,8 +1,14 @@
-// ══ R229 JVS-3.5d: Factor ID Registry v3 ══ 240 Factors + 3-Level Classification ══
+// ══ R245 Claw(PM)代工JVS: Factor ID Registry v3.1 ══ 320 Factors + 3-Level Classification ══
 // Single source of truth for ALL factor identifiers across the DAWN WHALES
 // factor system. Every module MUST reference factor IDs through this registry.
 //
-// v3 changes (R229):
+// v3.1 changes (R245 — Claw(PM)代工JVS Step1+2):
+//   - Added 80 calculator-matcher factor IDs (previously orphaned from green/yellow/pro/market-yellow calculators)
+//   - Registry now 320 factors (240 + 80 orphans) — all 129 calculator factorIds have registry entries
+//   - Calculator coverage: 129/320 = 40.3% (from 49/240 = 20.4%)
+//   - 5 blank L1 categories will be filled in Step 3
+//
+// v3 (R229):
 //   - Expanded from 187 to 240 canonical factor IDs (+53 commodity+international factors)
 //   - 3-level classification: L1 (16 major) / L2 (55 sub) / L3 (240 factors)
 //   - All new factor IDs are globally unique
@@ -369,6 +375,94 @@ const FACTOR_SPEC: [string, string, string, FactorLevel1, FactorLevel2][] = [
   ['CMD_GOLD_OIL_RATIO', 'GoldOilRatio', '金油比(衰退指针)', 'L1_COMMODITY', 'L2_RATIO'],
   ['CMD_CRACK_SPREAD', 'CrackSpread', '裂解价差(炼油利润)', 'L1_COMMODITY', 'L2_RATIO'],
 
+  // ════════════════════════════════ R245 Step1+2: 80 Calculator-Matched Orphan IDs ════════════════════════════════
+  // These factor IDs are used by existing calculators (green/yellow/pro/market-yellow) but were
+  // previously missing from the registry — causing 78.8% of factors to have no calculation results.
+  // Added by Claw(PM)代工JVS, 2026-06-16.
+  // ── Pro-Factor IDs (26) ──
+  ['ALTMAN_Z', 'AltmanZScore', 'Altman Z-score破产预测', 'L1_FUNDAMENTAL', 'L2_HEALTH'],
+  ['APP_DOWNLOADS', 'AppDownloads', 'App下载量变化', 'L1_SENTIMENT', 'L2_SOCIAL'],
+  ['BAB', 'BettingAgainstBeta', '低Beta溢价(BAB)', 'L1_RISK', 'L2_DOWNSIDE'],
+  ['BOND_SPREAD', 'BondCreditSpread', '债券信用利差', 'L1_MACRO', 'L2_SENSITIVITY'],
+  ['BUYBACK_YIELD_ADV', 'BuybackYieldAdvanced', '回购收益率(进阶)', 'L1_EVENT', 'L2_CORPORATE'],
+  ['CAPEX_INTENSITY', 'CapexIntensity', '资本支出强度', 'L1_FUNDAMENTAL', 'L2_EFFICIENCY'],
+  ['CROSS_MARKET_DISCOUNT', 'CrossMarketDiscount', '跨市场折价', 'L1_CROSS_ASSET', 'L2_PRICING'],
+  ['DEBT_MATURITY', 'DebtMaturityRisk', '债务期限风险', 'L1_FUNDAMENTAL', 'L2_RISK_STRUCTURE'],
+  ['EBITDA_EV', 'EBITDAtoEV', 'EBITDA/企业价值', 'L1_CLASSIC', 'L2_VALUE'],
+  ['FACTOR_CROWDING', 'FactorCrowding', '因子拥挤度', 'L1_RISK', 'L2_STRUCTURAL'],
+  ['FIXED_INCOME_CARRY', 'FixedIncomeCarry', '固定收益利差', 'L1_CROSS_ASSET', 'L2_CARRY'],
+  ['GAMMA_EXPOSURE', 'GammaExposure', 'Gamma暴露', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['GDP_BETA', 'GDPBeta', 'GDP敏感度', 'L1_MACRO', 'L2_SENSITIVITY'],
+  ['GRAHAM_NET', 'GrahamNetNet', '格雷厄姆净净值', 'L1_CLASSIC', 'L2_VALUE'],
+  ['IMPLIED_CORRELATION', 'ImpliedCorrelation', '隐含相关性', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['IV_TERM_STRUCT', 'IVTermStructure', 'IV期限结构', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['JOB_POSTINGS', 'JobPostings', '招聘活跃度', 'L1_SENTIMENT', 'L2_SOCIAL'],
+  ['OPTION_FLOW', 'OptionFlow', '期权资金流', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['OPTION_SKEW', 'OptionSkew', '期权偏斜(25Delta)', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['PAIRS_SPREAD', 'PairsSpread', '配对价差', 'L1_CROSS_ASSET', 'L2_PRICING'],
+  ['PINCH_RISK', 'PinchRisk', '期权逼仓风险', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['SHORT_CROWDING', 'ShortCrowding', '空头拥挤', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['SHORT_SQUEEZE', 'ShortSqueezeRisk', '逼空风险信号', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['SUPPLY_CHAIN', 'SupplyChainRisk', '供应链风险', 'L1_SENTIMENT', 'L2_SOCIAL'],
+  ['TAIL_RISK', 'TailRisk', '尾部风险(VaR)', 'L1_RISK', 'L2_DOWNSIDE'],
+  ['VRP', 'VolatilityRiskPremium', '波动率风险溢价', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  // ── Yellow-Factor IDs (21) ──
+  ['ANALYST_REVISION', 'AnalystRevision', '分析师盈利修正', 'L1_ANALYST', 'L2_FORECAST'],
+  ['DOWNSIDE_VOL', 'DownsideVolatility', '下行波动率', 'L1_RISK', 'L2_DOWNSIDE'],
+  ['EARNINGS_ESTIMATE', 'EarningsEstimateTrend', '盈利预测趋势', 'L1_ANALYST', 'L2_FORECAST'],
+  ['ETF_FLOW_ADVANCED', 'ETFFlowAdvanced', 'ETF资金流(进阶)', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['IDIO_VOL', 'IdiosyncraticVolatility', '特质波动率', 'L1_RISK', 'L2_VOLATILITY'],
+  ['IV_RANK_ADVANCED', 'IVRankAdvanced', 'IV排名(进阶)', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['IV_SKEW', 'IVSkew', 'IV偏斜', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['NET_MARGIN_STABILITY', 'NetMarginStability', '净利润率稳定性', 'L1_FUNDAMENTAL', 'L2_RISK_ADJUSTED'],
+  ['OPERATING_MARGIN', 'OperatingMargin', '营业利润率', 'L1_FUNDAMENTAL', 'L2_PROFIT_QUALITY'],
+  ['PEG_RATIO', 'PEGRatio', 'PEG比率', 'L1_CLASSIC', 'L2_GROWTH'],
+  ['PIOTROSKI_F', 'PiotroskiFScore', 'Piotroski F分数', 'L1_FUNDAMENTAL', 'L2_HEALTH'],
+  ['PRE_EARNINGS_IV', 'PreEarningsIVCrush', '盈利前IV碾压', 'L1_EVENT', 'L2_EARNINGS'],
+  ['PUT_CALL_RATIO', 'PutCallRatio', 'Put/Call比率', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['RATE_SENSITIVITY', 'RateSensitivity', '利率敏感度', 'L1_MACRO', 'L2_SENSITIVITY'],
+  ['ROIC', 'ReturnOnInvestedCapital', '投资资本回报率', 'L1_FUNDAMENTAL', 'L2_PROFIT_QUALITY'],
+  ['SALES_GROWTH_CONSISTENCY', 'SalesGrowthConsistency', '营收增长稳定性', 'L1_FUNDAMENTAL', 'L2_GROWTH'],
+  ['SALES_TO_PRICE', 'SalesToPrice', '市销率', 'L1_CLASSIC', 'L2_VALUE'],
+  ['SHORT_INTEREST', 'ShortInterest', '空头持仓比例', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['THEME_AI', 'AIThemeExposure', 'AI主题暴露', 'L1_EVENT', 'L2_CORPORATE'],
+  ['THEME_CONSUMPTION', 'ConsumptionTheme', '消费主题暴露', 'L1_EVENT', 'L2_CORPORATE'],
+  ['THEME_GREEN', 'GreenThemeExposure', '绿色主题暴露', 'L1_EVENT', 'L2_CORPORATE'],
+  // ── Market-Yellow IDs (33) ──
+  ['CRYPTO_BTC_DOM_CHANGE', 'BTCDominanceChange', 'BTC市占率变化', 'L1_CRYPTO', 'L2_SENTIMENT'],
+  ['CRYPTO_DEV_ACTIVITY', 'CryptoDevActivity', '开发者活跃度', 'L1_CRYPTO', 'L2_FUNDAMENTAL'],
+  ['CRYPTO_GAS_TREND', 'CryptoGasTrend', 'Gas费趋势', 'L1_CRYPTO', 'L2_ONCHAIN'],
+  ['CRYPTO_INFLATION', 'CryptoInflation', '加密通胀率', 'L1_CRYPTO', 'L2_ONCHAIN'],
+  ['CRYPTO_L2_TVL', 'CryptoL2TVL', 'L2总锁仓量', 'L1_CRYPTO', 'L2_ONCHAIN'],
+  ['CRYPTO_OI_QUADRANT', 'CryptoOIQuadrant', '持仓-价格象限', 'L1_CRYPTO', 'L2_DERIVATIVES'],
+  ['CRYPTO_PERP_BASIS', 'CryptoPerpBasis', '永续合约基差', 'L1_CRYPTO', 'L2_DERIVATIVES'],
+  ['CRYPTO_PERP_PREMIUM', 'CryptoPerpPremium', '永续溢价率', 'L1_CRYPTO', 'L2_DERIVATIVES'],
+  ['CRYPTO_SOCIAL_VOLUME', 'CryptoSocialVolume', '社交声量', 'L1_CRYPTO', 'L2_SOCIAL'],
+  ['CRYPTO_SOPR', 'CryptoSpentOutputProfitRatio', 'SOPR花销利润率', 'L1_CRYPTO', 'L2_ONCHAIN'],
+  ['CRYPTO_TAKER_RATIO', 'CryptoTakerRatio', '主动买卖比', 'L1_CRYPTO', 'L2_SENTIMENT'],
+  ['CRYPTO_USDT_PREMIUM', 'CryptoUSDTpremium', 'USDT溢价', 'L1_CRYPTO', 'L2_PRICING'],
+  ['CRYPTO_WHALE_MOVEMENT', 'CryptoWhaleMovement', '巨鲸动向', 'L1_CRYPTO', 'L2_FLOW'],
+  ['HK_BOARD_ROTATION', 'HKBoardRotation', '港股板块轮动', 'L1_HK', 'L2_SENTIMENT'],
+  ['HK_CBBC_DISTANCE', 'CBBCDistance', '牛熊证距离', 'L1_HK', 'L2_DERIVATIVES'],
+  ['HK_CBBC_RATIO', 'CBBCRatio', '牛熊证比率', 'L1_HK', 'L2_DERIVATIVES'],
+  ['HK_DIV_TAX_ADV', 'HKDividendTaxAdvantage', '港股股息税优惠', 'L1_HK', 'L2_YIELD'],
+  ['HK_ETF_FLOW', 'HKETFFlow', '港股ETF资金流', 'L1_HK', 'L2_FLOW'],
+  ['HK_HSCEI_PREMIUM', 'HSCEIPremium', '国企指数溢价', 'L1_HK', 'L2_PRICING'],
+  ['HK_SHORT_SELL_RATIO', 'HKShortSellRatio', '港股沽空比率', 'L1_HK', 'L2_SENTIMENT'],
+  ['HK_WARRANT_TURNOVER', 'HKWarrantTurnover', '涡轮成交额', 'L1_HK', 'L2_FLOW'],
+  ['US_13F_FLOW', 'US13FFlow', '13F机构持仓变化', 'L1_US', 'L2_FLOW'],
+  ['US_BUYBACK_YIELD', 'USBuybackYield', '美股回购收益率', 'L1_US', 'L2_VALUE'],
+  ['US_EARNINGS_REVISION', 'USEarningsRevision', '美股盈利修正', 'L1_US', 'L2_EVENT'],
+  ['US_IV_RANK', 'USIVRank', '美股IV排名', 'L1_US', 'L2_VOLATILITY'],
+  ['US_MEME_STOCK', 'USMemeStockHeat', '美股Meme热度', 'L1_US', 'L2_SOCIAL'],
+  ['US_OI_PUT_CALL', 'USOpenInterestPCR', '美股持仓PCR', 'L1_US', 'L2_SENTIMENT'],
+  ['US_RETAIL_FLOW', 'USRetailFlow', '散户资金流', 'L1_US', 'L2_FLOW'],
+  ['US_REVENUE_SURPRISE', 'USRevenueSurprise', '营收超预期', 'L1_US', 'L2_EVENT'],
+  ['US_SEASONALITY', 'USSeasonalityEffect', '美股季节性', 'L1_US', 'L2_STATS'],
+  ['US_SECTOR_ETF_FLOW', 'USSectorETFFlow', '美股行业ETF流', 'L1_US', 'L2_FLOW'],
+  ['US_SHORT_FLOAT', 'USShortFloat', '美股做空比例', 'L1_US', 'L2_SENTIMENT'],
+  ['US_VOLUME_PCR', 'USVolumePCR', '美股量PCR', 'L1_US', 'L2_SENTIMENT'],
+
 ];
 
 // ═══════════════════════════════════════════════════════════════════
@@ -387,7 +481,7 @@ for (const [id] of FACTOR_SPEC) {
   STANDARD_FACTOR_IDS[id] = id;
 }
 
-/** Canonical factor IDs array (all 240) */
+/** Canonical factor IDs array (all 320 — 240 original + 80 calculator-matched orphans) */
 export const ALL_STANDARD_FACTOR_IDS: FactorId[] = FACTOR_SPEC.map(([id]) => id);
 
 // ── Factor Level Lookup Tables ───────────────────────────────────

@@ -59,7 +59,7 @@ export interface FactorDefinition {
   tier: CalculatorTier;
 }
 
-export type CalculatorTier = 'green' | 'yellow' | 'pro' | 'market-red' | 'market-yellow' | 'final-red';
+export type CalculatorTier = 'green' | 'yellow' | 'pro' | 'market-red' | 'market-yellow' | 'final-red' | 'blank';
 
 export const TIER_NAMES: Record<CalculatorTier, string> = {
   green: 'Green (基础免费)',
@@ -77,6 +77,7 @@ export const TIER_FILES: Record<CalculatorTier, string> = {
   'market-red': 'market-red-factors.ts',
   'market-yellow': 'market-yellow-calculators.ts',
   'final-red': 'final-red-factors.ts',
+  blank: 'blank-category-calculators.ts',
 };
 
 /** Regional/extra market files */
@@ -151,6 +152,7 @@ export interface TierCoverageReport {
   marketRed: number;
   marketYellow: number;
   finalRed: number;
+  blank: number;
   regional: number;
   total: number;
 }
@@ -488,7 +490,7 @@ export class FactorCalculatorValidator {
 
     // Tier coverage
     const tierCount: Record<CalculatorTier, number> = {
-      green: 0, yellow: 0, pro: 0, 'market-red': 0, 'market-yellow': 0, 'final-red': 0,
+      green: 0, yellow: 0, pro: 0, 'market-red': 0, 'market-yellow': 0, 'final-red': 0, blank: 0,
     };
     const seen = new Set<string>();
     for (const f of calcFactors) {
@@ -505,6 +507,7 @@ export class FactorCalculatorValidator {
       marketRed: tierCount['market-red'],
       marketYellow: tierCount['market-yellow'],
       finalRed: tierCount['final-red'],
+      blank: tierCount.blank,
       regional: calcFactors.filter(f => ['in-eu', 'jp-tw', 'kr-sg-au'].some(r => f.file.includes(r))).length,
       total: coveredSet.size,
     };
