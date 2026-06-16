@@ -177,41 +177,37 @@ export type {
   SceneBundle,
 } from './factor-scene-bridge';
 
-// R249 P1-03: Factor marketplace completion (reviews + UGC + featured + changelog)
-export { FactorMarketplaceCompletion, factorMarketplaceCompletion, resetFactorMarketplaceCompletion } from './factor-marketplace-completion';
+// R250 P2-06: Strategy combo bridge (combine N strategies → portfolio with contribution analysis)
+export { StrategyComboBridge, strategyComboBridge, resetStrategyComboBridge } from './strategy-combo-bridge';
 export type {
-  FactorReview,
-  ReviewStats,
-  UGCSubmission,
-  UGCRevision,
-  UGCQueue,
-  FeaturedFactor,
-  FactorChangelogEntry,
-} from './factor-marketplace-completion';
+  StrategySlice,
+  StrategySliceMetrics,
+  PortfolioCombo,
+  PortfolioMetrics,
+  StrategyContribution,
+  RebalancePlan,
+  ComboAnalysis,
+  ComboStats,
+} from './strategy-combo-bridge';
 
-// R249 P2-26: Factor visualization data engine (IC curves, correlation, heatmap, distribution)
-export { FactorVisualizationDataEngine, factorVisualizationDataEngine, resetFactorVisualizationDataEngine } from './factor-viz-data-engine';
+// R250 P2-18: Portfolio optimization bridge (6 optimization methods + efficient frontier)
+export { PortfolioOptimizationBridge, portfolioOptimizationBridge, resetPortfolioOptimizationBridge } from './portfolio-optimization-bridge';
 export type {
-  ICTimeSeries,
-  CumulativeReturnCurve,
-  CorrelationMatrix,
-  FactorRanking,
-  HeatmapData,
-  DistributionData,
-  GroupComparison,
-  DashboardSnapshot,
-} from './factor-viz-data-engine';
+  OptimizationInput,
+  OptimizationConstraints,
+  OptimizationMethod,
+  OptimizationResult,
+  EfficientFrontier,
+  CompareResults,
+} from './portfolio-optimization-bridge';
 
-// R249 P2-29: AI questionable engine (user feedback + dispute resolution + learning loop)
-export { AIQuestionableEngine, aiQuestionableEngine, resetAIQuestionableEngine } from './ai-questionable-engine';
+// R250 P2-11: Source health bar (25+ news source health monitoring)
+export { SourceHealthBar, sourceHealthBar, resetSourceHealthBar } from './source-health-bar';
 export type {
-  DecisionType,
-  FeedbackAction,
-  DisputeStatus,
-  DisputeResolution,
-  AIDecision,
-  DecisionFeedback,
-  DecisionDispute,
-  FeedbackStats,
-  LearningInsight,
-} from './ai-questionable-engine';
+  HealthStatus,
+  SourceCategory,
+  SourceHealthSnapshot,
+  SourceHealth,
+  HealthDashboard,
+  HealthCheckResult,
+} from './source-health-bar';
