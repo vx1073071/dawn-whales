@@ -18,6 +18,17 @@ export { NewsBacktestDataPrep, getBacktestDataPrep, resetBacktestDataPrep } from
 export type { AlignedEvent, BacktestReturns, BacktestSummary, PriceSnapshot } from './news-backtest-data-prep';
 export { DailyDigestV2Engine, getDailyDigestV2Engine, resetDailyDigestV2Engine } from './daily-digest-v2';
 export type { DailyDigestV2, AttributionItem, RiskAssessment, StrategySuggestion, MarketOverview } from './daily-digest-v2';
+export { CopytradeNewsEnhancer, getCopytradeNewsEnhancer, resetCopytradeNewsEnhancer } from './copytrade-news-enhancer';
+export type {
+  CreatorTradeSignal,
+  TradeNewsMatch,
+  MatchedNewsItem,
+  SentimentSummary,
+  EnrichedCopytradeOrder,
+  EnhancedNotification,
+  CopytradeNewsStats,
+  TradeDirection,
+} from './copytrade-news-enhancer';
 export type {
   NewsSource,
   NewsCategory,
