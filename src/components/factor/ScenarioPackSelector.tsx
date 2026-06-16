@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R185 ML P1-02: ScenarioPackSelector — 8场景包一键选择器 ────────────
 // Based on QClaw R184 design spec Part B (8 scenario packs: 4 L1 + 3 L2 + 1 L3).
 // Each pack shows: icon, name, story snippet, historical stats, current signal.

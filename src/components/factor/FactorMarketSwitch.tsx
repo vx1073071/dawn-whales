@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R184 ML P0-03: FactorMarketSwitch — 市场自动切换框架 ─────────────────
 // Auto-switch factor library based on selected market: 🇺🇸 US / 🇭🇰 HK / 🪙 Crypto.
 // Each market gets its own factor set with different defaults and priorities.

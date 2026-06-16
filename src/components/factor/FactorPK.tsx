@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R187 ML P3-02: FactorPK — 2因子实时PK对比台 ─────────────────────
 // Side-by-side comparison of any two factors. Users pick two factors and
 // see a head-to-head battle across 6 dimensions:

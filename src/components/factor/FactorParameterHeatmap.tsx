@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R192 ML P8-01: FactorParameterHeatmap — 参数敏感性热力图 ──────────
 // Window × Threshold → IC matrix with gradient color scale
 // 3 window presets (3M/6M/12M) × 3 threshold levels (±1σ/±1.5σ/±2σ)

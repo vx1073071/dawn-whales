@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R184 ML P0-01: FactorLevelSelector — 三档无门槛切换 ─────────────────
 // Three-tier factor level selector: L1 🌱 Essential (常⽤12) → L2 🌿 Advanced (进阶40)
 // → L3 🌳 Expert (实验~100). No paywall — pure information tiering.

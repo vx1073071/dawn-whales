@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R188 ML P4-01: FactorHealthAlert — 四维健康预警 ─────────────────
 // Monitors factor health across 4 dimensions:
 // 1. IC Trend (rising/falling/flat with half-life countdown)

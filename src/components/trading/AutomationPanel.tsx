@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';

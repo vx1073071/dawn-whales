@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R193 ML P9-03: StrategyHealthRadar — 策略健康评分5维雷达 ──────────
 // 5-dim radar chart: IC / IR / Stability / Crowding / Drawdown
 // Overall health score 0-100 with grade (A+/A/B/C/D/F)

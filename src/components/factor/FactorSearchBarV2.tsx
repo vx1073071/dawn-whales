@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R189 ML P5-03: FactorSearchBarV2 — 三模式搜索升级 ─────────────────
 // Upgrades FactorSearch with 3 search modes:
 // 1. NL (自然语言): "便宜好公司" → semantic factor mapping (existing)

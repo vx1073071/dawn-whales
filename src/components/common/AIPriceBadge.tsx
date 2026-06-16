@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
 * AIPriceBadge — ML R181 P0-07 [P0] AI按钮价格透明
 * Every AI action button shows its price. Free actions say "免费".

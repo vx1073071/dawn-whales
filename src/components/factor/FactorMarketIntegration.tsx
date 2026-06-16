@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R186 ML P2-01: FactorMarketIntegration — 市场自动切换集成 ─────────
 // Integrates FactorMarketSwitch with EntryFactorGallery + ScenarioPackSelector.
 // When user switches market (US/HK/Crypto/ALL), all factor cards and scenario

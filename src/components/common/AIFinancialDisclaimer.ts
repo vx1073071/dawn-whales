@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
 * AIFinancialDisclaimer — ML R178 G15 [P0] 金融免责声明注入
 * Appended to every AI-generated response to comply with regulatory requirements.

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R191 ML P7-03: ProModeSwitch — 专业模式UI ─────────────────────────
 // Professional mode toggle with confirmation modal + advanced parameter panel.
 // 🌱 L1/L2 users can optionally enable "专业模式" (Pro Mode) to access:

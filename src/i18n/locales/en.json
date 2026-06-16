@@ -6890,5 +6890,19 @@
   "guide_s5_double_confirm": "Last call. Once confirmed, your order goes to the exchange. Real money, real market, real results. Are you ready?",
   "guide_s5_success": "You did it! Your first trade is live. This is where your journey as a quant trader begins. We'll help you every step of the way.",
   "guide_s5_next_steps": "What's next? Track your position in Portfolio, set alerts for key price levels, or discover more strategies to diversify.",
-  "guide_s5_error_recovery": "Trade didn't go through? Don't worry — your funds are safe. Check the error message, adjust, and try again. We're here to help."
+  "guide_s5_error_recovery": "Trade didn't go through? Don't worry — your funds are safe. Check the error message, adjust, and try again. We're here to help.",
+  "responsive": {
+    "sidebarToggle": "Toggle Sidebar",
+    "sidebarClose": "Close",
+    "sidebarOpen": "Open",
+    "collapseAll": "Collapse All",
+    "expandAll": "Expand All",
+    "mobileMenu": "Menu",
+    "desktopView": "Desktop View",
+    "tabletView": "Tablet View",
+    "mobileView": "Mobile View",
+    "screenTooSmall": "Screen too small for optimal experience",
+    "rotateDevice": "Rotate device for better view",
+    "landscapeRecommended": "Landscape recommended"
+  }
 }

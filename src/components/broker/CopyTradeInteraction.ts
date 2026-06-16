@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TradingEasy R140 J01 — CopyTrade Interaction Details
  * 

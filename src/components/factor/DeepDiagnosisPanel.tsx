@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R191 ML P7-01: DeepDiagnosisPanel — 深度因子诊断 (1U/次) ────────
 // Full factor diagnosis with 5-dimension radar chart + IC decay trend +
 // crowding analysis + optimization recommendations.

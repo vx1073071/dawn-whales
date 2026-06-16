@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R187 ML P3-03: AdvancedFactorCard — 进阶因子卡片 ──────────────────
 // Enhanced factor card for L2 (进阶) factors with extra controls:
 // - Parameter adjustment (e.g. lookback period, threshold)

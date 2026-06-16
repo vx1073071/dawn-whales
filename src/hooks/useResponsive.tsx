@@ -171,8 +171,9 @@ export function responsiveCSS(
   styles: Record<string, string | number>,
   bp: Breakpoint
 ): Record<string, string | number> {
-  const min = BREAKPOINTS[bp].min;
-  const max = BREAKPOINTS[bp].max;
+  const entry = BREAKPOINTS[bp];
+  const min = 'min' in entry ? entry.min : undefined;
+  const max = 'max' in entry ? entry.max : undefined;
   const key = min ? `@media (min-width: ${min}px)` : `@media (max-width: ${max}px)`;
   // Return marker for CSS-in-JS libraries
   return { [`__${key}`]: '' as any, ...styles };

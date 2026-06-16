@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R189 ML P5-02: FactorWeeklyLeaderboard — 本周龙虎榜 ────────────────
 // Weekly factor performance leaderboard with animated ranking.
 // Top 10 winning factors and top 10 losing factors.

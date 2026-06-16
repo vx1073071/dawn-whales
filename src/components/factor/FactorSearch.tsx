@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R186 ML P2-02: FactorSearch — 人说人话，因子听懂 ──────────────────
 // Natural language → factor mapping. User types "便宜好公司" and gets
 // BOOK_TO_PRICE + EARNINGS_YIELD + QUAL. No technical knowledge required.

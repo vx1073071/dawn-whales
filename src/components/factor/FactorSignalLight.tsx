@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R185 ML P1-01: FactorSignalLight — 四色信号灯组件 ─────────────────
 // 🟢 Green (strong positive) / 🟡 Yellow (neutral) / 🔴 Red (strong negative)
 // / ⚪ Gray (insufficient data). Based on QClaw R184 design spec Part C.

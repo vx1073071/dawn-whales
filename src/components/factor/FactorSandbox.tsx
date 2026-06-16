@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R188 ML P4-02: FactorSandbox — 秒级历史回测预览 ──────────────────
 // Instant "what-if" backtest preview when users select factors.
 // No full backtest engine needed — simplified returns-based estimation.

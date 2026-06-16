@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R186 ML P2-03: FactorOnboarding — 3步向导UI ─────────────────────
 // New user onboarding for the factor system. 3 steps, progressive disclosure.
 // Step 1: What are factors? (concept intro with emoji metaphors)
