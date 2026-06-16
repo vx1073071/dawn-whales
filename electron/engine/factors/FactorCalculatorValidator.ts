@@ -43,8 +43,6 @@
  */
 
 import log from 'electron-log';
-import * as fs from 'fs';
-import * as path from 'path';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // Types
@@ -568,24 +566,34 @@ export class FactorCalculatorValidator {
    */
   private async scanCalculatorFiles(factorDir?: string): Promise<FactorDefinition[]> {
     const results: FactorDefinition[] = [];
-    const baseDir = factorDir || path.resolve(__dirname, '../factors');
+    const sep = process.platform === 'win32' ? '\\' : '/';
+    const baseDir = factorDir || __dirname + sep + '..' + sep + 'factors';
 
-    // Production scan: read actual files
+    // Production scan: read actual files (only in Node.js environment)
     try {
+      // Dynamic import of fs — only works in Node.js
+      const fsNode = this.tryGetFsNode();
+      if (!fsNode) {
+        log.warn('[FactorCalculatorValidator] fs module not available — using static data');
+        return results;
+      }
+
       for (const [tier, filename] of Object.entries(TIER_FILES)) {
-        const fpath = path.join(baseDir, filename);
+        const fpath = baseDir + sep + filename;
         try {
-          await this.extractFromFile(fpath, tier as CalculatorTier, results);
+          if (!fsNode.existsSync(fpath)) continue;
+          this.extractFromContent(fsNode.readFileSync(fpath, 'utf-8'), filename, tier as CalculatorTier, results);
         } catch {
-          log.warn(`[FactorCalculatorValidator] Cannot read ${filename}, using static data`);
+          log.warn(`[FactorCalculatorValidator] Cannot read ${filename}, skipping`);
         }
       }
       for (const rfile of REGIONAL_FILES) {
-        const fpath = path.join(baseDir, rfile);
+        const fpath = baseDir + sep + rfile;
         try {
-          await this.extractFromFile(fpath, 'market-yellow', results);
+          if (!fsNode.existsSync(fpath)) continue;
+          this.extractFromContent(fsNode.readFileSync(fpath, 'utf-8'), rfile, 'market-yellow', results);
         } catch {
-          log.warn(`[FactorCalculatorValidator] Cannot read ${rfile}`);
+          // skip
         }
       }
     } catch {
@@ -596,58 +604,62 @@ export class FactorCalculatorValidator {
     return results;
   }
 
-  private async extractFromFile(
-    fpath: string,
+  /** Try to get Node.js fs module, returns null in browser */
+  private tryGetFsNode(): { readFileSync: (p: string, e: string) => string; existsSync: (p: string) => boolean } | null {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const fsMod = (typeof require !== 'undefined' ? require('fs') : null) as any;
+      if (fsMod && typeof fsMod.readFileSync === 'function' && typeof fsMod.existsSync === 'function') {
+        return fsMod;
+      }
+    } catch { /* not in Node.js */ }
+    return null;
+  }
+
+  private extractFromContent(
+    content: string,
+    filename: string,
     tier: CalculatorTier,
     results: FactorDefinition[],
-  ): Promise<void> {
-    try {
-      const content = fs.readFileSync(fpath, 'utf-8');
-      const filename = path.basename(fpath);
+  ): void {
+    // Match factorId: 'XXX' pattern
+    const idRegex = /factorId:\s*'([A-Za-z0-9_]+)'/g;
+    let idMatch: RegExpExecArray | null;
 
-      // Match factorId: 'XXX' pattern
-      const idRegex = /factorId:\s*'([A-Za-z0-9_]+)'/g;
-      const labelRegex = /label:\s*'([^']*)'/g;
+    while ((idMatch = idRegex.exec(content)) !== null) {
+      const factorId = idMatch[1].toUpperCase();
 
-      let idMatch: RegExpExecArray | null;
-      while ((idMatch = idRegex.exec(content)) !== null) {
-        const factorId = idMatch[1].toUpperCase();
+      // Try to find the closest label
+      let label = factorId;
+      const blockStart = Math.max(0, idMatch.index - 50);
+      const blockEnd = Math.min(content.length, idMatch.index + 400);
+      const block = content.substring(blockStart, blockEnd);
+      const labelMatch = /label:\s*'([^']*)'/.exec(block);
+      if (labelMatch) label = labelMatch[1];
 
-        // Try to find the closest label
-        let label = factorId;
-        // Look for type + factorId + level1 + level2 pattern
-        const blockStart = Math.max(0, idMatch.index - 50);
-        const blockEnd = Math.min(content.length, idMatch.index + 400);
-        const block = content.substring(blockStart, blockEnd);
-        const labelMatch = /label:\s*'([^']*)'/.exec(block);
-        if (labelMatch) label = labelMatch[1];
+      // Detect calculator type
+      let calcType: FactorDefinition['calculatorType'] = 'custom';
+      if (block.includes("type: 'ratio'")) calcType = 'ratio';
+      else if (block.includes("type: 'rank'")) calcType = 'rank';
+      else if (block.includes("type: 'signal'")) calcType = 'signal';
 
-        // Detect calculator type
-        let calcType: FactorDefinition['calculatorType'] = 'custom';
-        if (block.includes("type: 'ratio'")) calcType = 'ratio';
-        else if (block.includes("type: 'rank'")) calcType = 'rank';
-        else if (block.includes("type: 'signal'")) calcType = 'signal';
+      // Detect level1/level2
+      let level1 = 'L1_CUSTOM';
+      let level2 = 'L2_CUSTOM';
+      const l1Match = /level1:\s*'([A-Z0-9_]+)'/.exec(block);
+      const l2Match = /level2:\s*'([A-Z0-9_]+)'/.exec(block);
+      if (l1Match) level1 = l1Match[1];
+      if (l2Match) level2 = l2Match[1];
 
-        // Detect level1/level2
-        let level1 = 'L1_CUSTOM';
-        let level2 = 'L2_CUSTOM';
-        const l1Match = /level1:\s*'([A-Z0-9_]+)'/.exec(block);
-        const l2Match = /level2:\s*'([A-Z0-9_]+)'/.exec(block);
-        if (l1Match) level1 = l1Match[1];
-        if (l2Match) level2 = l2Match[1];
-
-        results.push({
-          factorId,
-          label,
-          level1,
-          level2,
-          calculatorType: calcType,
-          file: filename,
-          tier,
-        });
-      }
-    } catch (err) {
-      log.warn(`[FactorCalculatorValidator] Error reading ${fpath}: ${err}`);
+      results.push({
+        factorId,
+        label,
+        level1,
+        level2,
+        calculatorType: calcType,
+        file: filename,
+        tier,
+      });
     }
   }
 
