@@ -29,6 +29,49 @@ export type {
   CopytradeNewsStats,
   TradeDirection,
 } from './copytrade-news-enhancer';
+// R238 missing (auto#1-3)
+export { FreeAPIFetcher, getFreeAPIFetcher, resetFreeAPIFetcher } from './free-api-fetcher';
+export type { FreeAPIConfig, FreeAPIStats } from './free-api-fetcher';
+export { MajorFeedsFetcher, getMajorFeedsFetcher, resetMajorFeedsFetcher } from './major-feeds';
+export type { MajorFeedConfig, FeedHealth, MajorFeedsStats } from './major-feeds';
+export { DedupEngineV2, getDedupEngineV2, resetDedupEngineV2 } from './dedup-engine-v2';
+export type { DedupV2Config, DedupV2Result, DedupV2Stats } from './dedup-engine-v2';
+// R239 missing (auto#1-3)
+export { PriceMoveAttribution, getPriceMoveAttribution, resetPriceMoveAttribution } from './price-move-attribution';
+export type {
+  PriceMove,
+  AttributionResult,
+  AttributionConfig,
+  AttributionStats,
+  MoveDirection,
+} from './price-move-attribution';
+export { DailyBriefingGenerator, getDailyBriefingGenerator, resetDailyBriefingGenerator } from './daily-briefing-generator';
+export type {
+  DailyBriefing,
+  BriefingConfig,
+  PortfolioNewsItem,
+  WatchlistSignal,
+  MarketOverview as BriefingMarketOverview,
+  BriefingStats,
+} from './daily-briefing-generator';
+export {
+  DegradationChain,
+  AIUsageTracker,
+  degradationChain,
+  usageTracker,
+  resetDegradationChain,
+  resetUsageTracker,
+} from './degradation-chain';
+export type {
+  AITier,
+  UsageTier,
+  DegradationConfig,
+  DegradationState,
+  UsageRecord,
+  UsageAlert,
+  CombinedStats,
+} from './degradation-chain';
+
 export type {
   NewsSource,
   NewsCategory,
