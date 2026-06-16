@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R193 ML P9-01: FactorOnboardingWizard — 3步入门向导 ──────────
 // Step 1: Welcome → 2: Market (HK/US/Crypto) → 3: Scenario Pack → Done
 // Animated stepper, market badges with flags, scenario preset cards

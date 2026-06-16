@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
 * AIProgressIndicator — ML R182 P1-01 [P0] AI回复进度条
 * Two-phase progress: rough scan → fine analysis

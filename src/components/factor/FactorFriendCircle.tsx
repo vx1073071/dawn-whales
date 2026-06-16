@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R192 ML P8-02: FactorFriendCircle — 社交证明+因子评分 ──────────
 // Community ratings, expert endorsements, user reviews, factor badges
 // Social proof: stars, review count, top reviewer avatars

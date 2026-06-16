@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-import i18n from '../../../src/i18n';
+﻿import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
 /**

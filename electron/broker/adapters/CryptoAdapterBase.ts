@@ -1,4 +1,4 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
+// — R119 QClaw: structural type errors pending resolution by JVS/PM (fixed in R231)
 // ── DAWN WHALES — CryptoAdapterBase ──────────────────────────────────────
 // R1 INF-08: HMAC签名 + WebSocket订阅 + 统一解析 基类
 // 用于 Binance/OKX/Bybit/Bitget 4家加密货币交易所

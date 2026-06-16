@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — ETRADEAdapter ─────────────────────────────────────────
 // R3 OAU-02: E*TRADE (Morgan Stanley) Broker Adapter
 // Inherits OAuthBrokerBase (OAuth1.0a — 3-step + per-request HMAC-SHA1)

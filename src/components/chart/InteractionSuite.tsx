@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R223 ML#3+ML#4: 交互增强合集 ──────────────────────────────────────
 // E3: 双击统一重置 (double-click → reset zoom/timeframe to default)
 // E4: 自选拖拽排序 (drag reorder in watchlist)

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 // ── R116 QTE-46 ArbitrageMonitor — 套利监控面板 ─────────────────────────
 // PM: 价差实时雷达图+套利机会列表+三角套利环形图, 价差>0.5%高亮

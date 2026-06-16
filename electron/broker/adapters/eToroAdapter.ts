@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — eToroAdapter ──────────────────────────────────────────
 // R3 OAU-03: eToro Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code)

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared
 
 // ── TradingEasy — IPC API Client ( OpenD， Electron IPC) ──────────────

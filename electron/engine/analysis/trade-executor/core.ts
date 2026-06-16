@@ -1,4 +1,3 @@
-// @ts-nocheck
 import type { TradeSignal, TradeOrder, RiskCheck, ExecutionConfig, TradeStats, DailyPnL, PositionInfo, BrokerAdapter, TradeExecutorEvents } from './types';
 import { TypedEventEmitter } from './types';
 import { generateSignalId, toISOString, parseTimeToMinutes, getCurrentTimeMinutes, clamp, roundPrice, calculateSlippage, isValidStockCode } from './helpers';

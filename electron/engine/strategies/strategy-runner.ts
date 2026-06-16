@@ -22,6 +22,8 @@ import type { StrategyEngine } from './strategy-engine';
 import type { TradeExecutor, TradeSignal, RiskCheck } from './trade-executor';
 import type { UnifiedAccountManager } from '../../broker/unified-account-manager';
 import type { QuoteInfo } from '../../broker/IBrokerAdapter';
+import type { StrategySandboxRunner } from './StrategySandboxRunner';
+import type { StrategySandboxInput, StrategySandboxOutput } from './StrategySandboxRunner';
 
 // ── Exported Interfaces ─────────────────────────────────────────────────────
 
@@ -210,6 +212,9 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
 
   /** Rolling execution history (max 100 records) */
   private history: ExecutionRecord[] = [];
+
+  /** Sandbox runner for isolated strategy execution (R231 JVS#1) */
+  private sandboxRunner: StrategySandboxRunner | null = null;
 
   /** Whether the runner has been initialized (callback registered) */
   private initialized = false;
@@ -494,6 +499,77 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
   setQuoteProvider(provider: QuoteProviderFn): void {
     this.quoteProvider = provider;
     log.info('[StrategyRunner] Quote provider updated');
+  }
+
+  // ── Sandbox Integration (R231 JVS#1) ──────────────────────────────────────
+
+  /**
+   * Set the sandbox runner for isolated strategy execution.
+   * Once set, evaluateAndExecuteInSandbox() becomes available.
+   */
+  setSandboxRunner(runner: StrategySandboxRunner): void {
+    this.sandboxRunner = runner;
+    log.info('[StrategyRunner] Sandbox runner attached');
+  }
+
+  /**
+   * Execute a strategy evaluation within sandbox isolation.
+   *
+   * Uses StrategySandboxRunner to run the strategy in an isolated thread
+   * with hard resource limits (memory, CPU, 3s dead-loop kill).
+   * Falls back to normal evaluation if sandbox is not configured.
+   */
+  async evaluateAndExecuteInSandbox(
+    strategyId: string,
+    sandboxInput?: Partial<StrategySandboxInput>,
+  ): Promise<StrategySandboxOutput> {
+    if (!this.sandboxRunner) {
+      throw new Error('Sandbox runner not configured — call setSandboxRunner() first');
+    }
+
+    const strategy = this.engine.getStrategy(strategyId);
+    if (!strategy) {
+      throw new Error(`Strategy not found: ${strategyId}`);
+    }
+
+    const quotes = await this.fetchQuotes([strategy.symbol]);
+
+    const input: StrategySandboxInput = {
+      strategyId,
+      symbol: strategy.symbol,
+      market: sandboxInput?.market || this.inferMarket(strategy.symbol),
+      strategyModule: sandboxInput?.strategyModule || 'strategy-runner',
+      quotes: quotes.map(q => ({ code: q.code, price: q.price, time: q.time })),
+      params: sandboxInput?.params || {},
+    };
+
+    return this.sandboxRunner.executeInSandbox(input);
+  }
+
+  /**
+   * Whether the sandbox runner is available.
+   */
+  isSandboxAvailable(): boolean {
+    return this.sandboxRunner !== null && this.sandboxRunner.getStatus() !== 'dead';
+  }
+
+  /**
+   * Get sandbox runner statistics.
+   */
+  getSandboxStats() {
+    return this.sandboxRunner?.getStats() ?? null;
+  }
+
+  // ── Sandbox Integration helpers ───────────────────────────────────────
+
+  /** Infer market from symbol naming convention */
+  private inferMarket(symbol: string): string {
+    if (symbol.includes('-USDT') || symbol.includes('-USD')) return 'CRYPTO';
+    if (/^\d{5}$/.test(symbol)) return 'HK';
+    if (symbol.endsWith('.T')) return 'JP';
+    if (symbol.match(/^\d{6}\.(SH|SZ)$/)) return 'CN';
+    if (symbol.endsWith('.KS')) return 'KR';
+    return 'US';
   }
 
   // ── getHistoryCount ───────────────────────────────────────────────────────

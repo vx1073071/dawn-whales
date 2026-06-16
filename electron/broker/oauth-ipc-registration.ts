@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — OAuth Broker IPC Registration ───────────────────────
 // R3 OAU-05: Register 4 OAuth adapters with BrokerManagerV2
 // Schwab, E*TRADE, eToro, Webull — all via OAuthBrokerBase

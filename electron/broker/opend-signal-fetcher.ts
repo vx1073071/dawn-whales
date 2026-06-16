@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R135 J01 — OpenD Signal Fetcher (桌面端)
  * 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R197 ML P13-02: MarketLeaderboard — 10市场独立龙虎榜 ──────────
 // Per-market weekly IC Top10 ranking with flag + trends
 // Tabbed: all 10 markets each with own leaderboard

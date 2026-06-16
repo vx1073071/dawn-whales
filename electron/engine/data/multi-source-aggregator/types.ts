@@ -1,4 +1,4 @@
-﻿— R119 QClaw: stub (original preserved as .ts.r119.bak)
+// — R119 QClaw: stub (original preserved as .ts.r119.bak) (fixed in R231)
 export type DataSourceId = string;
 export type DataSourceConfig = any;
 export type DataPoint = any;

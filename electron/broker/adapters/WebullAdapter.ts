@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — WebullAdapter ─────────────────────────────────────────
 // R3 OAU-04: Webull Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code)

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R135 J03 — Execution Result Reporter (桌面端→服务器)
  * 

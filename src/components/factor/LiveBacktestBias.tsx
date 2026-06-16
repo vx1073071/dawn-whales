@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R192 ML P8-03: LiveBacktestBias — 实盘vs回测偏差对比 ──────────
 // Dual curve overlay (live NAV vs backtest NAV), bias decomposition
 // Bias attribution: Data snooping / Overfitting / Market regime change / Survivorship

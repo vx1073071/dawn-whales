@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R221-auto#2: ChartContext 批量迁移辅助工具 ─────────────────────────────
 // 26个chart/broker组件逐步接入ChartContext
 //

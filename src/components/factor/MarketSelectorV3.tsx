@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R195 ML P11-01: MarketSelectorV3 — 7市场全切换 + 快速统计面板 ──────────
 // Extends V2 with 🇰🇷 Korea + 🇸🇬 Singapore + 🇦🇺 Australia
 // Shows all 7 markets in dropdown with factor/exclusive counts

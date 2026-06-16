@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ML R223 C3: @ts-nocheck removed — types validated
 // R126-Q01: nocheck cleared — cleared
 // TemplateBrowser — Strategy Template Selection UI

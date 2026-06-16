@@ -1,4 +1,4 @@
-﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
+// — R119 QClaw: structural type errors pending resolution by JVS/PM (fixed in R231)
 // ── DAWN WHALES — OpenD Base Adapter ─────────────────────────────────────────
 // Abstract base class for Futu and Moomoo OpenD TCP adapters.
 // Extracts shared TCP connection logic, OpenD protocol handling, quote parsing,

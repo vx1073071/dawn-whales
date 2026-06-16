@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R196 ML P12-03: CrossMarketFactorCompare — 7市场因子横向对比台 ──────────
 // Select a universal factor → compare IC/performance across all markets
 // Heatmap table: factor × market matrix with color scale

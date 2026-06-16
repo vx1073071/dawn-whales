@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-// ── Stock Screener Backend — EM Script Integration ─────────────────────────
+﻿// ── Stock Screener Backend — EM Script Integration ─────────────────────────
 // JVS-4: Natural language stock screening via em-mx-stocks-screener
 // Calls Python script → parses CSV → maps Chinese columns → returns typed results
 

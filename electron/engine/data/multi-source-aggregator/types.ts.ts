@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural class wrapper for TSC parse errors
+﻿— R119 QClaw: structural class wrapper for TSC parse errors
 export class R119_TempWrapper_types {
 type EventListener = (...args: unknown[]) => void;
 

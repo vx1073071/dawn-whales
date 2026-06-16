@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R135 J02 — OpenD Order Bridge (桌面端)
  * 

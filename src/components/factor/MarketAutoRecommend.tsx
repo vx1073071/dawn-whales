@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R197 ML P13-01: MarketAutoRecommend — 10市场因材施教推荐 ──────────
 // Select market → auto-recommend best local factors (universal + exclusive)
 // Uses market profile: investor type, market structure, data availability

@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 /**
  * Longbridge OpenAPI Adapter — R2 CMP-01
  *

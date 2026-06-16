@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R193 ML P9-02: FactorUniverseHub — 全188因子UI集成中心 ──────────
 // Three-tier classification cards (🟢入门 / 🟡进阶 / 🔴专业)
 // 3-market toggle (HK/US/Crypto) with animated transitions

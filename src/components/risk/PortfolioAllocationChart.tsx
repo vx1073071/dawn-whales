@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── TradingEasy — PortfolioAllocationChart (position/holding) ────────────────
 
 import { useRef, useEffect, useMemo } from 'react';

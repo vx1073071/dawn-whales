@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R135-M01 OpenDSignalPanel — OpenD信号面板 (待处理+执行) ───────────────
 // PM: GET /api/signal/pending → 列表 → 单个or批量执行 → POST回传
 

@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — SchwabAdapter ─────────────────────────────────────────
 // R2 OAU-01: Charles Schwab Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code + PKCE)

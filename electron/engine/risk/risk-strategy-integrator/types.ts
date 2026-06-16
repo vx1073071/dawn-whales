@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: stub (original preserved as .ts.r119.bak)
+﻿— R119 QClaw: stub (original preserved as .ts.r119.bak)
 export type RiskStrategyType = any;
 export type RiskStrategyConfig = any;
 export type RiskAssessment = any;

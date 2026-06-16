@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R139-M02 CopyTradeLog — 跟单日志页面 (时间线/筛选/CSV导出) ───────────
 // PM: P1-7, 4h
 

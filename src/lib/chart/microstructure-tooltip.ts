@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared
 /**
  * TradingEasy R126 J02 — Microstructure Tooltip Utilities

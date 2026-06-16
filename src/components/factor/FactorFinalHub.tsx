@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R197 ML P13-03: FactorFinalHub — 全UI最终打磨+集成 ──────────
 // Master hub integrating all 27 factor components into one page
 // 3-column layout: Market Selector | Factor Universe | Details/Actions

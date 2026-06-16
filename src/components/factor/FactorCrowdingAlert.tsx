@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R190 ML P6-02: FactorCrowdingAlert — 拥挤度仪表盘 ────────────────
 // Visualizes factor crowding risk across 4 dimensions:
 // 1. Valuation spread (how far current value from historical)

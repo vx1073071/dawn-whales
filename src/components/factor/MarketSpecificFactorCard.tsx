@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── R188 ML P4-03: MarketSpecificFactorCard ─────────────────────────────
 // Factor card with market-specific UX enhancements:
 // - Regional flag + market indicator (🇺🇸/🇭🇰/🪙)

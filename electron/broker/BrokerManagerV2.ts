@@ -1,4 +1,4 @@
-﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+﻿— R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — BrokerManagerV2 ───────────────────────────────────────
 // R1 INF-02: 多券商并发连接管理器 (无activeBrokerId概念)
 // 所有已连接券商同时活跃, per-broker独立订阅+聚合查询

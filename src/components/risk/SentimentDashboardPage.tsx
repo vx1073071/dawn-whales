@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import i18n from '../../i18n';

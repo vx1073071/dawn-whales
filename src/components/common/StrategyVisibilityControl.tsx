@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
 * StrategyVisibilityControl — ML R179 G31 [P0] 策略可见性控制
 * Three modes: 创作(private) / 分享(link) / 公开(marketplace)

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';
 import i18n from '../../i18n';

@@ -1,5 +1,4 @@
-// @ts-nocheck
-﻿import type { RiskAssessment, RiskFactor, CircuitBreakerStatus, RiskSummary, RiskAlert, OrderValidation, IntegratorEvents, RiskIntegratorConfig, DrawdownTracker } from './types';
+import type { RiskAssessment, RiskFactor, CircuitBreakerStatus, RiskSummary, RiskAlert, OrderValidation, IntegratorEvents, RiskIntegratorConfig, DrawdownTracker } from './types';
 import { TypedEventEmitter } from './types';
 
 export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> {

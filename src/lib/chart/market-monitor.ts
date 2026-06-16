@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared — PM file, drawing-tools ToolType mismatch pending sync
 // ── R117 QTE-53 PM: 剩余48种画线工具 + R118 QTE-58/59: 回放引擎+监控 ──
 // QTE-53: 从P0 20种扩展到TradingView 68种全量

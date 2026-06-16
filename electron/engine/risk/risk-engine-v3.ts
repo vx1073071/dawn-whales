@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Risk Engine V3 - Real-time risk scoring and auto-rebalancing
  * JVS-46-02: Risk V3 Engine
