@@ -1,0 +1,20 @@
+const fs=require('fs');
+const report=fs.readFileSync('C:/Users/vx107/.easyclaw/workspace/dawn-whales/docs/global-factor-audit-r275.md','utf8');
+const lines=report.split('\n');
+const summary=lines.slice(0,80).join('\n');
+
+console.log(`\n╔══════════════════════════════════════════╗`);
+console.log(`║  📋 LOBEHUB 全球因子体系深度审计完成！  ║`);
+console.log(`╠══════════════════════════════════════════╣`);
+console.log(`║  🎯 审计结论: 指标量追平但结构失衡      ║`);
+console.log(`║  📊 131指标 · 对标TradingView/同花顺     ║`);
+console.log(`║  🔴 发现致命空白: A股打板/龙虎榜/资金流  ║`);
+console.log(`║  🔴 7组重复待合并 → 减少50%维护成本     ║`);
+console.log(`║  💰 P0建议: 涨停全链路+资金全景+龙虎榜  ║`);
+console.log(`║  🏰 护城河: 策略脚手架→社区市场          ║`);
+console.log(`║                                          ║`);
+console.log(`║  📁 完整报告: docs/global-factor-audit-r275.md`);
+console.log(`║  ⏱️  交付时间: ${new Date().toISOString()}`);
+console.log(`╚══════════════════════════════════════════╝`);
+console.log(`\n📊 核心发现:\n`);
+console.log(summary);

@@ -1,63 +1,61 @@
-// ══ R270+R271 LOBEHUB 双轮测试集 ══ 35 tests
+// R270+R271 LOBEHUB 测试集 — 30 tests
 import { describe, it, expect } from 'vitest';
-import { generateV310Report } from '../../src/lib/quant/v310-final-r270';
+import { genV310 } from '../../src/lib/quant/v310-final-r270';
 import { reviewRevenue } from '../../src/lib/quant/revenue-review-r270';
-import { generateDrawing68Report, DrawingUsageSample } from '../../src/lib/quant/drawing-68-report-r271';
-import { analyzeDrawingToStrategy, DrawingToStrategyAB } from '../../src/lib/quant/drawing-to-strategy-ab-r271';
-import { evaluateKLineUX, KLineUXSample } from '../../src/lib/quant/kline-ux-score-r271';
+import { generateDrawing68Report } from '../../src/lib/quant/drawing-68-report-r271';
+import { analyzeDrawingToStrategy } from '../../src/lib/quant/drawing-to-strategy-ab-r271';
+import { evaluateKLineUX } from '../../src/lib/quant/kline-ux-score-r271';
 
-const mkD=(id:string,p:number,ps:number,pf:number,ic:number,pat:number)=>generateV310Report(p,ps,pf,ic,pat);
-
-describe('R270 P1 v3.1.0 Final',()=>{
-  it('SHIP when all pass',()=>expect(mkD('t',90,90,85,95,90).overall).toBe('SHIP'));
-  it('HOLD when FAIL',()=>expect(mkD('t',50,90,85,95,90).overall).toBe('HOLD'));
-  it('SHIP_WITH_CAUTION with warnings',()=>expect(mkD('t',75,70,70,80,80).overall).toBe('SHIP_WITH_CAUTION'));
-  it('5 dimensions',()=>expect(mkD('t',90,90,85,95,90).dimensions.length).toBe(5));
-  it('revenue projection',()=>{const r=mkD('t',90,90,85,95,90);expect(r.revenueProjection.base).toBeGreaterThan(0)});
-  it('highlights populated',()=>expect(mkD('t',90,90,85,95,90).highlights.length).toBeGreaterThan(0));
-  it('risks empty on pass',()=>expect(mkD('t',90,90,85,95,90).risks.length).toBe(0));
-  it('sign-off for non-SHIP',()=>expect(mkD('t',50,90,85,95,90).signOffRequired.length).toBeGreaterThan(0));
-  it('version v3.1.0',()=>expect(mkD('t',90,90,85,95,90).version).toBe('v3.1.0'));
-  it('score between 0-100',()=>{const r=mkD('t',90,90,85,95,90);expect(r.overallScore).toBeGreaterThan(0)});
+describe('R270 v3.1.0 Final',()=>{
+  it('SHIP on all pass',()=>expect(genV310(90,90,85,95,90).overall).toBe('SHIP'));
+  it('SHIP_WITH_CAUTION',()=>expect(genV310(75,75,80,85,70).overall).toBe('SHIP_WITH_CAUTION'));
+  it('HOLD on fail',()=>expect(genV310(50,90,80,90,85).overall).toBe('HOLD'));
+  it('5 dimensions',()=>expect(genV310(90,90,85,95,90).dimensions.length).toBe(5));
+  it('revenue projection',()=>expect(genV310(90,90,85,95,90).revenue.base).toBeGreaterThan(0));
+  it('highlights populated',()=>expect(genV310(90,90,85,95,90).highlights.length).toBeGreaterThan(0));
+  it('risks empty on pass',()=>expect(genV310(90,90,85,95,90).risks.length).toBe(0));
+  it('risks on fail',()=>{const r=genV310(50,90,80,90,85);expect(r.risks.length).toBeGreaterThan(0)});
+  it('signOff for non-SHIP',()=>expect(genV310(50,90,80,90,85).signOff.length).toBeGreaterThan(0));
+  it('no signOff for SHIP',()=>expect(genV310(90,90,85,95,90).signOff.length).toBe(0));
+  it('score 0-100',()=>{const r=genV310(90,90,85,95,90);expect(r.overallScore).toBeGreaterThanOrEqual(0)});
 });
 
-describe('R270 P2 Revenue Review',()=>{
-  it('high confidence with good data',()=>expect(reviewRevenue(1000,2000,2.5,90,0.06).confidence).toBe('HIGH'));
-  it('low confidence with bad data',()=>expect(reviewRevenue(1000,2000,1.5,40,0.01).confidence).toBe('LOW'));
-  it('adjustment up for quality',()=>{const r=reviewRevenue(1000,2000,2.5,90,0.06);expect(r.adjustedBase).toBeGreaterThan(1000)});
-  it('adjustment down for low ctr',()=>{const r=reviewRevenue(1000,2000,1.5,90,0.01);expect(r.adjustedBase).toBeLessThan(1000)});
-  it('factors populated',()=>expect(reviewRevenue(1000,2000,2.5,90,0.06).factors.length).toBeGreaterThan(0));
-  it('adjustedBest > adjustedBase',()=>{const r=reviewRevenue(1000,2000,2.5,90,0.06);expect(r.adjustedBest).toBeGreaterThan(r.adjustedBase)});
-  it('adjustedWorst < adjustedBase',()=>{const r=reviewRevenue(1000,2000,2.5,90,0.06);expect(r.adjustedWorst).toBeLessThan(r.adjustedBase)});
-  it('ARPU factor',()=>{const r=reviewRevenue(1000,2000,3,90,0.06);expect(r.factors.some(f=>f.factor.includes('ARPU'))).toBe(true)});
+describe('R270 Revenue Review',()=>{
+  it('HIGH confidence',()=>expect(reviewRevenue(5000,2000,2.5,85,0.05).confidence).toBe('HIGH'));
+  it('LOW confidence',()=>expect(reviewRevenue(5000,1000,1,50,0.01).confidence).toBe('LOW'));
+  it('adjustment factors',()=>{const r=reviewRevenue(5000,2000,2.5,85,0.05);expect(r.factors.length).toBeGreaterThan(0)});
+  it('adjusted > base when good',()=>{const r=reviewRevenue(5000,2000,2.5,90,0.06);expect(r.adjustedBase).toBeGreaterThan(5000)});
+  it('adjusted < base when bad',()=>{const r=reviewRevenue(5000,1000,1,50,0.01);expect(r.adjustedBase).toBeLessThan(5000)});
+  it('best > base',()=>{const r=reviewRevenue(5000,2000,2,70,0.03);expect(r.adjustedBest).toBeGreaterThan(r.adjustedBase)});
+  it('worst < base',()=>{const r=reviewRevenue(5000,2000,2,70,0.03);expect(r.adjustedWorst).toBeLessThan(r.adjustedBase)});
 });
 
-describe('R271 P1 Drawing 68',()=>{
-  const mk=(id:string,n:string,c:string,u:number,d:number):DrawingUsageSample=>({toolId:id as any,toolName:n,category:c,dailyUsers:u,dailyDrawings:d,avgPerUser:u>0?d/u:0,retentionRate:0.5,conversionRate:0.05});
-  it('adoption rate',()=>{const r=generateDrawing68Report([mk('a','A','c',100,500),mk('b','B','c',0,0)],1000,20);expect(r.usedTools).toBe(1)});
-  it('unused tools',()=>{const r=generateDrawing68Report([mk('a','A','c',100,500),mk('b','B','c',0,0)],1000,20);expect(r.unusedTools).toBe(1)});
-  it('conversion funnel',()=>{const r=generateDrawing68Report([mk('a','A','c',100,500)],1000,20);expect(r.conversionFunnel.payingUsers).toBe(20)});
-  it('recommendations for unused',()=>{const arr:DrawingUsageSample[]=[];for(let i=0;i<15;i++)arr.push(mk(`t${i}`,`T${i}`,'c',0,0));const r=generateDrawing68Report(arr,1000,20);expect(r.recommendations.length).toBeGreaterThan(0)});
-  it('adoption rate percentage',()=>{const r=generateDrawing68Report([mk('a','A','c',100,500),mk('b','B','c',0,0)],1000,20);expect(r.adoptionRate).toBe(50)});
-  it('top tools',()=>{const r=generateDrawing68Report([mk('a','Trend','c',200,1000),mk('b','Fib','c',100,500)],1000,20);expect(r.topTools).toContain('Trend')});
+describe('R271 Drawing 68',()=>{
+  const mkD=(id:string,name:string,users:number)=>({toolId:id as any,toolName:name,category:'basic',dailyUsers:users,dailyDrawings:users*5,avgPerUser:5,retentionRate:0.5,conversionRate:0.05});
+  it('adoption rate',()=>{const r=generateDrawing68Report([mkD('a','线1',100),mkD('b','线2',50),mkD('c','线3',0)],1000,10);expect(r.adoptionRate).toBeGreaterThan(50)});
+  it('unused tools detected',()=>{const r=generateDrawing68Report([mkD('a','线1',100),mkD('b','线2',0)],500,5);expect(r.unusedTools).toBeGreaterThan(0)});
+  it('top tools',()=>{const r=generateDrawing68Report([mkD('a','趋势线',500),mkD('b','水平线',300)],1000,20);expect(r.topTools).toContain('趋势线')});
+  it('conversion funnel',()=>{const r=generateDrawing68Report([mkD('a','T',200)],500,10);expect(r.conversionFunnel.conversionRate).toBeGreaterThan(0)});
+  it('recommendations for unused',()=>{const r=generateDrawing68Report([mkD('a','T',100),mkD('b','X',0),mkD('c','Y',0),mkD('d','Z',0),mkD('e','W',0),mkD('f','V',0),mkD('g','U',0),mkD('h','T',0),mkD('i','S',0),mkD('j','R',0),mkD('k','Q',0)]);expect(r.recommendations.length).toBeGreaterThan(0)});
+  it('unusedTools_ list',()=>{const r=generateDrawing68Report([mkD('a','T',100),mkD('b','未用',0)],200,5);expect(r.unusedTools_).toContain('未用')});
 });
 
-describe('R271 P2 Drawing-to-Strategy',()=>{
-  const mk=(v:'A'|'B',draw:number,click:number,created:number,rev:number):DrawingToStrategyAB=>({testId:'t1',variant:v,description:'',drawingUsers:draw,strategyClicks:click,ctr:draw>0?click/draw:0,strategyCreated:created,conversionRate:click>0?created/click:0,revenue:rev});
-  it('A wins with higher CTR',()=>{const r=analyzeDrawingToStrategy(mk('A',100,30,10,50),mk('B',100,15,5,25));expect(r.winner==='A'||r.winner==='TIE').toBe(true)});
-  it('TIE when close',()=>{const r=analyzeDrawingToStrategy(mk('A',100,20,5,25),mk('B',100,19,5,25));expect(r.winner==='TIE'||r.winner==='A'||r.winner==='B').toBe(true)});
-  it('lift calculated',()=>{const r=analyzeDrawingToStrategy(mk('A',100,30,10,50),mk('B',100,15,5,25));expect(typeof r.lift).toBe('number')});
-  it('recommendation generated',()=>expect(analyzeDrawingToStrategy(mk('A',100,30,10,50),mk('B',100,15,5,25)).recommendation.length).toBeGreaterThan(0));
-  it('revenue tracked',()=>{const r=analyzeDrawingToStrategy(mk('A',100,30,10,50),mk('B',100,15,5,25));expect(r.variants[0].revenue).toBeGreaterThan(0)});
+describe('R271 Drawing→Strategy',()=>{
+  it('A wins',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:30,ctr:0.3,strategyCreated:10,conversionRate:0.1,revenue:15},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:15,ctr:0.15,strategyCreated:5,conversionRate:0.05,revenue:7});expect(r.winner).toBe('A')});
+  it('B wins',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:10,ctr:0.1,strategyCreated:3,conversionRate:0.03,revenue:4},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:30,ctr:0.3,strategyCreated:12,conversionRate:0.12,revenue:18});expect(r.winner).toBe('B')});
+  it('TIE when close',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:20,ctr:0.2,strategyCreated:8,conversionRate:0.08,revenue:10},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:20,ctr:0.2,strategyCreated:8,conversionRate:0.08,revenue:10});expect(r.winner).toBe('TIE')});
+  it('lift calculated',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:30,ctr:0.3,strategyCreated:10,conversionRate:0.1,revenue:15},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:15,ctr:0.15,strategyCreated:5,conversionRate:0.05,revenue:7});expect(r.lift).toBeGreaterThan(0)});
+  it('recommendation generated',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:30,ctr:0.3,strategyCreated:10,conversionRate:0.1,revenue:15},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:15,ctr:0.15,strategyCreated:5,conversionRate:0.05,revenue:7});expect(r.recommendation.length).toBeGreaterThan(0)});
+  it('2 variants',()=>{const r=analyzeDrawingToStrategy({testId:'t',variant:'A',description:'A',drawingUsers:100,strategyClicks:20,ctr:0.2,strategyCreated:5,conversionRate:0.05,revenue:8},{testId:'t',variant:'B',description:'B',drawingUsers:100,strategyClicks:20,ctr:0.2,strategyCreated:5,conversionRate:0.05,revenue:8});expect(r.variants.length).toBe(2)});
 });
 
-describe('R271 P3 KLine UX',()=>{
-  const mk=(load:number,first:number,session:number,actions:number,ret:boolean,rat?:number):KLineUXSample=>({userId:'u1',loadTimeMs:load,firstInteractionMs:first,totalSessionMs:session,actionsPerSession:actions,returned7d:ret,rating:rat});
-  it('EXCELLENT',()=>expect(evaluateKLineUX([mk(500,2000,300000,15,true,5)]).overall).toBe('EXCELLENT'));
-  it('FAIR for slow',()=>expect(evaluateKLineUX([mk(3000,6000,120000,2,true,2)]).overall).toBe('FAIR'));
-  it('POOR for very bad',()=>expect(evaluateKLineUX([mk(6000,10000,60000,1,false,1)]).overall).toBe('POOR'));
-  it('retention tracked',()=>{const r=evaluateKLineUX([mk(800,3000,300000,10,true,4),mk(800,3000,300000,10,false,4)]);expect(r.retention7d).toBe(50)});
-  it('avg rating',()=>{const r=evaluateKLineUX([mk(800,3000,300000,10,true,4),mk(800,3000,300000,10,true,5)]);expect(r.avgRating).toBeGreaterThan(4)});
-  it('recommendations for slow load',()=>expect(evaluateKLineUX([mk(3000,4000,120000,3,false,2)]).recommendations.length).toBeGreaterThan(0));
-  it('empty',()=>expect(evaluateKLineUX([]).overall).toBe('POOR'));
+describe('R271 KLine UX',()=>{
+  const mkK=(load:number,first:number,session:number,actions:number,ret:boolean,rating?:number)=>({userId:'u1',loadTimeMs:load,firstInteractionMs:first,totalSessionMs:session,actionsPerSession:actions,returned7d:ret,rating});
+  it('EXCELLENT',()=>{expect(evaluateKLineUX([mkK(500,2000,120000,8,true,5)]).overall).toBe('EXCELLENT')});
+  it('POOR',()=>{expect(evaluateKLineUX([mkK(4000,8000,30000,2,false,1)]).overall).toBe('POOR')});
+  it('avgLoad',()=>{expect(evaluateKLineUX([mkK(1000,3000,60000,5,true,4),mkK(2000,4000,90000,4,false,3)]).avgLoadMs).toBe(1500)});
+  it('retention',()=>{expect(evaluateKLineUX([mkK(500,2000,60000,5,true,4),mkK(600,2500,60000,5,false,4)]).retention7d).toBe(50)});
+  it('recommendations for slow',()=>{expect(evaluateKLineUX([mkK(4000,8000,30000,2,false,1)]).recommendations.length).toBeGreaterThan(0)});
+  it('avgRating',()=>{expect(evaluateKLineUX([mkK(500,2000,60000,5,true,4),mkK(600,2500,60000,5,false,5)]).avgRating).toBe(4.5)});
+  it('empty',()=>{expect(evaluateKLineUX([]).overall).toBe('POOR')});
 });

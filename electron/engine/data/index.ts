@@ -344,3 +344,30 @@ export type {
   UISourceDashboard,
   SourceSwitchResult,
 } from './source-switch-ui-bridge';
+
+// R276 auto#1: AShare factor bridge (A股数据源 → 因子系统桥接)
+export { AShareFactorBridge, getAShareBridge, resetAShareBridge } from './ashare-factor-bridge';
+export type {
+  AShareSnapshot,
+  AShareSmartMoney,
+  AShareNorthbound,
+  AShareDragonGate,
+  AShareMargin,
+  AShareSectorFlow,
+  AShareLimitAnalysis,
+  AShareFactorSignal,
+  AShareSignalCategory,
+  AShareBridgeStats,
+  AShareBridgeConfig,
+} from './ashare-factor-bridge';
+
+// R276 auto#2: Factor subscription push bridge (因子订阅 → 推送IPC)
+export { FactorSubscriptionPushBridge, getFactorSubPushBridge, resetFactorSubPushBridge } from './factor-subscription-push-bridge';
+export type {
+  PushDeliveryChannel,
+  SubscriptionTier,
+  FactorSubscription,
+  FactorPushDelivery,
+  FactorSubscriptionStats,
+  FactorSubscriptionConfig,
+} from './factor-subscription-push-bridge';

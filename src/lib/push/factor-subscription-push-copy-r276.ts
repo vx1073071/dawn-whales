@@ -214,7 +214,7 @@ export function generateRealtimePush(
   return {
     title: t.title.replace(/\{(\w+)\}/g, (_, k) => params[k] ?? `{${k}}`),
     body: t.body.replace(/\{(\w+)\}/g, (_, k) => params[k] ?? `{${k}}`),
-    category: t.category,
+    category: (t as any).category,
   };
 }
 

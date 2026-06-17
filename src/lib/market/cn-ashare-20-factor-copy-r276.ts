@@ -366,7 +366,7 @@ export const CN_ASHARE_20_LIST = [
 // ── 快速查找 ──
 export function getFactorCopy(id: string) {
   for (const cat of Object.values(CN_ASHARE_20_FACTOR_COPY)) {
-    for (const [key, val] of Object.entries(cat)) {
+    for (const [_key, val] of Object.entries(cat)) {
       if (typeof val === 'object' && val !== null && 'id' in val && (val as any).id === id) {
         return val;
       }
