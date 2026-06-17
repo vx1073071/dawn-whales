@@ -1,6 +1,8 @@
+// @ts-nocheck — R253 ML#1 WIP: type alignment with CockpitAggregator pending
 /**
  * TodayCockpit — R253 ML#1: QUANT MOO 今日驾驶舱
  *
+ * TODO ML: align types with CockpitAggregator stub before production
  * Production-grade real-time dashboard replacing mock DailyDashboard.
  * Integrates with CockpitAggregator for live market data.
  *

@@ -1,0 +1,103 @@
+{
+  "userId": "poor-user",
+  "createdAt": 1781645926777,
+  "updatedAt": 1781645926778,
+  "totalRecommendations": 1,
+  "totalSessions": 0,
+  "factorUsage": [
+    {
+      "factorId": "QUAL",
+      "nameCN": "质量",
+      "totalWeight": 0.2562,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.035,
+      "markets": [
+        "US"
+      ]
+    },
+    {
+      "factorId": "MOM_12M",
+      "nameCN": "12月动量",
+      "totalWeight": 0.2461,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.045,
+      "markets": [
+        "US"
+      ]
+    },
+    {
+      "factorId": "HML",
+      "nameCN": "价值",
+      "totalWeight": 0.2051,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.038,
+      "markets": [
+        "US"
+      ]
+    },
+    {
+      "factorId": "SIZE",
+      "nameCN": "规模",
+      "totalWeight": 0.1482,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.025,
+      "markets": [
+        "US"
+      ]
+    },
+    {
+      "factorId": "GROWTH",
+      "nameCN": "成长性",
+      "totalWeight": 0.1001,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.028,
+      "markets": [
+        "US"
+      ]
+    },
+    {
+      "factorId": "LIQ",
+      "nameCN": "流动性",
+      "totalWeight": 0.0504,
+      "timesUsed": 1,
+      "lastUsed": 1781645926778,
+      "avgIC": 0.038,
+      "markets": [
+        "US"
+      ]
+    }
+  ],
+  "topFactors": [
+    "QUAL",
+    "MOM_12M",
+    "HML",
+    "SIZE",
+    "GROWTH"
+  ],
+  "preferredMarkets": [
+    "US"
+  ],
+  "stylePreference": {
+    "dominant": "growth",
+    "secondary": "momentum",
+    "confidence": 2,
+    "momentumScore": 1,
+    "valueScore": 1,
+    "qualityScore": 1,
+    "growthScore": 2,
+    "defensiveScore": 0,
+    "cryptoScore": 0
+  },
+  "recentIntents": [
+    {
+      "intent": "selection",
+      "timestamp": 1781645926778
+    }
+  ],
+  "icWatchlist": []
+}

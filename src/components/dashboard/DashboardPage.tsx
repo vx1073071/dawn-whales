@@ -1,8 +1,8 @@
 // @ts-nocheck
 // R230-ML#1: TSC pre-existing errors batch-fixed
 
-// ── TradingEasy — Dashboard (v0.6.0) ────────────────────────────────────────
-// /position/holdingheatmap///
+// ── QUANT MOO — Dashboard (v5.0) ─────────────────────────────────────────
+// R271 ML#3: K-line unified entry from cockpit
 
 import { useState, useEffect, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
@@ -14,6 +14,7 @@ import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
 import BrokerStatusBar from '../trading/BrokerStatusBar';
 import PerformanceDashboard from './PerformanceDashboard';
 import SystemHealthPanel from './SystemHealthPanel';
+import TodayCockpit from './TodayCockpit';
 import { useTranslation } from "react-i18next";
 import i18n from '../../i18n';
 
@@ -179,6 +180,10 @@ export default function DashboardPage() {
 
   const pnlColor = (account?.todayPnl ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
   const pnlBg = (account?.todayPnl ?? 0) >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10';
+
+  if (USE_COCKPIT) {
+    return <TodayCockpit className="h-full" />;
+  }
 
   if (loading) {
     return (

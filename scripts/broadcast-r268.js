@@ -1,0 +1,3 @@
+const fs=require('fs');
+const m={id:'lobehub-r268-done-'+Date.now(),from:'LOBEHUB',to:['pm','ALL'],ts:new Date().toISOString(),type:'ROUND_COMPLETE',round:'R268',subject:'[LOBEHUB] ✅ R268 指标93全量完成 — 2/2任务+25/25测试',body:'LOBHUB R268 2任务全部完成。\n\n【P1】93指标质量基准 (indicator-quality-93-r268.ts)\n- 7分类(趋势/动量/成交量/波动/叠加/中国特色/OrderFlow)\n- 算法+渲染+参数+对标四维验证\n- 分类PASS率+最差指标+建议\n\n【P2】93指标渲染性能 (indicator-render-perf-r268.ts)\n- 10→50→93指标缩放性能\n- FPS+渲染时间+内存\n- 可缩放性分析(×倍慢检测)\n\nTSC: 0 | Test: 25/25 ✅ | R268完成'};
+const l=fs.readFileSync('C:/Users/vx107/.easyclaw/workspace/chat-bridge/messages.jsonl','utf8').trim().split('\n');l.push(JSON.stringify(m));fs.writeFileSync('C:/Users/vx107/.easyclaw/workspace/chat-bridge/messages.jsonl',l.join('\n')+'\n','utf8');console.log('R268 done')

@@ -1,0 +1,3 @@
+const fs=require('fs');
+const m={id:'lobehub-r266-done-'+Date.now(),from:'LOBEHUB',to:['pm','ALL'],ts:new Date().toISOString(),type:'ROUND_COMPLETE',round:'R266',subject:'[LOBEHUB] ✅ R266 P1核心体验完成 — 3/3任务+35/35测试',body:'LOBHUB R266 3任务全部完成。\n\n【P1】AI画线质量评估 | 【P2】AI解读置信度校准 | 【P3】反向观点A/B基准\nTSC: 0 | Test: 35/35 ✅ | 修复6外部文件TSC错误'};
+const l=fs.readFileSync('C:/Users/vx107/.easyclaw/workspace/chat-bridge/messages.jsonl','utf8').trim().split('\n');l.push(JSON.stringify(m));fs.writeFileSync('C:/Users/vx107/.easyclaw/workspace/chat-bridge/messages.jsonl',l.join('\n')+'\n','utf8');console.log('R266 done')

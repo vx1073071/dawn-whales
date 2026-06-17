@@ -267,3 +267,80 @@ export type {
   HealthTrendPoint,
   HealthDashboardStream,
 } from './source-health-pipeline';
+
+// R254 BR-04: Binance API bridge (spot + contracts + order book + klines → engine crypto quotes)
+export { BinanceAPIBridge, binanceAPIBridge, resetBinanceAPIBridge } from './binance-api-bridge';
+export type {
+  BinanceSymbol,
+  BinanceInterval,
+  ContractType,
+  BinanceSpotQuote,
+  BinanceContractData,
+  BinanceOrderBook,
+  BinanceKline,
+  BinanceLargeTrade,
+  EngineCryptoQuote,
+  BinanceStats,
+} from './binance-api-bridge';
+
+// R254 AI-03: Move attribution engine (6-dim AI-driven price move attribution + K-line patterns)
+export { MoveAttributionEngine, moveAttributionEngine, resetMoveAttributionEngine } from './move-attribution-engine';
+export type {
+  AttributionDimension,
+  MoveAttribution,
+  AttributionReason,
+  AttributionScore,
+  KlinePattern,
+  PeerMove,
+  AttributionReport,
+  AttributionStats,
+} from './move-attribution-engine';
+
+// R254 AI-02: Briefing data bridge (7 briefing templates + multi-source aggregation + personalized)
+export { BriefingDataBridge, briefingDataBridge, resetBriefingDataBridge } from './briefing-data-bridge';
+export type {
+  BriefingType,
+  DataSection,
+  BriefingConfig,
+  BriefingSection,
+  BriefingDataItem,
+  MarketOverview,
+  TopMover,
+  MacroEvent,
+  BriefingOutput,
+} from './briefing-data-bridge';
+
+// R255 AI-06: Market-to-strategy bridge (market data → strategy signals)
+export { MarketToStrategyBridge, marketToStrategyBridge, resetMarketToStrategyBridge } from './market-to-strategy-bridge';
+export type {
+  MarketSignalType,
+  MarketObservation,
+  StrategySignal,
+  StrategyType,
+  StrategyMatch,
+  MarketSnapshot,
+} from './market-to-strategy-bridge';
+
+// R255 DS-05: Investing.com RSS fetcher (articles + economic calendar + technical summaries)
+export { InvestingRSSFetcher, investingRSSFetcher, resetInvestingRSSFetcher } from './investing-rss-fetcher';
+export type {
+  InvestingFeedCategory,
+  InvestingArticle,
+  EconomicEvent,
+  TechnicalSummary,
+  InvestingEngineArticle,
+  InvestingStats,
+} from './investing-rss-fetcher';
+
+// R255 BR-05: Source switch UI bridge (dynamic source switching → frontend dashboard)
+export { SourceSwitchUIBridge, sourceSwitchUIBridge, resetSourceSwitchUIBridge } from './source-switch-ui-bridge';
+export type {
+  DataSourceId,
+  SourceStatus,
+  SourceDomain,
+  DataSourceMeta,
+  SourceHealth,
+  SourceSwitchEvent,
+  UISourceDashboard,
+  SourceSwitchResult,
+} from './source-switch-ui-bridge';

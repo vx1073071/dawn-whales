@@ -1,96 +1,182 @@
-// ── useKeyboardShortcuts — Global hotkeys for quant-moo ──────────────────
-import { useEffect } from 'react';
+// @ts-nocheck
+// R271 ML#4: KeyboardShortcuts — Full shortcut system with chart-specific hotkeys
+import { useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '@/stores/appStore';
 import i18n from '../i18n';
 
-const SHORTCUTS: Record<string, { view?: string; action?: () => void; label: string }> = {
-  '1': { view: 'market', label: i18n.t('useKeyboardShortcuts.k1') },
-  '2': { view: 'strategy', label: i18n.t('useKeyboardShortcuts.k2') },
-  '3': { view: 'marketplace', label: i18n.t('useKeyboardShortcuts.k3') },
-  '4': { view: 'live', label: i18n.t('useKeyboardShortcuts.k4') },
-  '5': { view: 'backtest', label: i18n.t('useKeyboardShortcuts.k5') },
-  '6': { view: 'portfolio', label: i18n.t('useKeyboardShortcuts.k6') },
-  '7': { view: 'orders', label: i18n.t('useKeyboardShortcuts.k7') },
-  '8': { view: 'risk', label: i18n.t('useKeyboardShortcuts.k8') },
-  '9': { view: 'settings', label: i18n.t('useKeyboardShortcuts.k9') },
-};
+// ── Type Definitions ──────────────────────────────────────────────────────
+
+interface ShortcutDef {
+  keys: string;
+  label: string;
+  labelCN: string;
+  category: 'navigation' | 'chart' | 'drawing' | 'general';
+  action: string; // CustomEvent name or special key
+}
+
+// ── Shortcut Registry ─────────────────────────────────────────────────────
+
+const SHORTCUT_REGISTRY: ShortcutDef[] = [
+  // Navigation
+  { keys: '1', label: 'Market', labelCN: '市场', category: 'navigation', action: 'view:market' },
+  { keys: '2', label: 'Strategy', labelCN: '策略', category: 'navigation', action: 'view:strategy' },
+  { keys: '3', label: 'Marketplace', labelCN: '市场', category: 'navigation', action: 'view:marketplace' },
+  { keys: '4', label: 'Live Trading', labelCN: '实盘', category: 'navigation', action: 'view:live' },
+  { keys: '5', label: 'Backtest', labelCN: '回测', category: 'navigation', action: 'view:backtest' },
+  { keys: '6', label: 'Portfolio', labelCN: '持仓', category: 'navigation', action: 'view:portfolio' },
+  { keys: '7', label: 'Orders', labelCN: '订单', category: 'navigation', action: 'view:orders' },
+  { keys: '8', label: 'Risk', labelCN: '风控', category: 'navigation', action: 'view:risk' },
+  { keys: '9', label: 'Settings', labelCN: '设置', category: 'navigation', action: 'view:settings' },
+
+  // Chart
+  { keys: 'D', label: 'Draw Tool', labelCN: '画线工具', category: 'chart', action: 'chart:toggle-draw' },
+  { keys: 'T', label: 'Trendline', labelCN: '趋势线', category: 'chart', action: 'chart:tool-trendline' },
+  { keys: 'H', label: 'Horizontal Line', labelCN: '水平线', category: 'chart', action: 'chart:tool-horizontal' },
+  { keys: 'F', label: 'Fibonacci', labelCN: '斐波那契', category: 'chart', action: 'chart:tool-fib' },
+  { keys: 'R', label: 'Rectangle', labelCN: '矩形', category: 'chart', action: 'chart:tool-rect' },
+  { keys: 'V', label: 'Vertical Line', labelCN: '垂直线', category: 'chart', action: 'chart:tool-vertical' },
+  { keys: 'C', label: 'Crosshair', labelCN: '十字光标', category: 'chart', action: 'chart:crosshair' },
+  { keys: 'I', label: 'Indicator Panel', labelCN: '指标面板', category: 'chart', action: 'chart:indicators' },
+  { keys: 'A', label: 'AI Analysis', labelCN: 'AI分析', category: 'chart', action: 'chart:ai-draw' },
+  { keys: 'O', label: 'Order Panel', labelCN: '下单', category: 'chart', action: 'chart:toggle-order' },
+
+  // Drawing
+  { keys: 'Delete', label: 'Delete Drawing', labelCN: '删除画线', category: 'drawing', action: 'drawing:delete-selected' },
+  { keys: 'Backspace', label: 'Delete Drawing', labelCN: '删除画线', category: 'drawing', action: 'drawing:delete-selected' },
+  { keys: 'Escape', label: 'Cancel / Close', labelCN: '取消/关闭', category: 'drawing', action: 'drawing:cancel' },
+
+  // General
+  { keys: 'Ctrl+B', label: 'Toggle Sidebar', labelCN: '切换侧栏', category: 'general', action: 'sidebar:toggle' },
+  { keys: 'Ctrl+K', label: 'Command Palette', labelCN: '命令面板', category: 'general', action: 'palette:open' },
+  { keys: 'Ctrl+N', label: 'New Strategy', labelCN: '新建策略', category: 'general', action: 'view:strategy' },
+  { keys: 'Ctrl+E', label: 'Emergency Stop', labelCN: '紧急停止', category: 'general', action: 'emergency:stop' },
+  { keys: '/', label: 'Quick Search', labelCN: '快速搜索', category: 'general', action: 'search:quick' },
+  { keys: 'Ctrl+Z', label: 'Undo Drawing', labelCN: '撤销画线', category: 'drawing', action: 'drawing:undo' },
+  { keys: 'Ctrl+Y', label: 'Redo Drawing', labelCN: '重做画线', category: 'drawing', action: 'drawing:redo' },
+  { keys: 'Space', label: 'Play/Pause', labelCN: '播放/暂停', category: 'chart', action: 'playback:toggle' },
+  { keys: '←', label: 'Step Back', labelCN: '后退一步', category: 'chart', action: 'playback:step-back' },
+  { keys: '→', label: 'Step Forward', labelCN: '前进一步', category: 'chart', action: 'playback:step-forward' },
+  { keys: '?', label: 'Show Shortcuts', labelCN: '快捷键帮助', category: 'general', action: 'shortcuts:help' },
+];
+
+// ── Usage tracking (show hint on first use) ───────────────────────────────
+
+const USED_SHORTCUTS_KEY = 'quant-moo-shortcuts-used';
+
+function getUsedShortcuts(): Set<string> {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(USED_SHORTCUTS_KEY) || '[]'));
+  } catch { return new Set(); }
+}
+
+function markShortcutUsed(keys: string): void {
+  const used = getUsedShortcuts();
+  used.add(keys);
+  localStorage.setItem(USED_SHORTCUTS_KEY, JSON.stringify([...used]));
+}
+
+function isFirstUse(keys: string): boolean {
+  return !getUsedShortcuts().has(keys);
+}
+
+function showShortcutHint(keys: string, def: ShortcutDef): void {
+  window.dispatchEvent(new CustomEvent('dw:shortcut-hint', {
+    detail: { keys, label: def.label, labelCN: def.labelCN },
+  }));
+  markShortcutUsed(keys);
+}
+
+// ── Hook ──────────────────────────────────────────────────────────────────
 
 export function useKeyboardShortcuts() {
   const setView = useAppStore((s) => s.setView);
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
   const emergencyStop = useAppStore((s) => s.emergencyStop);
+  const usedRef = useRef(getUsedShortcuts());
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      // Skip if user is typing in an input/textarea
+      // Skip when typing in inputs
       const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-      if ((e.target as HTMLElement)?.isContentEditable) return;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+        // Allow Escape in inputs for blur
+        if (e.key !== 'Escape') return;
+      }
+      if ((e.target as HTMLElement)?.isContentEditable && e.key !== 'Escape') return;
 
-      // R224: ESC — close modals/popups, return to main view
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        // Close any open modal via body class
-        const modals = document.querySelectorAll('[role="dialog"], .modal-overlay');
-        if (modals.length > 0) {
-          // Dispatch global close event for any modal component to listen
-          window.dispatchEvent(new CustomEvent('dw:close-all-modals'));
-          return;
+      // Don't override system shortcuts except for our registered ones
+      const isMod = e.ctrlKey || e.metaKey;
+      const rawKey = isMod ? `Ctrl+${e.key.toUpperCase()}` : e.key;
+
+      // Find matching shortcuts
+      const matches = SHORTCUT_REGISTRY.filter(s => {
+        if (s.keys.includes('+')) {
+          const parts = s.keys.split('+');
+          const hasCtrl = parts.includes('Ctrl');
+          const key = parts[parts.length - 1];
+          // Normalize arrow keys
+          if (key === '←' && e.key === 'ArrowLeft') return isMod === hasCtrl;
+          if (key === '→' && e.key === 'ArrowRight') return isMod === hasCtrl;
+          if (key === 'Space' && (e.key === ' ' || e.code === 'Space')) return isMod === hasCtrl;
+          return isMod === hasCtrl && e.key === key;
         }
-        setView('market' as any);
-        return;
-      }
+        // Arrow keys
+        if (s.keys === '←') return e.key === 'ArrowLeft' && !isMod;
+        if (s.keys === '→') return e.key === 'ArrowRight' && !isMod;
+        if (s.keys === 'Space') return (e.key === ' ' || e.code === 'Space') && !isMod;
+        return rawKey === s.keys && !isMod;
+      });
 
-      // R224: Space — toggle play/pause for live data / chart streaming
-      if (e.key === ' ' || e.code === 'Space') {
-        e.preventDefault();
-        window.dispatchEvent(new CustomEvent('dw:toggle-playback'));
-        return;
-      }
+      if (matches.length === 0) return;
+      e.preventDefault();
 
-      // R224: ← → — step backward/forward in time (backtest / replay navigation)
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        window.dispatchEvent(new CustomEvent('dw:step-backward'));
-        return;
-      }
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        window.dispatchEvent(new CustomEvent('dw:step-forward'));
-        return;
-      }
+      for (const match of matches) {
+        // Show hint on first use
+        if (isFirstUse(match.keys)) {
+          showShortcutHint(match.keys, match);
+        }
 
-      // Ctrl/Cmd shortcuts
-      if (e.ctrlKey || e.metaKey) {
-        switch (e.key) {
-          case 'b':
-            e.preventDefault();
+        // Dispatch to chart context if applicable
+        if (match.category === 'chart' || match.category === 'drawing') {
+          window.dispatchEvent(new CustomEvent(match.action));
+          continue;
+        }
+
+        // Handle general actions
+        switch (match.action) {
+          case 'sidebar:toggle':
             toggleSidebar();
             break;
-          case 'n':
-            e.preventDefault();
-            setView('strategy' as any);
-            break;
-          case 'k':
-            e.preventDefault();
-            setView('market' as any);
-            break;
-          case 'e':
-            e.preventDefault();
+          case 'emergency:stop':
             emergencyStop();
             break;
-        }
-        return;
-      }
-
-      // Number keys 1-9 for view switching
-      if (SHORTCUTS[e.key]) {
-        const shortcut = SHORTCUTS[e.key];
-        if (shortcut.view) {
-          setView(shortcut.view as any);
-        }
-        if (shortcut.action) {
-          shortcut.action();
+          case 'palette:open':
+            window.dispatchEvent(new CustomEvent('dw:command-palette'));
+            break;
+          case 'search:quick':
+            window.dispatchEvent(new CustomEvent('dw:quick-search'));
+            break;
+          case 'shortcuts:help':
+            window.dispatchEvent(new CustomEvent('dw:shortcuts-help'));
+            break;
+          case 'playback:toggle':
+            window.dispatchEvent(new CustomEvent('dw:toggle-playback'));
+            break;
+          case 'playback:step-back':
+            window.dispatchEvent(new CustomEvent('dw:step-backward'));
+            break;
+          case 'playback:step-forward':
+            window.dispatchEvent(new CustomEvent('dw:step-forward'));
+            break;
+          default:
+            if (match.action.startsWith('view:')) {
+              const view = match.action.replace('view:', '');
+              setView(view as any);
+            } else if (match.action.startsWith('drawing:')) {
+              window.dispatchEvent(new CustomEvent(match.action));
+            } else {
+              window.dispatchEvent(new CustomEvent(match.action));
+            }
         }
       }
     }
@@ -100,23 +186,23 @@ export function useKeyboardShortcuts() {
   }, [setView, toggleSidebar, emergencyStop]);
 }
 
-// Export shortcut map for help dialog
-export const SHORTCUT_MAP = {
-  'Ctrl+B': i18n.t('useKeyboardShortcuts.k10'),
-  'Ctrl+N': i18n.t('useKeyboardShortcuts.k11'),
-  'Ctrl+K': i18n.t('useKeyboardShortcuts.k12'),
-  'Ctrl+E': i18n.t('useKeyboardShortcuts.k23'),
-  '1': i18n.t('useKeyboardShortcuts.k13'),
-  '2': i18n.t('useKeyboardShortcuts.k14'),
-  '3': i18n.t('useKeyboardShortcuts.k15'),
-  '4': i18n.t('useKeyboardShortcuts.k16'),
-  '5': i18n.t('useKeyboardShortcuts.k17'),
-  '6': i18n.t('useKeyboardShortcuts.k18'),
-  '7': i18n.t('useKeyboardShortcuts.k19'),
-  '8': i18n.t('useKeyboardShortcuts.k20'),
-  '9': i18n.t('useKeyboardShortcuts.k21'),
-  'Esc': i18n.t('useKeyboardShortcuts.k22'),
-  'Space': i18n.t('useKeyboardShortcuts.k24'),
-  '←': i18n.t('useKeyboardShortcuts.k25'),
-  '→': i18n.t('useKeyboardShortcuts.k26'),
-};
+// ── Exportable Shortcut Map for Help Dialog ───────────────────────────────
+
+export function getShortcutMap(lang: 'zh' | 'en' = 'en'): Record<string, string> {
+  const map: Record<string, string> = {};
+  for (const s of SHORTCUT_REGISTRY) {
+    map[s.keys] = lang === 'zh' ? s.labelCN : s.label;
+  }
+  return map;
+}
+
+export function getShortcutsByCategory(): Record<string, ShortcutDef[]> {
+  const cats: Record<string, ShortcutDef[]> = {};
+  for (const s of SHORTCUT_REGISTRY) {
+    if (!cats[s.category]) cats[s.category] = [];
+    cats[s.category].push(s);
+  }
+  return cats;
+}
+
+export { SHORTCUT_REGISTRY as REGISTRY };

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 // ── types ──────────────────────────────────────────────────
 interface QuoteSnapshot {
@@ -109,7 +109,7 @@ function useCockpitIPC(): CockpitData {
             (quotes: any[]) => {
               setData(prev => ({
                 ...prev,
-                indices: prev.indices.map((idx, i) => {
+                indices: prev.indices.map((idx) => {
                   const q = quotes.find((q: any) => q.symbol === idx.symbol);
                   if (q) {
                     return {
