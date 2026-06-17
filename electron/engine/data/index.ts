@@ -562,3 +562,14 @@ export type {
   SkeletonElement,
   PreloadStats,
 } from './skeleton-preload-bridge';
+// R285 auto#1: i18n Bridge (2.3万硬编码中文→国际化)
+export { I18nBridge, getI18nBridge, resetI18nBridge, registerI18nIpcHandlers, I18N_IPC_CHANNELS } from './i18n-bridge';
+export type {
+  LocaleCode,
+  Namespace,
+  TranslationEntry,
+  NamespaceStats,
+  I18nStats,
+  ScanResult,
+} from './i18n-bridge';
+export { ALL_LOCALES, ALL_NAMESPACES } from './i18n-bridge';
