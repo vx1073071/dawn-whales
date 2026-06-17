@@ -1,4 +1,6 @@
 // ── TradingEasy — SentimentGauge (W28) ─────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // indexdashboard：0-100，/
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

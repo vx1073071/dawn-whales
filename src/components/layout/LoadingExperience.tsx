@@ -1,4 +1,6 @@
 // ── R125-M04 Loading Experience — 骨架屏 + Tab动画 + 冷启动进度 ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // PM: P2-9 加载体验 — 让人知道系统正在工作, 不是卡死了
 
 import { ReactNode, useEffect, useState } from 'react';

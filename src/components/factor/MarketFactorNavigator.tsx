@@ -1,5 +1,7 @@
 // @ts-nocheck
 // ── R195 ML P11-03: MarketFactorNavigator — 7市场因子发现导航 ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // By-market browsing of 188 universal + 35 exclusive factors
 // Tab strip for each market with factor count badges
 // Color-coded: universal (grey) / market-exclusive (gold)

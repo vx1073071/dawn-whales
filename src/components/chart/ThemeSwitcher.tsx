@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 // ── Dark/Light Theme System ── ML#1 R270 (4h)
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Complete theme provider with multiple dark/light presets
 
 type ThemeMode = 'light' | 'dark' | 'system';

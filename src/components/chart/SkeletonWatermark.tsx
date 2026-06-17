@@ -1,4 +1,6 @@
 // ── R224 ML#2 (G3+G4): 加载骨架屏 + 截图水印 ──────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // G3: Skeleton loader for K-line/chart/table loading states
 // G4: html2canvas watermark on screenshot export (brand+timestamp)
 // 9语言i18n

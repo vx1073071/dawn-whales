@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
 // ── types ──────────────────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 interface IndexQuote {
   symbol: string;
   name: string;

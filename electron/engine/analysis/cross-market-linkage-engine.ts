@@ -367,6 +367,15 @@ export class CrossMarketLinkageEngine {
   // ═══════════ Seed ═══════════
 
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     const allMarkets: LinkedMarket[] = ['US', 'HK', 'CN', 'JP', 'KR', 'TW', 'BR'];
     const baseCorrelations: Record<string, number> = {
       'US→HK': 0.85, 'US→JP': 0.78, 'US→KR': 0.72, 'US→TW': 0.68, 'US→CN': 0.55, 'US→BR': 0.65,

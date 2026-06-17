@@ -1,4 +1,6 @@
 // ── R169 P2-D6: Factor Decay Dashboard ──────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Multi-factor decay monitoring dashboard:
 //   - Decay Heatmap: factor × month IC grid with color scale
 //   - Half-Life Trend: IC decay curves over lag days with half-life annotations

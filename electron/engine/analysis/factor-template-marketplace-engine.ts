@@ -88,7 +88,7 @@ export class FactorTemplateMarketplaceEngine {
 
   /** Browse with filters */
   browse(filter?: TemplateFilter): FactorTemplate[] {
-    let results = Array.from(this.templates.values()).filter(t => t.status === 'published');
+    let results = Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published');
 
     if (filter?.category) results = results.filter(t => t.category === filter.category);
     if (filter?.tags?.length) results = results.filter(t => filter.tags!.some(tag => t.tags.includes(tag)));
@@ -115,12 +115,12 @@ export class FactorTemplateMarketplaceEngine {
   }
 
   /** Get sections */
-  getFeatured(n = 10): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.isFeatured && t.status === 'published').sort((a, b) => b.rating - a.rating).slice(0, n); }
-  getTrending(n = 10): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.status === 'published').sort((a, b) => b.downloads - a.downloads).slice(0, n); }
-  getNewest(n = 10): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.status === 'published').sort((a, b) => b.createdAt - a.createdAt).slice(0, n); }
-  getTopRated(n = 10): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.status === 'published' && t.ratingCount >= 5).sort((a, b) => b.rating - a.rating).slice(0, n); }
-  getFreeTemplates(n = 10): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.status === 'published' && t.price === 0).sort((a, b) => b.downloads - a.downloads).slice(0, n); }
-  getByCreator(authorId: string): FactorTemplate[] { return Array.from(this.templates.values()).filter(t => t.authorId === authorId); }
+  getFeatured(n = 10): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.isFeatured && t.status === 'published').sort((a, b) => b.rating - a.rating).slice(0, n); }
+  getTrending(n = 10): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published').sort((a, b) => b.downloads - a.downloads).slice(0, n); }
+  getNewest(n = 10): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published').sort((a, b) => b.createdAt - a.createdAt).slice(0, n); }
+  getTopRated(n = 10): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published' && t.ratingCount >= 5).sort((a, b) => b.rating - a.rating).slice(0, n); }
+  getFreeTemplates(n = 10): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published' && t.price === 0).sort((a, b) => b.downloads - a.downloads).slice(0, n); }
+  getByCreator(authorId: string): FactorTemplate[] { return Array.from(Array.from(this.templates.values()).filter(t => t.authorId === authorId); }
   getById(id: string): FactorTemplate | undefined { return this.templates.get(id); }
 
   /** Install template */
@@ -201,7 +201,7 @@ export class FactorTemplateMarketplaceEngine {
 
   /** Marketplace metrics */
   getMetrics(): TemplateMetrics {
-    const all = Array.from(this.templates.values()).filter(t => t.status === 'published');
+    const all = Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published');
     return {
       totalTemplates: all.length,
       totalInstalls: all.reduce((s, t) => s + t.installs, 0),
@@ -216,7 +216,7 @@ export class FactorTemplateMarketplaceEngine {
   /** Category distribution */
   getCategoryDistribution(): Array<{ category: string; count: number; avgRating: number }> {
     const cats = new Map<string, { count: number; ratingSum: number; ratingCount: number }>();
-    for (const t of Array.from(this.templates.values())) {
+    for (const t of Array.from(Array.from(this.templates.values())) {
       if (t.status !== 'published') continue;
       if (!cats.has(t.category)) cats.set(t.category, { count: 0, ratingSum: 0, ratingCount: 0 });
       const c = cats.get(t.category)!;
@@ -231,7 +231,7 @@ export class FactorTemplateMarketplaceEngine {
 
   /** Search by factor ID */
   searchByFactor(factorId: string): FactorTemplate[] {
-    return Array.from(this.templates.values()).filter(t => t.status === 'published' && t.factors.includes(factorId));
+    return Array.from(Array.from(this.templates.values()).filter(t => t.status === 'published' && t.factors.includes(factorId));
   }
 
   /** Compatibility check */
@@ -246,6 +246,15 @@ export class FactorTemplateMarketplaceEngine {
   getRating(templateId: string, userId: string): number | undefined { return this.ratings.get(templateId)?.get(userId); }
 
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     const categories: FactorTemplate['category'][] = ['multi-factor', 'single-factor', 'sector-rotation', 'market-timing', 'risk-parity', 'trend-following', 'mean-reversion', 'arbitrage'];
     const creators = [
       { id: 'creator_001', name: 'QuantMaster', level: 'L3' as const },

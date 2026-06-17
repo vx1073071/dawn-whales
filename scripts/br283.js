@@ -1,0 +1,1 @@
+const fs=require('fs');const m={msgId:'lobehub-r283-done',from:'lobehub',to:['pm','ALL'],type:'ROUND_COMPLETE',round:'R283',priority:'HIGH',subject:'[LOBEHUB] R283 COMPLETE'};fs.appendFileSync('C:/Users/vx107/.easyclaw/workspace/chat-bridge/messages.jsonl',JSON.stringify(m)+'\n');console.log('ok')

@@ -1,4 +1,6 @@
 // ── R132-M03 PnLOverview — 收益概览面板 ──────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // @ts-nocheck — PnL sparkline + stats grid
 // PM: 总/今日/本周/本月 + 收益曲线 + 盈亏比
 

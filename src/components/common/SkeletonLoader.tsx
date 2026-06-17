@@ -1,4 +1,6 @@
 // ── R173 C7: Skeleton Loading Component ──────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Replace empty LoadingSpinner with informative skeleton screens.
 // Shows: loading progress "正在计算 动量因子... (3/8)"
 // Skeleton: grey animated placeholders matching final layout shape.

@@ -1,6 +1,8 @@
 // @ts-nocheck
 
 // ── R146 ML — AIStrategyPanel (组合生成+回测解读+优化+健康检查) ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // PM: 4 modules, 6h
 import { useState, useCallback } from 'react';
 import {

@@ -1,4 +1,6 @@
 // ── R132-M01 CopyTradeNotifications — 跟单实时通知UI ────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // @ts-nocheck — complex notification system, window.api contextBridge access
 // PM: Toast弹出 + 通知中心 + 声音反馈
 // 桌面端接收WebSocket推送的跟单状态变化

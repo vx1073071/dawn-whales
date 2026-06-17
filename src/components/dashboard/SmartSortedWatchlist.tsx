@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 
 // ── types ──────────────────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 interface WatchlistItem {
   symbol: string;
   name: string;

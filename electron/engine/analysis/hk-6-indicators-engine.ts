@@ -231,6 +231,15 @@ export class HKIndicatorsEngine {
   // ═══════════ Seed ═══════════
 
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     for (let d = 30; d >= 0; d--) {
       const date = new Date(Date.now() - d * 86400000).toISOString().slice(0, 10);
       // AH Premium

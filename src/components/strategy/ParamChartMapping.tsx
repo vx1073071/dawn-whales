@@ -1,4 +1,6 @@
 // ── R219 ML#1: ParamChartMapping — 参数→图表实时映射(双向绑定) ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // 滑块参数 (stopLoss/takeProfit/holdingPeriod) ↔ K线图 overlay 双向同步
 // 滑动滑块 → 图表止损线/止盈线/持仓标记实时跟随(<100ms)
 // 点击图表 → 自动同步到对应滑块

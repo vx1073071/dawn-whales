@@ -1,6 +1,8 @@
 // @ts-nocheck
 
 // ── R145 ML — AIDrawPanel (AI画线+形态识别+对话扣费+参数填充) ───────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // PM: 4 modules, 6h
 // R150: Added FeePreview + useBalanceCheck integration
 import { useState, useCallback, useRef } from 'react';

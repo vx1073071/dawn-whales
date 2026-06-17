@@ -296,6 +296,15 @@ export class ESGOptionsFixedIncomeEngine {
   }
 
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     // ESG seeding
     const esgVals: Array<{ id: string; score: number }> = [];
     for (const f of this.esgFactors) {

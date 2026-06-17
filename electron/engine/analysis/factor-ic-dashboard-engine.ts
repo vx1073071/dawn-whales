@@ -335,6 +335,15 @@ export class FactorICDashboardEngine {
   getBacktest(factorId: string): FactorBacktest | undefined { return this.backtests.get(factorId); }
 
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     const factors = [
       { id: 'pe_ttm', name: 'PE TTM' }, { id: 'pb_lf', name: 'PB LF' }, { id: 'momentum_6m', name: 'MOM 6M' },
       { id: 'roe_ttm', name: 'ROE TTM' }, { id: 'volatility_20d', name: 'Volatility 20d' },

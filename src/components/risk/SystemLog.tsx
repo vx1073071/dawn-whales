@@ -1,4 +1,6 @@
 // ── TradingEasy — SystemLog (log) ─────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 
 import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

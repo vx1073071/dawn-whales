@@ -1,4 +1,6 @@
 // ── R208 ML P5: ArbitrageHeatmap — 套利热力图 (AH/ADR/ETF溢价可视化) ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Color-coded heatmap Grid: rows = pair, columns = time/status
 // Green=discount, Red=premium, Yellow=fair, intensity = magnitude
 // Real-time refresh (polling mock), click to trigger ArbitrageScanEngine (2U)

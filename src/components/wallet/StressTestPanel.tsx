@@ -1,4 +1,6 @@
 // ── R203 ML P6: StressTestPanel — AI组合压力测试面板 ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Monte Carlo simulation (10K-50K paths) + 3 historical scenarios
 // 2008 GFC / 2020 COVID / 2022 Rate Hikes
 // Output: VaR/CVaR/max drawdown/ruin prob/recovery time

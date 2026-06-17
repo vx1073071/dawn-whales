@@ -1,4 +1,6 @@
 // ── R169 P4-03: Mini Backtest on Parameter Change ───────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // When user changes a parameter, show a compact 1-year mini backtest
 // with green/red arrows indicating improvement or degradation.
 //

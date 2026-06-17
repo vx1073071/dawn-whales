@@ -371,3 +371,194 @@ export type {
   FactorSubscriptionStats,
   FactorSubscriptionConfig,
 } from './factor-subscription-push-bridge';
+
+// R277 auto#1: 14国全球市场统一桥接
+export { GlobalMarketBridge, getGlobalBridge, resetGlobalBridge } from './global-market-bridge';
+export type {
+  CountryCode,
+  CountryMeta,
+  CountryIndicator,
+  CountrySignal,
+  CrossCountryComparison,
+  GlobalHeatmap,
+  GlobalBridgeStats,
+} from './global-market-bridge';
+
+// R277 auto#2: 宏观数据源 FRED+IMF
+export { MacroDataSource, getMacroSource, resetMacroSource } from './macro-data-source';
+export type {
+  MacroCategory,
+  MacroSourceProvider,
+  MacroFrequency,
+  MacroIndicator,
+  MacroHistoryPoint,
+  MacroSnapshot,
+  MacroSignal,
+  MacroCrossCountry,
+  MacroCycle,
+  MacroStats,
+} from './macro-data-source';
+
+// R278 auto#1: OpenSourceAP 学术因子集成桥接
+export { OpenSourceAPBridge, getOsapBridge, resetOsapBridge } from './opensource-ap-bridge';
+export type {
+  AcademicFactorFamily,
+  AcademicFactorMeta,
+  AcademicSignal,
+  FactorFamilyStats,
+  AcademicBridgeStats,
+} from './opensource-ap-bridge';
+
+// R278 auto#2a: MSCI ESG 数据源桥接
+export { ESGDataSource, getESGSource, resetESGSource } from './esg-data-source';
+export type {
+  ESGPillar,
+  ESGRating,
+  ESGMomentum,
+  ESGIndicator,
+  ESGScore,
+  ESGFactorSignal,
+  ESGPortfolioStats,
+  ESGSourceStats,
+} from './esg-data-source';
+
+// R278 auto#2b: CBOE 期权/波动率数据源
+export { CBOEDataSource, getCBOESource, resetCBOESource } from './cboe-data-source';
+export type {
+  CBOEIndexType,
+  CBOEVolatilitySnapshot,
+  CBOESkewSnapshot,
+  CBOEPutCallSnapshot,
+  CBOETermStructure,
+  CBOEFuturesCurve,
+  CBOESignal,
+  CBOEStats,
+} from './cboe-data-source';
+
+// R279 auto#1: 全球配置桥接
+export { GlobalAllocationBridge, getAllocationBridge, resetAllocationBridge } from './global-allocation-bridge';
+export type {
+  AssetClass,
+  OptimizationMethod,
+  RebalanceMethod,
+  ConstraintType,
+  AssetUniverseItem,
+  AssetCorrelation,
+  AllocationConstraint,
+  AllocationResult,
+  RebalanceDecision,
+  ScenarioResult,
+  AttributionResult,
+  AllocationStats,
+} from './global-allocation-bridge';
+
+// R279 auto#2: 策略市场因子标签
+export { StrategyMarketFactorTagBridge, getTagBridge, resetTagBridge } from './strategy-market-factor-tag-bridge';
+export type {
+  FactorTagType,
+  StrategyCategory,
+  StrategyRiskLevel,
+  StrategyFactorTag,
+  StrategyMeta,
+  StrategyRecommendation,
+  FactorUsageStats,
+  TagAnalysis,
+} from './strategy-market-factor-tag-bridge';
+
+// R279 auto#3: 因子社区IPC
+export { FactorCommunityIPCBridge, getCommunityIPC, resetCommunityIPC } from './factor-community-ipc-bridge';
+export type {
+  FactorComboStatus,
+  ComboSortBy,
+  IPCEventType,
+  FactorCombo,
+  FactorComboComment,
+  FactorKit,
+  CommunityEvent,
+  UserReputation,
+  LeaderboardEntry,
+} from './factor-community-ipc-bridge';
+
+// R281 auto#1: Factor Registry IPC Bridge (620+ factors → UI query/search API)
+export {
+  FactorRegistryIPCBridge,
+  getRegistryIPCBridge,
+  resetRegistryIPCBridge,
+  FACTOR_REGISTRY_IPC_CHANNELS,
+} from './factor-registry-ipc-bridge';
+export type {
+  RegistryFactorMeta,
+  RegistrySearchResult,
+  RegistryListResult,
+  RegistryStats,
+  RegistryIdVerification,
+} from './factor-registry-ipc-bridge';
+
+// R282 auto#1: Factor Alarm Clock → Push IPC Bridge (因子闹钟→桌面推送)
+export {
+  FactorAlarmPushBridge,
+  FactorAlarmClockEngine,
+  getAlarmPushBridge,
+  resetAlarmPushBridge,
+} from './factor-alarm-push-bridge';
+export type {
+  FactorAlarm,
+  AlarmConditionType,
+  AlarmCondition,
+  AlarmSeverity,
+  AlarmStatus,
+  AlarmTriggerEvent,
+  AlarmFactorSnapshot,
+  AlarmStats,
+} from './factor-alarm-push-bridge';
+
+// R282 auto#2: Factor Recipe → Strategy Bridge (因子食谱→策略一键转换)
+export {
+  FactorRecipeStrategyBridge,
+  getRecipeStrategyBridge,
+  resetRecipeStrategyBridge,
+} from './factor-recipe-strategy-bridge';
+export type {
+  FactorRecipe,
+  FactorRecipeIngredient,
+  StrategyConversionConfig,
+  ConvertedStrategy,
+  RecipeBacktestPreview,
+  RecipeQuery,
+  MarketRegime,
+  RecipeDifficulty,
+} from './factor-recipe-strategy-bridge';
+// R284 auto#1: Drawing AI Analysis Bridge
+export { DrawingAiAnalysisBridge, getDrawingAiAnalysisBridge, resetDrawingAiAnalysisBridge } from './drawing-ai-analysis-bridge';
+export type {
+  AnalysisType,
+  DrawingForAnalysis,
+  AnalysisContext,
+  AiAnalysisRequest,
+  AiAnalysisResult,
+  PatternRecognitionResult,
+  DetectedPattern,
+  PatternType,
+  TradeSetupResult,
+  TradeSetup,
+  RiskAssessmentResult,
+  RiskFactor,
+  MultiTimeframeResult,
+  AnalysisInsight,
+  TradingSignal,
+  ExtractedContext,
+  ConfluencePoint,
+  AnalysisHistoryEntry,
+} from './drawing-ai-analysis-bridge';
+export { generateAiPrompts, extractContextFromDrawings, detectConfluence } from './drawing-ai-analysis-bridge';
+// R284 auto#2: Skeleton Preload Bridge
+export { SkeletonPreloadBridge, getSkeletonPreloadBridge, resetSkeletonPreloadBridge } from './skeleton-preload-bridge';
+export type {
+  PreloadPhase,
+  LoadState,
+  PreloadSlot,
+  PreloadSession,
+  SkeletonConfig,
+  SkeletonElement,
+  PreloadStats,
+} from './skeleton-preload-bridge';

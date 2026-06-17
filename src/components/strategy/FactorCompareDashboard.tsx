@@ -1,4 +1,6 @@
 // ── R164 P1-E1: Factor Compare Dashboard ─────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Radar chart: compare multiple factors on IC/IR/Sharpe/HitRate/HalfLife/Crowding
 // IC Heatmap: factor × month grid showing IC values with color scale
 //

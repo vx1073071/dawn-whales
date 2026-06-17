@@ -1,4 +1,6 @@
 // ── R164 P1-E2 + R171 F2: IC Decay Curve Chart with Hyperbolic Decay ───
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Visualize Information Coefficient decay over lag periods.
 // R171 upgrade: dual-track decay model (mechanical hyperbolic vs judgment exponential+breaks)
 // X-axis: lag (days)  Y-axis: IC value

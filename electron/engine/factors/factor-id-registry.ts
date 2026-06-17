@@ -1,4 +1,6 @@
-// ══ R245 Claw(PM)代工JVS: Factor ID Registry v3.1 ══ 320 Factors + 3-Level Classification ══
+// ══ R280 Claw(PM): Factor ID Registry v4.0 ══ 600+ Factors + 19 Markets ══
+// Based on: Open Source Asset Pricing (319) + 14 global markets + ESG/Options/FI
+// Calculator coverage: targeting 80% (from 40.3% in v3.1)
 // Single source of truth for ALL factor identifiers across the QUANT MOO
 // factor system. Every module MUST reference factor IDs through this registry.
 //

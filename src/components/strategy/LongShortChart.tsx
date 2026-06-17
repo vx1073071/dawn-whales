@@ -1,4 +1,6 @@
 // ── R164 P1-E3 + R171 F3: Long/Short Factor Return Chart ───────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Visualize factor-based long-short portfolio returns.
 // R171 upgrade: real data integration bridge + DataTrustBadge
 // Top: Cumulative long return, short return, long-short spread (area chart)

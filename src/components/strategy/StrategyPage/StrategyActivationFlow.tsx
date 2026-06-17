@@ -1,4 +1,6 @@
 // ── R216 ML P1: StrategyActivationFlow — 4步策略激活流程UI ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // P1: Wizard with 4 steps: 预览 → 配置 → 沙盒 → 实盘确认
 // Step indicator + progress + sandbox result display + live trading confirmation
 // 9-language i18n + stepper + auto-save between steps

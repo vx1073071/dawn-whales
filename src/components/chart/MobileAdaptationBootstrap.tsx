@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 // ── Mobile Adaptation Bootstrap ── ML#4 R270 (2h)
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Responsive layout, touch gesture hints, mobile nav
 
 const MobileAdaptationBootstrap = () => {

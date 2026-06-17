@@ -1,4 +1,6 @@
 // ── R167 P1-X1: Live vs Backtest Deviation Tracker ──────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Compares live trading returns against backtest expected returns.
 // Attributes deviation to: slippage / factor decay / regime shift / overfitting.
 // Provides actionable buttons: [Recalibrate] [Add Hedge] [AI Diagnose]

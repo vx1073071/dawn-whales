@@ -2,6 +2,8 @@
 // R230-ML#1: TSC pre-existing errors batch-fixed
 
 // ── R133-M01 USBrokerPanel — 美股券商管理面板 (IB/Tiger/Schwab 3家) ──────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // PM: 添加/配置/测试连接 3家美股券商
 
 import { useState, useCallback } from 'react';

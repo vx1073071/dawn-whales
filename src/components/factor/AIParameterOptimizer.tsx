@@ -1,4 +1,6 @@
 // ── R191 ML P7-02: AIParameterOptimizer — AI参数优化 (1.5U/次) ──────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // Interactive AI-powered factor parameter optimizer.
 // User inputs: lookback window, threshold range, market filters
 // AI returns: optimized parameters + expected IC improvement + comparison

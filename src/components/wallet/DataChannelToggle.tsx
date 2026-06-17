@@ -1,4 +1,6 @@
 // ── R208 ML P4: DataChannelToggle — VIP数据通道3级切换UI ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // 3 tiers: ⚡FREE 15min delay / 🔥1min 0.5U / 💎Real-time 1U
 // Per-data-type toggle, charge on switch, degrade on failure
 // Preview of data freshness, last update timestamp, auto-refresh

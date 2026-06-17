@@ -1,4 +1,6 @@
 // ── R215 ML P3: BillingDashboard — 累计消费仪表盘 (SettingsPage新增) ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // U4: Monthly billing dashboard with category breakdown + budget tracking
 // Shows: today's / month's / cumulative spend + category breakdown + budget bar
 // 9-language i18n + transaction history preview + export CSV option

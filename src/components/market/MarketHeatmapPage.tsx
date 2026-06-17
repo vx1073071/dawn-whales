@@ -1,4 +1,6 @@
 // ── TradingEasy — MarketHeatmapPage (W26) ──────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // sectorheatmappage： EM ，industry/concept/region
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

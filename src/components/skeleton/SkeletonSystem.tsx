@@ -4,6 +4,8 @@
 import React from 'react';
 
 // ── Skeleton base component ──────────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 export interface SkeletonProps {
   width?: string | number;
   height?: string | number;

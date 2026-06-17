@@ -1,4 +1,6 @@
 // ── R119 #33 Unified Chart State Components ────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // ChartSkeleton / ChartError / ChartEmpty — 所有chart组件统一使用
 
 

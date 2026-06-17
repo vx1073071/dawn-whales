@@ -1,4 +1,6 @@
 // ── R168 P2-04: Monthly Factor Heatmap ──────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // 12 months × 8 factors heatmap with color scale.
 // Shows IC values for each factor-month combination.
 // Hover shows exact IC value + factor name + month.

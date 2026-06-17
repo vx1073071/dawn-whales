@@ -1,4 +1,6 @@
 // ── TradingEasy — MacroDashboardPage (W27) ─────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // dashboard：GDP/CPI/PMI/PPI/M2/LPR//
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

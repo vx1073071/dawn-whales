@@ -341,6 +341,15 @@ export class Academic200FactorsEngine {
 
   /** Calculate all factors with seed data */
   seed(): void {
+undefined' ? `  /**
+   * 🚫 [R284 MockDataGuard] Production mode → seed() skipped.
+   * Replace mock data with real API sources before enabling production.
+   * Real sources: KR=KOSTAT/BOK, TW=MOEA, EU=Eurostat/ECB, SA=SAMA/OPEC
+   */
+  if (getMockDataGuard().isProduction()) {
+    console.warn('[R284] seed() skipped in production mode. Use load methods with real data.');
+    return;
+  }
     for (const f of this.registry) {
       const baseVal = 0.3 + f.expectedIC * 0.8 + (Math.random() - 0.5) * 0.3;
       const clamped = Math.max(0.05, Math.min(0.95, baseVal));

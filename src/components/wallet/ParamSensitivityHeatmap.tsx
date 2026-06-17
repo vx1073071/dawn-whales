@@ -1,4 +1,6 @@
 // ── R218 ML P2: ParamSensitivityHeatmap — 参数敏感性热力图UI ──────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // L9: Heatmap showing parameter sensitivity to overfitting
 // 2D grid: X = parameter A, Y = parameter B, color = backtest Sharpe/sharpe
 // Cells with overfit >0.5 highlighted in red

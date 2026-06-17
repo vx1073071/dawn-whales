@@ -1,5 +1,7 @@
 // @ts-nocheck
 // ── R135-M01 OpenDSignalPanel — OpenD信号面板 (待处理+执行) ───────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 // PM: GET /api/signal/pending → 列表 → 单个or批量执行 → POST回传
 
 import { useState, useCallback } from 'react'

@@ -6,6 +6,8 @@
 import { useState, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
+// ⚠️ [R284] Contains demo/mock data. Production mode: use isProduction() guard or real API.
+
 
 interface LeaderboardEntry {
   rank: number;
